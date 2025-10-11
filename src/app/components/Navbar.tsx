@@ -6,7 +6,7 @@ const ThemeToggle = () => {
     const [theme, setTheme] = useState(false); // false = dark, true = light
 
     const toggleTheme = () => {
-        const newTheme = !theme; // <-- this correctly flips the boolean
+        const newTheme = !theme;
         setTheme(newTheme);
         document.documentElement.setAttribute(
             'data-theme',
@@ -47,7 +47,7 @@ export default function NavBar() {
                                         className={
                                             'btn btn-ghost border-gray-500'
                                         }
-                                        href={'/pages/MDX'}
+                                        href={'/pages/maimaidx'}
                                     >
                                         maimai DX
                                     </a>
