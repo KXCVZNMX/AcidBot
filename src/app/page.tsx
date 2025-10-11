@@ -1,5 +1,3 @@
 export default function Home() {
-    return (
-        <p>wefwefw</p>
-    );
+    return <p>wefwefw</p>;
 }
