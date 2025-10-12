@@ -1,4 +1,4 @@
-import {MaimaiResults, Rank, RANK_DEFINITIONS} from "@/lib/maimai/types";
+import {MaimaiResults, RANK_DEFINITIONS} from "@/lib/maimai/types";
 
 function getRatingByAchievement(achievement: number, lvConstant: number) {
     const rank = RANK_DEFINITIONS.find((r) => achievement >= r.minA && achievement <= (r.maxA ?? Infinity));
