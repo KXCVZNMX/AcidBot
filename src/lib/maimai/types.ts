@@ -57,6 +57,7 @@ export interface Output {
     dx_score: string;
     achievement: string;
     rating: number;
+    isDx: boolean;
 }
 
 const RANK_SSS_PLUS: Readonly<Rank> = {
