@@ -1,8 +1,18 @@
+// e.g.
+// {
+//     "name": "Synthesis.",
+//     "level": "14",
+//     "score": "100.5648%",
+//     "dx_score": "2,998 / 3,309",
+//     "diff": 3,
+//     "difficulty": "master"
+// }
 export interface MaimaiResultEntry {
     level: string;
     name: string;
     score: string;
     dx_score: string;
+    isDx: boolean;
     diff: string;
     difficulty: string;
 }
@@ -39,6 +49,14 @@ export interface Rank {
     minA: number;
     factor: number;
     maxFactor?: number;
+}
+
+export interface Output {
+    title: string;
+    level: number;
+    dx_score: string;
+    achievement: string;
+    rating: number;
 }
 
 const RANK_SSS_PLUS: Readonly<Rank> = {
