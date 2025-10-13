@@ -21,6 +21,14 @@ export interface MaimaiResults {
     results: MaimaiResultEntry[];
 }
 
+// e.g.
+// {
+//     "type": "dx",
+//     "difficulty": "basic",
+//     "level": "3",
+//     "levelValue": 3,
+//     "isSpecial": false,
+// },
 export interface SongDiffInfo {
     type: string;
     difficulty: string;
