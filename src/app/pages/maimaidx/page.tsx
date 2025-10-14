@@ -15,8 +15,6 @@ export default function Page() {
 
     const getResults = async () => {
         try {
-            console.log(data);
-
             const res = await fetch('/api/maimai/calculateRating', {
                 method: 'POST',
                 headers: {
@@ -70,8 +68,8 @@ export default function Page() {
                         </tr>
                     </thead>
                     <tbody>
-                        {rcvRes.map((res) => (
-                            <tr key={res.title}>
+                        {rcvRes.sort((a, b) => b.rating - a.rating).map((res) => (
+                            <tr key={res.title} className={`${res.isNew ? 'bg-orange-200/60' : ''}`}>
                                 <td>{res.title}</td>
                                 <td>{res.level}</td>
                                 <td>{res.levelValue}</td>
