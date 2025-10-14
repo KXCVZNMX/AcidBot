@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
                 isNew: isNew(song.version),
             });
         });
-        console.log(outputList);
+        // console.log(outputList);
 
         return NextResponse.json(outputList);
     } catch (err) {
