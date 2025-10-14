@@ -1,18 +1,19 @@
 // e.g.
 // {
-//     "name": "Synthesis.",
-//     "level": "14",
-//     "score": "100.5648%",
-//     "dx_score": "2,998 / 3,309",
+//     "name": "ATLAS RUSH",
+//     "level": "14+",
+//     "score": "100.5037",
+//     "dx_score": "",
+//     "isDX": true,
 //     "diff": 3,
 //     "difficulty": "master"
-// }
+// },
 export interface MaimaiResultEntry {
     level: string;
     name: string;
     score: string;
     dx_score: string;
-    isDx: boolean;
+    isDX: boolean;
     diff: string;
     difficulty: string;
 }
@@ -33,7 +34,7 @@ export interface SongDiffInfo {
     type: string;
     difficulty: string;
     level: string;
-    levelValue: number;
+    internalLevelValue: number;
     isSpecial: boolean;
 }
 
@@ -42,7 +43,7 @@ export interface SongInfo {
     title: string;
     artist: string;
     imageName: string;
-    isNew: boolean;
+    version: string;
     sheets: SongDiffInfo[];
 }
 
@@ -61,11 +62,13 @@ export interface Rank {
 
 export interface Output {
     title: string;
-    level: number;
+    level: string;
+    levelValue: number;
     dx_score: string;
     achievement: string;
     rating: number;
-    isDx: boolean;
+    isDX: boolean;
+    isNew: boolean;
 }
 
 const RANK_SSS_PLUS: Readonly<Rank> = {
