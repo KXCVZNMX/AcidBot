@@ -35,8 +35,7 @@ export default function Page() {
         }
     }
 
-    console.log(result);
-    console.log(getRating(result ?? []))
+    const rcvRes: Output[] = result ?? [];
 
     return (
         <>
@@ -45,6 +44,35 @@ export default function Page() {
                     <textarea className={'bg-gray-950 w-96 h-96'} value={data} onChange={e => setData(e.target.value)}/>
                 </form>
                 <button onClick={getResults} className={'btn'}>Get Results</button>
+
+                <p>{getRating(rcvRes)}</p>
+            </div>
+
+            <div className={'overflow-x-auto w-full'}>
+                <table className={'table w-full'}>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Level</th>
+                            <th>Constant</th>
+                            <th>DX Score</th>
+                            <th>Achievement</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {rcvRes.map(res => (
+                        <tr key={res.title}>
+                            <td>{res.title}</td>
+                            <td>{res.level}</td>
+                            <td>{res.levelValue}</td>
+                            <td>{res.dx_score}</td>
+                            <td>{res.achievement}</td>
+                            <td>{res.rating}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
         </>
     )
