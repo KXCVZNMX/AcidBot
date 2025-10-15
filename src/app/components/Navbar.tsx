@@ -42,7 +42,7 @@ export default function NavBar() {
                                     'dropdown-content menu menu-vertical bg-base-100 rounded-t-none p-2 w-40'
                                 }
                             >
-                                <li key={'maimai DX'}>
+                                <li key={'maimaidx DX'}>
                                     <a
                                         className={
                                             'btn btn-ghost border-gray-500'

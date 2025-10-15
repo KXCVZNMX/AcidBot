@@ -3,7 +3,7 @@ import {
     Output,
     RANK_DEFINITIONS,
     SongInfoList,
-} from '@/app/api/maimai/types';
+} from '@/app/types/maimai';
 import { NextRequest, NextResponse } from 'next/server';
 // import {readFileSync} from "fs";
 
@@ -93,6 +93,8 @@ export async function POST(req: NextRequest) {
                 ),
                 isDX: r.isDX,
                 isNew: isNew(song.version),
+                sync: r.sync,
+                playStat: r.playStat
             });
         });
         // console.log(outputList);

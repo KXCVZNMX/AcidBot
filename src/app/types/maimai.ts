@@ -16,6 +16,8 @@ export interface MaimaiResultEntry {
     isDX: boolean;
     diff: string;
     difficulty: string;
+    sync?: string;
+    playStat?: string;
 }
 
 export interface MaimaiResults {
@@ -69,6 +71,8 @@ export interface Output {
     rating: number;
     isDX: boolean;
     isNew: boolean;
+    sync?: string;
+    playStat?: string;
 }
 
 const RANK_SSS_PLUS: Readonly<Rank> = {

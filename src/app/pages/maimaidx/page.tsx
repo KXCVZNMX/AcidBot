@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Output } from '@/app/api/maimai/types';
+import { Output } from '@/app/types/maimai';
 import Image from "next/image";
 
 export default function Page() {
@@ -100,6 +100,8 @@ export default function Page() {
                         {rcvRes.sort((a, b) => b.rating - a.rating).map((res) => (
                             <tr key={res.title} className={`${res.isNew ? 'bg-orange-200/60' : ''}`}>
                                 <td>{res.title}</td>
+                                <td>{res.sync}</td>
+                                <td>{res.playStat}</td>
                                 <td>{res.level}</td>
                                 <td>{res.levelValue}</td>
                                 <td>{res.dx_score}</td>
