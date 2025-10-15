@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { Output } from '@/app/api/maimai/types';
+import Image from "next/image";
 
 export default function Page() {
     const [data, setData] = useState('');
     const [result, setResult] = useState<Output[] | null>(null);
+    const [showModal, setShowModal] = useState(false);
 
     const getRating = (output: Output[]) => {
         let rating = 0;
@@ -28,15 +30,42 @@ export default function Page() {
             }
 
             setResult(await res.json());
+            setShowModal(true);
         } catch (error) {
             console.error(error);
         }
     };
 
     const rcvRes: Output[] = result ?? [];
+    const newSongs = rcvRes.filter(r => r.isNew);
+    const oldSongs = rcvRes.filter(r => !r.isNew);
 
     return (
         <>
+            <div className={`modal ${showModal ? 'modal-open' : ''}`}>
+                <div className={'modal-box'}>
+                    <h3 className={'font-bold text-lg flex justify-between items-center'}>
+                        Results
+                        <button
+                            className="btn btn-sm btn-circle btn-ghost"
+                            onClick={() => setShowModal(false)}
+                        >
+                            ✕
+                        </button>
+                    </h3>
+
+                    <div className={'flex justify-center'}>
+                        <Image
+                            src={'https://pbs.twimg.com/media/GisgIeNaIAEP5BK?format=jpg&name=large'}
+                            alt={'acid background @sushitabetai151'}
+                            width={1284}
+                            height={2048}
+                            className={'z-0'}
+                        />
+                    </div>
+                </div>
+            </div>
+
             <div className={'flex flex-col justify-center'}>
                 <form
                     className={'flex justify-center'}
