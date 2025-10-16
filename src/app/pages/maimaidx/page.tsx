@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { Output } from '@/app/types/maimai';
+import {useState} from 'react';
+import {Output} from '@/app/types/maimai';
 import Image from "next/image";
+import B50Cell from "@/app/components/maimaidx/B50Cell";
+import B50 from "@/app/components/maimaidx/B50";
 
 export default function Page() {
     const [data, setData] = useState('');
@@ -43,7 +45,7 @@ export default function Page() {
     return (
         <>
             <div className={`modal ${showModal ? 'modal-open' : ''}`}>
-                <div className={'modal-box'}>
+                <div className={'modal-box overflow-x-auto max-w-max'}>
                     <h3 className={'font-bold text-lg flex justify-between items-center'}>
                         Results
                         <button
@@ -55,13 +57,14 @@ export default function Page() {
                     </h3>
 
                     <div className={'flex justify-center'}>
-                        <Image
-                            src={'https://pbs.twimg.com/media/GisgIeNaIAEP5BK?format=jpg&name=large'}
-                            alt={'acid background @sushitabetai151'}
-                            width={1284}
-                            height={2048}
-                            className={'z-0'}
-                        />
+                        {/*<Image*/}
+                        {/*    src={'https://pbs.twimg.com/media/GisgIeNaIAEP5BK?format=jpg&name=large'}*/}
+                        {/*    alt={'acid background @sushitabetai151'}*/}
+                        {/*    width={1284}*/}
+                        {/*    height={2048}*/}
+                        {/*    className={'z-0'}*/}
+                        {/*/>*/}
+                        {rcvRes.length !== 0 ? <B50 outputs={rcvRes} /> : null}
                     </div>
                 </div>
             </div>
@@ -87,28 +90,30 @@ export default function Page() {
             <div className={'overflow-x-auto w-full'}>
                 <table className={'table w-full'}>
                     <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Level</th>
-                            <th>Constant</th>
-                            <th>DX Score</th>
-                            <th>Achievement</th>
-                            <th>Rating</th>
-                        </tr>
+                    <tr>
+                        <th>Title</th>
+                        <th>Sync</th>
+                        <th>Status</th>
+                        <th>Level</th>
+                        <th>Constant</th>
+                        <th>DX Score</th>
+                        <th>Achievement</th>
+                        <th>Rating</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {rcvRes.sort((a, b) => b.rating - a.rating).map((res) => (
-                            <tr key={res.title} className={`${res.isNew ? 'bg-orange-200/60' : ''}`}>
-                                <td>{res.title}</td>
-                                <td>{res.sync}</td>
-                                <td>{res.playStat}</td>
-                                <td>{res.level}</td>
-                                <td>{res.levelValue}</td>
-                                <td>{res.dx_score}</td>
-                                <td>{res.achievement}</td>
-                                <td>{res.rating}</td>
-                            </tr>
-                        ))}
+                    {rcvRes.sort((a, b) => b.rating - a.rating).map((res) => (
+                        <tr key={res.title} className={`${res.isNew ? 'bg-orange-200/60' : ''}`}>
+                            <td>{res.title}</td>
+                            <td>{res.sync}</td>
+                            <td>{res.playStat}</td>
+                            <td>{res.level}</td>
+                            <td>{res.levelValue}</td>
+                            <td>{res.dx_score}</td>
+                            <td>{res.achievement}</td>
+                            <td>{res.rating}</td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>

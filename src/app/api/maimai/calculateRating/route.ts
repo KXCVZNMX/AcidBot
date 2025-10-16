@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
             // console.log(diff.internalLevelValue);
 
             outputList.push({
+                difficulty: r.difficulty,
                 title: song.title,
                 level: diff.level,
                 levelValue: diff.internalLevelValue,

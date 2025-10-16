@@ -66,6 +66,7 @@ export interface Output {
     title: string;
     level: string;
     levelValue: number;
+    difficulty: string;
     dx_score: string;
     achievement: string;
     rating: number;
