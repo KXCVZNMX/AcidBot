@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
                 isDX: r.isDX,
                 isNew: isNew(song.version),
                 sync: r.sync,
-                playStat: r.playStat
+                playStat: r.playStat,
             });
         });
         // console.log(outputList);

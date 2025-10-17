@@ -1,10 +1,10 @@
 'use client';
 
-import {useState} from 'react';
-import {Output} from '@/app/types/maimai';
-import Image from "next/image";
-import B50Cell from "@/app/components/maimaidx/B50Cell";
-import B50 from "@/app/components/maimaidx/B50";
+import { useState } from 'react';
+import { Output } from '@/app/types/maimai';
+import Image from 'next/image';
+import B50Cell from '@/app/components/maimaidx/B50Cell';
+import B50 from '@/app/components/maimaidx/B50';
 
 export default function Page() {
     const [data, setData] = useState('');
@@ -39,14 +39,18 @@ export default function Page() {
     };
 
     const rcvRes: Output[] = result ?? [];
-    const newSongs = rcvRes.filter(r => r.isNew);
-    const oldSongs = rcvRes.filter(r => !r.isNew);
+    const newSongs = rcvRes.filter((r) => r.isNew);
+    const oldSongs = rcvRes.filter((r) => !r.isNew);
 
     return (
         <>
             <div className={`modal ${showModal ? 'modal-open' : ''}`}>
                 <div className={'modal-box overflow-x-auto max-w-max'}>
-                    <h3 className={'font-bold text-lg flex justify-between items-center'}>
+                    <h3
+                        className={
+                            'font-bold text-lg flex justify-between items-center'
+                        }
+                    >
                         Results
                         <button
                             className="btn btn-sm btn-circle btn-ghost"
@@ -63,9 +67,13 @@ export default function Page() {
                         {/*    fill*/}
                         {/*    className={'z-[-10] opacity-30 object-contain backdrop-blur-sm'}*/}
                         {/*/>*/}
-                        {oldSongs.length !== 0 ? <B50 outputs={oldSongs}/> : null}
-                        <div className={'pt-3 pb-3'}/>
-                        {newSongs.length !== 0 ? <B50 outputs={newSongs}/> : null}
+                        {oldSongs.length !== 0 ? (
+                            <B50 outputs={oldSongs} />
+                        ) : null}
+                        <div className={'pt-3 pb-3'} />
+                        {newSongs.length !== 0 ? (
+                            <B50 outputs={newSongs} />
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -91,30 +99,35 @@ export default function Page() {
             <div className={'overflow-x-auto w-full'}>
                 <table className={'table w-full'}>
                     <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Sync</th>
-                        <th>Status</th>
-                        <th>Level</th>
-                        <th>Constant</th>
-                        <th>DX Score</th>
-                        <th>Achievement</th>
-                        <th>Rating</th>
-                    </tr>
+                        <tr>
+                            <th>Title</th>
+                            <th>Sync</th>
+                            <th>Status</th>
+                            <th>Level</th>
+                            <th>Constant</th>
+                            <th>DX Score</th>
+                            <th>Achievement</th>
+                            <th>Rating</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {rcvRes.sort((a, b) => b.rating - a.rating).map((res) => (
-                        <tr key={res.title} className={`${res.isNew ? 'bg-orange-200/60' : ''}`}>
-                            <td>{res.title}</td>
-                            <td>{res.sync}</td>
-                            <td>{res.playStat}</td>
-                            <td>{res.level}</td>
-                            <td>{res.levelValue}</td>
-                            <td>{res.dx_score}</td>
-                            <td>{res.achievement}</td>
-                            <td>{res.rating}</td>
-                        </tr>
-                    ))}
+                        {rcvRes
+                            .sort((a, b) => b.rating - a.rating)
+                            .map((res) => (
+                                <tr
+                                    key={res.title}
+                                    className={`${res.isNew ? 'bg-orange-200/60' : ''}`}
+                                >
+                                    <td>{res.title}</td>
+                                    <td>{res.sync}</td>
+                                    <td>{res.playStat}</td>
+                                    <td>{res.level}</td>
+                                    <td>{res.levelValue}</td>
+                                    <td>{res.dx_score}</td>
+                                    <td>{res.achievement}</td>
+                                    <td>{res.rating}</td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
