@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
 
             outputList.push({
                 difficulty: r.difficulty,
+                imageName: song.imageName,
                 title: song.title,
                 level: diff.level,
                 levelValue: diff.internalLevelValue,

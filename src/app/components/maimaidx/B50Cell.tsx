@@ -54,43 +54,79 @@ export default function B50Cell({output}: { output: Output }) {
         }
     }
 
+    const isFullWidth = (char: string) => {
+        const code = char.charCodeAt(0);
+        return (
+            (code >= 0x1100 && code <= 0x115F) || // Hangul Jamo
+            (code >= 0x2E80 && code <= 0xA4CF) || // CJK Radicals, Kangxi, Yi
+            (code >= 0xAC00 && code <= 0xD7A3) || // Hangul syllables
+            (code >= 0xF900 && code <= 0xFAFF) || // CJK Compatibility Ideographs
+            (code >= 0xFE10 && code <= 0xFE19) || // Vertical forms
+            (code >= 0xFE30 && code <= 0xFE6F) || // CJK compatibility forms
+            (code >= 0xFF00 && code <= 0xFF60) || // Full-width forms
+            (code >= 0xFFE0 && code <= 0xFFE6)
+        );
+    }
+
+    const checkStringWidth = (str: string) => {
+        let width = 0;
+        for (const char of str) {
+            width += isFullWidth(char) ? 2 : 1;
+        }
+        return width;
+    }
+
     const [bgColor, bannerColor] = findBgColor()
 
     return (
-        <div className={`rounded-xl ${bgColor} text-white p-4 shadow-lg flex flex-col gap-3 w-full`}>
+        <>
+            <div className={`text-white relative shadow-lg flex flex-col gap-3 w-full`}>
+                <Image src={`https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover/${output.imageName}`}
+                       alt={'image name'} fill className={'absolute inset-0 object-contain opacity-20 pointer-events-none z-[-10]'}/>
+                <div className={`flex ${bannerColor} justify-between items-center pl-2 opacity-70`}>
+                    <Image
+                        src={output.isDX ? 'https://maimaidx-eng.com/maimai-mobile/img/music_dx.png' : 'https://maimaidx-eng.com/maimai-mobile/img/music_standard.png'}
+                        alt={'diff type'} width={50} height={25}/>
+                    <span className={'text-lg font-semibold pr-2'}>{output.levelValue}</span>
+                </div>
 
-            <div className={`flex ${bannerColor} justify-between items-center`}>
-                <Image
-                    src={output.isDX ? 'https://maimaidx-eng.com/maimai-mobile/img/music_dx.png' : 'https://maimaidx-eng.com/maimai-mobile/img/music_standard.png'}
-                    alt={'diff type'} width={50} height={25}/>
-                <span className={'text-lg font-semibold'}>{output.levelValue}</span>
-            </div>
+                <h2 className={'text-[16px] font-semibold w-full pl-0.5 flex justify-center'}>{
+                    checkStringWidth(output.title) >= 17 ? (output.title.slice(0, 10) + '...') : output.title}
+                </h2>
 
-            <h2 className={'text-[16px] font-semibold'}>{output.title}</h2>
-
-            <div className={'flex justify-between items-center'}>
-
-                <div className={'flex items-center gap-3'}>
-                    <div className={'flex flex-col leading-tight'}>
-                        <div className={'flex items-center gap-1'}>
-                            <Image src={determineRank(output.achievement)} alt={'rank'} width={60} height={30}
-                                   className={'inline'}/>
+                <div className={'flex justify-between items-center pl-1 pr-1'}>
+                    <div className={'flex items-center gap-3'}>
+                        <div className={'flex flex-col leading-tight'}>
+                            <div className={'flex items-center gap-1'}>
+                                <Image src={determineRank(output.achievement)} alt={'rank'} width={60} height={30}
+                                       className={'inline'}
+                                />
+                            </div>
+                            <span className={'text-lg font-bold'}>{output.achievement + '%'}</span>
                         </div>
-                        <span className={'text-lg font-bold'}>{output.achievement}</span>
+                    </div>
+
+                    <div className={'flex flex-col items-end'}>
+                        <h2 className={'font-xl font-bold'}>{output.rating}</h2>
+                        <div className={'flex flex-row'}>
+                            {output.playStat ? (
+                                <Image
+                                    src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_${output.playStat}.png?ver=1.50`}
+                                    alt={'play stat'} width={30} height={30} className={'inline'}/>
+                            ) : (<Image
+                                src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png?ver=1.50`}
+                                alt={'play stat'} width={30} height={30} className={'inline'}/>)}
+                            {output.sync ? (
+                                <Image
+                                    src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_${output.sync}.png?ver=1.50`}
+                                    alt={'sync'} width={30} height={30} className={'inline'}/>
+                            ) : (<Image
+                                src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_back.png?ver=1.50`}
+                                alt={'play stat'} width={30} height={30} className={'inline'}/>)}
+                        </div>
                     </div>
                 </div>
-
-                <div className={'flex flex-col items-end'}>
-                    {output.playStat ? (
-                        <Image src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_${output.playStat}.png?ver=1.50`} alt={'play stat'} width={40} height={40} className={'inline'}/>
-                    ) : null}
-                    {output.sync ? (
-                        <Image src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_${output.sync}.png?ver=1.50`} alt={'sync'} width={40} height={40} className={'inline'}/>
-                    ) : null}
-                    <span className={'mt-2 text-xl font-bold'}>{output.rating}</span>
-                </div>
             </div>
-        </div>
-
+        </>
     )
 }

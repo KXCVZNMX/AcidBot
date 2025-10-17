@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
             {
                 protocol: 'https',
                 hostname: 'maimaidx-eng.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'dp4p6x0xfi5o9.cloudfront.net'
             }
         ]
     }

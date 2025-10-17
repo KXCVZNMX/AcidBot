@@ -64,6 +64,7 @@ export interface Rank {
 
 export interface Output {
     title: string;
+    imageName: string;
     level: string;
     levelValue: number;
     difficulty: string;

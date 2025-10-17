@@ -56,15 +56,16 @@ export default function Page() {
                         </button>
                     </h3>
 
-                    <div className={'flex justify-center'}>
+                    <div className={'flex flex-col justify-center'}>
                         {/*<Image*/}
                         {/*    src={'https://pbs.twimg.com/media/GisgIeNaIAEP5BK?format=jpg&name=large'}*/}
                         {/*    alt={'acid background @sushitabetai151'}*/}
-                        {/*    width={1284}*/}
-                        {/*    height={2048}*/}
-                        {/*    className={'z-0'}*/}
+                        {/*    fill*/}
+                        {/*    className={'z-[-10] opacity-30 object-contain backdrop-blur-sm'}*/}
                         {/*/>*/}
-                        {rcvRes.length !== 0 ? <B50 outputs={rcvRes} /> : null}
+                        {oldSongs.length !== 0 ? <B50 outputs={oldSongs}/> : null}
+                        <div className={'pt-3 pb-3'}/>
+                        {newSongs.length !== 0 ? <B50 outputs={newSongs}/> : null}
                     </div>
                 </div>
             </div>
