@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { Output } from '@/app/types/maimai';
-import Image from 'next/image';
-import B50Cell from '@/app/components/maimaidx/B50Cell';
 import B50 from '@/app/components/maimaidx/B50';
 
 export default function Page() {
