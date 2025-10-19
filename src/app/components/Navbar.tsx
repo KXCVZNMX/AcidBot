@@ -2,25 +2,6 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 
-const ThemeToggle = () => {
-    const [theme, setTheme] = useState(false); // false = dark, true = light
-
-    const toggleTheme = () => {
-        const newTheme = !theme;
-        setTheme(newTheme);
-        document.documentElement.setAttribute(
-            'data-theme',
-            newTheme ? 'light' : 'dark'
-        );
-    };
-
-    return (
-        <button className="btn btn-ghost" onClick={toggleTheme}>
-            change this to svg
-        </button>
-    );
-};
-
 export default function NavBar() {
     const [openId, setOpenId] = useState<string | null>(null);
     const navRef = useRef<HTMLDivElement | null>(null);
@@ -91,10 +72,6 @@ export default function NavBar() {
                         </details>
                     </li>
                 </ul>
-            </div>
-
-            <div className={'flex-none'}>
-                <ThemeToggle />
             </div>
         </div>
     );
