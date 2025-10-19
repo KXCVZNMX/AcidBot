@@ -9,6 +9,15 @@ export default function Page() {
     const [result, setResult] = useState<Output[] | null>(null);
     const [showModal, setShowModal] = useState(false);
 
+    const isJsonString = (str: string) => {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
     const getRating = (output: Output[]) => {
         let rating = 0;
         output.forEach((o) => (rating += o.rating));
@@ -17,6 +26,8 @@ export default function Page() {
 
     const getResults = async () => {
         try {
+            if (!isJsonString(data) || data.length === 0) return;
+
             const res = await fetch('/api/maimai/calculateRating', {
                 method: 'POST',
                 headers: {
