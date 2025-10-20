@@ -3,20 +3,12 @@
 import { useState } from 'react';
 import { Output } from '@/app/types/maimai';
 import B50 from '@/app/components/maimaidx/B50';
+import { isJsonString } from "@/app/util/util";
 
 export default function Page() {
     const [data, setData] = useState('');
     const [result, setResult] = useState<Output[] | null>(null);
     const [showModal, setShowModal] = useState(false);
-
-    const isJsonString = (str: string) => {
-        try {
-            JSON.parse(str);
-        } catch (e) {
-            return false;
-        }
-        return true;
-    }
 
     const getRating = (output: Output[]) => {
         let rating = 0;
