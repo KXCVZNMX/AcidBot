@@ -28,6 +28,7 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
 }
 
 // TODO: When doing different versions, get version parameter and determine from that
+// TODO: Change this to maybe a .env variable to easily change this later
 function isNew(version: string) {
     return version === 'PRiSM PLUS';
 }
