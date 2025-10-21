@@ -77,6 +77,32 @@ export interface Output {
     playStat?: string;
 }
 
+export interface SongWithTag {
+    title: string;
+    tag: string[];
+}
+
+export interface SongTags {
+    songs: SongWithTag[];
+}
+
+/// The format in the db
+export interface SongTagsDB {
+    tags: {
+        id: number;
+        localisedName: {
+            zhHans: string;
+        }
+    }[]
+    // sheet difficulty: basic advanced expert master remaster
+    tagSongs: {
+        songId: string;
+        sheetType: string;
+        sheetDifficulty: string;
+        tagId: number;
+    }[]
+}
+
 const RANK_SSS_PLUS: Readonly<Rank> = {
     title: 'SSS+',
     minA: 100.5,
