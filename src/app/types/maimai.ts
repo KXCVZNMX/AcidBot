@@ -77,21 +77,12 @@ export interface Output {
     playStat?: string;
 }
 
-export interface SongWithTag {
-    title: string;
-    tag: string[];
-}
-
-export interface SongTags {
-    songs: SongWithTag[];
-}
-
 // The format in the db
 export interface SongTagsDBEntry {
-    songId: string;
-    sheetType: string;
-    sheetDifficulty: string;
-    tagId: number;
+    song_id: string;
+    sheet_type: string;
+    sheet_difficulty: string;
+    tag_id: number;
 }
 
 const RANK_SSS_PLUS: Readonly<Rank> = {
