@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        console.log(returnList);
+        // console.log(returnList);
 
         return NextResponse.json(returnList);
     } catch (e) {

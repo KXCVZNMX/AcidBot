@@ -34,6 +34,8 @@ export default function Page() {
 
     return (
         <>
+
+
             <div className={'flex flex-col justify-center'}>
                 <form
                     className={'flex justify-center'}
@@ -49,7 +51,6 @@ export default function Page() {
                     Get Results
                 </button>
             </div>
-            <p>{tags}</p>
         </>
     );
 }
