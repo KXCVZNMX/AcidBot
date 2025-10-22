@@ -157,7 +157,7 @@ export const PATTERN_TAG: Readonly<Record<string, number>> = {
     "大位移": 24,
 };
 
-export const EVAL_TAG: Readonly<Record<stirng, number>> = {
+export const EVAL_TAG: Readonly<Record<string, number>> = {
     "键盘谱": 15,
     "星星谱": 14,
     "体力谱": 21,
