@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function NavBar() {
     const [openId, setOpenId] = useState<string | null>(null);
@@ -18,7 +18,8 @@ export default function NavBar() {
         return () => document.removeEventListener('pointerdown', onPointerDown);
     }, []);
 
-    const toggle = (id: string) => setOpenId(prev => (prev === id ? null : id));
+    const toggle = (id: string) =>
+        setOpenId((prev) => (prev === id ? null : id));
 
     return (
         <div ref={navRef} className={'navbar bg-base-50 shadow-lg'}>
@@ -30,19 +31,33 @@ export default function NavBar() {
                 <ul className={'menu menu-horizontal px-1'}>
                     <li>
                         <details
-                            className={'flex dropdown dropdown-center items-center rounded-lg px-3 py-2'}
+                            className={
+                                'flex dropdown dropdown-center items-center rounded-lg px-3 py-2'
+                            }
                             open={openId === 'games'}
                         >
                             <summary
                                 className={'cursor-pointer'}
-                                onClick={(e) => { e.preventDefault(); toggle('games'); }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggle('games');
+                                }}
                             >
                                 Games
                             </summary>
 
-                            <ul className={'dropdown-content menu menu-vertical bg-base-100 rounded-t-none p-2 w-40'}>
+                            <ul
+                                className={
+                                    'dropdown-content menu menu-vertical bg-base-100 rounded-t-none p-2 w-40'
+                                }
+                            >
                                 <li>
-                                    <a className={'btn btn-ghost border-gray-500'} href={'/pages/maimaidx/rating'}>
+                                    <a
+                                        className={
+                                            'btn btn-ghost border-gray-500'
+                                        }
+                                        href={'/pages/maimaidx/rating'}
+                                    >
                                         maimai DX
                                     </a>
                                 </li>
@@ -52,19 +67,33 @@ export default function NavBar() {
 
                     <li>
                         <details
-                            className={'flex dropdown dropdown-center items-center rounded-lg px-3 py-2'}
+                            className={
+                                'flex dropdown dropdown-center items-center rounded-lg px-3 py-2'
+                            }
                             open={openId === 'skill'}
                         >
                             <summary
                                 className={'cursor-pointer'}
-                                onClick={(e) => { e.preventDefault(); toggle('skill'); }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggle('skill');
+                                }}
                             >
                                 Skill Check
                             </summary>
 
-                            <ul className={'dropdown-content menu menu-vertical bg-base-100 rounded-t-none p-2 w-40'}>
+                            <ul
+                                className={
+                                    'dropdown-content menu menu-vertical bg-base-100 rounded-t-none p-2 w-40'
+                                }
+                            >
                                 <li>
-                                    <a className={'btn btn-ghost border-gray-500'} href={'/pages/maimaidx/analyseSkill'}>
+                                    <a
+                                        className={
+                                            'btn btn-ghost border-gray-500'
+                                        }
+                                        href={'/pages/maimaidx/analyseSkill'}
+                                    >
                                         maimai DX
                                     </a>
                                 </li>

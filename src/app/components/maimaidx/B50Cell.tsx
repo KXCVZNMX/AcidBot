@@ -1,4 +1,4 @@
-import { Output } from '@/app/types/maimai';
+import { Output } from '@/lib/types/maimai';
 import Image from 'next/image';
 
 export default function B50Cell({ output }: { output: Output }) {

@@ -5,4 +5,4 @@ export const isJsonString = (str: string) => {
         return false;
     }
     return true;
-}
+};

@@ -1,6 +1,6 @@
-import {NextRequest, NextResponse} from "next/server";
-import {MaimaiResults, SongTagsDBEntry} from "@/app/types/maimai";
-import {MongoClient} from "mongodb";
+import { NextRequest, NextResponse } from 'next/server';
+import { MaimaiResults, SongTagsDBEntry } from '@/lib/types/maimai';
+import { MongoClient } from 'mongodb';
 
 export async function POST(req: NextRequest) {
     try {
@@ -22,20 +22,20 @@ export async function POST(req: NextRequest) {
 
         for (const r of results.results) {
             const songTags = tags.find({
-                'song_id': r.name,
-                'sheet_difficulty': r.difficulty,
+                song_id: r.name,
+                sheet_difficulty: r.difficulty,
             });
 
             for await (const s of songTags) {
-                returnList.push(s.tag_id)
+                returnList.push(s.tag_id);
             }
         }
 
-        console.log(returnList)
+        console.log(returnList);
 
         return NextResponse.json(returnList);
     } catch (e) {
         console.error(e);
-        return NextResponse.json({error: e}, {status: 500})
+        return NextResponse.json({ error: e }, { status: 500 });
     }
 }

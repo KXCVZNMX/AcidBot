@@ -1,4 +1,4 @@
-import { Output } from '@/app/types/maimai';
+import { Output } from '@/lib/types/maimai';
 import B50Cell from '@/app/components/maimaidx/B50Cell';
 import Image from 'next/image';
 

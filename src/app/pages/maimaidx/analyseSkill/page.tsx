@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import {useState} from "react";
-import {isJsonString} from "@/app/util/util";
+import { useState } from 'react';
+import { isJsonString } from '@/lib/util/util';
 
 export default function Page() {
     const [data, setData] = useState('');
@@ -16,10 +16,11 @@ export default function Page() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: data
+                body: data,
             });
 
-            if (!res.ok) throw Error(`Failed to fetch skill check: ${res.status}`);
+            if (!res.ok)
+                throw Error(`Failed to fetch skill check: ${res.status}`);
 
             setTags(await res.json());
 
@@ -29,7 +30,7 @@ export default function Page() {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     return (
         <>
@@ -50,5 +51,5 @@ export default function Page() {
             </div>
             <p>{tags}</p>
         </>
-    )
+    );
 }
