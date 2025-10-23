@@ -56,7 +56,6 @@ export default function Page() {
                         </button>
                     </h3>
 
-                    {/* content area now grows and gives height to children */}
                     <div
                         className={
                             'flex flex-row justify-center w-full gap-6 flex-1 p-4'
