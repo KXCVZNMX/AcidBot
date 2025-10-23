@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Output } from '@/app/types/maimai';
-import Image from 'next/image';
-import B50Cell from '@/app/components/maimaidx/B50Cell';
+import { Output } from '@/lib/types/maimai';
 import B50 from '@/app/components/maimaidx/B50';
+import { isJsonString } from '@/lib/util/util';
 
 export default function Page() {
     const [data, setData] = useState('');
@@ -19,6 +18,8 @@ export default function Page() {
 
     const getResults = async () => {
         try {
+            if (!isJsonString(data) || data.length === 0) return;
+
             const res = await fetch('/api/maimai/calculateRating', {
                 method: 'POST',
                 headers: {

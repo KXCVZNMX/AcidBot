@@ -77,6 +77,14 @@ export interface Output {
     playStat?: string;
 }
 
+// The format in the db
+export interface SongTagsDBEntry {
+    song_id: string;
+    sheet_type: string;
+    sheet_difficulty: string;
+    tag_id: number;
+}
+
 const RANK_SSS_PLUS: Readonly<Rank> = {
     title: 'SSS+',
     minA: 100.5,
@@ -129,3 +137,30 @@ export const RANK_DEFINITIONS: ReadonlyArray<Rank> = [
     { minA: 50.0, factor: 0.08, title: 'C' },
     { minA: 0.0, factor: 0.016, title: 'D' },
 ];
+
+export const PATTERN_TAG: Readonly<Record<number, string>> = {
+    3: "转圈",
+    4: "绝赞",
+    6: "扫键",
+    7: "散打",
+    8: "交互",
+    9: "反手",
+    10: "一笔画",
+    // 11: "水",
+    1: "错位",
+    17: "跳拍",
+    18: "纵连",
+    19: "爆发",
+    20: "拆弹",
+    // 13: "诈称",
+    23: "定拍",
+    24: "大位移",
+};
+
+export const EVAL_TAG: Readonly<Record<number, string>> = {
+    15: "键盘谱",
+    14: "星星谱",
+    21: "体力谱",
+    16: "底力谱",
+    22: "高物量",
+};
