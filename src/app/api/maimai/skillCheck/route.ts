@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
             const songTags = tags.find({
                 song_id: r.name,
                 sheet_difficulty: r.difficulty,
+                sheet_type: r.isDX ? 'dx' : 'std',
             });
 
             for await (const s of songTags) {
