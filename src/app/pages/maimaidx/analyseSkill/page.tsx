@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { isJsonString } from '@/lib/util/util';
+import {useState} from 'react';
+import {isJsonString} from '@/lib/util/util';
+import EvalRadar from "@/app/components/maimaidx/EvalRadar";
+import PatternRadar from "@/app/components/maimaidx/PatternRadar";
 
 export default function Page() {
     const [data, setData] = useState('');
@@ -34,7 +36,32 @@ export default function Page() {
 
     return (
         <>
+            <div className={`modal ${showModal ? 'modal-open' : ''}`}>
+                <div className={'modal-box w-[90vw] max-w-6xl h-[80vh] max-h-[90vh] overflow-auto'}>
+                    <h3
+                        className={
+                            'font-bold text-lg flex justify-between items-center'
+                        }
+                    >
+                        Skill Check
+                        <button
+                            className="btn btn-sm btn-circle btn-ghost"
+                            onClick={() => setShowModal(false)}
+                        >
+                            ✕
+                        </button>
+                    </h3>
 
+                    <div className={'flex flex-row justify-center w-full gap-6'}>
+                        <div className="w-1/2">
+                            <EvalRadar tags={tags}/>
+                        </div>
+                        <div className="w-1/2">
+                            <PatternRadar tags={tags}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div className={'flex flex-col justify-center'}>
                 <form
