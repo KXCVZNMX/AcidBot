@@ -39,7 +39,7 @@ export default function Page() {
             <div className={`modal ${showModal ? 'modal-open' : ''}`}>
                 <div
                     className={
-                        'modal-box w-[90vw] max-w-6xl h-[80vh] max-h-[90vh] overflow-hidden flex flex-col'
+                        'modal-box max-w-6xl w-full max-h-[90vh] overflow-y-auto overflow-x-hidden'
                     }
                 >
                     <h3
@@ -56,18 +56,15 @@ export default function Page() {
                         </button>
                     </h3>
 
-                    <div
-                        className={
-                            'flex flex-row justify-center w-full gap-6 flex-1 p-4'
-                        }
-                    >
-                        <div className="w-1/2 h-full">
-                            <EvalRadar tags={tags} />
+                    <div className={'flex flex-row flex-wrap justify-center w-full p-4'}>
+                        <div className="w-full md:w-1/2">
+                            <EvalRadar tags={tags}/>
                         </div>
-                        <div className="w-1/2 h-full">
-                            <PatternRadar tags={tags} />
+                        <div className="w-full md:w-1/2">
+                            <PatternRadar tags={tags}/>
                         </div>
                     </div>
+
                 </div>
             </div>
 
