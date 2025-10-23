@@ -23,8 +23,10 @@ export const mode = (arr: number[]): number => {
     return maxCount;
 };
 
-
-export const countArray = (arr: number[], tags: Readonly<Record<number, string>>) => {
+export const countArray = (
+    arr: number[],
+    tags: Readonly<Record<number, string>>
+) => {
     const counts = new Map();
     for (const num of arr) {
         counts.set(num, (counts.get(num) || 0) + 1);
@@ -36,4 +38,4 @@ export const countArray = (arr: number[], tags: Readonly<Record<number, string>>
     });
 
     return ret;
-}
+};

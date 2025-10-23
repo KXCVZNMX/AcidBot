@@ -1,10 +1,12 @@
-import {countArray, mode} from "@/lib/util/util";
-import {PATTERN_TAG} from "@/lib/types/maimai";
-import {Radar} from "react-chartjs-2";
-import React from "react";
+import { countArray, mode } from '@/lib/util/util';
+import { PATTERN_TAG } from '@/lib/types/maimai';
+import { Radar } from 'react-chartjs-2';
+import React from 'react';
 
-export default function PatternRadar({tags}: {tags: number[]}) {
-    const patterTags = tags.filter(t => ![15, 14, 21, 16, 22, 13, 11].includes(t));
+export default function PatternRadar({ tags }: { tags: number[] }) {
+    const patterTags = tags.filter(
+        (t) => ![15, 14, 21, 16, 22, 13, 11].includes(t)
+    );
     const patternTagsMostOccurrence = mode(patterTags);
 
     const countedArr = countArray(patterTags, PATTERN_TAG);
@@ -14,7 +16,7 @@ export default function PatternRadar({tags}: {tags: number[]}) {
     countedArr.entries().forEach(([type, val]) => {
         labels.push(type);
         results.push(val / patternTagsMostOccurrence);
-    })
+    });
 
     const data = {
         labels: labels,
@@ -65,5 +67,5 @@ export default function PatternRadar({tags}: {tags: number[]}) {
     // console.log(results);
     // console.log(evalTags);
 
-    return <Radar data={data} options={options}/>
+    return <Radar data={data} options={options} />;
 }

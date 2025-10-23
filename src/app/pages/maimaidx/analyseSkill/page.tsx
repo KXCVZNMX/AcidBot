@@ -1,9 +1,9 @@
 'use client';
 
-import {useState} from 'react';
-import {isJsonString} from '@/lib/util/util';
-import EvalRadar from "@/app/components/maimaidx/EvalRadar";
-import PatternRadar from "@/app/components/maimaidx/PatternRadar";
+import { useState } from 'react';
+import { isJsonString } from '@/lib/util/util';
+import EvalRadar from '@/app/components/maimaidx/EvalRadar';
+import PatternRadar from '@/app/components/maimaidx/PatternRadar';
 
 export default function Page() {
     const [data, setData] = useState('');
@@ -37,10 +37,14 @@ export default function Page() {
     return (
         <>
             <div className={`modal ${showModal ? 'modal-open' : ''}`}>
-                <div className={'modal-box w-[90vw] max-w-6xl h-[80vh] max-h-[90vh] overflow-auto'}>
+                <div
+                    className={
+                        'modal-box w-[90vw] max-w-6xl h-[80vh] max-h-[90vh] overflow-hidden flex flex-col'
+                    }
+                >
                     <h3
                         className={
-                            'font-bold text-lg flex justify-between items-center'
+                            'font-bold text-lg flex justify-between items-center p-4'
                         }
                     >
                         Skill Check
@@ -52,12 +56,17 @@ export default function Page() {
                         </button>
                     </h3>
 
-                    <div className={'flex flex-row justify-center w-full gap-6'}>
-                        <div className="w-1/2">
-                            <EvalRadar tags={tags}/>
+                    {/* content area now grows and gives height to children */}
+                    <div
+                        className={
+                            'flex flex-row justify-center w-full gap-6 flex-1 p-4'
+                        }
+                    >
+                        <div className="w-1/2 h-full">
+                            <EvalRadar tags={tags} />
                         </div>
-                        <div className="w-1/2">
-                            <PatternRadar tags={tags}/>
+                        <div className="w-1/2 h-full">
+                            <PatternRadar tags={tags} />
                         </div>
                     </div>
                 </div>

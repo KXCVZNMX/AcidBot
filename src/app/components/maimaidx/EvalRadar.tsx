@@ -19,11 +19,11 @@ ChartJS.register(
     Legend
 );
 
-import {countArray, mode} from "@/lib/util/util";
-import {EVAL_TAG} from "@/lib/types/maimai";
+import { countArray, mode } from '@/lib/util/util';
+import { EVAL_TAG } from '@/lib/types/maimai';
 
-export default function EvalRadar({tags}: {tags: number[]}) {
-    const evalTags = tags.filter(t => [15, 14, 21, 16, 22,].includes(t));
+export default function EvalRadar({ tags }: { tags: number[] }) {
+    const evalTags = tags.filter((t) => [15, 14, 21, 16, 22].includes(t));
     const evalTagsMostOccurrence = mode(evalTags);
 
     const countedArr = countArray(evalTags, EVAL_TAG);
@@ -33,7 +33,7 @@ export default function EvalRadar({tags}: {tags: number[]}) {
     countedArr.entries().forEach(([type, val]) => {
         labels.push(type);
         results.push(val / evalTagsMostOccurrence);
-    })
+    });
 
     const data = {
         labels: labels,
@@ -83,6 +83,6 @@ export default function EvalRadar({tags}: {tags: number[]}) {
 
     // console.log(results);
     // console.log(evalTags);
-    
-    return <Radar data={data} options={options}/>
+
+    return <Radar data={data} options={options} />;
 }
