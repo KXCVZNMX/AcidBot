@@ -56,15 +56,26 @@ export default function Page() {
                         </button>
                     </h3>
 
-                    <div className={'flex flex-row flex-wrap justify-center w-full p-4'}>
-                        <div className={'flex justify-center items-center w-full md:w-1/2 h-[50vh] max-h-[500px] min-h-[300px]'}>
-                            <EvalRadar tags={tags}/>
+                    <div
+                        className={
+                            'flex flex-row flex-wrap justify-center w-full p-4'
+                        }
+                    >
+                        <div
+                            className={
+                                'flex justify-center items-center w-full md:w-1/2 h-[50vh] max-h-[500px] min-h-[300px]'
+                            }
+                        >
+                            <EvalRadar tags={tags} />
                         </div>
-                        <div className={'flex justify-center items-center w-full md:w-1/2 h-[50vh] max-h-[500px] min-h-[300px]'}>
-                            <PatternRadar tags={tags}/>
+                        <div
+                            className={
+                                'flex justify-center items-center w-full md:w-1/2 h-[50vh] max-h-[500px] min-h-[300px]'
+                            }
+                        >
+                            <PatternRadar tags={tags} />
                         </div>
                     </div>
-
                 </div>
             </div>
 

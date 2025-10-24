@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         const tags = db.collection<SongTagsDBEntry>('tags');
 
         const query = {
-            $or: results.results.map(r => ({
+            $or: results.results.map((r) => ({
                 songName: r.name,
                 isDX: r.isDX,
                 sheetDifficulty: r.difficulty,
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
         const songTagsList = await tags.find(query).toArray();
 
-        const returnList = songTagsList.flatMap(st => st.tags);
+        const returnList = songTagsList.flatMap((st) => st.tags);
 
         return NextResponse.json(returnList);
     } catch (e) {
