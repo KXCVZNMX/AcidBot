@@ -9,7 +9,7 @@ on:
 
 jobs:
   get-dxr-tags:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
 
     steps:
       - name: Checkout scraper repository
@@ -20,28 +20,21 @@ jobs:
           token: ${{ secrets.PAT }}
           fetch-depth: 1
 
-      - name: Set up npm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.18.3'
-          run_install: false
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: 'pnpm'
-          cache-dependency-path: scraper/pnpm-lock.yaml
+          cache: 'npm'
+          cache-dependency-path: scraper/package-lock.json
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: npm ci
         working-directory: scraper
 
       - name: Build and run the scraper
         run: |
-          pnpm build
-          pnpm start
+          npm run build
+          npm start
         working-directory: scraper
         env: 
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          API_KEY: ${{ secrets.API_KEY }}
