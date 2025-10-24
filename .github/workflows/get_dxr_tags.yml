@@ -9,7 +9,7 @@ on:
 
 jobs:
   get-dxr-tags:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest  # Linux is faster than Windows for Node tasks
 
     steps:
       - name: Checkout scraper repository
