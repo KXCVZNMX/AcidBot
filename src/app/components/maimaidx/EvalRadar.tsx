@@ -73,6 +73,7 @@ export default function EvalRadar({ tags }: { tags: number[] }) {
                 },
                 grid: {
                     color: 'rgba(160, 160, 160)',
+                    circular: true,
                 },
                 angleLines: {
                     color: 'rgba(160, 160, 160)',
