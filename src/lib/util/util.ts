@@ -28,6 +28,7 @@ export const countArray = (
     tags: Readonly<Record<number, string>>
 ) => {
     const counts = new Map();
+    arr.sort((a, b) => a + b);
     for (const num of arr) {
         counts.set(num, (counts.get(num) || 0) + 1);
     }

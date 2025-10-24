@@ -79,10 +79,10 @@ export interface Output {
 
 // The format in the db
 export interface SongTagsDBEntry {
-    song_id: string;
-    sheet_type: string;
-    sheet_difficulty: string;
-    tag_id: number;
+    songName: string;
+    isDX: boolean;
+    sheetDifficulty: string;
+    tags: number[];
 }
 
 const RANK_SSS_PLUS: Readonly<Rank> = {

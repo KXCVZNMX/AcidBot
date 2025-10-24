@@ -16,23 +16,17 @@ export async function POST(req: NextRequest) {
         const db = client.db('SongTag');
         const tags = db.collection<SongTagsDBEntry>('tags');
 
-        let returnList: number[] = [];
+        const query = {
+            $or: results.results.map(r => ({
+                songName: r.name,
+                isDX: r.isDX,
+                sheetDifficulty: r.difficulty,
+            })),
+        };
 
-        // console.log(results.results)
+        const songTagsList = await tags.find(query).toArray();
 
-        for (const r of results.results) {
-            const songTags = tags.find({
-                song_id: r.name,
-                sheet_difficulty: r.difficulty,
-                sheet_type: r.isDX ? 'dx' : 'std',
-            });
-
-            for await (const s of songTags) {
-                returnList.push(s.tag_id);
-            }
-        }
-
-        // console.log(returnList);
+        const returnList = songTagsList.flatMap(st => st.tags);
 
         return NextResponse.json(returnList);
     } catch (e) {
