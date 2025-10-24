@@ -1,0 +1,47 @@
+name: Sync Tags
+run-name: Synchronise Tags 
+
+on:
+  schedule:
+    # runs 00:00 UTC+10 every Sunday
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+
+jobs:
+  get-dxr-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout scraper repository
+        uses: actions/checkout@v4
+        with:
+          repository: KXCVZNMX/dxrating_tag_scraper
+          path: scraper
+          token: ${{ secrets.PAT }}
+          fetch-depth: 1
+
+      - name: Set up npm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.18.3'
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
+          cache-dependency-path: scraper/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+        working-directory: scraper
+
+      - name: Build and run the scraper
+        run: |
+          pnpm build
+          pnpm start
+        working-directory: scraper
+        env: 
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          API_KEY: ${{ secrets.API_KEY }}
