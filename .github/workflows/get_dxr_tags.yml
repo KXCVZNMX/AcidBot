@@ -9,7 +9,7 @@ on:
 
 jobs:
   get-dxr-tags:
-    runs-on: ubuntu-latest  # Linux is faster than Windows for Node tasks
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout scraper repository
@@ -38,3 +38,4 @@ jobs:
         working-directory: scraper
         env: 
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          API_KEY: ${{ secrets.API_KEY }}
