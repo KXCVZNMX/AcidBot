@@ -49,7 +49,7 @@ export default function Page() {
                     >
                         Skill Check
                         <button
-                            className={"btn btn-sm btn-circle btn-ghost"}
+                            className={'btn btn-sm btn-circle btn-ghost'}
                             onClick={() => setShowModal(false)}
                         >
                             ✕

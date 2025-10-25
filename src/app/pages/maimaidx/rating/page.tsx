@@ -54,7 +54,7 @@ export default function Page() {
                     >
                         Results
                         <button
-                            className={"btn btn-sm btn-circle btn-ghost"}
+                            className={'btn btn-sm btn-circle btn-ghost'}
                             onClick={() => setShowModal(false)}
                         >
                             ✕

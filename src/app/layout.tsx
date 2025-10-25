@@ -2,7 +2,7 @@
 
 import './globals.css';
 import React from 'react';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import NavBar from '@/app/components/Navbar';
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
     return (
         <html lang={'en'}>
             <body>
-                <SpeedInsights/>
+                <SpeedInsights />
                 <NavBar />
                 {children}
             </body>
