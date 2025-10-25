@@ -9,7 +9,7 @@ import { Menu } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const sections = [
         {
