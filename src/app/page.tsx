@@ -29,7 +29,7 @@ export default function Home() {
                             <p className={'pb-3'}>
                                 Log into your <a href={'https://maimaidx-eng.com/'} className={'text-blue-300 underline'}>maimai DX Net</a> normally
                             </p>
-                            <div className={'flex sm:flex-col gap-5 object-contain'}>
+                            <div className={'flex flex-col sm:flex-row gap-5 object-contain'}>
                                 <Image src={loginP} alt={'maimai dx net login page'} height={891/2} width={792/2}/>
                                 <Image src={landingP} alt={'maimai dx net landing page'} height={450} width={240} />
                             </div>
