@@ -5,7 +5,7 @@ import Image from 'next/image';
 import AcidP from '../../public/home/acid.png';
 import loginP from '../../public/home/mdxn_login.png'
 import landingP from '../../public/home/mdxn_landing.png';
-import { Menu } from 'lucide-react';
+import { Menu, LucideSettings2, MessageCircleQuestionIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -19,8 +19,9 @@ export default function Home() {
                 { name: 'Login', href: '#login' },
                 { name: 'Setup Bookmarklet', href: '#bookmarklet' },
             ],
+            icon: <LucideSettings2 className={'flex justify-center'}/>,
         },
-        { name: 'How to Use', href: '#how-to-use' },
+        { name: 'How to Use', href: '#how-to-use', icon: <MessageCircleQuestionIcon /> },
     ];
 
     return (
@@ -43,15 +44,15 @@ export default function Home() {
                         className={`flex-1 overflow-y-auto ${open ? 'px-4' : 'px-0'}`}
                     >
                         <ul className={'space-y-3 mt-4'}>
-                            {sections.map(({ name, href, sub }) => (
+                            {sections.map(({ name, href, sub, icon }) => (
                                 <li key={name}>
                                     <Link
                                         href={href}
                                         className={
-                                            'block cursor-pointer rounded-md hover:bg-gray-800 p-2 text-sm'
+                                            `block cursor-pointer rounded-md hover:bg-gray-800 ${open ? 'p-2' : 'p-4'} text-sm`
                                         }
                                     >
-                                        {open ? name : name[0]}
+                                        {open ? name : icon}
                                     </Link>
 
                                     {sub && open && (
