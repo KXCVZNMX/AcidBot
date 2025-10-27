@@ -108,8 +108,8 @@ export default function Home() {
                             <Image
                                 src={bookmarkPCP1P}
                                 alt={'bookmark on pc 1'}
-                                width={2100 / 4}
-                                height={19180 / 4}
+                                width={2200 / 4}
+                                height={1980 / 4}
                             />
                             <Image
                                 src={bookmarkPCP2P}
@@ -129,7 +129,7 @@ export default function Home() {
                             <Image
                                 src={bookmarkP1P}
                                 alt={'bookmark on phone 1'}
-                                width={1400 / 4}
+                                width={1500 / 4}
                                 height={1980 / 4}
                             />
                             <Image
