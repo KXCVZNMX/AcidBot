@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import AcidP from '../../public/home/acid.png';
 import loginP from '../../public/home/mdxn_login.png';
 import landingP from '../../public/home/mdxn_landing.png';
 
