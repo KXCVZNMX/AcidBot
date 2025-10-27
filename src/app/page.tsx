@@ -3,8 +3,25 @@
 import Image from 'next/image';
 import loginP from '../../public/home/mdxn_login.png';
 import landingP from '../../public/home/mdxn_landing.png';
+import bookmarkP from '../../public/home/bookmark_page.png';
+import bookmarkP1P from '../../public/home/bookmark_phone1.jpg';
+import bookmarkP2P from '../../public/home/bookmark_phone2.jpg';
+import bookmarkPCP1P from '../../public/home/bookmark_edit_pc1.png';
+import bookmarkPCP2P from '../../public/home/bookmark_edit_pc2.png';
 
 export default function Home() {
+    const writeBookmarklet = async () => {
+        const res = await fetch('/api/maimai/getBookmarklet', {
+            method: 'GET',
+        });
+        const bookmarklet: { bookmarklet: string } = await res.json();
+        try {
+            await navigator.clipboard.writeText(bookmarklet.bookmarklet);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
         <>
             <div
@@ -58,6 +75,48 @@ export default function Home() {
                         <h1 className={'text-2xl font-bold mb-4'}>
                             Setup Bookmarklet
                         </h1>
+                        <button
+                            onClick={writeBookmarklet}
+                            className={'btn hover:bg-gray-800'}
+                        >
+                            Copy to clipboard
+                        </button>
+                        <p className={'pt-2'}>
+                            Bookmark this page, and go to edit the URL on your
+                            page, to the copied function.
+                        </p>
+
+                        <p className={'font-bold text-lg pt-2'}>
+                            PC:
+                        </p>
+
+                        <div
+                            className={
+                                'flex flex-col gap-5 object-contain p-2'
+                            }
+                        >
+                            <Image
+                                src={bookmarkP}
+                                alt={'how to bookmark'}
+                                width={3018 / 4}
+                                height={1814 / 4}
+                                className={'shadow-2xl'}
+                            />
+                        </div>
+
+                        <div className={'flex flex-col sm:flex-row gap-5 object-contain p-2'}>
+                            <Image src={bookmarkPCP1P} alt={'bookmark on pc 1'} width={2100 / 4} height={19180 / 4}/>
+                            <Image src={bookmarkPCP2P} alt={'bookmark on pc 2'} width={1179 / 4} height={1980 / 4}/>
+                        </div>
+
+                        <p className={'font-bold text-lg'}>
+                            Mobile:
+                        </p>
+
+                        <div className={'flex flex-col sm:flex-row gap-5 object-contain p-2'}>
+                            <Image src={bookmarkP1P} alt={'bookmark on phone 1'} width={1400 / 4} height={1980 / 4}/>
+                            <Image src={bookmarkP2P} alt={'bookmark on phone 2'} width={1179 / 4} height={1980 / 4}/>
+                        </div>
                     </section>
                 </section>
                 <section
