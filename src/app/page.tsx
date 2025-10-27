@@ -86,14 +86,10 @@ export default function Home() {
                             page, to the copied function.
                         </p>
 
-                        <p className={'font-bold text-lg pt-2'}>
-                            PC:
-                        </p>
+                        <p className={'font-bold text-lg pt-2'}>PC:</p>
 
                         <div
-                            className={
-                                'flex flex-col gap-5 object-contain p-2'
-                            }
+                            className={'flex flex-col gap-5 object-contain p-2'}
                         >
                             <Image
                                 src={bookmarkP}
@@ -104,18 +100,44 @@ export default function Home() {
                             />
                         </div>
 
-                        <div className={'flex flex-col sm:flex-row gap-5 object-contain p-2'}>
-                            <Image src={bookmarkPCP1P} alt={'bookmark on pc 1'} width={2100 / 4} height={19180 / 4}/>
-                            <Image src={bookmarkPCP2P} alt={'bookmark on pc 2'} width={1179 / 4} height={1980 / 4}/>
+                        <div
+                            className={
+                                'flex flex-col sm:flex-row gap-5 object-contain p-2'
+                            }
+                        >
+                            <Image
+                                src={bookmarkPCP1P}
+                                alt={'bookmark on pc 1'}
+                                width={2100 / 4}
+                                height={19180 / 4}
+                            />
+                            <Image
+                                src={bookmarkPCP2P}
+                                alt={'bookmark on pc 2'}
+                                width={1179 / 4}
+                                height={1980 / 4}
+                            />
                         </div>
 
-                        <p className={'font-bold text-lg'}>
-                            Mobile:
-                        </p>
+                        <p className={'font-bold text-lg'}>Mobile:</p>
 
-                        <div className={'flex flex-col sm:flex-row gap-5 object-contain p-2'}>
-                            <Image src={bookmarkP1P} alt={'bookmark on phone 1'} width={1400 / 4} height={1980 / 4}/>
-                            <Image src={bookmarkP2P} alt={'bookmark on phone 2'} width={1179 / 4} height={1980 / 4}/>
+                        <div
+                            className={
+                                'flex flex-col sm:flex-row gap-5 object-contain p-2'
+                            }
+                        >
+                            <Image
+                                src={bookmarkP1P}
+                                alt={'bookmark on phone 1'}
+                                width={1400 / 4}
+                                height={1980 / 4}
+                            />
+                            <Image
+                                src={bookmarkP2P}
+                                alt={'bookmark on phone 2'}
+                                width={1179 / 4}
+                                height={1980 / 4}
+                            />
                         </div>
                     </section>
                 </section>
