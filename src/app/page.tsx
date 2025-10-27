@@ -29,12 +29,12 @@ export default function Home() {
             >
                 <section
                     id={'setup'}
-                    className={'p-10 border-b border-gray-800'}
+                    className={'p-10 border-b border-gray-900'}
                 >
                     <h1 className={'text-3xl font-bold mb-4'}>Setup</h1>
                     <section
                         id={'login'}
-                        className={'p-10 pt-2 border-b border-gray-800'}
+                        className={'p-10 pt-2 border-b border-gray-900'}
                     >
                         <h1 className={'text-3xl font-bold mb-4'}>Login</h1>
                         <div className={'text-md'}>
@@ -70,7 +70,7 @@ export default function Home() {
                     </section>
                     <section
                         id={'bookmarklet'}
-                        className={'p-10 border-b border-gray-800'}
+                        className={'p-10 border-b border-gray-900'}
                     >
                         <h1 className={'text-2xl font-bold mb-4'}>
                             Setup Bookmarklet
@@ -143,7 +143,7 @@ export default function Home() {
                 </section>
                 <section
                     id={'how-to-use'}
-                    className={'p-10 border-b border-gray-800'}
+                    className={'p-10 border-b border-gray-900'}
                 >
                     <h1 className={'text-2xl font-bold mb-4'}>How to Use</h1>
                 </section>
