@@ -25,7 +25,7 @@ export default function NavBar() {
         <div ref={navRef} className={'navbar bg-base-50 shadow-lg'}>
             <div className={'flex-1'}>
                 <a className={'btn btn-ghost text-xl'} href={'/'}>
-                    b50Bot
+                    AcidBot
                 </a>
 
                 <ul className={'menu menu-horizontal px-1'}>

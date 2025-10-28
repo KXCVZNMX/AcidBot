@@ -49,7 +49,7 @@ export default function Page() {
                     >
                         Skill Check
                         <button
-                            className="btn btn-sm btn-circle btn-ghost"
+                            className={'btn btn-sm btn-circle btn-ghost'}
                             onClick={() => setShowModal(false)}
                         >
                             ✕
@@ -85,7 +85,7 @@ export default function Page() {
                     onSubmit={(e) => e.preventDefault()}
                 >
                     <textarea
-                        className={'bg-gray-950 w-96 h-96'}
+                        className={'bg-gray-950 w-96 h-96 opacity-70'}
                         value={data}
                         onChange={(e) => setData(e.target.value)}
                     />

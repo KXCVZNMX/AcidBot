@@ -2,3 +2,4 @@
 build
 coverage
 README.md
+src/lib/util/bookmarklet.js
