@@ -131,7 +131,7 @@ export default function Home() {
                         automatically copy the Best 50 results onto your clipboard.
                     </p>
                     <p>
-                        Than, paste the results into the text box of any page, and you would get your results.
+                        Then, paste the results into the text box of any page, and you would get your results.
                     </p>
                     <Image src={howToUseP} alt={'how to use'} width={3024 / 4} height={1808 / 4} />
                 </section>
