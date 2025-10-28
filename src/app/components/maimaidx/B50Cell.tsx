@@ -81,7 +81,7 @@ export default function B50Cell({ output }: { output: Output }) {
     return (
         <>
             <div
-                className={`text-white relative shadow-lg flex flex-col gap-3 w-full`}
+                className={`text-white relative shadow-lg flex flex-col gap-3 flex-none w-44 h-32`}
             >
                 <Image
                     src={`https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover/${output.imageName}`}
