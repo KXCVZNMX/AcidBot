@@ -3,11 +3,9 @@
 import Image from 'next/image';
 import loginP from '../../public/home/mdxn_login.png';
 import landingP from '../../public/home/mdxn_landing.png';
-import bookmarkP from '../../public/home/bookmark_page.png';
+import bookmarkPCP from '../../public/home/bookmark_pc.png';
 import bookmarkP1P from '../../public/home/bookmark_phone1.jpg';
 import bookmarkP2P from '../../public/home/bookmark_phone2.jpg';
-import bookmarkPCP1P from '../../public/home/bookmark_edit_pc1.png';
-import bookmarkPCP2P from '../../public/home/bookmark_edit_pc2.png';
 
 export default function Home() {
     const writeBookmarklet = async () => {
@@ -82,8 +80,8 @@ export default function Home() {
                             Copy to clipboard
                         </button>
                         <p className={'pt-2'}>
-                            Bookmark this page, and go to edit the URL on your
-                            page, to the copied function.
+                            Bookmark this page → Copy to clipboard → Paste the
+                            copied bookmarklet into the URL field → Save
                         </p>
 
                         <p className={'font-bold text-lg pt-2'}>PC:</p>
@@ -92,30 +90,11 @@ export default function Home() {
                             className={'flex flex-col gap-5 object-contain p-2'}
                         >
                             <Image
-                                src={bookmarkP}
+                                src={bookmarkPCP}
                                 alt={'how to bookmark'}
-                                width={3018 / 4}
-                                height={1814 / 4}
+                                width={2100 / 4}
+                                height={1500 / 4}
                                 className={'shadow-2xl'}
-                            />
-                        </div>
-
-                        <div
-                            className={
-                                'flex flex-col sm:flex-row gap-5 object-contain p-2'
-                            }
-                        >
-                            <Image
-                                src={bookmarkPCP1P}
-                                alt={'bookmark on pc 1'}
-                                width={2200 / 4}
-                                height={1980 / 4}
-                            />
-                            <Image
-                                src={bookmarkPCP2P}
-                                alt={'bookmark on pc 2'}
-                                width={1179 / 4}
-                                height={1980 / 4}
                             />
                         </div>
 
