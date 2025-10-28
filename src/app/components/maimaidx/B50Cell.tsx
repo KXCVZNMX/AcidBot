@@ -32,7 +32,7 @@ export default function B50Cell({ output }: { output: Output }) {
         } else if (a > 99.0 && a < 99.5) {
             return 'https://maimaidx-eng.com/maimai-mobile/img/music_icon_ss.png?ver=1.50';
         } else if (a > 98.0 && a < 99.0) {
-            return 'https://maimaidx-eng.com/maimai-mobile/img/music_icon_s+.png?ver=1.50';
+            return 'https://maimaidx-eng.com/maimai-mobile/img/music_icon_sp.png?ver=1.50';
         } else if (a > 97.0 && a < 98.0) {
             return 'https://maimaidx-eng.com/maimai-mobile/img/music_icon_s.png?ver=1.50';
         } else if (a > 94.0 && a < 97.0) {
@@ -143,7 +143,7 @@ export default function B50Cell({ output }: { output: Output }) {
                         <div className={'flex flex-row'}>
                             {output.playStat ? (
                                 <Image
-                                    src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_${output.playStat}.png?ver=1.50`}
+                                    src={`https://maimaidx-eng.com/maimai-mobile/img/music_icon_${output.playStat.replace('+', 'p')}.png?ver=1.50`}
                                     alt={'play stat'}
                                     width={30}
                                     height={30}
