@@ -76,7 +76,7 @@ export default function Home() {
                         </h1>
                         <button
                             onClick={writeBookmarklet}
-                            className={'btn hover:bg-gray-800'}
+                            className={'btn  bg-gray-700 hover:bg-gray-600 shadow-lg'}
                         >
                             Copy to clipboard
                         </button>
