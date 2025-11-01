@@ -6,7 +6,10 @@ export default function B50({ outputs }: { outputs: Output[] }) {
     return (
         <>
             <div className={'max-w-screen-lg mx-auto'}>
-                <div className={'grid grid-cols-5 gap-1'} style={{ gridTemplateColumns: 'repeat(5, 180px)' }}>
+                <div
+                    className={'grid grid-cols-5 gap-1'}
+                    style={{ gridTemplateColumns: 'repeat(5, 180px)' }}
+                >
                     {outputs.map((o) => (
                         <B50Cell output={o} key={o.title} />
                     ))}
