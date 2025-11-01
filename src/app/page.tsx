@@ -76,7 +76,9 @@ export default function Home() {
                         </h1>
                         <button
                             onClick={writeBookmarklet}
-                            className={'btn  bg-gray-700 hover:bg-gray-600 shadow-lg'}
+                            className={
+                                'btn  bg-gray-700 hover:bg-gray-600 shadow-lg'
+                            }
                         >
                             Copy to clipboard
                         </button>
@@ -127,13 +129,20 @@ export default function Home() {
                 >
                     <h1 className={'text-2xl font-bold mb-4'}>How to Use</h1>
                     <p>
-                        Goto your maimai DX Net homepage, and click the bookmark. The bookmark will
-                        automatically copy the Best 50 results onto your clipboard.
+                        Goto your maimai DX Net homepage, and click the
+                        bookmark. The bookmark will automatically copy the Best
+                        50 results onto your clipboard.
                     </p>
                     <p>
-                        Then, paste the results into the text box of any page, and you would get your results.
+                        Then, paste the results into the text box of any page,
+                        and you would get your results.
                     </p>
-                    <Image src={howToUseP} alt={'how to use'} width={3024 / 4} height={1808 / 4} />
+                    <Image
+                        src={howToUseP}
+                        alt={'how to use'}
+                        width={3024 / 4}
+                        height={1808 / 4}
+                    />
                 </section>
             </div>
         </>
