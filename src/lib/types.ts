@@ -1,4 +1,4 @@
 export interface MaimaiFetchData {
-    ssid: number;
+    clal: string;
     redirect: string;
 }
