@@ -33,7 +33,37 @@ export async function POST(req: NextRequest) {
 
         await page.goto(redirect, { waitUntil: 'domcontentloaded' });
 
-        return NextResponse.json({});
+        const html = await page.content();
+
+        if (html.includes('ERROR')) {
+            throw new Error('This page either returned a 100001 or 200002 error');
+        }
+
+        const $ = cheerio.load(html);
+        const results: MaimaiSongScore[] = [];
+
+        $("div[class*='music_'][class*='_score_back']").each((_, el) => {
+            const root = $(el);
+
+            const name = root.find(".music_name_block").text().trim();
+
+            const scoreBlocks = root.find(".music_score_block");
+
+            const score = scoreBlocks.eq(0).text().trim();
+            const dx = scoreBlocks.eq(1).text().trim();
+
+            if (score !== '' && dx !== '') {
+                results.push({
+                    name,
+                    score,
+                    dx,
+                });
+            }
+        });
+
+        console.log(results);
+
+        return NextResponse.json(results);
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: (error as Error).message }, { status: 500 });
