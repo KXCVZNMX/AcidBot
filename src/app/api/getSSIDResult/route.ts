@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MaimaiFetchData, MaimaiSongScore } from "@/lib/types";
+import {COMBO_RULES, MaimaiFetchData, MaimaiSongScore, RANK_RULES, SYNC_RULES} from "@/lib/types";
 import { chromium } from "playwright";
 import * as cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
+    const matchRule = (src: string, rules: [string, string][]): string | null => {
+        for (const [needle, value] of rules) {
+            if (src.includes(needle)) return value;
+        }
+        return null;
+    }
+
     const { clal, redirect }: MaimaiFetchData = await req.json();
 
     const browser = await chromium.launch({ headless: true });
@@ -46,6 +53,20 @@ export async function POST(req: NextRequest) {
         $("div[class*='music_'][class*='_score_back']").each((_, el) => {
             const root = $(el);
 
+            const icons = root.find("img[src*='music_icon_']");
+
+            let syncState: string | null = null;
+            let comboState: string | null = null;
+            let rankState: string | null = null;
+
+            icons.each((_, img) => {
+                const src = $(img).attr("src") ?? "";
+
+                syncState  ||= matchRule(src, SYNC_RULES);
+                comboState ||= matchRule(src, COMBO_RULES);
+                rankState  ||= matchRule(src, RANK_RULES);
+            });
+
             const name = root.find(".music_name_block").text().trim();
 
             const scoreBlocks = root.find(".music_score_block");
@@ -53,11 +74,16 @@ export async function POST(req: NextRequest) {
             const score = scoreBlocks.eq(0).text().trim();
             const dx = scoreBlocks.eq(1).text().trim();
 
+
+
             if (score !== '' && dx !== '') {
                 results.push({
                     name,
                     score,
                     dx,
+                    sync: syncState,
+                    rank: rankState,
+                    combo: comboState,
                 });
             }
         });
