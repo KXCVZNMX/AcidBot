@@ -13,11 +13,15 @@ export async function POST(req: NextRequest) {
 
     const { clal, redirect }: MaimaiFetchData = await req.json();
 
+    const userAgent =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36";
+
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
         extraHTTPHeaders: {
             'Referer': 'https://maimaidx-eng.com/',
-        }
+        },
+        userAgent
     });
     await context.addCookies([
         {
