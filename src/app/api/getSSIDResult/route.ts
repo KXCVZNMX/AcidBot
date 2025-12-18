@@ -5,7 +5,7 @@ import {chromium} from "playwright";
 export async function POST(req: NextRequest) {
     const { clal, redirect }: MaimaiFetchData = await req.json();
 
-    const browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
         extraHTTPHeaders: {
             'Referer': 'https://maimaidx-eng.com/',
