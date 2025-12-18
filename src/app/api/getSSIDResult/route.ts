@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MaimaiFetchData, MaimaiSongScore } from "@/lib/types";
-import {chromium} from "playwright";
+import { chromium } from "playwright";
+import * as cheerio from "cheerio";
 
 export async function POST(req: NextRequest) {
     const { clal, redirect }: MaimaiFetchData = await req.json();
