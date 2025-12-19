@@ -36,6 +36,8 @@ export default function LvScore() {
         }
     };
 
+    songs.sort((a, b) => parseFloat(b.score.replace('%', '')) - parseFloat(a.score.replace('%', '')))
+
     return (
         <>
             <div className={'flex justify-center'}>
