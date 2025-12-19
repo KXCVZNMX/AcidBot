@@ -1,12 +1,21 @@
 'use client';
 
 import { signIn } from "@/auth";
-import {loginGithub} from "@/app/components/singin";
+import {loginGithub, loginGoogle} from "@/app/components/singin";
 
-export default function SignIn() {
+export function LoginGithub() {
     return (
         <form action={loginGithub}>
-            <button type={'submit'} className={'btn'}>Login</button>
+            <button type={'submit'} className={'btn w-full'}>Login with Github</button>
+        </form>
+    )
+}
+
+// Doesn't work yet
+export function LoginGoogle() {
+    return (
+        <form action={loginGoogle}>
+            <button type={'submit'} className={'btn w-full'}>Login with Google</button>
         </form>
     )
 }
