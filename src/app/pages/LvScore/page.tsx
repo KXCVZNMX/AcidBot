@@ -40,8 +40,8 @@ export default function LvScore() {
 
     return (
         <>
-            <div className={'flex justify-center'}>
-                <div className={'flex flex-col justify-center shadow-lg'}>
+            <div className={'flex flex-col justify-center'}>
+                <div className={'flex flex-col justify-center shadow-lg items-center'}>
                     <p className={'p-3'}>Enter your clal (temp, use alternate method after implementing users)</p>
                     <input
                         className={'bg-gray-400 rounded-md text-center text-gray-950'}
