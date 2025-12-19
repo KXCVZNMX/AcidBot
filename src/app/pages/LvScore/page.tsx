@@ -16,7 +16,7 @@ export default function LvScore() {
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
             };
 
-            const res = await fetch('/api/getSSIDResult', {
+            const res = await fetch('/api/getLevel', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
