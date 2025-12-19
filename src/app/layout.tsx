@@ -3,7 +3,7 @@
 import './globals.css';
 import React from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import Navbar from "@/app/components/Navbar";
+import Navbar from '@/app/components/Navbar';
 
 export default function RootLayout({
     children,

@@ -25,16 +25,16 @@ export const MaimaiLevelMap: Readonly<Record<number, string>> = {
 };
 
 export const SYNC_RULES: [string, string][] = [
-    ["music_icon_fdxp", "FDX+"],
-    ["music_icon_fdx",  "FDX"],
-    ["music_icon_fsp",  "FS+"],
-    ["music_icon_fs",   "FS"],
-    ["music_icon_sync", "SYNC"],
+    ['music_icon_fdxp', 'FDX+'],
+    ['music_icon_fdx', 'FDX'],
+    ['music_icon_fsp', 'FS+'],
+    ['music_icon_fs', 'FS'],
+    ['music_icon_sync', 'SYNC'],
 ];
 
 export const COMBO_RULES: [string, string][] = [
-    ["music_icon_app", "AP+"],
-    ["music_icon_ap",  "AP"],
-    ["music_icon_fcp", "FC+"],
-    ["music_icon_fc",  "FC"],
+    ['music_icon_app', 'AP+'],
+    ['music_icon_ap', 'AP'],
+    ['music_icon_fcp', 'FC+'],
+    ['music_icon_fc', 'FC'],
 ];

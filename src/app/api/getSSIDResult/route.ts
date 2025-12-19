@@ -1,16 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
-import {MaimaiFetchData, MaimaiSongScore} from "@/lib/types";
-import {COMBO_RULES, SYNC_RULES} from '@/lib/consts'
-import { chromium } from "playwright";
-import * as cheerio from "cheerio";
+import { NextRequest, NextResponse } from 'next/server';
+import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
+import { COMBO_RULES, SYNC_RULES } from '@/lib/consts';
+import { chromium } from 'playwright';
+import * as cheerio from 'cheerio';
 
 export async function POST(req: NextRequest) {
-    const matchRule = (src: string, rules: [string, string][]): string | null => {
+    const matchRule = (
+        src: string,
+        rules: [string, string][]
+    ): string | null => {
         for (const [needle, value] of rules) {
             if (src.includes(needle)) return value;
         }
         return null;
-    }
+    };
 
     const determineRank = (achievement: string) => {
         const a = parseFloat(achievement.replace('%', ''));
@@ -48,14 +51,14 @@ export async function POST(req: NextRequest) {
     const { clal, redirect }: MaimaiFetchData = await req.json();
 
     const userAgent =
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36";
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
 
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
         extraHTTPHeaders: {
-            'Referer': 'https://maimaidx-eng.com/',
+            Referer: 'https://maimaidx-eng.com/',
         },
-        userAgent
+        userAgent,
     });
     await context.addCookies([
         {
@@ -65,24 +68,26 @@ export async function POST(req: NextRequest) {
             httpOnly: true,
             sameSite: 'Lax',
             secure: true,
-        }
-    ])
+        },
+    ]);
     const page = await context.newPage();
 
     try {
         await page.goto(
             'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
-            'site_id=maimaidxex&' +
-            `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
-            'back_url=https://maimai.sega.com/'
-        )
+                'site_id=maimaidxex&' +
+                `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
+                'back_url=https://maimai.sega.com/'
+        );
 
         await page.goto(redirect, { waitUntil: 'domcontentloaded' });
 
         const html = await page.content();
 
         if (html.includes('ERROR')) {
-            throw new Error('This page either returned a 100001 or 200002 or 200004 error');
+            throw new Error(
+                'This page either returned a 100001 or 200002 or 200004 error'
+            );
         }
 
         const $ = cheerio.load(html);
@@ -97,20 +102,18 @@ export async function POST(req: NextRequest) {
             let comboState: string | null = null;
 
             icons.each((_, img) => {
-                const src = $(img).attr("src") ?? "";
+                const src = $(img).attr('src') ?? '';
 
-                syncState  ||= matchRule(src, SYNC_RULES);
+                syncState ||= matchRule(src, SYNC_RULES);
                 comboState ||= matchRule(src, COMBO_RULES);
             });
 
-            const name = root.find(".music_name_block").text().trim();
+            const name = root.find('.music_name_block').text().trim();
 
-            const scoreBlocks = root.find(".music_score_block");
+            const scoreBlocks = root.find('.music_score_block');
 
             const score = scoreBlocks.eq(0).text().trim();
             const dx = scoreBlocks.eq(1).text().trim();
-
-
 
             if (score !== '' && dx !== '') {
                 results.push({
@@ -129,6 +132,9 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(results);
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+        return NextResponse.json(
+            { error: (error as Error).message },
+            { status: 500 }
+        );
     }
 }
