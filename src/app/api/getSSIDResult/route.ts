@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import {COMBO_RULES, MaimaiFetchData, MaimaiSongScore, RANK_RULES, SYNC_RULES} from "@/lib/types";
+import {MaimaiFetchData, MaimaiSongScore} from "@/lib/types";
+import {COMBO_RULES , RANK_RULES, SYNC_RULES} from '@/lib/consts'
 import { chromium } from "playwright";
 import * as cheerio from "cheerio";
 
@@ -49,6 +50,10 @@ export async function POST(req: NextRequest) {
 
         if (html.includes('ERROR')) {
             throw new Error('This page either returned a 100001 or 200002 error');
+        }
+
+        if (html.includes('login')) {
+            throw new Error('The clal token had expired');
         }
 
         const $ = cheerio.load(html);
