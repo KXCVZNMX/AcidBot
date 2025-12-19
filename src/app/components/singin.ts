@@ -2,6 +2,10 @@
 
 import {signIn} from "@/auth";
 
-export const singInFn = async () => {
+export const loginGithub = async () => {
     await signIn("github")
+}
+
+export const loginGoogle = async () => {
+    await signIn("google")
 }
