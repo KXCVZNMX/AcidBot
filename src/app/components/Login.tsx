@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from "@/auth";
-import {loginGithub, loginGoogle} from "@/app/components/singin";
+import {loginGithub, loginGoogle} from "@/app/components/loginHelper";
 
 export function LoginGithub() {
     return (

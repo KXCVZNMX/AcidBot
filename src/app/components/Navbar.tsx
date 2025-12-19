@@ -1,6 +1,6 @@
 'use client';
 
-import {LoginGithub, LoginGoogle} from "@/app/components/SignIn";
+import {LoginGithub, LoginGoogle} from "@/app/components/Login";
 import {useState} from "react";
 
 export default function Navbar() {
