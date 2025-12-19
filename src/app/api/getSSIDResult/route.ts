@@ -52,10 +52,6 @@ export async function POST(req: NextRequest) {
             throw new Error('This page either returned a 100001 or 200002 error');
         }
 
-        if (html.includes('login')) {
-            throw new Error('The clal token had expired');
-        }
-
         const $ = cheerio.load(html);
         const results: MaimaiSongScore[] = [];
 
