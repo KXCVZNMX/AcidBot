@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { COMBO_RULES, SYNC_RULES } from '@/lib/consts';
-import { chromium } from 'playwright';
 import * as cheerio from 'cheerio';
+import fetchCookie from "fetch-cookie";
 
 export async function POST(req: NextRequest) {
     const matchRule = (
@@ -48,41 +48,58 @@ export async function POST(req: NextRequest) {
         }
     };
 
-    const { clal, redirect }: MaimaiFetchData = await req.json();
-
-    const userAgent =
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
-
-    const browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({
-        extraHTTPHeaders: {
-            Referer: 'https://maimaidx-eng.com/',
-        },
-        userAgent,
-    });
-    await context.addCookies([
-        {
-            name: 'clal',
-            value: clal,
-            url: 'https://lng-tgk-aime-gw.am-all.net',
-            httpOnly: true,
-            sameSite: 'Lax',
-            secure: true,
-        },
-    ]);
-    const page = await context.newPage();
-
     try {
-        await page.goto(
-            'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
-                'site_id=maimaidxex&' +
-                `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
-                'back_url=https://maimai.sega.com/'
+        const { clal, redirect }: MaimaiFetchData = await req.json();
+
+        const jar = new fetchCookie.toughCookie.CookieJar();
+        await jar.setCookie(
+            `clal=${clal}; Domain=lng-tgk-aime-gw.am-all.net; Path=/; Secure; HttpOnly`,
+            "https://lng-tgk-aime-gw.am-all.net/"
         );
+        const fetchWithCookie = fetchCookie(fetch, jar)
 
-        await page.goto(redirect, { waitUntil: 'domcontentloaded' });
+        const userAgent =
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
 
-        const html = await page.content();
+        const res = await fetchWithCookie(
+            'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
+            'site_id=maimaidxex&' +
+            `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
+            'back_url=https://maimai.sega.com/',
+            {
+                method: 'GET',
+                redirect: 'manual',
+                headers: {
+                    'User-Agent': userAgent,
+                }
+            }
+        )
+
+        if (res.status !== 302) {
+            throw new Error('The link did not return a redirect');
+        }
+
+        let next = res.headers.get('location');
+
+        if (!next) {
+            throw new Error('The Link did not return a valid redirect');
+        }
+
+        await fetchWithCookie(next, {
+            method: 'GET',
+            headers: {
+                'User-Agent': userAgent,
+            }
+        })
+
+        const resultsRes =  await fetchWithCookie(redirect, {
+            method: 'GET',
+            headers: {
+                'User-Agent': userAgent,
+            }
+        })
+
+        const html = await resultsRes.text();
 
         if (html.includes('ERROR')) {
             throw new Error(
