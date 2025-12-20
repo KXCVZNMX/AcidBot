@@ -11,3 +11,9 @@ export interface MaimaiSongScore {
     combo: string | null;
     rank: string | null;
 }
+
+export interface UserInfo {
+    username: string;
+    email: string;
+    clal?: string;
+}
