@@ -1,18 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
+import {useSession} from "next-auth/react";
 
 export default function LvScore() {
-    const [clal, setClal] = useState('');
+    const {data: session, status} = useSession();
+
     const [level, setLevel] = useState('');
     const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
+    const [showClalModal, setShowClalModal] = useState(true);
+    const [clal, setClal] = useState('');
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (status === 'authenticated' && session?.user?.clal === '0') {
+            setShowClalModal(true);
+        }
+    }, [status, session]);
+
+    if (status === 'unauthenticated') {
+        return (
+            <h3 className={'text-center p-5 text-lg'}>
+                Please log in first.
+            </h3>
+        )
+    }
 
     const fetchResultWithClal = async () => {
         try {
+            if (status !== 'authenticated') {
+                throw new Error('Please log in first');
+            }
+
+            if (!session || !session!.user) {
+                throw new Error('User session is missing');
+            }
+
+            if (session!.user!.clal!.length !== 64) {
+                throw new Error('The length of clal has to be 64');
+            }
+
             const config: MaimaiFetchData = {
-                clal: clal,
+                clal: session!.user!.clal!,
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
             };
 
@@ -32,9 +63,37 @@ export default function LvScore() {
             setSongs(songRes);
             console.log(songs);
         } catch (error) {
+            setError((error as Error).message);
             console.error(error);
         }
     };
+
+    const setUserClal = async () => {
+        try {
+            if (status !== 'authenticated') {
+                throw new Error('Please log in first');
+            }
+
+            if (!session || !session!.user) {
+                throw new Error('User session is missing');
+            }
+
+            if (session!.user!.clal!.length !== 64) {
+                throw new Error('The length of clal has to be 64');
+            }
+
+            const res = await fetch(`/api/setUserClal?id=${session!.user!.id!}&clal=${clal}`, {
+                method: 'POST'
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to set clal, try again later');
+            }
+        } catch (error) {
+            setError((error as Error).message);
+            console.error(error);
+        }
+    }
 
     songs.sort(
         (a, b) =>
@@ -44,16 +103,23 @@ export default function LvScore() {
 
     return (
         <>
-            <div className={'flex flex-col justify-center'}>
-                <div
-                    className={
-                        'flex flex-col justify-center shadow-lg items-center'
-                    }
-                >
-                    <p className={'p-3'}>
-                        Enter your clal (temp, use alternate method after
-                        implementing users)
-                    </p>
+            <div className={`modal ${showClalModal ? 'modal-open' : ''}`}>
+                <div className={'modal-box'}>
+                    <div className={'relative mb-4'}>
+                        <h3 className={'text-lg font-bold text-center'}>
+                            Login
+                        </h3>
+
+                        <button
+                            className={'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'}
+                            onClick={() => setShowClalModal(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+
+                    <h3>Enter your clal here</h3>
+                    <hr/>
                     <input
                         className={
                             'bg-gray-400 rounded-md text-center text-gray-950'
@@ -68,7 +134,25 @@ export default function LvScore() {
                         }}
                     />
 
-                    <form className={'text-center p-3'}>
+                    <button
+                        onClick={async () => {
+                            setShowClalModal(false);
+                            await setUserClal()
+                        }}
+                        className={'btn btn-primary'}
+                    >
+                        Submit
+                    </button>
+                </div>
+            </div>
+
+            <div className={'flex flex-col justify-center shadow-lg'}>
+                <div
+                    className={
+                        'flex flex-col justify-center shadow-lg items-center'
+                    }
+                >
+                    <form className={'text-center p-3 shadow-lg'}>
                         <select
                             name={'level'}
                             className={'w-30 text-center'}
