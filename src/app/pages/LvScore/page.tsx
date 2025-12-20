@@ -38,10 +38,6 @@ export default function LvScore() {
                 throw new Error('User session is missing');
             }
 
-            if (session!.user!.clal!.length !== 64) {
-                throw new Error('The length of clal has to be 64');
-            }
-
             const config: MaimaiFetchData = {
                 clal: session!.user!.clal!,
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
@@ -76,10 +72,6 @@ export default function LvScore() {
 
             if (!session || !session!.user) {
                 throw new Error('User session is missing');
-            }
-
-            if (session!.user!.clal!.length !== 64) {
-                throw new Error('The length of clal has to be 64');
             }
 
             const res = await fetch(`/api/setUserClal?id=${session!.user!.id!}&clal=${clal}`, {
