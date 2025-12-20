@@ -1,4 +1,4 @@
-import {signOut} from "@/auth"
+import {signOut} from "next-auth/react"
 
 export default () =>
     <button onClick={() => signOut()} className={'btn'}>
