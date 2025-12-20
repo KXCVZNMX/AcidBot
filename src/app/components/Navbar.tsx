@@ -2,8 +2,12 @@
 
 import {LoginGithub, LoginGoogle} from "@/app/components/Login";
 import {useState} from "react";
+import {useSession} from "next-auth/react";
+import Logout from "@/app/components/Logout";
 
 export default function Navbar() {
+    const { data: session, status } = useSession();
+
     const [showLoginModal, setShowLoginModal] = useState(false);
 
     return (
@@ -40,9 +44,15 @@ export default function Navbar() {
                     </a>
                 </div>
 
-                <div className={'flex-0 btn p-5'} onClick={() => setShowLoginModal(true)}>
-                    Login
-                </div>
+                {status === 'unauthenticated' ?
+                    <div className={'flex btn p-5'} onClick={() => setShowLoginModal(true)}>
+                        Login
+                    </div> :
+                    <div className={'flex p-5 items-center gap-2'}>
+                        <span>{`Welcome, ${session?.user?.name}`}</span>
+                        <Logout />
+                    </div>
+                }
             </div>
         </>
     );
