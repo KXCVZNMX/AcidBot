@@ -1,11 +1,11 @@
-'use server'
+'use server';
 
-import {signIn} from "@/auth";
+import { signIn } from '@/auth';
 
 export const loginGithub = async () => {
-    await signIn("github")
-}
+    await signIn('github');
+};
 
 export const loginGoogle = async () => {
-    await signIn("google")
-}
+    await signIn('google');
+};

@@ -1,6 +1,6 @@
-import {NextRequest, NextResponse} from "next/server";
-import client from "@/lib/db";
-import {ObjectId} from "mongodb";
+import { NextRequest, NextResponse } from 'next/server';
+import client from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 export async function POST(req: NextRequest) {
     const url = req.nextUrl;
@@ -13,14 +13,14 @@ export async function POST(req: NextRequest) {
         }
 
         const db = client.db();
-        await db.collection("users").updateOne(
+        await db.collection('users').updateOne(
             { _id: new ObjectId(id) },
             {
                 $set: {
                     clal: clal,
-                }
+                },
             }
-        )
+        );
 
         return NextResponse.json({}, { status: 200 });
     } catch (error) {

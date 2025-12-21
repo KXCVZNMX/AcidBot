@@ -1,12 +1,12 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
-import {useSession} from "next-auth/react";
+import { useSession } from 'next-auth/react';
 
 export default function LvScore() {
-    const {data: session, status} = useSession();
+    const { data: session, status } = useSession();
 
     const [level, setLevel] = useState('');
     const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
@@ -22,10 +22,8 @@ export default function LvScore() {
 
     if (status === 'unauthenticated') {
         return (
-            <h3 className={'text-center p-5 text-lg'}>
-                Please log in first.
-            </h3>
-        )
+            <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
+        );
     }
 
     const fetchResultWithClal = async () => {
@@ -74,9 +72,12 @@ export default function LvScore() {
                 throw new Error('User session is missing');
             }
 
-            const res = await fetch(`/api/setUserClal?id=${session!.user!.id!}&clal=${clal}`, {
-                method: 'POST'
-            });
+            const res = await fetch(
+                `/api/setUserClal?id=${session!.user!.id!}&clal=${clal}`,
+                {
+                    method: 'POST',
+                }
+            );
 
             if (!res.ok) {
                 throw new Error('Failed to set clal, try again later');
@@ -85,7 +86,7 @@ export default function LvScore() {
             setError((error as Error).message);
             console.error(error);
         }
-    }
+    };
 
     songs.sort(
         (a, b) =>
@@ -103,7 +104,9 @@ export default function LvScore() {
                         </h3>
 
                         <button
-                            className={'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'}
+                            className={
+                                'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'
+                            }
                             onClick={() => setShowClalModal(false)}
                         >
                             Close
@@ -111,7 +114,7 @@ export default function LvScore() {
                     </div>
 
                     <h3>Enter your clal here</h3>
-                    <hr/>
+                    <hr />
                     <input
                         className={
                             'bg-gray-400 rounded-md text-center text-gray-950'
@@ -129,7 +132,7 @@ export default function LvScore() {
                     <button
                         onClick={async () => {
                             setShowClalModal(false);
-                            await setUserClal()
+                            await setUserClal();
                         }}
                         className={'btn btn-primary'}
                     >

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { COMBO_RULES, SYNC_RULES } from '@/lib/consts';
 import * as cheerio from 'cheerio';
-import fetchCookie from "fetch-cookie";
+import fetchCookie from 'fetch-cookie';
 
 export async function POST(req: NextRequest) {
     const matchRule = (
@@ -54,26 +54,26 @@ export async function POST(req: NextRequest) {
         const jar = new fetchCookie.toughCookie.CookieJar();
         await jar.setCookie(
             `clal=${clal}; Domain=lng-tgk-aime-gw.am-all.net; Path=/; Secure; HttpOnly`,
-            "https://lng-tgk-aime-gw.am-all.net/"
+            'https://lng-tgk-aime-gw.am-all.net/'
         );
-        const fetchWithCookie = fetchCookie(fetch, jar)
+        const fetchWithCookie = fetchCookie(fetch, jar);
 
         const userAgent =
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
 
         const res = await fetchWithCookie(
             'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
-            'site_id=maimaidxex&' +
-            `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
-            'back_url=https://maimai.sega.com/',
+                'site_id=maimaidxex&' +
+                `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
+                'back_url=https://maimai.sega.com/',
             {
                 method: 'GET',
                 redirect: 'manual',
                 headers: {
                     'User-Agent': userAgent,
-                }
+                },
             }
-        )
+        );
 
         if (res.status !== 302) {
             throw new Error('The link did not return a redirect');
@@ -89,15 +89,15 @@ export async function POST(req: NextRequest) {
             method: 'GET',
             headers: {
                 'User-Agent': userAgent,
-            }
-        })
+            },
+        });
 
-        const resultsRes =  await fetchWithCookie(redirect, {
+        const resultsRes = await fetchWithCookie(redirect, {
             method: 'GET',
             headers: {
                 'User-Agent': userAgent,
-            }
-        })
+            },
+        });
 
         const html = await resultsRes.text();
 

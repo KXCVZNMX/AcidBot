@@ -4,7 +4,7 @@ import './globals.css';
 import React from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Navbar from '@/app/components/Navbar';
-import {SessionProvider} from "next-auth/react";
+import { SessionProvider } from 'next-auth/react';
 
 export default function RootLayout({
     children,

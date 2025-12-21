@@ -1,9 +1,9 @@
 'use client';
 
-import {LoginGithub, LoginGoogle} from "@/app/components/Login";
-import {useState} from "react";
-import {useSession} from "next-auth/react";
-import Logout from "@/app/components/Logout";
+import { LoginGithub, LoginGoogle } from '@/app/components/Login';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Logout from '@/app/components/Logout';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -20,7 +20,9 @@ export default function Navbar() {
                         </h3>
 
                         <button
-                            className={'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'}
+                            className={
+                                'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'
+                            }
                             onClick={() => setShowLoginModal(false)}
                         >
                             Close
@@ -39,20 +41,27 @@ export default function Navbar() {
                     <a className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>
                         AcidBot
                     </a>
-                    <a className={'btn btn-ghost text-lg'} href={'/pages/LvScore'}>
+                    <a
+                        className={'btn btn-ghost text-lg'}
+                        href={'/pages/LvScore'}
+                    >
                         LvScore
                     </a>
                 </div>
 
-                {status === 'unauthenticated' ?
-                    <div className={'flex btn p-5'} onClick={() => setShowLoginModal(true)}>
+                {status === 'unauthenticated' ? (
+                    <div
+                        className={'flex btn p-5'}
+                        onClick={() => setShowLoginModal(true)}
+                    >
                         Login
-                    </div> :
+                    </div>
+                ) : (
                     <div className={'flex p-5 items-center gap-2'}>
                         <span>{`Welcome, ${session?.user?.name}`}</span>
                         <Logout />
                     </div>
-                }
+                )}
             </div>
         </>
     );
