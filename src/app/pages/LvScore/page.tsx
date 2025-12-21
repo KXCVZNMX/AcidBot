@@ -14,8 +14,8 @@ export default function LvScore() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (status === 'authenticated' && session?.user?.clal === '0') {
-            setShowClalModal(true);
+        if (status === 'authenticated') {
+            setClal(session!.user!.clal)
         }
     }, [status, session]);
 
@@ -36,7 +36,7 @@ export default function LvScore() {
             }
 
             const config: MaimaiFetchData = {
-                clal: session!.user!.clal!,
+                clal: clal,
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
             };
 
@@ -61,32 +61,6 @@ export default function LvScore() {
         }
     };
 
-    const setUserClal = async () => {
-        try {
-            if (status !== 'authenticated') {
-                throw new Error('Please log in first');
-            }
-
-            if (!session || !session!.user) {
-                throw new Error('User session is missing');
-            }
-
-            const res = await fetch(
-                `/api/setUserClal?id=${session!.user!.id!}&clal=${clal}`,
-                {
-                    method: 'POST',
-                }
-            );
-
-            if (!res.ok) {
-                throw new Error('Failed to set clal, try again later');
-            }
-        } catch (error) {
-            setError((error as Error).message);
-            console.error(error);
-        }
-    };
-
     songs.sort(
         (a, b) =>
             parseFloat(b.score.replace('%', '')) -
@@ -95,51 +69,6 @@ export default function LvScore() {
 
     return (
         <>
-            <div className={`modal ${showClalModal ? 'modal-open' : ''}`}>
-                <div className={'modal-box'}>
-                    <div className={'relative mb-4'}>
-                        <h3 className={'text-lg font-bold text-center'}>
-                            Login
-                        </h3>
-
-                        <button
-                            className={
-                                'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'
-                            }
-                            onClick={() => setShowClalModal(false)}
-                        >
-                            Close
-                        </button>
-                    </div>
-
-                    <h3>Enter your clal here</h3>
-                    <hr />
-                    <input
-                        className={
-                            'bg-gray-400 rounded-md text-center text-gray-950'
-                        }
-                        type={'text'}
-                        value={clal}
-                        onChange={(e) => {
-                            const v = e.target.value;
-                            if (/^[a-zA-Z0-9]*$/.test(v)) {
-                                setClal(v);
-                            }
-                        }}
-                    />
-
-                    <button
-                        onClick={async () => {
-                            setShowClalModal(false);
-                            await setUserClal();
-                        }}
-                        className={'btn btn-primary'}
-                    >
-                        Submit
-                    </button>
-                </div>
-            </div>
-
             <div className={'flex flex-col justify-center shadow-lg'}>
                 <div
                     className={
