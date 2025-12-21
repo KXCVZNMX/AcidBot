@@ -15,5 +15,5 @@ export interface MaimaiSongScore {
 export interface UserInfo {
     username: string;
     email: string;
-    clal?: string;
+    clal: string;
 }
