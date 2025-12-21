@@ -8,13 +8,13 @@ declare module 'next-auth' {
             id: string;
             email?: string;
             name?: string;
-            clal?: string;
+            clal: string;
         } & DefaultSession['user'];
     }
 
     interface User {
         id: string;
         name?: string;
-        clal?: string;
+        clal: string;
     }
 }
