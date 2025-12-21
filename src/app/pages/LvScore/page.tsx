@@ -174,11 +174,11 @@ export default function LvScore() {
                         <colgroup>
                             <col className={'w-[10%]'} />
                             <col className={'w-[40%]'} />
-                            <col className={'w-[10%'} />
-                            <col className={'w-[10%'} />
-                            <col className={'w-[10%'} />
-                            <col className={'w-[10%'} />
-                            <col className={'w-[10%'} />
+                            <col className={'w-[10%]'} />
+                            <col className={'w-[10%]'} />
+                            <col className={'w-[10%]'} />
+                            <col className={'w-[10%]'} />
+                            <col className={'w-[10%]'} />
                         </colgroup>
 
                         <thead>
