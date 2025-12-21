@@ -10,8 +10,7 @@ export default function LvScore() {
 
     const [level, setLevel] = useState('');
     const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
-    const [showClalModal, setShowClalModal] = useState(true);
-    const [clal, setClal] = useState('');
+    const [clal, setClal] = useState('0');
     const [error, setError] = useState('');
 
     useEffect(() => {
