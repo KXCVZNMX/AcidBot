@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
-import { COMBO_RULES, SYNC_RULES } from '@/lib/consts';
+import { MaimaiSongScore } from '@/lib/types';
 import * as cheerio from 'cheerio';
-import fetchCookie from 'fetch-cookie';
 import fetchPage from "@/lib/fetchPage";
-import {determineRank, extractScore, matchRule} from "@/lib/util";
+import {extractScore} from "@/lib/util";
 
 export async function POST(req: NextRequest) {
     try {
