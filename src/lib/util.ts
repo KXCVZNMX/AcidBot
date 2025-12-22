@@ -1,3 +1,6 @@
+import {MaimaiSongScore} from "@/lib/types";
+import {COMBO_RULES, SYNC_RULES} from "@/lib/consts";
+
 export const matchRule = (
     src: string,
     rules: [string, string][]
@@ -40,3 +43,42 @@ export const determineRank = (achievement: string) => {
         return 'D';
     }
 };
+
+export const extractScore = ($: cheerio.Root) => {
+    const results: MaimaiSongScore[] = [];
+
+    $("div[class*='music_'][class*='_score_back']").each((_, el) => {
+        const root = $(el);
+
+        const icons = root.find("img[src*='music_icon_']");
+
+        let syncState: string | null = null;
+        let comboState: string | null = null;
+
+        icons.each((_, img) => {
+            const src = $(img).attr("src") ?? "";
+
+            syncState ||= matchRule(src, SYNC_RULES);
+            comboState ||= matchRule(src, COMBO_RULES);
+        });
+
+        const name = root.find(".music_name_block").text().trim();
+
+        const scoreBlocks = root.find(".music_score_block");
+        const score = scoreBlocks.eq(0).text().trim();
+        const dx = scoreBlocks.eq(1).text().trim();
+
+        if (score !== "" && dx !== "") {
+            results.push({
+                name,
+                score,
+                dx,
+                sync: syncState,
+                combo: comboState,
+                rank: determineRank(score),
+            });
+        }
+    });
+
+    return results;
+}
