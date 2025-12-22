@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MaimaiSongScore } from '@/lib/types';
 import * as cheerio from 'cheerio';
-import fetchPage from "@/lib/fetchPage";
+import fetchPages from "@/lib/fetchPages";
 import {extractScore} from "@/lib/util";
 
 export async function POST(req: NextRequest) {
     try {
         const { clal, redirect } = await req.json();
 
-        const html = await fetchPage(clal, redirect);
+        const html = await fetchPages(clal, redirect);
 
         if (html.includes('ERROR')) {
             throw new Error(
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const $ = cheerio.load(html);
+        const $ = cheerio.load(html as string);
         const results: MaimaiSongScore[] = extractScore($);
 
         console.log(results);
