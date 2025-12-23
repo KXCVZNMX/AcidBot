@@ -37,8 +37,8 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
     }
 }
 
-function isNew(version: string) {
-    return version === 'PRiSM PLUS';
+function isNew(version: string, name: string) {
+    return version === 'PRiSM PLUS' || name === 'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)';
 }
 
 export async function GET(req: NextRequest) {
@@ -115,7 +115,7 @@ export async function GET(req: NextRequest) {
                 )
             );
 
-            if (isNew(r.version)) b15.push(r);
+            if (isNew(r.version, r.name)) b15.push(r);
             else b35.push(r);
         }
 
