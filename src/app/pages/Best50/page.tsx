@@ -1,0 +1,115 @@
+'use client';
+
+import {useSession} from "next-auth/react";
+import {useEffect, useState} from "react";
+import {MaimaiFetchData, MaimaiSongScore} from "@/lib/types";
+
+type Song = {
+    name: string;
+    level: string;
+    score: string;
+};
+
+interface Best50Songs {
+    old: Song[],
+    new: Song[],
+}
+
+export default function Best50() {
+    const { data: session, status } = useSession();
+
+    const [clal, setClal] = useState('0');
+    const [oldSong, setOldSong] = useState<Song[]>([]);
+    const [newSong, setNewSong] = useState<Song[]>([]);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (status === 'authenticated') {
+            setClal(session!.user!.clal)
+        }
+    }, [status, session]);
+
+    if (status === 'unauthenticated') {
+        return (
+            <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
+        );
+    }
+
+    const fetchB50WithClal = async () => {
+        try {
+            if (status !== 'authenticated') {
+                throw new Error('Please log in first');
+            }
+
+            if (!session || !session!.user) {
+                throw new Error('User session is missing');
+            }
+
+            const res = await fetch(`/api/getB50?clal=${clal}`, {
+                method: 'GET',
+            });
+
+            if (!res.ok) {
+                throw new Error(res.statusText);
+            }
+
+            const b50: Best50Songs = await res.json();
+            setOldSong(b50.old);
+            setNewSong(b50.new);
+        } catch (error) {
+            setError((error as Error).message);
+            console.error(error);
+        }
+    }
+
+    return (
+        <>
+            <div className={'flex flex-col justify-center shadow-lg'}>
+                <div
+                    className={
+                        'flex flex-col justify-center shadow-lg items-center'
+                    }
+                >
+                    <button
+                        onClick={fetchB50WithClal}
+                        className={'btn btn-primary'}
+                    >
+                        Submit
+                    </button>
+                </div>
+                <div className={'overflow-x-auto'}>
+                    <table className={'table table-fixed min-w-max'}>
+                        <colgroup>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[20%]'}/>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[10%]'}/>
+                            <col className={'w-[10%]'}/>
+                        </colgroup>
+
+                        <thead>
+                        <tr key={'header'}>
+                            <th/>
+                            <th>Song Title</th>
+                            <th>Level</th>
+                            <th>Rank</th>
+                            <th>Rating</th>
+                            <th>Score</th>
+                            <th>DX Score</th>
+                            <th>Combo</th>
+                            <th>Sync</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </>
+    )
+}

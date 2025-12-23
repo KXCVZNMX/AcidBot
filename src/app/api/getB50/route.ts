@@ -1,0 +1,152 @@
+import fetchPages from "@/lib/fetchPage";
+import {NextRequest, NextResponse} from "next/server";
+import * as cheerio from 'cheerio';
+import {extractScore} from "@/lib/util";
+import {MaimaiSongScore} from "@/lib/types";
+import client from '@/lib/db';
+import {RANK_DEFINITIONS} from "@/lib/consts";
+
+type Song = {
+    name: string;
+    level: string;
+    score: string;
+};
+
+type MoreInfo = {
+    internalLevelValue: number;
+    version: string;
+}
+
+interface MSSB50 extends MaimaiSongScore {
+    levelConst: number;
+    rating: number;
+    version: string;
+}
+
+function getRatingByAchievement(achievement: number, lvConstant: number) {
+    const rank = RANK_DEFINITIONS.find(
+        (r) => achievement >= r.minA && achievement <= (r.maxA ?? Infinity)
+    );
+    if (typeof rank === 'undefined') {
+        console.error(`Achievement out of range: ${achievement}`);
+        return -1;
+    }
+
+    if (rank.maxA && achievement === rank.maxA) {
+        return achievement * (rank.maxFactor ?? -1) * lvConstant;
+    } else {
+        return (
+            (achievement > 100.5 ? 100.5 : achievement) *
+            rank.factor *
+            lvConstant
+        );
+    }
+}
+
+function isNew(version: string) {
+    return version === 'PRiSM PLUS';
+}
+
+export async function GET(req: NextRequest) {
+    const url = req.nextUrl;
+
+    try {
+        const clal = url.searchParams.get("clal");
+
+        if (!clal) {
+            throw new Error('Missing clal');
+        }
+
+        const redirects = [
+            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
+            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
+            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
+            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
+            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4'
+        ]
+
+        const htmls = [
+            await fetchPages(clal, redirects[0]),
+            await fetchPages(clal, redirects[1]),
+            await fetchPages(clal, redirects[2]),
+            await fetchPages(clal, redirects[3]),
+            await fetchPages(clal, redirects[4]),
+        ];
+
+        const res = htmls.flatMap((html) =>
+            extractScore(cheerio.load(html))
+        );
+
+        let db = client.db();
+
+        const collection = db.collection('maimaiSongs');
+        const finalRes: MSSB50[] = [];
+
+        for (const r of res) {
+            const qRes = await collection.findOne(
+                {
+                    'title': r.name,
+                    'sheets.difficulty': r.diff,
+                }
+            );
+
+            if (!qRes) {
+                throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
+            }
+
+            const sheets: MoreInfo[] = qRes.sheets;
+
+            const determineIndex = (diff: string) => {
+                if (r.diff === 'basic') {
+                    return 0;
+                } else if (r.diff === 'advanced') {
+                    return 1;
+                } else if (r.diff === 'expert') {
+                    return 2;
+                } else if (r.diff === 'master') {
+                    return 3;
+                } else if (r.diff === 'remaster') {
+                    return 4;
+                }
+                return 0;
+            }
+
+            let lvConst = sheets[determineIndex(r.diff)].internalLevelValue;
+
+            finalRes.push({
+                levelConst: lvConst,
+                name: r.name,
+                score: r.score,
+                diff: r.diff,
+                dx: r.dx,
+                isDx: r.isDx,
+                sync: r.sync,
+                combo: r.combo,
+                rank: r.rank,
+                rating: 0,
+                version: sheets[determineIndex(r.diff)].version
+            })
+        }
+
+        let b35: MSSB50[] = [];
+        let b15: MSSB50[] = [];
+
+        finalRes.map((r) => {
+            r.rating = Math.floor(getRatingByAchievement(Number(r.score.replace('%', '')), r.levelConst))
+
+            if (isNew(r.version)) {
+                b15.push(r);
+            } else {
+                b35.push(r);
+            }
+        })
+
+        b35.sort((a, b) => b.rating - a.rating);
+        b15.sort((a, b) => b.rating - a.rating);
+
+        return NextResponse.json({b35: b35.slice(0, 35), b15: b15.slice(0, 15)});
+    } catch (error) {
+        console.error(error);
+        return NextResponse.json({error: (error as Error).message}, {status: 500})
+    }
+}
