@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MaimaiSongScore } from '@/lib/types';
 import * as cheerio from 'cheerio';
-import fetchPage from "@/lib/fetchPage";
-import {extractScore} from "@/lib/util";
+import fetchPage from '@/lib/fetchPage';
+import { extractScore } from '@/lib/util';
 
 export async function POST(req: NextRequest) {
     try {

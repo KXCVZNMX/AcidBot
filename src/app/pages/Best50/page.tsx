@@ -1,12 +1,12 @@
 'use client';
 
-import {useSession} from "next-auth/react";
-import {useEffect, useState} from "react";
-import {MSSB50} from "@/lib/types";
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { MSSB50 } from '@/lib/types';
 
 interface Best50Songs {
-    b35: MSSB50[],
-    b15: MSSB50[],
+    b35: MSSB50[];
+    b15: MSSB50[];
 }
 
 export default function Best50() {
@@ -19,7 +19,7 @@ export default function Best50() {
 
     useEffect(() => {
         if (status === 'authenticated') {
-            setClal(session!.user!.clal)
+            setClal(session!.user!.clal);
         }
     }, [status, session]);
 
@@ -54,7 +54,7 @@ export default function Best50() {
             setError((error as Error).message);
             console.error(error);
         }
-    }
+    };
 
     return (
         <>
@@ -86,25 +86,27 @@ export default function Best50() {
                             <col className="w-[10%]" />
                         </colgroup>
 
-
                         <thead>
-                        <tr key={'header'}>
-                            <th/>
-                            <th>Song Title</th>
-                            <th>Level</th>
-                            <th>Rank</th>
-                            <th>Rating</th>
-                            <th>Score</th>
-                            <th>Type</th>
-                            <th>DX Score</th>
-                            <th>Combo</th>
-                            <th>Sync</th>
-                        </tr>
+                            <tr key={'header'}>
+                                <th />
+                                <th>Song Title</th>
+                                <th>Level</th>
+                                <th>Rank</th>
+                                <th>Rating</th>
+                                <th>Score</th>
+                                <th>Type</th>
+                                <th>DX Score</th>
+                                <th>Combo</th>
+                                <th>Sync</th>
+                            </tr>
                         </thead>
 
                         <tbody>
                             {oldSong.map((song, i) => (
-                                <tr className={`hover:bg-base-300 bg-${song.diff}`} key={i}>
+                                <tr
+                                    className={`hover:bg-base-300 bg-${song.diff}`}
+                                    key={i}
+                                >
                                     <th>{i + 1}</th>
                                     <td>{song.name}</td>
                                     <td>{song.levelConst}</td>
@@ -118,7 +120,10 @@ export default function Best50() {
                                 </tr>
                             ))}
                             {newSong.map((song, i) => (
-                                <tr className={`hover:bg-base-300 bg-${song.diff}`} key={i}>
+                                <tr
+                                    className={`hover:bg-base-300 bg-${song.diff}`}
+                                    key={i}
+                                >
                                     <th>{i + 36}</th>
                                     <td>{song.name}</td>
                                     <td>{song.levelConst}</td>
@@ -136,5 +141,5 @@ export default function Best50() {
                 </div>
             </div>
         </>
-    )
+    );
 }

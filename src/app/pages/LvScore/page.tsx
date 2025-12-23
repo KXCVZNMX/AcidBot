@@ -15,7 +15,7 @@ export default function LvScore() {
 
     useEffect(() => {
         if (status === 'authenticated') {
-            setClal(session!.user!.clal)
+            setClal(session!.user!.clal);
         }
     }, [status, session]);
 
@@ -124,7 +124,10 @@ export default function LvScore() {
                         </thead>
                         <tbody>
                             {songs.map((song, i) => (
-                                <tr className={`hover:bg-base-300 bg-${song.diff}`} key={i}>
+                                <tr
+                                    className={`hover:bg-base-300 bg-${song.diff}`}
+                                    key={i}
+                                >
                                     <th>{i + 1}</th>
                                     <td>{song.name}</td>
                                     <td>{song.rank}</td>

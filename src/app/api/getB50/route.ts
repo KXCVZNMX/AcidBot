@@ -1,15 +1,15 @@
-import fetchPages from "@/lib/fetchPage";
-import {NextRequest, NextResponse} from "next/server";
+import fetchPages from '@/lib/fetchPage';
+import { NextRequest, NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
-import {extractScore} from "@/lib/util";
-import {MaimaiSongScore, MSSB50} from "@/lib/types";
+import { extractScore } from '@/lib/util';
+import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import {DIFF_INDEX, RANK_DEFINITIONS} from "@/lib/consts";
+import { DIFF_INDEX, RANK_DEFINITIONS } from '@/lib/consts';
 
 type MoreInfo = {
     internalLevelValue: number;
     version: string;
-}
+};
 
 function getRatingByAchievement(achievement: number, lvConstant: number) {
     const rank = RANK_DEFINITIONS.find(
@@ -32,14 +32,18 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
 }
 
 function isNew(version: string, name: string) {
-    return version === 'PRiSM PLUS' || name === 'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)';
+    return (
+        version === 'PRiSM PLUS' ||
+        name ===
+            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)'
+    );
 }
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;
 
     try {
-        const clal = url.searchParams.get("clal");
+        const clal = url.searchParams.get('clal');
 
         if (!clal) {
             throw new Error('Missing clal');
@@ -50,8 +54,8 @@ export async function GET(req: NextRequest) {
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4'
-        ]
+            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
+        ];
 
         const res: MaimaiSongScore[] = [];
 
@@ -67,12 +71,10 @@ export async function GET(req: NextRequest) {
         const finalRes: MSSB50[] = [];
 
         for (const r of res) {
-            const qRes = await collection.findOne(
-                {
-                    'title': r.name,
-                    'sheets.difficulty': r.diff,
-                }
-            );
+            const qRes = await collection.findOne({
+                title: r.name,
+                'sheets.difficulty': r.diff,
+            });
 
             if (!qRes) {
                 throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
@@ -95,7 +97,7 @@ export async function GET(req: NextRequest) {
                 rating: 0,
                 version: sheets[index].version,
                 achievement: Number(r.score.slice(0, -1)),
-            })
+            });
         }
 
         let b35: MSSB50[] = [];
@@ -103,10 +105,7 @@ export async function GET(req: NextRequest) {
 
         for (const r of finalRes) {
             r.rating = Math.floor(
-                getRatingByAchievement(
-                    r.achievement,
-                    r.levelConst
-                )
+                getRatingByAchievement(r.achievement, r.levelConst)
             );
 
             if (isNew(r.version, r.name)) b15.push(r);
@@ -116,9 +115,15 @@ export async function GET(req: NextRequest) {
         b35.sort((a, b) => b.rating - a.rating);
         b15.sort((a, b) => b.rating - a.rating);
 
-        return NextResponse.json({b35: b35.slice(0, 35), b15: b15.slice(0, 15)});
+        return NextResponse.json({
+            b35: b35.slice(0, 35),
+            b15: b15.slice(0, 15),
+        });
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: (error as Error).message}, {status: 500})
+        return NextResponse.json(
+            { error: (error as Error).message },
+            { status: 500 }
+        );
     }
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import {useEffect, useState} from "react";
-import {useSession} from "next-auth/react";
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 export default function Home() {
     const { data: session, status } = useSession();
@@ -14,7 +14,7 @@ export default function Home() {
         if (status === 'authenticated') {
             setClal(session!.user!.clal);
         }
-    }, [status, session])
+    }, [status, session]);
 
     const setUserClal = async () => {
         try {
@@ -91,6 +91,5 @@ export default function Home() {
                 </div>
             </div>
         </>
-
     );
 }

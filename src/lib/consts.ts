@@ -1,4 +1,4 @@
-import {Rank} from "@/lib/types";
+import { Rank } from '@/lib/types';
 
 export const MaimaiLevelMap: Readonly<Record<number, string>> = {
     1: '1',
@@ -44,7 +44,7 @@ export const COMBO_RULES: [string, string][] = [
 export const DX_RULES: [string, string][] = [
     ['music_dx', 'dx'],
     ['music_standard', 'std'],
-]
+];
 
 export const DIFF_RULES: [string, string][] = [
     ['diff_basic', 'basic'],
@@ -52,7 +52,7 @@ export const DIFF_RULES: [string, string][] = [
     ['diff_expert', 'expert'],
     ['diff_master', 'master'],
     ['diff_remaster', 'remaster'],
-]
+];
 
 const RANK_SSS_PLUS: Readonly<Rank> = {
     title: 'SSS+',
@@ -105,7 +105,7 @@ export const RANK_DEFINITIONS: ReadonlyArray<Rank> = [
     { minA: 60.0, factor: 0.096, title: 'B' },
     { minA: 50.0, factor: 0.08, title: 'C' },
     { minA: 0.0, factor: 0.016, title: 'D' },
-]
+];
 
 export const DIFF_INDEX: Record<string, number> = {
     basic: 0,

@@ -5,7 +5,6 @@ import Google from 'next-auth/providers/google';
 import { ObjectId } from 'mongodb';
 import client from './lib/db';
 
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: MongoDBAdapter(client),
     providers: [GitHub, Google],
