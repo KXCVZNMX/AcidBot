@@ -19,3 +19,11 @@ export interface UserInfo {
     email: string;
     clal: string;
 }
+
+export interface Rank {
+    title: string;
+    maxA?: number;
+    minA: number;
+    factor: number;
+    maxFactor?: number;
+}
