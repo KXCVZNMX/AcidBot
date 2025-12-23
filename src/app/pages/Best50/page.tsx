@@ -2,13 +2,7 @@
 
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
-import {MaimaiFetchData, MaimaiSongScore, MSSB50} from "@/lib/types";
-
-type Song = {
-    name: string;
-    level: string;
-    score: string;
-};
+import {MSSB50} from "@/lib/types";
 
 interface Best50Songs {
     b35: MSSB50[],

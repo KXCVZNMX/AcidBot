@@ -6,12 +6,6 @@ import {MaimaiSongScore, MSSB50} from "@/lib/types";
 import client from '@/lib/db';
 import {DIFF_INDEX, RANK_DEFINITIONS} from "@/lib/consts";
 
-type Song = {
-    name: string;
-    level: string;
-    score: string;
-};
-
 type MoreInfo = {
     internalLevelValue: number;
     version: string;
