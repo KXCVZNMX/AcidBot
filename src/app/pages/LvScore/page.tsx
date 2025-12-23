@@ -101,7 +101,8 @@ export default function LvScore() {
                     <table className={'table table-fixed min-w-max'}>
                         <colgroup>
                             <col className={'w-[10%]'} />
-                            <col className={'w-[40%]'} />
+                            <col className={'w-[30%]'} />
+                            <col className={'w-[10%]'} />
                             <col className={'w-[10%]'} />
                             <col className={'w-[10%]'} />
                             <col className={'w-[10%]'} />
@@ -115,6 +116,7 @@ export default function LvScore() {
                                 <th>Song Title</th>
                                 <th>Rank</th>
                                 <th>Score</th>
+                                <th>Type</th>
                                 <th>DX Score</th>
                                 <th>Combo</th>
                                 <th>Sync</th>
@@ -122,11 +124,12 @@ export default function LvScore() {
                         </thead>
                         <tbody>
                             {songs.map((song, i) => (
-                                <tr className={'hover:bg-base-300'} key={i}>
+                                <tr className={`hover:bg-base-300 ${song.diff}`} key={i}>
                                     <th>{i + 1}</th>
                                     <td>{song.name}</td>
                                     <td>{song.rank}</td>
                                     <td>{song.score}</td>
+                                    <td>{song.isDx}</td>
                                     <td>{song.dx}</td>
                                     <td>{song.combo}</td>
                                     <td>{song.sync}</td>

@@ -6,7 +6,9 @@ export interface MaimaiFetchData {
 export interface MaimaiSongScore {
     name: string;
     score: string;
+    diff: string;
     dx: string;
+    isDx: string;
     sync: string | null;
     combo: string | null;
     rank: string | null;
