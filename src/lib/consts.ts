@@ -45,9 +45,9 @@ export const DX_RULES: [string, string][] = [
 ]
 
 export const DIFF_RULES: [string, string][] = [
-    ['diff_basic', 'bg-basic'],
-    ['diff_advanced', 'bg-advanced'],
-    ['diff_expert', 'bg-expert'],
-    ['diff_master', 'bg-master'],
-    ['diff_remaster', 'bg-remaster'],
+    ['diff_basic', 'basic'],
+    ['diff_advanced', 'advanced'],
+    ['diff_expert', 'expert'],
+    ['diff_master', 'master'],
+    ['diff_remaster', 'remaster'],
 ]

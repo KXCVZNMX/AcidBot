@@ -124,7 +124,7 @@ export default function LvScore() {
                         </thead>
                         <tbody>
                             {songs.map((song, i) => (
-                                <tr className={`hover:bg-base-300 ${song.diff}`} key={i}>
+                                <tr className={`hover:bg-base-300 bg-${song.diff}`} key={i}>
                                     <th>{i + 1}</th>
                                     <td>{song.name}</td>
                                     <td>{song.rank}</td>
