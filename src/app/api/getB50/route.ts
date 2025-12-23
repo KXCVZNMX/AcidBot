@@ -4,7 +4,7 @@ import * as cheerio from 'cheerio';
 import {extractScore} from "@/lib/util";
 import {MaimaiSongScore} from "@/lib/types";
 import client from '@/lib/db';
-import {RANK_DEFINITIONS} from "@/lib/consts";
+import {DIFF_INDEX, RANK_DEFINITIONS} from "@/lib/consts";
 
 type Song = {
     name: string;
@@ -21,6 +21,7 @@ interface MSSB50 extends MaimaiSongScore {
     levelConst: number;
     rating: number;
     version: string;
+    achievement: number;
 }
 
 function getRatingByAchievement(achievement: number, lvConstant: number) {
@@ -65,17 +66,13 @@ export async function GET(req: NextRequest) {
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4'
         ]
 
-        const htmls = [
-            await fetchPages(clal, redirects[0]),
-            await fetchPages(clal, redirects[1]),
-            await fetchPages(clal, redirects[2]),
-            await fetchPages(clal, redirects[3]),
-            await fetchPages(clal, redirects[4]),
-        ];
+        const res: MaimaiSongScore[] = [];
 
-        const res = htmls.flatMap((html) =>
-            extractScore(cheerio.load(html))
-        );
+        for (const url of redirects) {
+            const html = await fetchPages(clal, url);
+            const $ = cheerio.load(html);
+            res.push(...extractScore($));
+        }
 
         let db = client.db();
 
@@ -96,25 +93,10 @@ export async function GET(req: NextRequest) {
 
             const sheets: MoreInfo[] = qRes.sheets;
 
-            const determineIndex = (diff: string) => {
-                if (r.diff === 'basic') {
-                    return 0;
-                } else if (r.diff === 'advanced') {
-                    return 1;
-                } else if (r.diff === 'expert') {
-                    return 2;
-                } else if (r.diff === 'master') {
-                    return 3;
-                } else if (r.diff === 'remaster') {
-                    return 4;
-                }
-                return 0;
-            }
-
-            let lvConst = sheets[determineIndex(r.diff)].internalLevelValue;
+            const index = DIFF_INDEX[r.diff] ?? 0;
 
             finalRes.push({
-                levelConst: lvConst,
+                levelConst: sheets[index].internalLevelValue,
                 name: r.name,
                 score: r.score,
                 diff: r.diff,
@@ -124,22 +106,25 @@ export async function GET(req: NextRequest) {
                 combo: r.combo,
                 rank: r.rank,
                 rating: 0,
-                version: sheets[determineIndex(r.diff)].version
+                version: sheets[index].version,
+                achievement: Number(r.score.slice(0, -1)),
             })
         }
 
         let b35: MSSB50[] = [];
         let b15: MSSB50[] = [];
 
-        finalRes.map((r) => {
-            r.rating = Math.floor(getRatingByAchievement(Number(r.score.replace('%', '')), r.levelConst))
+        for (const r of finalRes) {
+            r.rating = Math.floor(
+                getRatingByAchievement(
+                    r.achievement,
+                    r.levelConst
+                )
+            );
 
-            if (isNew(r.version)) {
-                b15.push(r);
-            } else {
-                b35.push(r);
-            }
-        })
+            if (isNew(r.version)) b15.push(r);
+            else b35.push(r);
+        }
 
         b35.sort((a, b) => b.rating - a.rating);
         b15.sort((a, b) => b.rating - a.rating);
