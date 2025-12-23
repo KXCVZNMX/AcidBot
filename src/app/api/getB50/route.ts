@@ -2,7 +2,7 @@ import fetchPages from "@/lib/fetchPage";
 import {NextRequest, NextResponse} from "next/server";
 import * as cheerio from 'cheerio';
 import {extractScore} from "@/lib/util";
-import {MaimaiSongScore} from "@/lib/types";
+import {MaimaiSongScore, MSSB50} from "@/lib/types";
 import client from '@/lib/db';
 import {DIFF_INDEX, RANK_DEFINITIONS} from "@/lib/consts";
 
@@ -15,13 +15,6 @@ type Song = {
 type MoreInfo = {
     internalLevelValue: number;
     version: string;
-}
-
-interface MSSB50 extends MaimaiSongScore {
-    levelConst: number;
-    rating: number;
-    version: string;
-    achievement: number;
 }
 
 function getRatingByAchievement(achievement: number, lvConstant: number) {

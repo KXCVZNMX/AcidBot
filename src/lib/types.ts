@@ -14,6 +14,13 @@ export interface MaimaiSongScore {
     rank: string | null;
 }
 
+export interface MSSB50 extends MaimaiSongScore {
+    levelConst: number;
+    rating: number;
+    version: string;
+    achievement: number;
+}
+
 export interface UserInfo {
     username: string;
     email: string;
