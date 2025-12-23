@@ -1,5 +1,5 @@
 import {MaimaiSongScore} from "@/lib/types";
-import {COMBO_RULES, SYNC_RULES} from "@/lib/consts";
+import {COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES} from "@/lib/consts";
 
 export const matchRule = (
     src: string,
@@ -51,7 +51,11 @@ export const extractScore = ($: cheerio.Root) => {
         const root = $(el);
 
         const icons = root.find("img[src*='music_icon_']");
+        const dxVal = root.find("img[src*='music_']");
+        const lvVal = root.find("img[src*='diff_']");
 
+        let dxState: string | null = null;
+        let diffState: string | null = null;
         let syncState: string | null = null;
         let comboState: string | null = null;
 
@@ -61,6 +65,17 @@ export const extractScore = ($: cheerio.Root) => {
             syncState ||= matchRule(src, SYNC_RULES);
             comboState ||= matchRule(src, COMBO_RULES);
         });
+
+        dxVal.each((_, dxv) => {
+            const src = $(dxv).attr("src") ?? "";
+            dxState ||= matchRule(src, DX_RULES);
+        })
+
+        lvVal.each((_, lv) => {
+            const src = $(lv).attr("src") ?? "";
+            diffState ||= matchRule(src, DIFF_RULES);
+        })
+
 
         const name = root.find(".music_name_block").text().trim();
 
@@ -73,6 +88,8 @@ export const extractScore = ($: cheerio.Root) => {
                 name,
                 score,
                 dx,
+                isDx: dxState!,
+                diff: diffState!,
                 sync: syncState,
                 combo: comboState,
                 rank: determineRank(score),
