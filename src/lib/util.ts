@@ -51,7 +51,10 @@ export const extractScore = ($: cheerio.Root) => {
         const root = $(el);
 
         const icons = root.find("img[src*='music_icon_']");
-        const dxVal = root.find("img[src*='music_']");
+
+        const container = root.parent();
+
+        const dxVal = container.find("img[src*='music_dx'], img[src*='music_standard']");
         const lvVal = root.find("img[src*='diff_']");
 
         let dxState: string | null = null;
