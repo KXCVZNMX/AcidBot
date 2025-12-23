@@ -2,7 +2,7 @@
 
 import fetchCookie from "fetch-cookie";
 
-export default async function fetchPages(clal: string, redirect: string[] | string) {
+export default async function fetchPage(clal: string, redirect: string) {
     try {
         const jar = new fetchCookie.toughCookie.CookieJar();
         await jar.setCookie(
@@ -45,32 +45,15 @@ export default async function fetchPages(clal: string, redirect: string[] | stri
             },
         });
 
-        const resultsRes = [''];
+        const result = await fetchWithCookie(redirect, {
+            method: 'GET',
+            headers: {
+                'User-Agent': userAgent,
+            },
+        });
 
-        if (typeof redirect === 'string') {
-            const result = await fetchWithCookie(redirect, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': userAgent,
-                },
-            });
-
-            return await result.text()
-        } else {
-            redirect.map(async (r) => {
-                const result = await fetchWithCookie(r, {
-                    method: 'GET',
-                    headers: {
-                        'User-Agent': userAgent,
-                    },
-                });
-
-                resultsRes.push(await result.text())
-            })
-
-            return resultsRes;
-        }
-    } catch(error) {
+        return await result.text()
+    } catch (error) {
         console.error(error);
         return (error as Error).message;
     }
