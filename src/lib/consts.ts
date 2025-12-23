@@ -38,3 +38,16 @@ export const COMBO_RULES: [string, string][] = [
     ['music_icon_fcp', 'FC+'],
     ['music_icon_fc', 'FC'],
 ];
+
+export const DX_RULES: [string, string][] = [
+    ['music_dx', 'dx'],
+    ['music_standard', 'std'],
+]
+
+export const DIFF_RULES: [string, string][] = [
+    ['diff_basic', 'bg-basic'],
+    ['diff_advanced', 'bg-advanced'],
+    ['diff_expert', 'bg-expert'],
+    ['diff_master', 'bg-master'],
+    ['diff_remaster', 'bg-remaster'],
+]
