@@ -1,16 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { MaimaiLevelMap } from '@/lib/consts';
-import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { MSSB50 } from '@/lib/types';
 
-export default function LvScore() {
+interface Best50Songs {
+    b35: MSSB50[];
+    b15: MSSB50[];
+}
+
+export default function Best50() {
     const { data: session, status } = useSession();
 
-    const [level, setLevel] = useState('');
-    const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
     const [clal, setClal] = useState('0');
+    const [oldSong, setOldSong] = useState<MSSB50[]>([]);
+    const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -25,7 +29,7 @@ export default function LvScore() {
         );
     }
 
-    const fetchResultWithClal = async () => {
+    const fetchB50WithClal = async () => {
         try {
             if (status !== 'authenticated') {
                 throw new Error('Please log in first');
@@ -35,37 +39,22 @@ export default function LvScore() {
                 throw new Error('User session is missing');
             }
 
-            const config: MaimaiFetchData = {
-                clal: clal,
-                redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
-            };
-
-            const res = await fetch('/api/getLevel', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(config),
+            const res = await fetch(`/api/getB50?clal=${clal}`, {
+                method: 'GET',
             });
 
             if (!res.ok) {
                 throw new Error(res.statusText);
             }
 
-            const songRes: MaimaiSongScore[] = await res.json();
-            setSongs(songRes);
-            console.log(songs);
+            const b50: Best50Songs = await res.json();
+            setOldSong(b50.b35);
+            setNewSong(b50.b15);
         } catch (error) {
             setError((error as Error).message);
             console.error(error);
         }
     };
-
-    songs.sort(
-        (a, b) =>
-            parseFloat(b.score.replace('%', '')) -
-            parseFloat(a.score.replace('%', ''))
-    );
 
     return (
         <>
@@ -75,46 +64,35 @@ export default function LvScore() {
                         'flex flex-col justify-center shadow-lg items-center'
                     }
                 >
-                    <form className={'text-center p-3 shadow-lg'}>
-                        <select
-                            name={'level'}
-                            className={'w-30 text-center'}
-                            onChange={(e) => setLevel(e.target.value)}
-                        >
-                            {Array.from({ length: 23 }, (_, i) => (
-                                <option key={i} value={i + 1}>
-                                    LEVEL {MaimaiLevelMap[i + 1]}
-                                </option>
-                            ))}
-                        </select>
-                    </form>
-
                     <button
-                        onClick={fetchResultWithClal}
+                        onClick={fetchB50WithClal}
                         className={'btn btn-primary'}
                     >
                         Submit
                     </button>
                 </div>
-
                 <div className={'overflow-x-auto'}>
                     <table className={'table table-fixed min-w-max'}>
                         <colgroup>
-                            <col className={'w-[10%]'} />
-                            <col className={'w-[30%]'} />
-                            <col className={'w-[10%]'} />
-                            <col className={'w-[10%]'} />
-                            <col className={'w-[10%]'} />
-                            <col className={'w-[10%]'} />
-                            <col className={'w-[10%]'} />
-                            <col className={'w-[10%]'} />
+                            <col className="w-[5%]" />
+                            <col className="w-[20%]" />
+                            <col className="w-[10%]" />
+                            <col className="w-[10%]" />
+                            <col className="w-[10%]" />
+                            <col className="w-[10%]" />
+                            <col className="w-[5%]" />
+                            <col className="w-[10%]" />
+                            <col className="w-[10%]" />
+                            <col className="w-[10%]" />
                         </colgroup>
 
                         <thead>
                             <tr key={'header'}>
                                 <th />
                                 <th>Song Title</th>
+                                <th>Level</th>
                                 <th>Rank</th>
+                                <th>Rating</th>
                                 <th>Score</th>
                                 <th>Type</th>
                                 <th>DX Score</th>
@@ -122,15 +100,35 @@ export default function LvScore() {
                                 <th>Sync</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            {songs.map((song, i) => (
+                            {oldSong.map((song, i) => (
                                 <tr
                                     className={`hover:bg-base-300 bg-${song.diff}`}
                                     key={i}
                                 >
                                     <th>{i + 1}</th>
                                     <td>{song.name}</td>
+                                    <td>{song.levelConst}</td>
                                     <td>{song.rank}</td>
+                                    <td>{song.rating}</td>
+                                    <td>{song.score}</td>
+                                    <td>{song.isDx}</td>
+                                    <td>{song.dx}</td>
+                                    <td>{song.combo}</td>
+                                    <td>{song.sync}</td>
+                                </tr>
+                            ))}
+                            {newSong.map((song, i) => (
+                                <tr
+                                    className={`hover:bg-base-300 bg-${song.diff}`}
+                                    key={i}
+                                >
+                                    <th>{i + 36}</th>
+                                    <td>{song.name}</td>
+                                    <td>{song.levelConst}</td>
+                                    <td>{song.rank}</td>
+                                    <td>{song.rating}</td>
                                     <td>{song.score}</td>
                                     <td>{song.isDx}</td>
                                     <td>{song.dx}</td>

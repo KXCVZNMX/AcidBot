@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
-import { COMBO_RULES, SYNC_RULES } from '@/lib/consts';
+import { MaimaiSongScore } from '@/lib/types';
 import * as cheerio from 'cheerio';
-import fetchCookie from 'fetch-cookie';
-import fetchPage from "@/lib/fetchPage";
-import {determineRank, matchRule} from "@/lib/util";
+import fetchPage from '@/lib/fetchPage';
+import { extractScore } from '@/lib/util';
 
 export async function POST(req: NextRequest) {
     try {
@@ -19,41 +17,7 @@ export async function POST(req: NextRequest) {
         }
 
         const $ = cheerio.load(html);
-        const results: MaimaiSongScore[] = [];
-
-        $("div[class*='music_'][class*='_score_back']").each((_, el) => {
-            const root = $(el);
-
-            const icons = root.find("img[src*='music_icon_']");
-
-            let syncState: string | null = null;
-            let comboState: string | null = null;
-
-            icons.each((_, img) => {
-                const src = $(img).attr('src') ?? '';
-
-                syncState ||= matchRule(src, SYNC_RULES);
-                comboState ||= matchRule(src, COMBO_RULES);
-            });
-
-            const name = root.find('.music_name_block').text().trim();
-
-            const scoreBlocks = root.find('.music_score_block');
-
-            const score = scoreBlocks.eq(0).text().trim();
-            const dx = scoreBlocks.eq(1).text().trim();
-
-            if (score !== '' && dx !== '') {
-                results.push({
-                    name,
-                    score,
-                    dx,
-                    sync: syncState,
-                    rank: determineRank(score),
-                    combo: comboState,
-                });
-            }
-        });
+        const results: MaimaiSongScore[] = extractScore($);
 
         console.log(results);
 

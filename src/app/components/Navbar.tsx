@@ -47,6 +47,13 @@ export default function Navbar() {
                     >
                         LvScore
                     </a>
+
+                    <a
+                        className={'btn btn-ghost text-lg'}
+                        href={'/pages/Best50'}
+                    >
+                        Best50
+                    </a>
                 </div>
 
                 {status === 'unauthenticated' ? (

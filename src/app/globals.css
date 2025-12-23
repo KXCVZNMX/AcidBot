@@ -1,2 +1,10 @@
 @import 'tailwindcss';
 @plugin "daisyui";
+
+@theme {
+    --color-basic: #22bb5b;
+    --color-advanced: #fb9c2d;
+    --color-expert: #f64861;
+    --color-maseter: #9e45e2;
+    --color-remaster: #ba67f8;
+}

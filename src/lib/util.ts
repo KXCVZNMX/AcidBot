@@ -1,3 +1,6 @@
+import { MaimaiSongScore } from '@/lib/types';
+import { COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES } from '@/lib/consts';
+
 export const matchRule = (
     src: string,
     rules: [string, string][]
@@ -39,4 +42,64 @@ export const determineRank = (achievement: string) => {
     } else {
         return 'D';
     }
+};
+
+export const extractScore = ($: cheerio.Root) => {
+    const results: MaimaiSongScore[] = [];
+
+    $("div[class*='music_'][class*='_score_back']").each((_, el) => {
+        const root = $(el);
+
+        const icons = root.find("img[src*='music_icon_']");
+
+        const container = root.parent();
+
+        const dxVal = container.find(
+            "img[src*='music_dx'], img[src*='music_standard']"
+        );
+        const lvVal = root.find("img[src*='diff_']");
+
+        let dxState: string | null = null;
+        let diffState: string | null = null;
+        let syncState: string | null = null;
+        let comboState: string | null = null;
+
+        icons.each((_, img) => {
+            const src = $(img).attr('src') ?? '';
+
+            syncState ||= matchRule(src, SYNC_RULES);
+            comboState ||= matchRule(src, COMBO_RULES);
+        });
+
+        dxVal.each((_, dxv) => {
+            const src = $(dxv).attr('src') ?? '';
+            dxState ||= matchRule(src, DX_RULES);
+        });
+
+        lvVal.each((_, lv) => {
+            const src = $(lv).attr('src') ?? '';
+            diffState ||= matchRule(src, DIFF_RULES);
+        });
+
+        const name = root.find('.music_name_block').text().trim();
+
+        const scoreBlocks = root.find('.music_score_block');
+        const score = scoreBlocks.eq(0).text().trim();
+        const dx = scoreBlocks.eq(1).text().trim();
+
+        if (score !== '' && dx !== '') {
+            results.push({
+                name,
+                score,
+                dx,
+                isDx: dxState!,
+                diff: diffState!,
+                sync: syncState,
+                combo: comboState,
+                rank: determineRank(score),
+            });
+        }
+    });
+
+    return results;
 };

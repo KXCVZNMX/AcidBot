@@ -1,6 +1,6 @@
 'use server';
 
-import fetchCookie from "fetch-cookie";
+import fetchCookie from 'fetch-cookie';
 
 export default async function fetchPage(clal: string, redirect: string) {
     try {
@@ -16,9 +16,9 @@ export default async function fetchPage(clal: string, redirect: string) {
 
         const res = await fetchWithCookie(
             'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
-            'site_id=maimaidxex&' +
-            `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
-            'back_url=https://maimai.sega.com/',
+                'site_id=maimaidxex&' +
+                `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
+                'back_url=https://maimai.sega.com/',
             {
                 method: 'GET',
                 redirect: 'manual',
@@ -45,15 +45,15 @@ export default async function fetchPage(clal: string, redirect: string) {
             },
         });
 
-        const resultsRes = await fetchWithCookie(redirect, {
+        const result = await fetchWithCookie(redirect, {
             method: 'GET',
             headers: {
                 'User-Agent': userAgent,
             },
         });
 
-        return await resultsRes.text();
-    } catch(error) {
+        return await result.text();
+    } catch (error) {
         console.error(error);
         return (error as Error).message;
     }
