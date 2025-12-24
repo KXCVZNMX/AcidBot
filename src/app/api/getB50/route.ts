@@ -2,7 +2,7 @@ import fetchPages from '@/lib/fetchPage';
 import { NextRequest, NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
-import { MaimaiSongScore, MSSB50 } from '@/lib/types';
+import {MaimaiSongScore, MSSB50} from '@/lib/types';
 import client from '@/lib/db';
 import { DIFF_INDEX, RANK_DEFINITIONS } from '@/lib/consts';
 
@@ -59,8 +59,9 @@ export async function GET(req: NextRequest) {
 
         const res: MaimaiSongScore[] = [];
 
-        for (const url of redirects) {
-            const html = await fetchPages(clal, url);
+        const htmls = await fetchPages(clal, redirects);
+
+        for (const html of htmls) {
             const $ = cheerio.load(html);
             res.push(...extractScore($));
         }
@@ -70,11 +71,20 @@ export async function GET(req: NextRequest) {
         const collection = db.collection('maimaiSongs');
         const finalRes: MSSB50[] = [];
 
+        const titles = Array.from(new Set(res.map(r => r.name)));
+
+        const docs = await collection.find(
+            { title: { $in: titles } },
+            { projection: { title: 1, sheets: 1 } },
+        ).toArray();
+
+        const docMap = new Map<string, { title: string; sheets: MoreInfo[] }>();
+        for (const d of docs) {
+            if (d && d.title) docMap.set(d.title, d as any);
+        }
+
         for (const r of res) {
-            const qRes = await collection.findOne({
-                title: r.name,
-                'sheets.difficulty': r.diff,
-            });
+            const qRes = docMap.get(r.name);
 
             if (!qRes) {
                 throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
@@ -83,6 +93,11 @@ export async function GET(req: NextRequest) {
             const sheets: MoreInfo[] = qRes.sheets;
 
             const index = DIFF_INDEX[r.diff] ?? 0;
+
+            if (!sheets || !sheets[index]) {
+                console.warn(`No sheet info for ${r.name} diff ${r.diff} — skipping`);
+                continue;
+            }
 
             finalRes.push({
                 levelConst: sheets[index].internalLevelValue,
