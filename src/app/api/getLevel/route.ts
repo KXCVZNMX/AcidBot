@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const $ = cheerio.load(html);
+        const $ = cheerio.load(html as string);
         const results: MaimaiSongScore[] = extractScore($);
 
         console.log(results);
