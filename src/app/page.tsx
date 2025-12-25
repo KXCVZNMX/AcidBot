@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import ClalModal from "@/app/components/ClalModal";
 
 export default function Home() {
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     return (
         <>
