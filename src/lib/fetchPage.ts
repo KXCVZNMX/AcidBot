@@ -2,9 +2,12 @@
 
 import fetchCookie from 'fetch-cookie';
 
-export default async function fetchPage(clal: string, redirect: string | string[]) {
+export default async function fetchPage(
+    clal: string,
+    redirect: string | string[]
+) {
     const sleep = (ms: number) =>
-        new Promise(resolve => setTimeout(resolve, ms));
+        new Promise((resolve) => setTimeout(resolve, ms));
 
     try {
         const jar = new fetchCookie.toughCookie.CookieJar();
@@ -57,7 +60,7 @@ export default async function fetchPage(clal: string, redirect: string | string[
                     'User-Agent': userAgent,
                 },
             });
-            result.push(await res.text())
+            result.push(await res.text());
         } else {
             for (const re of redirect) {
                 const res = await fetchWithCookie(re, {

@@ -1,8 +1,8 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { MSSB50 } from '@/lib/types';
+import { getCookie } from '@/lib/util';
 
 interface Best50Songs {
     b35: MSSB50[];
@@ -10,20 +10,22 @@ interface Best50Songs {
 }
 
 export default function Best50() {
-    const { data: session, status } = useSession();
-
     const [clal, setClal] = useState('0');
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
+    const [status, setStatus] = useState('unauthenticated');
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (status === 'authenticated') {
-            setClal(session!.user!.clal);
-        }
-    }, [status, session]);
+        setStatus(getCookie('status') ?? 'unauthenticated');
 
-    if (status === 'unauthenticated') {
+        const clalCookie = getCookie('clal');
+        if (clalCookie) {
+            setClal(clalCookie);
+        }
+    });
+
+    if (!status || status === 'unauthenticated') {
         return (
             <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
         );
@@ -31,14 +33,6 @@ export default function Best50() {
 
     const fetchB50WithClal = async () => {
         try {
-            if (status !== 'authenticated') {
-                throw new Error('Please log in first');
-            }
-
-            if (!session || !session!.user) {
-                throw new Error('User session is missing');
-            }
-
             const res = await fetch(`/api/getB50?clal=${clal}`, {
                 method: 'GET',
             });

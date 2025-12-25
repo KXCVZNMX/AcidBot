@@ -22,7 +22,16 @@ export async function POST(req: NextRequest) {
             }
         );
 
-        return NextResponse.json({}, { status: 200 });
+        const ret = NextResponse.json({}, { status: 200 });
+        ret.cookies.set('clal', encodeURIComponent(clal), {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 365,
+        });
+
+        return ret;
     } catch (error) {
         return NextResponse.json((error as Error).message, { status: 500 });
     }

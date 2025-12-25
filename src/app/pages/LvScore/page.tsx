@@ -3,23 +3,25 @@
 import { useEffect, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
-import { useSession } from 'next-auth/react';
+import { getCookie } from '@/lib/util';
 
 export default function LvScore() {
-    const { data: session, status } = useSession();
-
     const [level, setLevel] = useState('');
     const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
-    const [clal, setClal] = useState('0');
+    const [status, setStatus] = useState('unauthenticated');
+    const [clal, setClal] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (status === 'authenticated') {
-            setClal(session!.user!.clal);
-        }
-    }, [status, session]);
+        setStatus(getCookie('status') ?? 'unauthenticated');
 
-    if (status === 'unauthenticated') {
+        const clalCookie = getCookie('clal');
+        if (clalCookie) {
+            setClal(clalCookie);
+        }
+    }, []);
+
+    if (!status || status === 'unauthenticated') {
         return (
             <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
         );
@@ -27,14 +29,6 @@ export default function LvScore() {
 
     const fetchResultWithClal = async () => {
         try {
-            if (status !== 'authenticated') {
-                throw new Error('Please log in first');
-            }
-
-            if (!session || !session!.user) {
-                throw new Error('User session is missing');
-            }
-
             const config: MaimaiFetchData = {
                 clal: clal,
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
