@@ -2,7 +2,7 @@ import fetchPages from '@/lib/fetchPage';
 import { NextRequest, NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
-import {MaimaiSongScore, MSSB50} from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
 import { DIFF_INDEX, RANK_DEFINITIONS } from '@/lib/consts';
 
@@ -71,12 +71,14 @@ export async function GET(req: NextRequest) {
         const collection = db.collection('maimaiSongs');
         const finalRes: MSSB50[] = [];
 
-        const titles = Array.from(new Set(res.map(r => r.name)));
+        const titles = Array.from(new Set(res.map((r) => r.name)));
 
-        const docs = await collection.find(
-            { title: { $in: titles } },
-            { projection: { title: 1, sheets: 1 } },
-        ).toArray();
+        const docs = await collection
+            .find(
+                { title: { $in: titles } },
+                { projection: { title: 1, sheets: 1 } }
+            )
+            .toArray();
 
         const docMap = new Map<string, { title: string; sheets: MoreInfo[] }>();
         for (const d of docs) {
@@ -95,7 +97,9 @@ export async function GET(req: NextRequest) {
             const index = DIFF_INDEX[r.diff] ?? 0;
 
             if (!sheets || !sheets[index]) {
-                console.warn(`No sheet info for ${r.name} diff ${r.diff} — skipping`);
+                console.warn(
+                    `No sheet info for ${r.name} diff ${r.diff} — skipping`
+                );
                 continue;
             }
 

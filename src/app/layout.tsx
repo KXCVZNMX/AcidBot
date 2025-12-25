@@ -16,7 +16,10 @@ export default function RootLayout({
         <html lang={'en'}>
             <body>
                 <SpeedInsights />
-                <SessionProvider>
+                <SessionProvider
+                    refetchOnWindowFocus={false}
+                    refetchInterval={0}
+                >
                     <Navbar />
                     <Analytics />
                     {children}

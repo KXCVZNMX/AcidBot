@@ -12,7 +12,6 @@ export function LoginGithub() {
     );
 }
 
-// Doesn't work yet
 export function LoginGoogle() {
     return (
         <form action={loginGoogle}>
