@@ -31,14 +31,6 @@ export default function Best50() {
 
     const fetchB50WithClal = async () => {
         try {
-            if (status !== 'authenticated') {
-                throw new Error('Please log in first');
-            }
-
-            if (!session || !session!.user) {
-                throw new Error('User session is missing');
-            }
-
             const res = await fetch(`/api/getB50?clal=${clal}`, {
                 method: 'GET',
             });
