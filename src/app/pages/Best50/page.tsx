@@ -15,12 +15,20 @@ export default function Best50() {
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
 
+    const status = getCookie('status');
+
     useEffect(() => {
         const clalCookie = getCookie('clal');
         if (clalCookie) {
             setClal(clalCookie);
         }
     }, []);
+
+    if (!status || status === 'unauthenticated') {
+        return (
+            <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
+        );
+    }
 
     const fetchB50WithClal = async () => {
         try {
