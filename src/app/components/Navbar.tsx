@@ -1,7 +1,7 @@
 'use client';
 
 import { LoginGithub, LoginGoogle } from '@/app/components/Login';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { useSession } from 'next-auth/react';
 import Logout from '@/app/components/Logout';
 
