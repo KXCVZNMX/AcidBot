@@ -107,10 +107,3 @@ export const RANK_DEFINITIONS: ReadonlyArray<Rank> = [
     { minA: 0.0, factor: 0.016, title: 'D' },
 ];
 
-export const DIFF_INDEX: Record<string, number> = {
-    basic: 0,
-    advanced: 1,
-    expert: 2,
-    master: 3,
-    remaster: 4,
-};

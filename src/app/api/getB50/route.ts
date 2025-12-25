@@ -4,9 +4,11 @@ import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import { DIFF_INDEX, RANK_DEFINITIONS } from '@/lib/consts';
+import { RANK_DEFINITIONS } from '@/lib/consts';
 
 type MoreInfo = {
+    type: 'dx' | 'std';
+    difficulty: 'basic' | 'advanced' | 'expert' | 'master' | 'remaster';
     internalLevelValue: number;
     version: string;
 };
@@ -34,8 +36,13 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
 function isNew(version: string, name: string) {
     return (
         version === 'PRiSM PLUS' ||
+        // Hotfixes: KOP Songs and songs that somehow miss the first check
         name ===
-            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)'
+            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)' ||
+        name ===
+            'Åntinomiε' ||
+        name ===
+            'World\'s end BLACKBOX'
     );
 }
 
@@ -94,9 +101,9 @@ export async function GET(req: NextRequest) {
 
             const sheets: MoreInfo[] = qRes.sheets;
 
-            const index = DIFF_INDEX[r.diff] ?? 0;
+            const sheet = sheets.find(s => s.type === r.isDx && s.difficulty === r.diff);
 
-            if (!sheets || !sheets[index]) {
+            if (!sheets || !sheet) {
                 console.warn(
                     `No sheet info for ${r.name} diff ${r.diff} — skipping`
                 );
@@ -104,7 +111,7 @@ export async function GET(req: NextRequest) {
             }
 
             finalRes.push({
-                levelConst: sheets[index].internalLevelValue,
+                levelConst: sheet.internalLevelValue,
                 name: r.name,
                 score: r.score,
                 diff: r.diff,
@@ -114,7 +121,7 @@ export async function GET(req: NextRequest) {
                 combo: r.combo,
                 rank: r.rank,
                 rating: 0,
-                version: sheets[index].version,
+                version: sheet.version,
                 achievement: Number(r.score.slice(0, -1)),
             });
         }
