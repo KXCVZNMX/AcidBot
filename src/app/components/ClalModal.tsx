@@ -14,7 +14,7 @@ export default function ClalModal(
         if (clalCookie) {
             setClal(clalCookie);
         }
-    })
+    }, [])
 
     const setUserClal = async () => {
         try {
