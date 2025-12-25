@@ -10,6 +10,10 @@ export default function Navbar() {
 
     const [showLoginModal, setShowLoginModal] = useState(false);
 
+    useEffect(() => {
+        document.cookie = `status=${status}`;
+    })
+
     return (
         <>
             <div className={`modal ${showLoginModal ? 'modal-open' : ''}`}>
