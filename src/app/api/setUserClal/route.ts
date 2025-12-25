@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
         const ret = NextResponse.json({}, { status: 200 });
         ret.cookies.set('clal', encodeURIComponent(clal), {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
