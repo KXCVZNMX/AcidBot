@@ -1,5 +1,3 @@
-'use client';
-
 import { MaimaiSongScore } from '@/lib/types';
 import { COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES } from '@/lib/consts';
 
