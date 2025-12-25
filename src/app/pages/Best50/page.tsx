@@ -32,6 +32,9 @@ export default function Best50() {
     }
 
     const fetchB50WithClal = async () => {
+        setOldSong([]);
+        setNewSong([]);
+
         try {
             const res = await fetch(`/api/getB50?clal=${clal}`, {
                 method: 'GET',
@@ -50,6 +53,9 @@ export default function Best50() {
         }
     };
 
+    const calculateRating = () =>
+        [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
+
     return (
         <>
             <div className={'flex flex-col justify-center shadow-lg'}>
@@ -64,6 +70,9 @@ export default function Best50() {
                     >
                         Submit
                     </button>
+                    <h4 className={'p-3'}>
+                        {(oldSong.length !== 0 && newSong.length !== 0) ? calculateRating() : 0}
+                    </h4>
                 </div>
                 <div className={'overflow-x-auto'}>
                     <table className={'table table-fixed min-w-max'}>
