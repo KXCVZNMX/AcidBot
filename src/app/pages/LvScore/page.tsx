@@ -8,12 +8,13 @@ import { getCookie } from '@/lib/util';
 export default function LvScore() {
     const [level, setLevel] = useState('');
     const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
-    const [clal, setClal] = useState('0');
+    const [status, setStatus] = useState('unauthenticated');
+    const [clal, setClal] = useState('');
     const [error, setError] = useState('');
 
-    const status = getCookie('status');
-
     useEffect(() => {
+        setStatus(getCookie('status') ?? 'unauthenticated');
+
         const clalCookie = getCookie('clal');
         if (clalCookie) {
             setClal(clalCookie);

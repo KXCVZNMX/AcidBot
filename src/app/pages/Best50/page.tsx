@@ -13,16 +13,17 @@ export default function Best50() {
     const [clal, setClal] = useState('0');
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
+    const [status, setStatus] = useState('unauthenticated');
     const [error, setError] = useState('');
 
-    const status = getCookie('status');
-
     useEffect(() => {
+        setStatus(getCookie('status') ?? 'unauthenticated');
+
         const clalCookie = getCookie('clal');
         if (clalCookie) {
             setClal(clalCookie);
         }
-    }, []);
+    });
 
     if (!status || status === 'unauthenticated') {
         return (
