@@ -37,37 +37,45 @@ export default function Navbar() {
             </div>
 
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
-                <div className={'flex-1 p-3'}>
+                <div className={'p-3'}>
                     <a className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>
                         AcidBot
-                    </a>
-                    <a
-                        className={'btn btn-ghost text-lg'}
-                        href={'/pages/LvScore'}
-                    >
-                        LvScore
-                    </a>
-
-                    <a
-                        className={'btn btn-ghost text-lg'}
-                        href={'/pages/Best50'}
-                    >
-                        Best50
                     </a>
                 </div>
 
                 {status === 'unauthenticated' ? (
-                    <div
-                        className={'flex btn p-5'}
-                        onClick={() => setShowLoginModal(true)}
-                    >
-                        Login
-                    </div>
+                    <>
+                        <div className={'flex-1'} />
+                        <div
+                            className={'btn p-5'}
+                            onClick={() => setShowLoginModal(true)}
+                        >
+                            Login
+                        </div>
+                    </>
                 ) : (
-                    <div className={'flex p-5 items-center gap-2'}>
-                        <span>{`Welcome, ${session?.user?.name}`}</span>
-                        <Logout />
-                    </div>
+                    <>
+                        <div className={'flex-1 p-3'}>
+                            <a
+                                className={'btn btn-ghost text-lg'}
+                                href={'/pages/LvScore'}
+                            >
+                                LvScore
+                            </a>
+
+                            <a
+                                className={'btn btn-ghost text-lg'}
+                                href={'/pages/Best50'}
+                            >
+                                Best50
+                            </a>
+                        </div>
+
+                        <div className={'flex p-5 items-center gap-2'}>
+                            <span>{`Welcome, ${session?.user?.name}`}</span>
+                            <Logout />
+                        </div>
+                    </>
                 )}
             </div>
         </>

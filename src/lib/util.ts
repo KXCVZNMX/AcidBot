@@ -103,3 +103,10 @@ export const extractScore = ($: cheerio.Root) => {
 
     return results;
 };
+
+export const getCookie = (name: string): string | undefined => {
+    return document.cookie
+        .split('; ')
+        .find(c => c.startsWith(name + '='))
+        ?.split('=')[1];
+}
