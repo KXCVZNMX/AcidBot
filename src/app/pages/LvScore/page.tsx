@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
-import { getCookie } from "@/lib/util";
+import { getCookie } from '@/lib/util';
 
 export default function LvScore() {
     const [level, setLevel] = useState('');

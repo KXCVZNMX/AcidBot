@@ -1,11 +1,15 @@
 'use client';
 
-import {useEffect, useState} from "react";
-import {getCookie} from "@/lib/util";
+import { useEffect, useState } from 'react';
+import { getCookie } from '@/lib/util';
 
-export default function ClalModal(
-    {initialState, userId} : {initialState: boolean, userId: string}
-) {
+export default function ClalModal({
+    initialState,
+    userId,
+}: {
+    initialState: boolean;
+    userId: string;
+}) {
     const [showClalModal, setShowClalModal] = useState(initialState);
     const [clal, setClal] = useState('');
 
@@ -14,13 +18,16 @@ export default function ClalModal(
         if (clalCookie) {
             setClal(clalCookie);
         }
-    }, [])
+    }, []);
 
     const setUserClal = async () => {
         try {
-            const res = await fetch(`/api/setUserClal?id=${userId}&clal=${clal}`, {
-                method: 'POST',
-            });
+            const res = await fetch(
+                `/api/setUserClal?id=${userId}&clal=${clal}`,
+                {
+                    method: 'POST',
+                }
+            );
 
             if (!res.ok) {
                 throw new Error('Failed to set clal, try again later');
@@ -75,5 +82,5 @@ export default function ClalModal(
                 </button>
             </div>
         </div>
-    )
+    );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { LoginGithub, LoginGoogle } from '@/app/components/Login';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Logout from '@/app/components/Logout';
 
@@ -12,7 +12,7 @@ export default function Navbar() {
 
     useEffect(() => {
         document.cookie = `status=${status}`;
-    })
+    });
 
     return (
         <>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { MSSB50 } from '@/lib/types';
-import {getCookie} from "@/lib/util";
+import { getCookie } from '@/lib/util';
 
 interface Best50Songs {
     b35: MSSB50[];
