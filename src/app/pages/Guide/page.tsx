@@ -77,13 +77,16 @@ export default function Guide() {
 
             <Step title={'Step 3 — Install the bookmarklet'}>
                 <p>
-                    Drag the button below into your browser’s bookmark bar.
+                    Click this button to copy the bookmarklet and paste it into a bookmark's URL field.
                 </p>
 
                 <div className={'pt-2'}>
                     <a
                         href={bookmarklet}
-                        onClick={(e) => e.preventDefault()}
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            await navigator.clipboard.writeText(bookmarklet);
+                        }}
                         className={'btn btn-primary btn-lg'}
                     >
                         {'AcidBot Bookmarklet'}
