@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
             }
         );
 
-        const ret = NextResponse.json({}, { status: 200 });
+        const ret = NextResponse.json({status: 'success'}, { status: 200 });
         ret.cookies.set('clal', encodeURIComponent(clal), {
             httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
