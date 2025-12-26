@@ -62,6 +62,12 @@ export default function Navbar() {
                         <div className={'flex-1 p-3'}>
                             <a
                                 className={'btn btn-ghost text-lg'}
+                                href={'/pages/Guide'}
+                            >
+                                Guide
+                            </a>
+                            <a
+                                className={'btn btn-ghost text-lg'}
                                 href={'/pages/LvScore'}
                             >
                                 LvScore
