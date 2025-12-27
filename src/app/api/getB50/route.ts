@@ -5,6 +5,8 @@ import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
 import { RANK_DEFINITIONS } from '@/lib/consts';
+import {auth} from "@/auth";
+import {ObjectId} from "mongodb";
 
 type MoreInfo = {
     type: 'dx' | 'std';
@@ -50,6 +52,9 @@ export async function GET(req: NextRequest) {
     const url = req.nextUrl;
 
     try {
+        const session = await auth();
+        const id = session?.user?.id ?? '';
+
         const clal = url.searchParams.get('clal');
 
         if (!clal) {
@@ -141,9 +146,26 @@ export async function GET(req: NextRequest) {
         b35.sort((a, b) => b.rating - a.rating);
         b15.sort((a, b) => b.rating - a.rating);
 
+        const slicedB35 = b35.slice(0, 35);
+        const slicedB15 = b15.slice(0, 15);
+
+
+        await db.collection('userB50').updateOne(
+            { _id: new ObjectId(id) },
+            {
+                $set: {
+                    id: id,
+                    b15: slicedB15,
+                    b35: slicedB35,
+                    updatedAt: new Date(),
+                }
+            },
+            { upsert: true }
+        )
+
         return NextResponse.json({
-            b35: b35.slice(0, 35),
-            b15: b15.slice(0, 15),
+            b35: slicedB35,
+            b15: slicedB15,
         });
     } catch (error) {
         console.error(error);
