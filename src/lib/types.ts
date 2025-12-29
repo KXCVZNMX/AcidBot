@@ -21,6 +21,12 @@ export interface MSSB50 extends MaimaiSongScore {
     achievement: number;
 }
 
+export interface SongTags {
+    achievement: number;
+    levelConst: number;
+    tags: number[];
+}
+
 export interface Rank {
     title: string;
     maxA?: number;
