@@ -47,7 +47,7 @@ export default function Navbar() {
                     </a>
                 </div>
 
-                {status === 'unauthenticated' ? (
+                {status === 'unauthenticated' || !session ? (
                     <>
                         <div className={'flex-1'} />
                         <div
