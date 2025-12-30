@@ -110,3 +110,49 @@ export const getCookie = (name: string): string | undefined => {
         .find((c) => c.startsWith(name + '='))
         ?.split('=')[1];
 };
+
+export const mapTagToPatternIndex = (tagNumber: number) => {
+    if (tagNumber === 3) {
+        return 0;
+    } else if (tagNumber === 4) {
+        return 1;
+    } else if (tagNumber === 6) {
+        return 2;
+    } else if (tagNumber === 7) {
+        return 3;
+    } else if (tagNumber === 8) {
+        return 4;
+    } else if (tagNumber === 9) {
+        return 5;
+    } else if (tagNumber === 10) {
+        return 6;
+    } else if (tagNumber === 1) {
+        return 7;
+    } else if (tagNumber === 17) {
+        return 8;
+    } else if (tagNumber === 18) {
+        return 9;
+    } else if (tagNumber === 19) {
+        return 10;
+    } else if (tagNumber === 20) {
+        return 11;
+    } else if (tagNumber === 23) {
+        return 12;
+    } else if (tagNumber === 24) {
+        return 13;
+    }
+}
+
+export const mapTagToEvalIndex = (tagNumber: number) => {
+    if (tagNumber === 15) {
+        return 0;
+    } else if (tagNumber === 14) {
+        return 1;
+    } else if (tagNumber === 21) {
+        return 2;
+    } else if (tagNumber === 16) {
+        return 3;
+    } else if (tagNumber === 22) {
+        return 4;
+    }
+}

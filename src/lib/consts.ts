@@ -126,6 +126,44 @@ export const PATTERN_TAG: Readonly<Record<number, string>> = {
     24: '大位移',
 };
 
+export const PATTERN_TAG_NAMES: string[] = [
+    '转圈',
+    '绝赞',
+    '扫键',
+    '散打',
+    '交互',
+    '反手',
+    '一笔画',
+    // "水",
+    '错位',
+    '跳拍',
+    '纵连',
+    '爆发',
+    '拆弹',
+    // "诈称",
+    '定拍',
+    '大位移',
+]
+
+export const PATTERN_TAG_NUMBERS: Readonly<number[]> = [
+    3,
+    4,
+    6,
+    7,
+    8,
+    9,
+    10,
+    // 11,
+    1,
+    17,
+    18,
+    19,
+    20,
+    // 13,
+    23,
+    24,
+]
+
 export const EVAL_TAG: Readonly<Record<number, string>> = {
     15: '键盘谱',
     14: '星星谱',
@@ -133,3 +171,19 @@ export const EVAL_TAG: Readonly<Record<number, string>> = {
     16: '底力谱',
     22: '高物量',
 };
+
+export const EVAL_TAG_NAMES: string[] = [
+    '键盘谱',
+    '星星谱',
+    '体力谱',
+    '底力谱',
+    '高物量',
+]
+
+export const EVAL_TAG_NUMBERS: Readonly<number[]> = [
+    15,
+    14,
+    21,
+    16,
+    22,
+]

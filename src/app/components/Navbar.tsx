@@ -79,6 +79,13 @@ export default function Navbar() {
                             >
                                 Best50
                             </a>
+
+                            <a
+                                className={'btn btn-ghost text-lg'}
+                                href={'/pages/SkillRadar'}
+                            >
+                                Skill Radar
+                            </a>
                         </div>
 
                         <div className={'flex p-5 items-center gap-2'}>
