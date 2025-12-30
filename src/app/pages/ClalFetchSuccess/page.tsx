@@ -4,5 +4,5 @@ export default function ClalFetchSuccess() {
             <h1 className={'text-center text-3xl'}>Success</h1>
             <hr />
         </>
-    )
+    );
 }

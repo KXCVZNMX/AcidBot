@@ -143,26 +143,15 @@ export const PATTERN_TAG_NAMES: string[] = [
     // "诈称",
     '定拍',
     '大位移',
-]
+];
 
 export const PATTERN_TAG_NUMBERS: Readonly<number[]> = [
-    3,
-    4,
-    6,
-    7,
-    8,
-    9,
-    10,
+    3, 4, 6, 7, 8, 9, 10,
     // 11,
-    1,
-    17,
-    18,
-    19,
-    20,
+    1, 17, 18, 19, 20,
     // 13,
-    23,
-    24,
-]
+    23, 24,
+];
 
 export const EVAL_TAG: Readonly<Record<number, string>> = {
     15: '键盘谱',
@@ -178,12 +167,6 @@ export const EVAL_TAG_NAMES: string[] = [
     '体力谱',
     '底力谱',
     '高物量',
-]
+];
 
-export const EVAL_TAG_NUMBERS: Readonly<number[]> = [
-    15,
-    14,
-    21,
-    16,
-    22,
-]
+export const EVAL_TAG_NUMBERS: Readonly<number[]> = [15, 14, 21, 16, 22];

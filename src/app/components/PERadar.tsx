@@ -22,7 +22,17 @@ ChartJS.register(
     Legend
 );
 
-export default function PERadar({ tags, tagName, maxV, name }: { tags: number[], tagName: string[], maxV: number, name: string }) {
+export default function PERadar({
+    tags,
+    tagName,
+    maxV,
+    name,
+}: {
+    tags: number[];
+    tagName: string[];
+    maxV: number;
+    name: string;
+}) {
     const data = {
         labels: tagName,
         datasets: [

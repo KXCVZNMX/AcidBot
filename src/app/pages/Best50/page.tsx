@@ -41,7 +41,7 @@ export default function Best50() {
                 setError((error as Error).message);
                 console.error(error);
             }
-        })()
+        })();
     }, []);
 
     if (!status || status === 'unauthenticated') {
@@ -90,7 +90,9 @@ export default function Best50() {
                         Submit
                     </button>
                     <h4 className={'p-3'}>
-                        {(oldSong.length !== 0 && newSong.length !== 0) ? calculateRating() : 0}
+                        {oldSong.length !== 0 && newSong.length !== 0
+                            ? calculateRating()
+                            : 0}
                     </h4>
                 </div>
                 <div className={'overflow-x-auto'}>

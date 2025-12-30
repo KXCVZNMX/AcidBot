@@ -1,10 +1,14 @@
 'use client';
 
-import {SongTags} from "@/lib/types";
-import {useState} from "react";
-import {EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS} from "@/lib/consts";
-import {mapTagToEvalIndex, mapTagToPatternIndex} from "@/lib/util";
-import PERadar from "@/app/components/PERadar";
+import { SongTags } from '@/lib/types';
+import { useState } from 'react';
+import {
+    EVAL_TAG_NAMES,
+    PATTERN_TAG_NAMES,
+    PATTERN_TAG_NUMBERS,
+} from '@/lib/consts';
+import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
+import PERadar from '@/app/components/PERadar';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
@@ -25,11 +29,11 @@ export default function SkillRadar() {
             setError((error as Error).message);
             return [];
         }
-    }
+    };
 
     const maxValue = (values: number[]) => {
         if (values.length === 0) {
-            throw new Error("Cannot compute max of an empty list");
+            throw new Error('Cannot compute max of an empty list');
         }
 
         let max = values[0];
@@ -39,16 +43,15 @@ export default function SkillRadar() {
             }
         }
         return max;
-    }
-
+    };
 
     const calculateWeight = (levelConst: number, meanLevelConst: number) => {
         if (levelConst < meanLevelConst) {
-            return 0.75 - ((meanLevelConst - levelConst) / 20);
+            return 0.75 - (meanLevelConst - levelConst) / 20;
         } else {
-            return 0.75 + ((levelConst - meanLevelConst) / 20);
+            return 0.75 + (levelConst - meanLevelConst) / 20;
         }
-    }
+    };
 
     const buttonAction = async () => {
         const data = await fetchB50WithTags();
@@ -81,12 +84,15 @@ export default function SkillRadar() {
         setEvalRadarValues(eRadarVal);
         setPatternRadarValues(pRadarVal);
         setShowRadars(true);
-    }
+    };
 
     return (
         <>
             <div className={'flex justify-center p-5'}>
-                <button className={'btn btn-primary'} onClick={async () => await buttonAction()}>
+                <button
+                    className={'btn btn-primary'}
+                    onClick={async () => await buttonAction()}
+                >
                     Get Results
                 </button>
             </div>
@@ -112,5 +118,5 @@ export default function SkillRadar() {
                 </div>
             )}
         </>
-    )
+    );
 }

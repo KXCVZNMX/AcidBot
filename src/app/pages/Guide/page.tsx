@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import React from "react";
+import React from 'react';
 
 export default function Guide() {
     const { data: session } = useSession();
@@ -14,8 +14,7 @@ export default function Guide() {
         'redirect_url=https%3A%2F%2Fmy-aime.net%2Fen%2Flogin%2Fauth%2Fcauth&' +
         'back_url=https%3A%2F%2Fmy-aime.net%2Fen';
 
-    const segaNotFoundLink =
-        `https://lng-tgk-aime-gw.am-all.net/common_auth/?id=${session?.user?.id}`;
+    const segaNotFoundLink = `https://lng-tgk-aime-gw.am-all.net/common_auth/?id=${session?.user?.id}`;
 
     const bookmarklet =
         'javascript:' +
@@ -26,9 +25,9 @@ export default function Guide() {
         '})();void(0);';
 
     const Step = ({
-                      title,
-                      children,
-                  }: {
+        title,
+        children,
+    }: {
         title: string;
         children: React.ReactNode;
     }) => (
@@ -41,9 +40,9 @@ export default function Guide() {
     );
 
     const Link = ({
-                      href,
-                      children,
-                  }: {
+        href,
+        children,
+    }: {
         href: string;
         children: React.ReactNode;
     }) => (
@@ -65,19 +64,25 @@ export default function Guide() {
 
             <Step title={'Step 1 — Login to SEGA'}>
                 <p>
-                    Log in using this <Link href={segaLoginLink}>{'SEGA authentication page'}</Link>.
+                    Log in using this{' '}
+                    <Link href={segaLoginLink}>
+                        {'SEGA authentication page'}
+                    </Link>
+                    .
                 </p>
             </Step>
 
             <Step title={'Step 2 — Open your profile'}>
                 <p>
-                    Navigate to  <Link href={segaNotFoundLink}>{'this page'}</Link>.
+                    Navigate to{' '}
+                    <Link href={segaNotFoundLink}>{'this page'}</Link>.
                 </p>
             </Step>
 
             <Step title={'Step 3 — Install the bookmarklet'}>
                 <p>
-                    Click this button to copy the bookmarklet and paste it into a bookmark's URL field.
+                    Click this button to copy the bookmarklet and paste it into
+                    a bookmark's URL field.
                 </p>
 
                 <div className={'pt-2'}>
@@ -96,8 +101,9 @@ export default function Guide() {
 
             <Step title={'Step 4 — Run the bookmarklet'}>
                 <p>
-                    Return to the <Link href={segaNotFoundLink}>{'profile page'}</Link> and click
-                    the bookmarklet you just added.
+                    Return to the{' '}
+                    <Link href={segaNotFoundLink}>{'profile page'}</Link> and
+                    click the bookmarklet you just added.
                 </p>
             </Step>
         </div>

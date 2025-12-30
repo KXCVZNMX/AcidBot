@@ -141,7 +141,7 @@ export const mapTagToPatternIndex = (tagNumber: number) => {
     } else if (tagNumber === 24) {
         return 13;
     }
-}
+};
 
 export const mapTagToEvalIndex = (tagNumber: number) => {
     if (tagNumber === 15) {
@@ -155,4 +155,4 @@ export const mapTagToEvalIndex = (tagNumber: number) => {
     } else if (tagNumber === 22) {
         return 4;
     }
-}
+};
