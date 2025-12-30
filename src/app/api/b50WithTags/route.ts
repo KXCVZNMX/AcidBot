@@ -1,20 +1,13 @@
-import { MSSB50, SongTags } from '@/lib/types';
+import { SongTags } from '@/lib/types';
 import { NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 
-type OldB50Format = {
-    b15: MSSB50[];
-    b35: MSSB50[];
-};
-
 export async function GET() {
     try {
         const session = await auth();
         const id = session!.user?.id ?? '';
-
-        const site_link = process.env.SITE_LINK ?? 'https://acid.kvznmx.com/';
 
         const db = client.db();
         const doc = await db
