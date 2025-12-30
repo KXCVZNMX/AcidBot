@@ -5,8 +5,8 @@ import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
 import { RANK_DEFINITIONS } from '@/lib/consts';
-import {auth} from "@/auth";
-import {ObjectId} from "mongodb";
+import { auth } from '@/auth';
+import { ObjectId } from 'mongodb';
 
 type MoreInfo = {
     type: 'dx' | 'std';
@@ -41,10 +41,8 @@ function isNew(version: string, name: string) {
         // Hotfixes: KOP Songs and songs that somehow miss the first check
         name ===
             'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)' ||
-        name ===
-            'Åntinomiε' ||
-        name ===
-            'World\'s end BLACKBOX'
+        name === 'Åntinomiε' ||
+        name === "World's end BLACKBOX"
     );
 }
 
@@ -106,7 +104,9 @@ export async function GET(req: NextRequest) {
 
             const sheets: MoreInfo[] = qRes.sheets;
 
-            const sheet = sheets.find(s => s.type === r.isDx && s.difficulty === r.diff);
+            const sheet = sheets.find(
+                (s) => s.type === r.isDx && s.difficulty === r.diff
+            );
 
             if (!sheets || !sheet) {
                 console.warn(
@@ -149,7 +149,6 @@ export async function GET(req: NextRequest) {
         const slicedB35 = b35.slice(0, 35);
         const slicedB15 = b15.slice(0, 15);
 
-
         await db.collection('userB50').updateOne(
             { _id: new ObjectId(id) },
             {
@@ -158,10 +157,10 @@ export async function GET(req: NextRequest) {
                     b15: slicedB15,
                     b35: slicedB35,
                     updatedAt: new Date(),
-                }
+                },
             },
             { upsert: true }
-        )
+        );
 
         return NextResponse.json({
             b35: slicedB35,

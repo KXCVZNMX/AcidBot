@@ -47,7 +47,7 @@ export default function Navbar() {
                     </a>
                 </div>
 
-                {status === 'unauthenticated' ? (
+                {status === 'unauthenticated' || !session ? (
                     <>
                         <div className={'flex-1'} />
                         <div
@@ -78,6 +78,13 @@ export default function Navbar() {
                                 href={'/pages/Best50'}
                             >
                                 Best50
+                            </a>
+
+                            <a
+                                className={'btn btn-ghost text-lg'}
+                                href={'/pages/SkillRadar'}
+                            >
+                                Skill Radar
                             </a>
                         </div>
 
