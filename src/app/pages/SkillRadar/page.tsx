@@ -1,11 +1,10 @@
 'use client';
 
 import {SongTags} from "@/lib/types";
-import {useEffect, useState} from "react";
-import {PATTERN_TAG_NUMBERS} from "@/lib/consts";
+import {useState} from "react";
+import {EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS} from "@/lib/consts";
 import {mapTagToEvalIndex, mapTagToPatternIndex} from "@/lib/util";
-import EvalRadar from "@/app/components/Radars/EvalRadar";
-import PatternRadar from "@/app/components/Radars/PatternRadar";
+import PERadar from "@/app/components/PERadar";
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
@@ -94,11 +93,21 @@ export default function SkillRadar() {
             {showRadars && (
                 <div className={'flex flex-row justify-center'}>
                     <div style={{ height: 400, width: 400 }}>
-                        <PatternRadar tags={patternRadarValues.slice(0, 14)} maxV={maxValue(patternRadarValues.slice(0, 14))} />
+                        <PERadar
+                            tags={patternRadarValues}
+                            tagName={PATTERN_TAG_NAMES}
+                            maxV={maxValue(patternRadarValues)}
+                            name={'Pattern'}
+                        />
                     </div>
 
                     <div style={{ height: 400, width: 400 }}>
-                        <EvalRadar tags={evalRadarValues.slice(0, 5)} maxV={maxValue(evalRadarValues.slice(0, 14))}/>
+                        <PERadar
+                            tags={evalRadarValues}
+                            tagName={EVAL_TAG_NAMES}
+                            maxV={maxValue(evalRadarValues)}
+                            name={'Evaluation'}
+                        />
                     </div>
                 </div>
             )}

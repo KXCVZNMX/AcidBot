@@ -11,7 +11,6 @@ import {
     Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
-import {PATTERN_TAG_NAMES} from "@/lib/consts";
 
 ChartJS.register(
     RadialLinearScale,
@@ -23,12 +22,12 @@ ChartJS.register(
     Legend
 );
 
-export default function PatternRadar({ tags, maxV }: { tags: number[], maxV: number }) {
+export default function PERadar({ tags, tagName, maxV, name }: { tags: number[], tagName: string[], maxV: number, name: string }) {
     const data = {
-        labels: PATTERN_TAG_NAMES,
+        labels: tagName,
         datasets: [
             {
-                label: 'Pattern',
+                label: name,
                 data: tags,
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
@@ -70,9 +69,6 @@ export default function PatternRadar({ tags, maxV }: { tags: number[], maxV: num
             },
         },
     };
-
-    console.log(data.labels);
-    console.log(data.datasets[0].data);
 
     return <Radar data={data} options={options} />;
 }
