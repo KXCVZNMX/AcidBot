@@ -1,14 +1,18 @@
-import {LoginGithub, LoginGoogle} from "@/app/components/Login";
-import {Dispatch, SetStateAction} from "react";
+import { LoginGithub, LoginGoogle } from '@/app/components/Login';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function LoginModal({showLoginModal, setShowLoginModal}: {showLoginModal: boolean, setShowLoginModal: Dispatch<SetStateAction<boolean>>}) {
+export default function LoginModal({
+    showLoginModal,
+    setShowLoginModal,
+}: {
+    showLoginModal: boolean;
+    setShowLoginModal: Dispatch<SetStateAction<boolean>>;
+}) {
     return (
         <div className={`modal ${showLoginModal ? 'modal-open' : ''}`}>
             <div className={'modal-box'}>
                 <div className={'relative mb-4'}>
-                    <h3 className={'text-lg font-bold text-center'}>
-                        Login
-                    </h3>
+                    <h3 className={'text-lg font-bold text-center'}>Login</h3>
 
                     <button
                         className={
@@ -26,5 +30,5 @@ export default function LoginModal({showLoginModal, setShowLoginModal}: {showLog
                 </div>
             </div>
         </div>
-    )
+    );
 }

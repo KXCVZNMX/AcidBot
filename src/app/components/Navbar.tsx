@@ -1,13 +1,12 @@
 'use client';
 
-import { LoginGithub, LoginGoogle } from '@/app/components/Login';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Logout from '@/app/components/Logout';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
-import LoginModal from "@/app/components/LoginModal";
+import LoginModal from '@/app/components/LoginModal';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -20,7 +19,10 @@ export default function Navbar() {
 
     return (
         <>
-            <LoginModal showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
+            <LoginModal
+                showLoginModal={showLoginModal}
+                setShowLoginModal={setShowLoginModal}
+            />
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
                     <a className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>

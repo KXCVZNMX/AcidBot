@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import { useSession } from 'next-auth/react';
-import LoginModal from "@/app/components/LoginModal";
+import LoginModal from '@/app/components/LoginModal';
 
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
@@ -41,7 +41,10 @@ export default function HamburgerDrawer() {
 
     return (
         <>
-            <LoginModal showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
+            <LoginModal
+                showLoginModal={showLoginModal}
+                setShowLoginModal={setShowLoginModal}
+            />
 
             <div className={''}>
                 <div
@@ -211,7 +214,9 @@ export default function HamburgerDrawer() {
                                             className={
                                                 'inline-block px-3 py-2 btn btn-primary w-full text-center'
                                             }
-                                            onClick={() => setShowLoginModal(true)}
+                                            onClick={() =>
+                                                setShowLoginModal(true)
+                                            }
                                         >
                                             Login
                                         </div>
