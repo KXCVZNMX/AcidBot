@@ -118,6 +118,7 @@ export default function HamburgerDrawer() {
                                         className={
                                             'block px-3 py-2 rounded hover:bg-base-200'
                                         }
+                                        onClick={() => setOpen(false)}
                                     >
                                         Home
                                     </Link>
@@ -128,6 +129,7 @@ export default function HamburgerDrawer() {
                                         className={
                                             'block px-3 py-2 rounded hover:bg-base-200'
                                         }
+                                        onClick={() => setOpen(false)}
                                     >
                                         Guide
                                     </Link>
@@ -138,6 +140,7 @@ export default function HamburgerDrawer() {
                                         className={
                                             'block px-3 py-2 rounded hover:bg-base-200'
                                         }
+                                        onClick={() => setOpen(false)}
                                     >
                                         LvScore
                                     </Link>
@@ -148,6 +151,7 @@ export default function HamburgerDrawer() {
                                         className={
                                             'block px-3 py-2 rounded hover:bg-base-200'
                                         }
+                                        onClick={() => setOpen(false)}
                                     >
                                         Best50
                                     </Link>
@@ -158,6 +162,7 @@ export default function HamburgerDrawer() {
                                         className={
                                             'block px-3 py-2 rounded hover:bg-base-200'
                                         }
+                                        onClick={() => setOpen(false)}
                                     >
                                         Skill Radar
                                     </Link>
