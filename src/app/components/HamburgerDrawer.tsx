@@ -9,31 +9,23 @@ import { useSession } from 'next-auth/react';
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
         <button
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            className={''}
+            className={"btn btn-square bg-base-200 shadow-2xl"}
+            aria-label={open ? "Close menu" : "Open menu"}
         >
-            <svg
-                className={'w-6 h-6'}
-                viewBox={'0 0 24 24'}
-                fill={'none'}
-                aria-hidden
-            >
+            <svg className={"w-6 h-6"} viewBox={"0 0 24 24"} fill={"none"}>
                 {open ? (
                     <path
-                        d={'M6 6L18 18M6 18L18 6'}
-                        stroke={'currentColor'}
-                        strokeWidth={'1.5'}
-                        strokeLinecap={'round'}
-                        strokeLinejoin={'round'}
+                        d={"M6 6L18 18M6 18L18 6"}
+                        stroke={"currentColor"}
+                        strokeWidth={"1.5"}
+                        strokeLinecap={"round"}
                     />
                 ) : (
                     <path
-                        d={'M3 6h18M3 12h18M3 18h18'}
-                        stroke={'currentColor'}
-                        strokeWidth={'1.5'}
-                        strokeLinecap={'round'}
-                        strokeLinejoin={'round'}
+                        d={"M3 6h18M3 12h18M3 18h18"}
+                        stroke={"currentColor"}
+                        strokeWidth={"1.5"}
+                        strokeLinecap={"round"}
                     />
                 )}
             </svg>
@@ -47,7 +39,6 @@ export default function HamburgerDrawer() {
 
     return (
         <>
-            {/* Hamburger button - mobile only */}
             <div className={''}>
                 <div
                     className={'fixed left-4 bottom-6 z-50 md:hidden'}
@@ -64,7 +55,6 @@ export default function HamburgerDrawer() {
                 </div>
             </div>
 
-            {/* Overlay (uses DaisyUI / Tailwind colors) */}
             <div
                 className={
                     open
@@ -75,7 +65,6 @@ export default function HamburgerDrawer() {
                 onClick={() => setOpen(false)}
             />
 
-            {/* Side panel */}
             <aside
                 className={
                     open
