@@ -7,6 +7,7 @@ import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 import LoginModal from '@/app/components/LoginModal';
+import Link from "next/link";
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -25,9 +26,9 @@ export default function Navbar() {
             />
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
-                    <a className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>
+                    <Link className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>
                         AcidBot
-                    </a>
+                    </Link>
                 </div>
 
                 {status === 'unauthenticated' ? (
@@ -43,32 +44,32 @@ export default function Navbar() {
                 ) : (
                     <>
                         <div className={'flex-1 p-3 hidden md:flex'}>
-                            <a
+                            <Link
                                 className={'btn btn-ghost text-lg'}
                                 href={'/pages/Guide'}
                             >
                                 Guide
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                                 className={'btn btn-ghost text-lg'}
                                 href={'/pages/LvScore'}
                             >
                                 LvScore
-                            </a>
+                            </Link>
 
-                            <a
+                            <Link
                                 className={'btn btn-ghost text-lg'}
                                 href={'/pages/Best50'}
                             >
                                 Best50
-                            </a>
+                            </Link>
 
-                            <a
+                            <Link
                                 className={'btn btn-ghost text-lg'}
                                 href={'/pages/SkillRadar'}
                             >
                                 Skill Radar
-                            </a>
+                            </Link>
                         </div>
 
                         <div

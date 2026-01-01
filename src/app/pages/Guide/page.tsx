@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import React from 'react';
+import Link from "next/link";
 
 export default function Guide() {
     const { data: session } = useSession();
@@ -43,21 +44,21 @@ export default function Guide() {
         </div>
     );
 
-    const Link = ({
+    const CLink = ({
         href,
         children,
     }: {
         href: string;
         children: React.ReactNode;
     }) => (
-        <a
+        <Link
             href={href}
             target={'_blank'}
             rel={'noreferrer'}
             className={'link link-primary font-medium'}
         >
             {children}
-        </a>
+        </Link>
     );
 
     return (
@@ -69,9 +70,9 @@ export default function Guide() {
             <Step title={'Step 1 — Login to SEGA'}>
                 <p>
                     Log in using this{' '}
-                    <Link href={segaLoginLink}>
+                    <CLink href={segaLoginLink}>
                         {'SEGA authentication page'}
-                    </Link>
+                    </CLink>
                     .
                 </p>
             </Step>
@@ -79,7 +80,7 @@ export default function Guide() {
             <Step title={'Step 2 — Open your profile'}>
                 <p>
                     Navigate to{' '}
-                    <Link href={segaNotFoundLink}>{'this page'}</Link>.
+                    <CLink href={segaNotFoundLink}>{'this page'}</CLink>.
                 </p>
             </Step>
 
@@ -90,7 +91,7 @@ export default function Guide() {
                 </p>
 
                 <div className={'pt-2'}>
-                    <a
+                    <Link
                         href={bookmarklet}
                         onClick={async (e) => {
                             e.preventDefault();
@@ -99,14 +100,14 @@ export default function Guide() {
                         className={'btn btn-primary btn-lg'}
                     >
                         {'AcidBot Bookmarklet'}
-                    </a>
+                    </Link>
                 </div>
             </Step>
 
             <Step title={'Step 4 — Run the bookmarklet'}>
                 <p>
                     Return to the{' '}
-                    <Link href={segaNotFoundLink}>{'profile page'}</Link> and
+                    <CLink href={segaNotFoundLink}>{'profile page'}</CLink> and
                     click the bookmarklet you just added.
                 </p>
             </Step>
