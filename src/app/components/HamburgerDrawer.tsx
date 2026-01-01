@@ -9,23 +9,23 @@ import { useSession } from 'next-auth/react';
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
         <button
-            className={"btn btn-square bg-base-200 shadow-2xl"}
-            aria-label={open ? "Close menu" : "Open menu"}
+            className={'btn btn-square bg-base-200 shadow-2xl'}
+            aria-label={open ? 'Close menu' : 'Open menu'}
         >
-            <svg className={"w-6 h-6"} viewBox={"0 0 24 24"} fill={"none"}>
+            <svg className={'w-6 h-6'} viewBox={'0 0 24 24'} fill={'none'}>
                 {open ? (
                     <path
-                        d={"M6 6L18 18M6 18L18 6"}
-                        stroke={"currentColor"}
-                        strokeWidth={"1.5"}
-                        strokeLinecap={"round"}
+                        d={'M6 6L18 18M6 18L18 6'}
+                        stroke={'currentColor'}
+                        strokeWidth={'1.5'}
+                        strokeLinecap={'round'}
                     />
                 ) : (
                     <path
-                        d={"M3 6h18M3 12h18M3 18h18"}
-                        stroke={"currentColor"}
-                        strokeWidth={"1.5"}
-                        strokeLinecap={"round"}
+                        d={'M3 6h18M3 12h18M3 18h18'}
+                        stroke={'currentColor'}
+                        strokeWidth={'1.5'}
+                        strokeLinecap={'round'}
                     />
                 )}
             </svg>
