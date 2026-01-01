@@ -4,6 +4,7 @@ import { LoginGithub, LoginGoogle } from '@/app/components/Login';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Logout from '@/app/components/Logout';
+import Image from "next/image";
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -47,7 +48,7 @@ export default function Navbar() {
                     </a>
                 </div>
 
-                {status === 'unauthenticated' || !session ? (
+                {status === 'unauthenticated' ? (
                     <>
                         <div className={'flex-1'} />
                         <div
@@ -89,8 +90,12 @@ export default function Navbar() {
                         </div>
 
                         <div className={'flex p-5 items-center gap-2'}>
-                            <span>{`Welcome, ${session?.user?.name}`}</span>
-                            <Logout />
+                            {status === 'loading' ? null : (
+                                <>
+                                    <Image src={session?.user?.image ?? ''} alt={'user profile picture'} width={30} height={30} className={'rounded-full'}/>
+                                    <Logout />
+                                </>
+                            )}
                         </div>
                     </>
                 )}
