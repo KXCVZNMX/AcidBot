@@ -7,6 +7,7 @@ import Logout from '@/app/components/Logout';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
+import LoginModal from "@/app/components/LoginModal";
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -19,30 +20,7 @@ export default function Navbar() {
 
     return (
         <>
-            <div className={`modal ${showLoginModal ? 'modal-open' : ''}`}>
-                <div className={'modal-box'}>
-                    <div className={'relative mb-4'}>
-                        <h3 className={'text-lg font-bold text-center'}>
-                            Login
-                        </h3>
-
-                        <button
-                            className={
-                                'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'
-                            }
-                            onClick={() => setShowLoginModal(false)}
-                        >
-                            Close
-                        </button>
-                    </div>
-
-                    <div className={'flex flex-col w-full gap-3'}>
-                        <LoginGoogle />
-                        <LoginGithub />
-                    </div>
-                </div>
-            </div>
-
+            <LoginModal showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
                     <a className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>
@@ -54,7 +32,7 @@ export default function Navbar() {
                     <>
                         <div className={'flex-1 hidden md:flex'} />
                         <div
-                            className={'btn p-5'}
+                            className={'btn p-5 hidden md:flex'}
                             onClick={() => setShowLoginModal(true)}
                         >
                             Login
