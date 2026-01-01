@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
             }
         );
 
-        const ret = NextResponse.json({ status: 'success' }, { status: 200 });
+        const ret = NextResponse.redirect('/ClalFetchSuccess', { status: 302 })
         ret.cookies.set('clal', encodeURIComponent(clal), {
             httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
@@ -33,6 +33,6 @@ export async function GET(req: NextRequest) {
 
         return ret;
     } catch (error) {
-        return NextResponse.json((error as Error).message, { status: 500 });
+        return NextResponse.redirect('/ClalFetchFailure', { status: 302 })
     }
 }
