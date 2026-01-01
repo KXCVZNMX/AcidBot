@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import Logout from '@/app/components/Logout';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
+import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -51,7 +52,7 @@ export default function Navbar() {
 
                 {status === 'unauthenticated' ? (
                     <>
-                        <div className={'flex-1'} />
+                        <div className={'flex-1 hidden md:flex'} />
                         <div
                             className={'btn p-5'}
                             onClick={() => setShowLoginModal(true)}
@@ -61,7 +62,7 @@ export default function Navbar() {
                     </>
                 ) : (
                     <>
-                        <div className={'flex-1 p-3'}>
+                        <div className={'flex-1 p-3 hidden md:flex'}>
                             <a
                                 className={'btn btn-ghost text-lg'}
                                 href={'/pages/Guide'}
@@ -90,7 +91,9 @@ export default function Navbar() {
                             </a>
                         </div>
 
-                        <div className={'flex p-5 items-center gap-2'}>
+                        <div
+                            className={'hidden md:flex p-5 items-center gap-2 '}
+                        >
                             <Image
                                 src={session?.user?.image ?? DefaultAvatar}
                                 alt={'user profile picture'}
@@ -103,6 +106,8 @@ export default function Navbar() {
                     </>
                 )}
             </div>
+
+            <HamburgerDrawer />
         </>
     );
 }
