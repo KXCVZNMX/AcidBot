@@ -7,7 +7,7 @@ import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 import LoginModal from '@/app/components/LoginModal';
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -26,7 +26,10 @@ export default function Navbar() {
             />
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
-                    <Link className={'btn btn-ghost text-lg pl-5 pr-5'} href={'/'}>
+                    <Link
+                        className={'btn btn-ghost text-lg pl-5 pr-5'}
+                        href={'/'}
+                    >
                         AcidBot
                     </Link>
                 </div>
