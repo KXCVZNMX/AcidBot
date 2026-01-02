@@ -96,7 +96,7 @@ export default function Best50() {
                     </h4>
                 </div>
                 <div className={'overflow-x-auto'}>
-                    <table className={'table table-fixed min-w-max'}>
+                    <table className={'table min-w-[900px]'}>
                         <colgroup>
                             <col className="w-[5%]" />
                             <col className="w-[20%]" />
