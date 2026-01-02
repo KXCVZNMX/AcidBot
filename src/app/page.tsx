@@ -1,21 +1,23 @@
 import { Metadata } from 'next';
-import Image from "next/image";
-import HomePageIcon from '../../public/HomeGIF.gif'
-import React from "react";
-import { auth } from "@/auth";
-import Link from "next/link";
+import Image from 'next/image';
+import HomePageIcon from '../../public/HomeGIF.gif';
+import React from 'react';
+import { auth } from '@/auth';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
     title: 'AcidBot | Home',
 };
 
 const Card = ({
-                  title, href, newPage,
-                  children,
-              }: {
+    title,
+    href,
+    newPage,
+    children,
+}: {
     title: string;
     href?: string;
-    newPage?: boolean
+    newPage?: boolean;
     children: React.ReactNode;
 }) => {
     const Wrapper = href ? Link : 'div';
@@ -31,10 +33,12 @@ const Card = ({
         >
             <div className={'card-body gap-3'}>
                 <h2 className={'card-title text-xl justify-center'}>{title}</h2>
-                <div className={'text-base-content/80 text-center'}>{children}</div>
+                <div className={'text-base-content/80 text-center'}>
+                    {children}
+                </div>
             </div>
         </Wrapper>
-    )
+    );
 };
 
 export default async function Home() {
@@ -43,31 +47,45 @@ export default async function Home() {
     return (
         <>
             <div className={'flex flex-col items-center'}>
-                <Image src={HomePageIcon} alt={'Home page icon'} width={305} height={274} />
-                <h1 className={'text-4xl font-medium'}>
-                    AcidBot
-                </h1>
+                <Image
+                    src={HomePageIcon}
+                    alt={'Home page icon'}
+                    width={305}
+                    height={274}
+                />
+                <h1 className={'text-4xl font-medium'}>AcidBot</h1>
 
-                <div className={'p-3 w-full max-w-[700px] grid grid-cols-2 gap-3'}>
+                <div
+                    className={
+                        'p-3 w-full max-w-[700px] grid grid-cols-2 gap-3'
+                    }
+                >
                     <div className={'col-span-2'}>
-                        <Card title={`${session ? `Welcome, ${session?.user?.name ?? 'user'}` : 'Please Login First'}`}>
+                        <Card
+                            title={`${session ? `Welcome, ${session?.user?.name ?? 'user'}` : 'Please Login First'}`}
+                        >
                             <></>
                         </Card>
                     </div>
 
-                    <Card title={'About AcidBot'} href={'/pages/Abouts'} newPage={false}>
+                    <Card
+                        title={'About AcidBot'}
+                        href={'/pages/Abouts'}
+                        newPage={false}
+                    >
                         <p>Information on AcidBot</p>
                     </Card>
 
                     <Card
                         title={'nearcade'}
-                        href={'https://chuqin.me/?utm_source=acidbot&utm_medium=card&utm_campaign=homepage'}
+                        href={
+                            'https://chuqin.me/?utm_source=acidbot&utm_medium=card&utm_campaign=homepage'
+                        }
                         newPage={true}
                     >
                         <p>Check out arcades near you</p>
                     </Card>
                 </div>
-
             </div>
         </>
     );
