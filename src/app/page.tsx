@@ -10,11 +10,12 @@ export const metadata: Metadata = {
 };
 
 const Card = ({
-                  title, href,
+                  title, href, newPage,
                   children,
               }: {
     title: string;
     href?: string;
+    newPage?: boolean
     children: React.ReactNode;
 }) => {
     const Wrapper = href ? Link : 'div';
@@ -22,7 +23,7 @@ const Card = ({
     return (
         <Wrapper
             href={href as any}
-            target={'_blank'}
+            target={newPage ? '_blank' : ''}
             rel={'noreferrer'}
             className={
                 'card bg-base-200/60 shadow-md hover:bg-base-200 hover:shadow-lg transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary'
@@ -49,18 +50,19 @@ export default async function Home() {
 
                 <div className={'p-3 w-full max-w-[700px] grid grid-cols-2 gap-3'}>
                     <div className={'col-span-2'}>
-                        <Card title={`Welcome, ${session?.user?.name ?? 'user'}`}>
+                        <Card title={`${session ? `Welcome, ${session?.user?.name ?? 'user'}` : 'Please Login First'}`}>
                             <></>
                         </Card>
                     </div>
 
-                    <Card title={'About AcidBot'}>
+                    <Card title={'About AcidBot'} href={'/pages/Abouts'} newPage={false}>
                         <p>Information on AcidBot</p>
                     </Card>
 
                     <Card
                         title={'nearcade'}
                         href={'https://chuqin.me/?utm_source=acidbot&utm_medium=card&utm_campaign=homepage'}
+                        newPage={true}
                     >
                         <p>Check out arcades near you</p>
                     </Card>
