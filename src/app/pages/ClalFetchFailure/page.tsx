@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
-import ClalFetchFailure from '@/app/pages/ClalFetchFailure/ClalFetchFailure';
 
 export const metadata: Metadata = {
     title: 'Failed',
 };
 
 export default function Page() {
-    return <ClalFetchFailure />;
+    return <h1 className={'text-center text-3xl p-10'}>Failure</h1>
 }
