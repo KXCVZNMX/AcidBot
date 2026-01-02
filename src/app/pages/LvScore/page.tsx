@@ -92,7 +92,7 @@ export default function LvScore() {
                 </div>
 
                 <div className={'overflow-x-auto'}>
-                    <table className={'table table-fixed min-w-max'}>
+                    <table className={'table min-w-[900px]'}>
                         <colgroup>
                             <col className={'w-[10%]'} />
                             <col className={'w-[30%]'} />
