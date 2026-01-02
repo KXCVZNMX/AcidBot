@@ -178,8 +178,7 @@ export default function HamburgerDrawer() {
                                             'flex items-center gap-3 px-3'
                                         }
                                     >
-                                        <Link
-                                            href={'/profile'}
+                                        <div
                                             className={
                                                 'flex items-center gap-3'
                                             }
@@ -203,15 +202,8 @@ export default function HamburgerDrawer() {
                                                     {session.user?.name ||
                                                         'User'}
                                                 </div>
-                                                {/*<div*/}
-                                                {/*    className={*/}
-                                                {/*        'text-xs text-base-content/60'*/}
-                                                {/*    }*/}
-                                                {/*>*/}
-                                                {/*    Profile*/}
-                                                {/*</div>*/}
                                             </div>
-                                        </Link>
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className={'px-3'}>
