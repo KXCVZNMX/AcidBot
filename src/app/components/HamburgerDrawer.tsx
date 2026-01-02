@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
-import { useSession } from 'next-auth/react';
+import LogoutIcon from '../../../public/logout-svg-svgrepo.svg';
+import {signOut, useSession} from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -203,6 +204,17 @@ export default function HamburgerDrawer() {
                                                         'User'}
                                                 </div>
                                             </div>
+
+                                            <button
+                                                onClick={() => signOut({ redirectTo: '/' })}
+                                                aria-label={'Logout'}
+                                                title={'Logout'}
+                                                className={
+                                                    'p-2 rounded hover:bg-base-200 transition-colors'
+                                                }
+                                            >
+                                                <Image src={LogoutIcon} alt={'logout icon'} width={20} height={20} />
+                                            </button>
                                         </div>
                                     </div>
                                 ) : (
