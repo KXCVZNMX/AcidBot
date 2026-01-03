@@ -1,15 +1,15 @@
 'use client';
 
-import {SongTags} from '@/lib/types';
-import {useEffect, useRef, useState} from 'react';
+import { SongTags } from '@/lib/types';
+import { useEffect, useRef, useState } from 'react';
 import {
     EVAL_TAG_NAMES,
     PATTERN_TAG_NAMES,
     PATTERN_TAG_NUMBERS,
 } from '@/lib/consts';
-import {mapTagToEvalIndex, mapTagToPatternIndex} from '@/lib/util';
+import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
-import {toBlob} from 'html-to-image';
+import { toBlob } from 'html-to-image';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
@@ -164,11 +164,7 @@ export default function SkillRadar() {
                 {showRadars && (
                     <>
                         <div ref={captureRef} className={'overflow-x-auto'}>
-                            <div
-                                className={
-                                    `flex flex-nowrap gap-4 px-4`
-                                }
-                            >
+                            <div className={`flex flex-nowrap gap-4 px-4`}>
                                 <div className={'w-[400px] h-[400px] shrink-0'}>
                                     <PERadar
                                         tags={patternRadarValues}
