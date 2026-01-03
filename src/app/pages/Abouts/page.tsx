@@ -50,6 +50,9 @@ export default function Page() {
                                     maimai でらっくす International Version
                                     Score Fetcher
                                 </p>
+                                <p>
+                                    Special Thanks to ゆめ for authorising the use of the icon
+                                </p>
                                 <p className={'mb-2'}>
                                     Last built at:{' '}
                                     {process.env.NEXT_PUBLIC_BUILD_TIME}
