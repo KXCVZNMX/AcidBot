@@ -10,7 +10,7 @@ import {
 import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
 import { useRef } from 'react';
-import { toPng } from 'html-to-image';
+import {toBlob, toPng} from 'html-to-image';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
@@ -23,16 +23,20 @@ export default function SkillRadar() {
     const takeScreenshot = async () => {
         if (!captureRef.current) return;
 
-        const dataUrl = await toPng(captureRef.current, {
+        const dataUrl = await toBlob(captureRef.current, {
             cacheBust: true,
             pixelRatio: 2,
             backgroundColor: '#ffffff',
         });
+        if (!dataUrl) return;
 
-        const link = document.createElement('a');
-        link.download = 'radar.png';
-        link.href = dataUrl;
-        link.click();
+        // const link = document.createElement('a');
+        // link.download = 'radar.png';
+        // link.href = dataUrl;
+        // link.click();
+
+        const url = URL.createObjectURL(dataUrl);
+        window.open(url, '_blank');
     };
 
     const fetchB50WithTags = async () => {
