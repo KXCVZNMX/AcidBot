@@ -1,11 +1,15 @@
 'use client';
 
-import {SongTags} from '@/lib/types';
-import {useEffect, useRef, useState} from 'react';
-import {EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS,} from '@/lib/consts';
-import {mapTagToEvalIndex, mapTagToPatternIndex} from '@/lib/util';
+import { SongTags } from '@/lib/types';
+import { useEffect, useRef, useState } from 'react';
+import {
+    EVAL_TAG_NAMES,
+    PATTERN_TAG_NAMES,
+    PATTERN_TAG_NUMBERS,
+} from '@/lib/consts';
+import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
-import {toBlob} from 'html-to-image';
+import { toBlob } from 'html-to-image';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
@@ -77,7 +81,8 @@ export default function SkillRadar() {
         const eRadarVal: number[] = Array(5).fill(0);
         const pRadarVal: number[] = Array(14).fill(0);
 
-        const meanLevelConst = data.reduce((sum, s) => sum + s.levelConst, 0) / data.length;
+        const meanLevelConst =
+            data.reduce((sum, s) => sum + s.levelConst, 0) / data.length;
 
         for (const song of data) {
             const songWeight = calculateWeight(song.levelConst, meanLevelConst);
@@ -133,7 +138,6 @@ export default function SkillRadar() {
                 if (prev) URL.revokeObjectURL(prev);
                 return url;
             });
-
         } catch (err) {
             console.error(err);
             setError((err as Error).message ?? 'Error generating image');
@@ -156,9 +160,13 @@ export default function SkillRadar() {
 
             {showRadars && (
                 <div className={'flex items-center flex-col'}>
-                    <div ref={captureRef} className="overflow-x-auto">
-                        <div className="flex justify-center gap-4 px-4 min-w-max">
-                            <div className="w-[400px] h-[400px] shrink-0">
+                    <div ref={captureRef} className={'overflow-x-auto'}>
+                        <div
+                            className={
+                                'flex justify-center gap-4 px-4 min-w-max'
+                            }
+                        >
+                            <div className={'w-[400px] h-[400px] shrink-0'}>
                                 <PERadar
                                     tags={patternRadarValues}
                                     tagName={PATTERN_TAG_NAMES}
@@ -167,7 +175,7 @@ export default function SkillRadar() {
                                 />
                             </div>
 
-                            <div className="w-[400px] h-[400px] shrink-0">
+                            <div className={'w-[400px] h-[400px] shrink-0'}>
                                 <PERadar
                                     tags={evalRadarValues}
                                     tagName={EVAL_TAG_NAMES}
@@ -178,13 +186,13 @@ export default function SkillRadar() {
                         </div>
                     </div>
 
-                    <div className="flex gap-2 items-center mt-4 mb-6">
+                    <div className={'flex gap-2 items-center mt-4 mb-6'}>
                         {imageUrl && (
                             <>
                                 <a
-                                    className="btn btn-primary"
+                                    className={'btn btn-primary'}
                                     href={imageUrl}
-                                    download="radar.png"
+                                    download={'radar.png'}
                                 >
                                     Download PNG
                                 </a>
@@ -194,11 +202,14 @@ export default function SkillRadar() {
 
                     {imageUrl && (
                         <div className={'w-full max-w-[720px] px-4'}>
-                            {/* Responsive display of the generated image. Users can long-press to save to Photos on iOS. */}
                             <img
                                 src={imageUrl}
                                 alt={'Generated radar'}
-                                style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+                                style={{
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                    display: 'block',
+                                }}
                             />
                         </div>
                     )}
