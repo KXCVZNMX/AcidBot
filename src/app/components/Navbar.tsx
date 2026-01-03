@@ -27,7 +27,7 @@ export default function Navbar() {
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
                     <Link
-                        className={'btn btn-ghost text-lg pl-5 pr-5'}
+                        className={'btn btn-ghost text-lg rounded-2xl'}
                         href={'/'}
                     >
                         AcidBot
@@ -38,7 +38,7 @@ export default function Navbar() {
                     <>
                         <div className={'flex-1 hidden md:flex'} />
                         <div
-                            className={'btn p-5 hidden md:flex'}
+                            className={'btn hidden md:flex rounded-2xl'}
                             onClick={() => setShowLoginModal(true)}
                         >
                             Login
@@ -46,29 +46,29 @@ export default function Navbar() {
                     </>
                 ) : (
                     <>
-                        <div className={'flex-1 p-3 hidden md:flex'}>
+                        <div className={'flex-1 hidden md:flex'}>
                             <Link
-                                className={'btn btn-ghost text-lg'}
+                                className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/Guide'}
                             >
                                 Guide
                             </Link>
                             <Link
-                                className={'btn btn-ghost text-lg'}
+                                className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/LvScore'}
                             >
                                 LvScore
                             </Link>
 
                             <Link
-                                className={'btn btn-ghost text-lg'}
+                                className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/Best50'}
                             >
                                 Best50
                             </Link>
 
                             <Link
-                                className={'btn btn-ghost text-lg'}
+                                className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/SkillRadar'}
                             >
                                 Skill Radar
@@ -76,7 +76,7 @@ export default function Navbar() {
                         </div>
 
                         <div
-                            className={'hidden md:flex p-5 items-center gap-2 '}
+                            className={'hidden md:flex items-center gap-2'}
                         >
                             <Image
                                 src={session?.user?.image ?? DefaultAvatar}
