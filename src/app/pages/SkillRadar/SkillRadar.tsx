@@ -1,15 +1,15 @@
 'use client';
 
-import { SongTags } from '@/lib/types';
-import { useEffect, useRef, useState } from 'react';
+import {SongTags} from '@/lib/types';
+import {useEffect, useRef, useState} from 'react';
 import {
     EVAL_TAG_NAMES,
     PATTERN_TAG_NAMES,
     PATTERN_TAG_NUMBERS,
 } from '@/lib/consts';
-import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
+import {mapTagToEvalIndex, mapTagToPatternIndex} from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
-import { toBlob } from 'html-to-image';
+import {toBlob} from 'html-to-image';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
@@ -113,6 +113,8 @@ export default function SkillRadar() {
         await new Promise((r) => setTimeout(r, 50));
 
         await generateImageFromRef();
+
+        setShowRadars(false);
     };
 
     const generateImageFromRef = async () => {
@@ -158,63 +160,65 @@ export default function SkillRadar() {
                 </button>
             </div>
 
-            {showRadars && (
-                <div className={'flex items-center flex-col'}>
-                    <div ref={captureRef} className={'overflow-x-auto'}>
-                        <div
-                            className={
-                                'flex justify-center gap-4 px-4 min-w-max'
-                            }
-                        >
-                            <div className={'w-[400px] h-[400px] shrink-0'}>
-                                <PERadar
-                                    tags={patternRadarValues}
-                                    tagName={PATTERN_TAG_NAMES}
-                                    maxV={maxValue(patternRadarValues)}
-                                    name={'Pattern'}
-                                />
-                            </div>
+            <div className={'flex items-center flex-col'}>
+                {showRadars && (
+                    <>
+                        <div ref={captureRef} className={'overflow-x-auto'}>
+                            <div
+                                className={
+                                    `flex flex-nowrap gap-4 px-4`
+                                }
+                            >
+                                <div className={'w-[400px] h-[400px] shrink-0'}>
+                                    <PERadar
+                                        tags={patternRadarValues}
+                                        tagName={PATTERN_TAG_NAMES}
+                                        maxV={maxValue(patternRadarValues)}
+                                        name={'Pattern'}
+                                    />
+                                </div>
 
-                            <div className={'w-[400px] h-[400px] shrink-0'}>
-                                <PERadar
-                                    tags={evalRadarValues}
-                                    tagName={EVAL_TAG_NAMES}
-                                    maxV={maxValue(evalRadarValues)}
-                                    name={'Evaluation'}
-                                />
+                                <div className={'w-[400px] h-[400px] shrink-0'}>
+                                    <PERadar
+                                        tags={evalRadarValues}
+                                        tagName={EVAL_TAG_NAMES}
+                                        maxV={maxValue(evalRadarValues)}
+                                        name={'Evaluation'}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </>
+                )}
 
-                    <div className={'flex gap-2 items-center mt-4 mb-6'}>
-                        {imageUrl && (
-                            <>
-                                <a
-                                    className={'btn btn-primary'}
-                                    href={imageUrl}
-                                    download={'radar.png'}
-                                >
-                                    Download PNG
-                                </a>
-                            </>
-                        )}
-                    </div>
-
+                <div className={'flex gap-2 items-center mt-4 mb-6'}>
                     {imageUrl && (
-                        <div className={'w-full max-w-[720px] px-4'}>
-                            <img
-                                src={imageUrl}
-                                alt={'Generated radar'}
-                                style={{
-                                    maxWidth: '100%',
-                                    height: 'auto',
-                                    display: 'block',
-                                }}
-                            />
-                        </div>
+                        <>
+                            <a
+                                className={'btn btn-primary'}
+                                href={imageUrl}
+                                download={'radar.png'}
+                            >
+                                Download PNG
+                            </a>
+                        </>
                     )}
                 </div>
-            )}
+
+                {imageUrl && (
+                    <div className={'w-full max-w-[720px] px-4'}>
+                        <img
+                            src={imageUrl}
+                            alt={'Generated radar'}
+                            style={{
+                                maxWidth: '100%',
+                                height: 'auto',
+                                display: 'block',
+                            }}
+                        />
+                    </div>
+                )}
+            </div>
         </>
     );
 }
