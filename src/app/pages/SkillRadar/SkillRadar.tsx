@@ -9,12 +9,32 @@ import {
 } from '@/lib/consts';
 import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
+import { useRef } from 'react';
+import { toPng } from 'html-to-image';
+
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
     const [patternRadarValues, setPatternRadarValues] = useState<number[]>([]);
     const [showRadars, setShowRadars] = useState(false);
     const [error, setError] = useState('');
+
+    const captureRef = useRef<HTMLDivElement>(null);
+
+    const takeScreenshot = async () => {
+        if (!captureRef.current) return;
+
+        const dataUrl = await toPng(captureRef.current, {
+            cacheBust: true,
+            pixelRatio: 2,
+            backgroundColor: '#ffffff'
+        });
+
+        const link = document.createElement('a');
+        link.download = 'radar.png';
+        link.href = dataUrl;
+        link.click();
+    };
 
     const fetchB50WithTags = async () => {
         try {
@@ -97,26 +117,37 @@ export default function SkillRadar() {
                 </button>
             </div>
             {showRadars && (
-                <div className={'flex flex-row justify-center'}>
-                    <div style={{ height: 400, width: 400 }}>
-                        <PERadar
-                            tags={patternRadarValues}
-                            tagName={PATTERN_TAG_NAMES}
-                            maxV={maxValue(patternRadarValues)}
-                            name={'Pattern'}
-                        />
+                <div className={'flex items-center flex-col'}>
+                    <div ref={captureRef} className="overflow-x-auto">
+                        <div className="flex justify-center gap-4 px-4 min-w-max">
+                            <div className="w-[400px] h-[400px] shrink-0">
+                                <PERadar
+                                    tags={patternRadarValues}
+                                    tagName={PATTERN_TAG_NAMES}
+                                    maxV={maxValue(patternRadarValues)}
+                                    name="Pattern"
+                                />
+                            </div>
+
+                            <div className="w-[400px] h-[400px] shrink-0">
+                                <PERadar
+                                    tags={evalRadarValues}
+                                    tagName={EVAL_TAG_NAMES}
+                                    maxV={maxValue(evalRadarValues)}
+                                    name="Evaluation"
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    <div style={{ height: 400, width: 400 }}>
-                        <PERadar
-                            tags={evalRadarValues}
-                            tagName={EVAL_TAG_NAMES}
-                            maxV={maxValue(evalRadarValues)}
-                            name={'Evaluation'}
-                        />
-                    </div>
+                    <button
+                        className={'btn btn-primary mb-4'}
+                        onClick={takeScreenshot}
+                    >
+                        Save Image
+                    </button>
                 </div>
             )}
-        </>
+       </>
     );
 }
