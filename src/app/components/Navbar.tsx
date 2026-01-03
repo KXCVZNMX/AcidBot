@@ -75,9 +75,7 @@ export default function Navbar() {
                             </Link>
                         </div>
 
-                        <div
-                            className={'hidden md:flex items-center gap-2'}
-                        >
+                        <div className={'hidden md:flex items-center gap-2'}>
                             <Image
                                 src={session?.user?.image ?? DefaultAvatar}
                                 alt={'user profile picture'}

@@ -1,12 +1,12 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
 export default function Card({
-                  title,
-                  href,
-                  newPage,
-                  children,
-              }: {
+    title,
+    href,
+    newPage,
+    children,
+}: {
     title: string;
     href?: string;
     newPage?: boolean;
@@ -31,4 +31,4 @@ export default function Card({
             </div>
         </Wrapper>
     );
-};
+}

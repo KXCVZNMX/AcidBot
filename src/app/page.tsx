@@ -3,7 +3,7 @@ import Image from 'next/image';
 import HomePageIcon from '../../public/HomeGIF.gif';
 import React from 'react';
 import { auth } from '@/auth';
-import Card from "@/app/components/Card";
+import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
     title: 'AcidBot | Home',

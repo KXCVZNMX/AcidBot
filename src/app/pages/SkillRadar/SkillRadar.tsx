@@ -12,7 +12,6 @@ import PERadar from '@/app/components/PERadar';
 import { useRef } from 'react';
 import { toPng } from 'html-to-image';
 
-
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
     const [patternRadarValues, setPatternRadarValues] = useState<number[]>([]);
@@ -27,7 +26,7 @@ export default function SkillRadar() {
         const dataUrl = await toPng(captureRef.current, {
             cacheBust: true,
             pixelRatio: 2,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
         });
 
         const link = document.createElement('a');
@@ -148,6 +147,6 @@ export default function SkillRadar() {
                     </button>
                 </div>
             )}
-       </>
+        </>
     );
 }

@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import HomePageIcon from '../../../../public/HomeGIF.gif';
 import React from 'react';
-import Link from "next/link";
-import Card from "@/app/components/Card";
+import Link from 'next/link';
+import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
     title: 'AcidBot | Abouts',
@@ -34,18 +34,23 @@ export default function Page() {
                                     Score Fetcher
                                 </p>
                                 <p>
-                                    Special Thanks to ゆめ for authorising the use of the icon
+                                    Special Thanks to ゆめ for authorising the
+                                    use of the icon
                                 </p>
                                 <p className={'mb-2'}>
                                     Last built at:{' '}
                                     {process.env.NEXT_PUBLIC_BUILD_TIME}
                                 </p>
-                                <p> Made by {' '}
+                                <p>
+                                    {' '}
+                                    Made by{' '}
                                     <Link
                                         href={'https://github.com/KXCVZNMX'}
                                         target={'_blank'}
                                         rel={'noreferrer'}
-                                        className={'link link-primary font-medium'}
+                                        className={
+                                            'link link-primary font-medium'
+                                        }
                                     >
                                         KVZ
                                     </Link>
@@ -54,18 +59,22 @@ export default function Page() {
                         </div>
                     </div>
                 </div>
-                
+
                 <Card title={'Guide'} newPage={false} href={'/pages/Guide'}>
-                    <p>
-                        How to use AcidBot (WIP...)
-                    </p>
+                    <p>How to use AcidBot (WIP...)</p>
                 </Card>
 
                 {/*This would be the community card when I create one. either on QQ or Discord*/}
-                <Card title={''}><></></Card>
+                <Card title={''}>
+                    <></>
+                </Card>
 
                 <div className={'col-span-2'}>
-                    <Card title={'KXCVZNMX/AcidBot'} newPage={true} href={'https://github.com/KXCVZNMX/AcidBot'}>
+                    <Card
+                        title={'KXCVZNMX/AcidBot'}
+                        newPage={true}
+                        href={'https://github.com/KXCVZNMX/AcidBot'}
+                    >
                         <p>Check out the source code!</p>
                     </Card>
                 </div>
