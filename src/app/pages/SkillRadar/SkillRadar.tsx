@@ -1,55 +1,39 @@
 'use client';
 
-import { SongTags } from '@/lib/types';
-import { useState } from 'react';
-import {
-    EVAL_TAG_NAMES,
-    PATTERN_TAG_NAMES,
-    PATTERN_TAG_NUMBERS,
-} from '@/lib/consts';
-import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
+import {SongTags} from '@/lib/types';
+import {useEffect, useRef, useState} from 'react';
+import {EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS,} from '@/lib/consts';
+import {mapTagToEvalIndex, mapTagToPatternIndex} from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
-import { useRef } from 'react';
-import {toBlob, toPng} from 'html-to-image';
+import {toBlob} from 'html-to-image';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);
     const [patternRadarValues, setPatternRadarValues] = useState<number[]>([]);
     const [showRadars, setShowRadars] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [generating, setGenerating] = useState(false);
     const [error, setError] = useState('');
 
-    const captureRef = useRef<HTMLDivElement>(null);
+    const captureRef = useRef<HTMLDivElement | null>(null);
 
-    const takeScreenshot = async () => {
-        if (!captureRef.current) return;
+    useEffect(() => {
+        return () => {
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+        };
+    }, [imageUrl]);
 
-        const dataUrl = await toBlob(captureRef.current, {
-            cacheBust: true,
-            pixelRatio: 2,
-            backgroundColor: '#ffffff',
-        });
-        if (!dataUrl) return;
-
-        // const link = document.createElement('a');
-        // link.download = 'radar.png';
-        // link.href = dataUrl;
-        // link.click();
-
-        const url = URL.createObjectURL(dataUrl);
-        window.open(url, '_blank');
-    };
-
-    const fetchB50WithTags = async () => {
+    const fetchB50WithTags = async (): Promise<SongTags[]> => {
         try {
             const res = await fetch('/api/b50WithTags', {
                 method: 'GET',
             });
-
-            const data: SongTags[] = await res.json();
-            return data;
-        } catch (error) {
-            console.error(error);
-            setError((error as Error).message);
+            return await res.json();
+        } catch (err) {
+            console.error(err);
+            setError((err as Error).message);
             return [];
         }
     };
@@ -58,12 +42,9 @@ export default function SkillRadar() {
         if (values.length === 0) {
             throw new Error('Cannot compute max of an empty list');
         }
-
         let max = values[0];
         for (let i = 1; i < values.length; i++) {
-            if (values[i] > max) {
-                max = values[i];
-            }
+            if (values[i] > max) max = values[i];
         }
         return max;
     };
@@ -77,6 +58,14 @@ export default function SkillRadar() {
     };
 
     const buttonAction = async () => {
+        setError('');
+        setImageUrl((prev) => {
+            if (prev) {
+                URL.revokeObjectURL(prev);
+            }
+            return null;
+        });
+
         const data = await fetchB50WithTags();
         if (!data || data.length === 0) {
             setEvalRadarValues(Array(5).fill(0));
@@ -88,8 +77,7 @@ export default function SkillRadar() {
         const eRadarVal: number[] = Array(5).fill(0);
         const pRadarVal: number[] = Array(14).fill(0);
 
-        const meanLevelConst =
-            data.reduce((sum, s) => sum + s.levelConst, 0) / 50;
+        const meanLevelConst = data.reduce((sum, s) => sum + s.levelConst, 0) / data.length;
 
         for (const song of data) {
             const songWeight = calculateWeight(song.levelConst, meanLevelConst);
@@ -107,6 +95,51 @@ export default function SkillRadar() {
         setEvalRadarValues(eRadarVal);
         setPatternRadarValues(pRadarVal);
         setShowRadars(true);
+
+        await new Promise<void>((resolve) => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => resolve());
+                });
+            });
+        });
+
+        await document.fonts?.ready;
+        await new Promise((r) => setTimeout(r, 50));
+
+        await generateImageFromRef();
+    };
+
+    const generateImageFromRef = async () => {
+        if (!captureRef.current) return;
+        setGenerating(true);
+
+        try {
+            const blob = await toBlob(captureRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+                backgroundColor: '#ffffff',
+            });
+
+            if (!blob) {
+                setError('Failed to generate image blob.');
+                setGenerating(false);
+                return;
+            }
+
+            const url = URL.createObjectURL(blob);
+
+            setImageUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return url;
+            });
+
+        } catch (err) {
+            console.error(err);
+            setError((err as Error).message ?? 'Error generating image');
+        } finally {
+            setGenerating(false);
+        }
     };
 
     return (
@@ -115,10 +148,12 @@ export default function SkillRadar() {
                 <button
                     className={'btn btn-primary'}
                     onClick={async () => await buttonAction()}
+                    disabled={generating}
                 >
-                    Get Results
+                    {generating ? 'Generating…' : 'Get Results'}
                 </button>
             </div>
+
             {showRadars && (
                 <div className={'flex items-center flex-col'}>
                     <div ref={captureRef} className="overflow-x-auto">
@@ -128,7 +163,7 @@ export default function SkillRadar() {
                                     tags={patternRadarValues}
                                     tagName={PATTERN_TAG_NAMES}
                                     maxV={maxValue(patternRadarValues)}
-                                    name="Pattern"
+                                    name={'Pattern'}
                                 />
                             </div>
 
@@ -137,18 +172,36 @@ export default function SkillRadar() {
                                     tags={evalRadarValues}
                                     tagName={EVAL_TAG_NAMES}
                                     maxV={maxValue(evalRadarValues)}
-                                    name="Evaluation"
+                                    name={'Evaluation'}
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <button
-                        className={'btn btn-primary mb-4'}
-                        onClick={takeScreenshot}
-                    >
-                        Save Image
-                    </button>
+                    <div className="flex gap-2 items-center mt-4 mb-6">
+                        {imageUrl && (
+                            <>
+                                <a
+                                    className="btn btn-primary"
+                                    href={imageUrl}
+                                    download="radar.png"
+                                >
+                                    Download PNG
+                                </a>
+                            </>
+                        )}
+                    </div>
+
+                    {imageUrl && (
+                        <div className={'w-full max-w-[720px] px-4'}>
+                            {/* Responsive display of the generated image. Users can long-press to save to Photos on iOS. */}
+                            <img
+                                src={imageUrl}
+                                alt={'Generated radar'}
+                                style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+                            />
+                        </div>
+                    )}
                 </div>
             )}
         </>
