@@ -20,6 +20,7 @@ export default async function Home() {
                     alt={'Home page icon'}
                     width={305}
                     height={274}
+                    priority={true}
                 />
                 <h1 className={'text-4xl font-medium'}>AcidBot</h1>
 
