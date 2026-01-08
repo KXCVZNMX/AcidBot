@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { getCookie } from '@/lib/util';
+import ErrorModal from "@/app/components/ErrorModal";
 
 export default function LvScore() {
     const [level, setLevel] = useState('');
@@ -11,6 +12,17 @@ export default function LvScore() {
     const [status, setStatus] = useState('unauthenticated');
     const [clal, setClal] = useState('');
     const [error, setError] = useState('');
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+    const showError = (errorMessage: string) => {
+        setError(errorMessage);
+        setShowErrorModal(true);
+
+        setTimeout(() => {
+            setShowErrorModal(false);
+            setError('');
+        }, 2000);
+    };
 
     useEffect(() => {
         setStatus(getCookie('status') ?? 'unauthenticated');
@@ -50,7 +62,7 @@ export default function LvScore() {
             setSongs(songRes);
             console.log(songs);
         } catch (error) {
-            setError((error as Error).message);
+            showError((error as Error).message);
             console.error(error);
         }
     };
@@ -63,6 +75,7 @@ export default function LvScore() {
 
     return (
         <>
+            <ErrorModal error={error} show={error !== ''} />
             <div className={'flex flex-col justify-center shadow-lg'}>
                 <div
                     className={

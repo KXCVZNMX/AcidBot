@@ -8,7 +8,13 @@ export async function POST(req: NextRequest) {
     try {
         const { clal, redirect } = await req.json();
 
-        const html = await fetchPage(clal, redirect);
+        let html;
+        try {
+            html = await fetchPage(clal, redirect);
+        } catch (fetchError) {
+            console.error(fetchError);
+            throw new Error(`Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})`);
+        }
 
         if (html.includes('ERROR')) {
             throw new Error(

@@ -7,6 +7,7 @@ import client from '@/lib/db';
 import { RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
+import fetchPage from "@/lib/fetchPage";
 
 type MoreInfo = {
     type: 'dx' | 'std';
@@ -69,7 +70,14 @@ export async function GET(req: NextRequest) {
 
         const res: MaimaiSongScore[] = [];
 
-        const htmls = await fetchPages(clal, redirects);
+
+        let htmls;
+        try {
+            htmls = await fetchPage(clal, redirects);
+        } catch (fetchError) {
+            console.error(fetchError);
+            throw new Error(`Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})`);
+        }
 
         for (const html of htmls) {
             const $ = cheerio.load(html);
