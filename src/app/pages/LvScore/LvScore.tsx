@@ -55,6 +55,7 @@ export default function LvScore() {
             });
 
             if (!res.ok) {
+                showError((await res.json()).error)
                 throw new Error(res.statusText);
             }
 
@@ -75,7 +76,7 @@ export default function LvScore() {
 
     return (
         <>
-            <ErrorModal error={error} show={error !== ''} />
+            <ErrorModal error={error} show={showErrorModal} />
             <div className={'flex flex-col justify-center shadow-lg'}>
                 <div
                     className={

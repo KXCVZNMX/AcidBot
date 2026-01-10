@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
+import ErrorModal from "@/app/components/ErrorModal";
 
 interface Best50Songs {
     b35: MSSB50[];
@@ -15,6 +16,17 @@ export default function Best50() {
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [status, setStatus] = useState('unauthenticated');
     const [error, setError] = useState('');
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+    const showError = (errorMessage: string) => {
+        setError(errorMessage);
+        setShowErrorModal(true);
+
+        setTimeout(() => {
+            setShowErrorModal(false);
+            setError('');
+        }, 2000);
+    };
 
     useEffect(() => {
         setStatus(getCookie('status') ?? 'unauthenticated');
@@ -60,6 +72,7 @@ export default function Best50() {
             });
 
             if (!res.ok) {
+                showError((await res.json()).error)
                 throw new Error(res.statusText);
             }
 
@@ -77,6 +90,7 @@ export default function Best50() {
 
     return (
         <>
+            <ErrorModal error={error} show={showErrorModal} />
             <div className={'flex flex-col justify-center shadow-lg'}>
                 <div
                     className={

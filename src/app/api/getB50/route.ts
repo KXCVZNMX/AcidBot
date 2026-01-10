@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
             htmls = await fetchPage(clal, redirects);
         } catch (fetchError) {
             console.error(fetchError);
-            throw new Error(`Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})`);
+            return NextResponse.json({ error: `Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})` }, { status: 500 })
         }
 
         for (const html of htmls) {

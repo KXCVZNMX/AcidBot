@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
             html = await fetchPage(clal, redirect);
         } catch (fetchError) {
             console.error(fetchError);
-            throw new Error(`Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})`);
+            return NextResponse.json({ error: `Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})` }, { status: 500 })
         }
 
         if (html.includes('ERROR')) {
