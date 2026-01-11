@@ -3,11 +3,17 @@ import { NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
+import {unauthorized} from "next/navigation";
 
 export async function GET() {
     try {
         const session = await auth();
-        const id = session!.user?.id ?? '';
+
+        if (!session) {
+            unauthorized();
+        }
+
+        const id = session.user?.id ?? '';
 
         const db = client.db();
         const doc = await db

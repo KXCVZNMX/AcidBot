@@ -8,6 +8,7 @@ import { RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from "@/lib/fetchPage";
+import {unauthorized} from "next/navigation";
 
 type MoreInfo = {
     type: 'dx' | 'std';
@@ -52,7 +53,12 @@ export async function GET(req: NextRequest) {
 
     try {
         const session = await auth();
-        const id = session?.user?.id ?? '';
+
+        if (!session) {
+            unauthorized();
+        }
+
+        const id = session.user?.id ?? '';
 
         const clal = url.searchParams.get('clal');
 
@@ -69,7 +75,6 @@ export async function GET(req: NextRequest) {
         ];
 
         const res: MaimaiSongScore[] = [];
-
 
         let htmls;
         try {
@@ -156,6 +161,10 @@ export async function GET(req: NextRequest) {
 
         const slicedB35 = b35.slice(0, 35);
         const slicedB15 = b15.slice(0, 15);
+
+        if (slicedB15.length === 0 || b35.length === 0) {
+            return NextResponse.json({ error: `Either one of B15 or B35 was empty, sign-in again.` }, { status: 500 })
+        }
 
         await db.collection('userB50').updateOne(
             { _id: new ObjectId(id) },

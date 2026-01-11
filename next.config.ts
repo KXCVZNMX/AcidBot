@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
     env: {
         NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
     },
+
+    experimental: {
+        authInterrupts: true,
+    },
 };
 
 export default nextConfig;

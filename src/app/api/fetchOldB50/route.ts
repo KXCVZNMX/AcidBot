@@ -2,10 +2,16 @@ import { auth } from '@/auth';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
+import {unauthorized} from "next/navigation";
 
 export async function GET() {
     const session = await auth();
-    const id = session!.user?.id ?? '';
+
+    if (!session) {
+        unauthorized();
+    }
+
+    const id = session.user?.id ?? '';
 
     const db = client.db();
     const doc = await db
