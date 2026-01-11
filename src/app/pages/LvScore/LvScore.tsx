@@ -9,7 +9,6 @@ import ErrorModal from "@/app/components/ErrorModal";
 export default function LvScore() {
     const [level, setLevel] = useState('');
     const [songs, setSongs] = useState<MaimaiSongScore[]>([]);
-    const [status, setStatus] = useState('unauthenticated');
     const [clal, setClal] = useState('');
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
@@ -25,19 +24,18 @@ export default function LvScore() {
     };
 
     useEffect(() => {
-        setStatus(getCookie('status') ?? 'unauthenticated');
-
         const clalCookie = getCookie('clal');
+        if (!clalCookie) {
+            showError('Missing Clal, please go to the guide page to fetch a new clal');
+            return;
+        }
+
+        setClal(clalCookie);
+
         if (clalCookie) {
             setClal(clalCookie);
         }
     }, []);
-
-    if (!status || status === 'unauthenticated') {
-        return (
-            <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
-        );
-    }
 
     const fetchResultWithClal = async () => {
         try {
