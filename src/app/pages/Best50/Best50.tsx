@@ -23,8 +23,8 @@ export default function Best50() {
 
         setTimeout(() => {
             setShowErrorModal(false);
+            setError('');
         }, 2000);
-        setError('');
     };
 
     useEffect(() => {
@@ -66,11 +66,13 @@ export default function Best50() {
             });
 
             if (!res.ok) {
-                showError((await res.json()).error)
-                throw new Error(res.statusText);
+                const { error } = await res.json();
+                showError(error)
+                return;
             }
 
             const b50: Best50Songs = await res.json();
+
             setOldSong(b50.b35);
             setNewSong(b50.b15);
         } catch (error) {

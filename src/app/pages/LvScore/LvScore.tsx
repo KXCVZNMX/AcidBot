@@ -19,8 +19,8 @@ export default function LvScore() {
 
         setTimeout(() => {
             setShowErrorModal(false);
+            setError('');
         }, 2000);
-        setError('');
     };
 
     useEffect(() => {
@@ -53,8 +53,9 @@ export default function LvScore() {
             });
 
             if (!res.ok) {
-                showError((await res.json()).error)
-                throw new Error(res.statusText);
+                const { error } = await res.json();
+                showError(error)
+                return;
             }
 
             const songRes: MaimaiSongScore[] = await res.json();
