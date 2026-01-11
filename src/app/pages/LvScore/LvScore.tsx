@@ -20,8 +20,8 @@ export default function LvScore() {
 
         setTimeout(() => {
             setShowErrorModal(false);
-            setError('');
         }, 2000);
+        setError('');
     };
 
     useEffect(() => {
