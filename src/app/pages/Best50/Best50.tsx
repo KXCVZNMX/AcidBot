@@ -14,7 +14,6 @@ export default function Best50() {
     const [clal, setClal] = useState('0');
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
-    const [status, setStatus] = useState('unauthenticated');
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -29,12 +28,13 @@ export default function Best50() {
     };
 
     useEffect(() => {
-        setStatus(getCookie('status') ?? 'unauthenticated');
-
         const clalCookie = getCookie('clal');
-        if (clalCookie) {
-            setClal(clalCookie);
+        if (!clalCookie) {
+            showError('Missing Clal, please go to the guide page to fetch a new clal');
+            return;
         }
+
+        setClal(clalCookie);
 
         (async () => {
             try {
@@ -55,12 +55,6 @@ export default function Best50() {
             }
         })();
     }, []);
-
-    if (!status || status === 'unauthenticated') {
-        return (
-            <h3 className={'text-center p-5 text-lg'}>Please log in first.</h3>
-        );
-    }
 
     const fetchB50WithClal = async () => {
         setOldSong([]);
