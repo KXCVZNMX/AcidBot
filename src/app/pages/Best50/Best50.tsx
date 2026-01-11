@@ -23,8 +23,8 @@ export default function Best50() {
 
         setTimeout(() => {
             setShowErrorModal(false);
-            setError('');
         }, 2000);
+        setError('');
     };
 
     useEffect(() => {
