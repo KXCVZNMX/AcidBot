@@ -81,7 +81,7 @@ export async function GET(req: NextRequest) {
             htmls = await fetchPage(clal, redirects);
         } catch (fetchError) {
             console.error(fetchError);
-            return NextResponse.json({ error: `Page likely didn't return a redirect, sign-in again. (${(fetchError as Error).message})` }, { status: 500 })
+            return NextResponse.json({ error: `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})` }, { status: 500 })
         }
 
         for (const html of htmls) {
@@ -163,7 +163,7 @@ export async function GET(req: NextRequest) {
         const slicedB15 = b15.slice(0, 15);
 
         if (slicedB15.length === 0 || b35.length === 0) {
-            return NextResponse.json({ error: `Either one of B15 or B35 was empty, sign-in again.` }, { status: 500 })
+            return NextResponse.json({ error: `Either one of B15 or B35 was empty, get clal again.` }, { status: 500 })
         }
 
         await db.collection('userB50').updateOne(
