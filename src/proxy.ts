@@ -2,6 +2,10 @@ import { NextResponse, NextRequest } from 'next/server'
 import {auth} from "@/auth";
 
 export async function proxy(request: NextRequest) {
+    if (request.nextUrl.pathname.startsWith('/pages/Guides')) {
+        return NextResponse.next();
+    }
+
     const session = await auth();
 
     if (!session) {

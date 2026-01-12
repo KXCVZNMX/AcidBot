@@ -36,7 +36,15 @@ export default function Navbar() {
 
                 {status === 'unauthenticated' ? (
                     <>
-                        <div className={'flex-1 hidden md:flex'} />
+                        <div className={'flex-1 hidden md:flex'}>
+                            <Link
+                                className={'btn btn-ghost text-lg rounded-2xl'}
+                                href={'/pages/Guides'}
+                            >
+                                Guides
+                            </Link>
+                        </div>
+
                         <div
                             className={'btn hidden md:flex rounded-2xl'}
                             onClick={() => setShowLoginModal(true)}
@@ -49,9 +57,9 @@ export default function Navbar() {
                         <div className={'flex-1 hidden md:flex'}>
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/Guide'}
+                                href={'/pages/Guides'}
                             >
-                                Guide
+                                Guides
                             </Link>
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}

@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import React from 'react';
 import Link from 'next/link';
 
-export default function Guide() {
+export default function ClalGuide() {
     const { data: session } = useSession();
 
     const site_link = process.env.SITE_LINK ?? 'https://acid.kvznmx.com';

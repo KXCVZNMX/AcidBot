@@ -60,7 +60,7 @@ export default function Page() {
                     </div>
                 </div>
 
-                <Card title={'Guide'} newPage={false} href={'/pages/Guide'}>
+                <Card title={'Guides'} newPage={false} href={'/pages/Guides'}>
                     <p>How to use AcidBot (WIP...)</p>
                 </Card>
 
