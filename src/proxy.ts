@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from 'next/server'
-import {auth} from "@/auth";
+import { NextResponse, NextRequest } from 'next/server';
+import { auth } from '@/auth';
 
 export async function proxy(request: NextRequest) {
     if (request.nextUrl.pathname.startsWith('/pages/Guides')) {
@@ -9,10 +9,7 @@ export async function proxy(request: NextRequest) {
     const session = await auth();
 
     if (!session) {
-        return NextResponse.json(
-            { error: "Forbidden" },
-            { status: 403 }
-        )
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     return NextResponse.next();
@@ -20,4 +17,4 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
     matcher: ['/pages/:path*'],
-}
+};

@@ -24,7 +24,9 @@ export default function Card({
             }
         >
             <div className={'card-body gap-3'}>
-                <h2 className={'card-title text-xl text-center justify-center'}>{title}</h2>
+                <h2 className={'card-title text-xl text-center justify-center'}>
+                    {title}
+                </h2>
                 <div className={'text-base-content/80 text-center'}>
                     {children}
                 </div>

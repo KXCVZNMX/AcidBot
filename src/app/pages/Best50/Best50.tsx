@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
-import ErrorModal from "@/app/components/ErrorModal";
+import ErrorModal from '@/app/components/ErrorModal';
 
 interface Best50Songs {
     b35: MSSB50[];
@@ -30,7 +30,9 @@ export default function Best50() {
     useEffect(() => {
         const clalCookie = getCookie('clal');
         if (!clalCookie) {
-            showError('Missing Clal, please go to the guide page to fetch a new clal');
+            showError(
+                'Missing Clal, please go to the guide page to fetch a new clal'
+            );
             return;
         }
 
@@ -67,7 +69,7 @@ export default function Best50() {
 
             if (!res.ok) {
                 const { error } = await res.json();
-                showError(error)
+                showError(error);
                 return;
             }
 

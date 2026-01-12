@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
-import {unauthorized} from "next/navigation";
+import { unauthorized } from 'next/navigation';
 
 export async function GET() {
     try {

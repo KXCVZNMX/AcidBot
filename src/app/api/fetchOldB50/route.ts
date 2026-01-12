@@ -2,7 +2,7 @@ import { auth } from '@/auth';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
-import {unauthorized} from "next/navigation";
+import { unauthorized } from 'next/navigation';
 
 export async function GET() {
     const session = await auth();

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { getCookie } from '@/lib/util';
-import ErrorModal from "@/app/components/ErrorModal";
+import ErrorModal from '@/app/components/ErrorModal';
 
 export default function LvScore() {
     const [level, setLevel] = useState('');
@@ -26,7 +26,9 @@ export default function LvScore() {
     useEffect(() => {
         const clalCookie = getCookie('clal');
         if (!clalCookie) {
-            showError('Missing Clal, please go to the guide page to fetch a new clal');
+            showError(
+                'Missing Clal, please go to the guide page to fetch a new clal'
+            );
             return;
         }
 
@@ -54,7 +56,7 @@ export default function LvScore() {
 
             if (!res.ok) {
                 const { error } = await res.json();
-                showError(error)
+                showError(error);
                 return;
             }
 

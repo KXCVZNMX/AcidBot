@@ -13,7 +13,12 @@ export async function POST(req: NextRequest) {
             html = await fetchPage(clal, redirect);
         } catch (fetchError) {
             console.error(fetchError);
-            return NextResponse.json({ error: `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})` }, { status: 500 })
+            return NextResponse.json(
+                {
+                    error: `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})`,
+                },
+                { status: 500 }
+            );
         }
 
         if (html.includes('ERROR')) {
@@ -26,7 +31,12 @@ export async function POST(req: NextRequest) {
         const results: MaimaiSongScore[] = extractScore($);
 
         if (results.length === 0) {
-            return NextResponse.json({ error: `Page likely didn't return a redirect, get clal again.` }, { status: 500 })
+            return NextResponse.json(
+                {
+                    error: `Page likely didn't return a redirect, get clal again.`,
+                },
+                { status: 500 }
+            );
         }
 
         return NextResponse.json(results);
