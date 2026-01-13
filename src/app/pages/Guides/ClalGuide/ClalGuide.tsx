@@ -3,8 +3,8 @@
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import Link from 'next/link';
-import Step from "@/app/components/Step";
-import CLink from "@/app/components/CLink";
+import Step from '@/app/components/Step';
+import CLink from '@/app/components/CLink';
 
 export default function ClalGuide() {
     const { data: session } = useSession();
