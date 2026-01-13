@@ -179,7 +179,7 @@ export default function SkillRadar() {
                                         tags={evalRadarValues}
                                         tagName={EVAL_TAG_NAMES}
                                         maxV={maxValue(evalRadarValues)}
-                                        name={'Evaluation'}
+                                        name={'Chart Type'}
                                     />
                                 </div>
                             </div>

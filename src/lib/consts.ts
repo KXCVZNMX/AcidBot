@@ -126,7 +126,7 @@ export const PATTERN_TAG: Readonly<Record<number, string>> = {
     24: '大位移',
 };
 
-export const PATTERN_TAG_NAMES: string[] = [
+export const PATTERN_TAG_NAMES_CN: string[] = [
     '转圈',
     '绝赞',
     '扫键',
@@ -145,6 +145,25 @@ export const PATTERN_TAG_NAMES: string[] = [
     '大位移',
 ];
 
+export const PATTERN_TAG_NAMES: string[] = [
+    'Spin',
+    'Break',
+    'Swipe',
+    'Tech',
+    'Trill',
+    'Opposite Hands',
+    'Connected Slides',
+    // "Overrated",
+    'Umiyuri',
+    'Swings',
+    'Jack',
+    'Burst',
+    'Mangled Slides',
+    // "Underrated",
+    'Anchor',
+    'Large Displacement',
+];
+
 export const PATTERN_TAG_NUMBERS: Readonly<number[]> = [
     3, 4, 6, 7, 8, 9, 10,
     // 11,
@@ -161,12 +180,20 @@ export const EVAL_TAG: Readonly<Record<number, string>> = {
     22: '高物量',
 };
 
-export const EVAL_TAG_NAMES: string[] = [
+export const EVAL_TAG_NAMES_CN: string[] = [
     '键盘谱',
     '星星谱',
     '体力谱',
     '底力谱',
     '高物量',
+];
+
+export const EVAL_TAG_NAMES: string[] = [
+    'Tap',
+    'Slide',
+    'Stamina',
+    'Stamina (incl. Reading)',
+    'Note Spam',
 ];
 
 export const EVAL_TAG_NUMBERS: Readonly<number[]> = [15, 14, 21, 16, 22];
