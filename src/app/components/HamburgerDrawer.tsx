@@ -128,7 +128,7 @@ export default function HamburgerDrawer() {
                                     <>
                                         <li>
                                             <Link
-                                                href={'/pages/Guide'}
+                                                href={'/pages/Guides'}
                                                 className={
                                                     'block px-3 py-2 rounded hover:bg-base-200'
                                                 }
