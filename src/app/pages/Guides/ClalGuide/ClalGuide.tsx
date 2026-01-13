@@ -3,6 +3,8 @@
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import Link from 'next/link';
+import Step from "@/app/components/Step";
+import CLink from "@/app/components/CLink";
 
 export default function ClalGuide() {
     const { data: session } = useSession();
@@ -24,42 +26,6 @@ export default function ClalGuide() {
         `s.src='${site_link}/api/getClal';` +
         'document.body.appendChild(s);' +
         '})();void(0);';
-
-    const Step = ({
-        title,
-        children,
-    }: {
-        title: string;
-        children: React.ReactNode;
-    }) => (
-        <div
-            className={
-                'card bg-base-200/60 shadow-md hover:bg-base-200 hover:shadow-lg transition-all'
-            }
-        >
-            <div className={'card-body gap-3'}>
-                <h2 className={'card-title text-xl'}>{title}</h2>
-                <div className={'text-base-content/80'}>{children}</div>
-            </div>
-        </div>
-    );
-
-    const CLink = ({
-        href,
-        children,
-    }: {
-        href: string;
-        children: React.ReactNode;
-    }) => (
-        <Link
-            href={href}
-            target={'_blank'}
-            rel={'noreferrer'}
-            className={'link link-primary font-medium'}
-        >
-            {children}
-        </Link>
-    );
 
     return (
         <div className={'mx-auto max-w-3xl space-y-6 p-6'}>
