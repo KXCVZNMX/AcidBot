@@ -2,6 +2,9 @@ import React from 'react';
 import Step from '@/app/components/Step';
 import CLink from '@/app/components/CLink';
 import {Metadata} from "next";
+import Link from "next/link";
+import Image from "next/image";
+import BackButton from "../../../../../public/back-button-svgrepo.svg";
 
 export const metadata: Metadata = {
     title: 'AcidBot | Clal Guide',
@@ -11,9 +14,15 @@ export const metadata: Metadata = {
 export default function UsageGuide() {
     return (
         <div className={'mx-auto max-w-3xl space-y-6 p-6'}>
-            <h1 className={'text-3xl font-bold text-center'}>
-                AcidBot Usage Guide
-            </h1>
+            <div className={'grid grid-cols-[auto_1fr_auto] items-center'}>
+                <Link href={'/pages/Guides'} aria-label={'go back'}>
+                    <Image src={BackButton} alt={'back button'} width={24} height={24} className={'h-6 w-6'}/>
+                </Link>
+                <h1 className={'text-3xl font-bold text-center'}>
+                    Acid Usage Guide
+                </h1>
+                <div aria-hidden />
+            </div>
 
             <Step title={'Step 1 — Login / Signup'}>
                 <p>
