@@ -6,13 +6,13 @@ export default function Guides() {
             <h2 className={'text-3xl font-medium m-2'}>Guides</h2>
 
             <div className={'p-3 w-full max-w-[700px] grid grid-cols-1 gap-3'}>
-                <Card title={'Clal Guide'} href={'/pages/Guides/ClalGuide'}>
-                    See how to extract your clal token, used to fetch for your
-                    scores
+                <Card title={'Usage Guide'} href={'/pages/Guides/UsageGuide'}>
+                    See how to use AcidBot!
                 </Card>
 
-                <Card title={''}>
-                    <></>
+                <Card title={'Clal Guide'} href={'/pages/Guides/ClalGuide'}>
+                    See how to extract your clal token, used to fetch for your
+                    scores.
                 </Card>
             </div>
         </div>
