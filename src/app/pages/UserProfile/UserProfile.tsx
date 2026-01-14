@@ -111,7 +111,7 @@ export default function UserProfile() {
 
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
-                            <div className={'card-body max-h-[540px]'}>
+                            <div className={'card-body h-[540px]'}>
                                 <div
                                     className={
                                         'overflow-x-auto overflow-y-auto'
