@@ -39,3 +39,8 @@ export interface Best50Songs {
     b35: MSSB50[];
     b15: MSSB50[];
 }
+
+export interface Best50SongsWithDate {
+    b50: Best50Songs;
+    createdAt: Date;
+}
