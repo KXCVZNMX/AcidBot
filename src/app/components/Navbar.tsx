@@ -24,7 +24,7 @@ export default function Navbar() {
                 showLoginModal={showLoginModal}
                 setShowLoginModal={setShowLoginModal}
             />
-            <div className={'navbar backdrop-blur-sm shadow-lg'}>
+            <div className={'navbar backdrop-blur-sm shadow-lg relative z-50'}>
                 <div className={'p-3'}>
                     <Link href={'/'}>
                         <Image
