@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import Logout from '@/app/components/Logout';
+import {signOut, useSession} from 'next-auth/react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
