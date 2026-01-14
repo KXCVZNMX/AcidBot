@@ -98,6 +98,14 @@ export default function UserProfile() {
                             </div>
                         </div>
                     </div>
+
+                    <div className={'col-span-1'}>
+                        <div className={'card bg-base-200'}>
+                            <div className={'card-body h-[540px]'}>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
