@@ -152,7 +152,7 @@ export default function Navbar() {
                                 </ul>
                             </div>
 
-                            <h3 className={'text-md font-semibold'}>
+                            <h3 className={'text-md font-semibold pr-3'}>
                                 {session?.user?.name}
                             </h3>
                         </div>
