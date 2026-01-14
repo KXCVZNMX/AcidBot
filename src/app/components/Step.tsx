@@ -11,7 +11,7 @@ export default function Step({
 }) {
     return (
         <div
-            className={`card bg-base-${bg ? bg : 200}/60 shadow-lg hover:bg-base-${bg ? bg : 200} hover:shadow-lg transition-all`}
+            className={`card bg-base-${bg ? bg : 200}/60 shadow-lg hover:bg-base-${bg ? bg : 200} hover:shadow-lg transition-all z-[-10]`}
         >
             <div className={'card-body gap-3'}>
                 <h2 className={'card-title text-xl'}>{title}</h2>

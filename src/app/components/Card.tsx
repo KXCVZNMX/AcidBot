@@ -20,7 +20,7 @@ export default function Card({
             target={newPage ? '_blank' : ''}
             rel={'noreferrer'}
             className={
-                'card bg-base-200/60 shadow-md hover:bg-base-200 hover:shadow-lg transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary'
+                'card bg-base-200/60 shadow-md hover:bg-base-200 hover:shadow-lg transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary z-[-10]'
             }
         >
             <div className={'card-body gap-3'}>
