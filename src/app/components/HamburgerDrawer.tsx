@@ -4,9 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
-import { useSession } from 'next-auth/react';
+import {signOut, useSession} from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
-import Logout from '@/app/components/Logout';
 
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
@@ -180,7 +179,7 @@ export default function HamburgerDrawer() {
                                 {session ? (
                                     <div
                                         className={
-                                            'flex items-center gap-3 px-3'
+                                            'flex flex-col gap-3 px-3'
                                         }
                                     >
                                         <div
@@ -213,9 +212,43 @@ export default function HamburgerDrawer() {
                                                         'User'}
                                                 </div>
                                             </div>
-
-                                            <Logout />
                                         </div>
+
+                                        <ul className={'flex flex-col gap-2'}>
+                                            <li>
+                                                <Link
+                                                    href={'/pages/UserProfile'}
+                                                    className={'block px-3 py-2 rounded hover:bg-base-200'}
+                                                    onClick={() => setOpen(false)}
+                                                >
+                                                    Profile
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <Link
+                                                    href={'/pages/UserSettings'}
+                                                    className={'block px-3 py-2 rounded hover:bg-base-200'}
+                                                    onClick={() => setOpen(false)}
+                                                >
+                                                    Settings
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <button
+                                                    onClick={() =>
+                                                        signOut({ redirectTo: '/' })
+                                                    }
+                                                    aria-label={'Logout'}
+                                                    title={'Logout'}
+                                                    role={'menuitem'}
+                                                    className={'text-red-500 block px-3 py-2 rounded hover:bg-base-200 w-full text-left'}
+                                                >
+                                                    Sign out
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
                                 ) : (
                                     <div className={'px-3'}>
