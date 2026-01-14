@@ -188,16 +188,18 @@ export default function HamburgerDrawer() {
                                                 'flex items-center gap-3'
                                             }
                                         >
-                                            <Image
-                                                src={
-                                                    session.user?.image ??
-                                                    DefaultAvatar
-                                                }
-                                                alt={'avatar'}
-                                                width={40}
-                                                height={40}
-                                                className={'rounded-full'}
-                                            />
+                                            <Link href={'/pages/UserProfile'} onClick={() => setOpen(false)}>
+                                                <Image
+                                                    src={
+                                                        session.user?.image ??
+                                                        DefaultAvatar
+                                                    }
+                                                    alt={'avatar'}
+                                                    width={40}
+                                                    height={40}
+                                                    className={'rounded-full'}
+                                                />
+                                            </Link>
                                             <div>
                                                 <div
                                                     className={
