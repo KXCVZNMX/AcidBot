@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
+import Icon from '../favicon.ico';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 import LoginModal from '@/app/components/LoginModal';
@@ -25,11 +26,8 @@ export default function Navbar() {
             />
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
-                    <Link
-                        className={'btn btn-ghost text-lg rounded-2xl'}
-                        href={'/'}
-                    >
-                        AcidBot
+                    <Link href={'/'}>
+                        <Image src={Icon} alt={'logo'} width={40} height={40} priority />
                     </Link>
                 </div>
 
@@ -147,6 +145,10 @@ export default function Navbar() {
                                     </li>
                                 </ul>
                             </div>
+
+                            <h3 className={'text-md font-semibold'}>
+                                {session?.user?.name}
+                            </h3>
                         </div>
                     </>
                 )}
