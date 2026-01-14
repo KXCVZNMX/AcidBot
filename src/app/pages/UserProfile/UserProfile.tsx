@@ -112,6 +112,9 @@ export default function UserProfile() {
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
                             <div className={'card-body h-[540px]'}>
+                                <h3 className={'text-lg font-bold'}>
+                                    Best 50
+                                </h3>
                                 <div
                                     className={
                                         'overflow-x-auto overflow-y-auto'
@@ -128,7 +131,15 @@ export default function UserProfile() {
 
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
-                            <div className={'card-body h-[540px]'}></div>
+                            <div className={'card-body h-[540px]'}>
+                                <h3 className={'text-lg font-bold'}>
+                                    Old Best 50
+                                </h3>
+
+                                <div className={'overflow-x-auto overflow-y-auto'}>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
