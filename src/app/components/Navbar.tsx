@@ -84,16 +84,46 @@ export default function Navbar() {
                         </div>
 
                         <div className={'hidden md:flex items-center gap-2'}>
-                            <Link href={'/pages/UserProfile'}>
-                                <Image
-                                    src={session?.user?.image ?? DefaultAvatar}
-                                    alt={'user profile picture'}
-                                    width={30}
-                                    height={30}
-                                    className={'rounded-full'}
-                                />
-                            </Link>
-                            <Logout />
+                            <div className={'dropdown dropdown-end'}>
+                                <label tabIndex={0} className={'btn btn-ghost btn-circle avatar p-0'}>
+                                    <div className={'w-8 h-8 rounded-full overflow-hidden'}>
+                                        <Image
+                                            src={session?.user?.image ?? DefaultAvatar}
+                                            alt={'user profile picture'}
+                                            width={30}
+                                            height={30}
+                                            className={'rounded-full'}
+                                        />
+                                    </div>
+                                </label>
+
+                                <ul
+                                    tabIndex={0}
+                                    className={'dropdown-content menu p-2 shadow bg-base-300 rounded-box w-48'}
+                                    role={'menu'}
+                                    aria-label={'User menu'}
+                                >
+                                    <li>
+                                        <Link href={'/pages/UserProfile'} role={'menuitem'}>Profile</Link>
+                                    </li>
+                                    <li>
+                                        <Link href={'/pages/UserSettings'} role={'menuitem'}>Settings</Link>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={() =>
+                                                signOut({ redirectTo: '/' })
+                                            }
+                                            aria-label={'Logout'}
+                                            title={'Logout'}
+                                            role={'menuitem'}
+                                            className={'text-red-500'}
+                                        >
+                                            Sign out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </>
                 )}
