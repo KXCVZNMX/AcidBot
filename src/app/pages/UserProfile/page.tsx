@@ -1,6 +1,11 @@
 import Image from "next/image";
 import DefaultUserIcon from '../../../../public/225-default-avatar.svg'
 import {auth} from "@/auth";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'AcidBot | Profile'
+}
 
 export default async function UserProfile() {
     const session = await auth();
