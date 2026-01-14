@@ -84,13 +84,15 @@ export default function Navbar() {
                         </div>
 
                         <div className={'hidden md:flex items-center gap-2'}>
-                            <Image
-                                src={session?.user?.image ?? DefaultAvatar}
-                                alt={'user profile picture'}
-                                width={30}
-                                height={30}
-                                className={'rounded-full'}
-                            />
+                            <Link href={'/pages/UserProfile'}>
+                                <Image
+                                    src={session?.user?.image ?? DefaultAvatar}
+                                    alt={'user profile picture'}
+                                    width={30}
+                                    height={30}
+                                    className={'rounded-full'}
+                                />
+                            </Link>
                             <Logout />
                         </div>
                     </>
