@@ -16,12 +16,12 @@ export default async function UserProfile() {
                 <div className={'col-span-1 md:col-span-2'}>
                     <div className={'card bg-base-200'}>
                         <div className={'card-body'}>
-                            <div className={'flex flex-row gap-5'}>
+                            <div className={'flex flex-col md:flex-row gap-5 items-center md:items-start'}>
                                 <Image
                                     src={session!.user?.image ?? DefaultUserIcon}
                                     alt={'user icon'}
-                                    width={150}
-                                    height={150}
+                                    width={130}
+                                    height={130}
                                     className={'rounded-full'}
                                 />
                                 <div className={'flex flex-col'}>
@@ -31,8 +31,8 @@ export default async function UserProfile() {
                                         </h2>
                                     </div>
                                     <div className={'card-body'}>
-                                        <h3 className={'text-xl'}>
-                                            <p>Created at: {session!.user?.createdAt.toString().split('T')[0]}</p>
+                                        <h3 className={'text-lg'}>
+                                            <p>Created on: {session!.user?.createdAt.toString().split('T')[0]}</p>
                                         </h3>
                                     </div>
                                 </div>
