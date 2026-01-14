@@ -27,7 +27,13 @@ export default function Navbar() {
             <div className={'navbar backdrop-blur-sm shadow-lg'}>
                 <div className={'p-3'}>
                     <Link href={'/'}>
-                        <Image src={Icon} alt={'logo'} width={40} height={40} priority />
+                        <Image
+                            src={Icon}
+                            alt={'logo'}
+                            width={40}
+                            height={40}
+                            priority
+                        />
                     </Link>
                 </div>
 

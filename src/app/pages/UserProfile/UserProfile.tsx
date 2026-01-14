@@ -1,13 +1,13 @@
 'use client';
 
-import Image from "next/image";
-import DefaultUserIcon from '../../../../public/225-default-avatar.svg'
-import {Best50Songs, MSSB50} from "@/lib/types";
-import {useEffect, useState} from "react";
-import {useSession} from "next-auth/react";
-import {getCookie} from "@/lib/util";
-import ErrorModal from "@/app/components/ErrorModal";
-import B50Table from "@/app/components/B50Table";
+import Image from 'next/image';
+import DefaultUserIcon from '../../../../public/225-default-avatar.svg';
+import { Best50Songs, MSSB50 } from '@/lib/types';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { getCookie } from '@/lib/util';
+import ErrorModal from '@/app/components/ErrorModal';
+import B50Table from '@/app/components/B50Table';
 
 export default function UserProfile() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
@@ -60,13 +60,24 @@ export default function UserProfile() {
             <ErrorModal error={error} show={showErrorModal} />
 
             <div className={'flex items-center justify-center'}>
-                <div className={'p-3 w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-2 gap-3'}>
+                <div
+                    className={
+                        'p-3 w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-2 gap-3'
+                    }
+                >
                     <div className={'col-span-1 md:col-span-2'}>
                         <div className={'card bg-base-200 z-[-10]'}>
                             <div className={'card-body'}>
-                                <div className={'flex flex-col md:flex-row gap-5 items-center md:items-start'}>
+                                <div
+                                    className={
+                                        'flex flex-col md:flex-row gap-5 items-center md:items-start'
+                                    }
+                                >
                                     <Image
-                                        src={session?.user?.image ?? DefaultUserIcon}
+                                        src={
+                                            session?.user?.image ??
+                                            DefaultUserIcon
+                                        }
                                         alt={'user icon'}
                                         width={130}
                                         height={130}
@@ -74,13 +85,22 @@ export default function UserProfile() {
                                     />
                                     <div className={'flex flex-col'}>
                                         <div className={'card-title pl-6'}>
-                                            <h2 className={'text-3xl font-bold'}>
+                                            <h2
+                                                className={'text-3xl font-bold'}
+                                            >
                                                 {session?.user?.name}
                                             </h2>
                                         </div>
                                         <div className={'card-body'}>
                                             <h3 className={'text-lg'}>
-                                                <p>Created on: {session?.user?.createdAt.toString().split('T')[0]}</p>
+                                                <p>
+                                                    Created on:{' '}
+                                                    {
+                                                        session?.user?.createdAt
+                                                            .toString()
+                                                            .split('T')[0]
+                                                    }
+                                                </p>
                                             </h3>
                                         </div>
                                     </div>
@@ -92,8 +112,15 @@ export default function UserProfile() {
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
                             <div className={'card-body max-h-[540px]'}>
-                                <div className={'overflow-x-auto overflow-y-auto'}>
-                                    <B50Table oldSong={oldSong} newSong={newSong} />
+                                <div
+                                    className={
+                                        'overflow-x-auto overflow-y-auto'
+                                    }
+                                >
+                                    <B50Table
+                                        oldSong={oldSong}
+                                        newSong={newSong}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -101,13 +128,11 @@ export default function UserProfile() {
 
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
-                            <div className={'card-body h-[540px]'}>
-
-                            </div>
+                            <div className={'card-body h-[540px]'}></div>
                         </div>
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 }

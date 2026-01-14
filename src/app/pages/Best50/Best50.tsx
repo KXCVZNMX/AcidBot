@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {Best50Songs, MSSB50} from '@/lib/types';
+import { Best50Songs, MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import B50Table from "@/app/components/B50Table";
+import B50Table from '@/app/components/B50Table';
 
 export default function Best50() {
     const [clal, setClal] = useState('0');

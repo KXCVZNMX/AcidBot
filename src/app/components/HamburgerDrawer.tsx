@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
-import {signOut, useSession} from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -177,11 +177,7 @@ export default function HamburgerDrawer() {
                                 className={'border-t border-base-200 mt-4 pt-4'}
                             >
                                 {session ? (
-                                    <div
-                                        className={
-                                            'flex flex-col gap-3 px-3'
-                                        }
-                                    >
+                                    <div className={'flex flex-col gap-3 px-3'}>
                                         <div
                                             className={
                                                 'flex items-center gap-3'
@@ -218,8 +214,12 @@ export default function HamburgerDrawer() {
                                             <li>
                                                 <Link
                                                     href={'/pages/UserProfile'}
-                                                    className={'block px-3 py-2 rounded hover:bg-base-200'}
-                                                    onClick={() => setOpen(false)}
+                                                    className={
+                                                        'block px-3 py-2 rounded hover:bg-base-200'
+                                                    }
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
                                                 >
                                                     Profile
                                                 </Link>
@@ -228,8 +228,12 @@ export default function HamburgerDrawer() {
                                             <li>
                                                 <Link
                                                     href={'/pages/UserSettings'}
-                                                    className={'block px-3 py-2 rounded hover:bg-base-200'}
-                                                    onClick={() => setOpen(false)}
+                                                    className={
+                                                        'block px-3 py-2 rounded hover:bg-base-200'
+                                                    }
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
                                                 >
                                                     Settings
                                                 </Link>
@@ -238,12 +242,16 @@ export default function HamburgerDrawer() {
                                             <li>
                                                 <button
                                                     onClick={() =>
-                                                        signOut({ redirectTo: '/' })
+                                                        signOut({
+                                                            redirectTo: '/',
+                                                        })
                                                     }
                                                     aria-label={'Logout'}
                                                     title={'Logout'}
                                                     role={'menuitem'}
-                                                    className={'text-red-500 block px-3 py-2 rounded hover:bg-base-200 w-full text-left'}
+                                                    className={
+                                                        'text-red-500 block px-3 py-2 rounded hover:bg-base-200 w-full text-left'
+                                                    }
                                                 >
                                                     Sign out
                                                 </button>
