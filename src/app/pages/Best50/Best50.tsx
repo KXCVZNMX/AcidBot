@@ -1,14 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MSSB50 } from '@/lib/types';
+import {Best50Songs, MSSB50} from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-
-interface Best50Songs {
-    b35: MSSB50[];
-    b15: MSSB50[];
-}
+import B50Table from "@/app/components/B50Table";
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
@@ -107,73 +103,9 @@ export default function Best50() {
                             : 0}
                     </h4>
                 </div>
+
                 <div className={'overflow-x-auto'}>
-                    <table className={'table min-w-[900px]'}>
-                        <colgroup>
-                            <col className="w-[5%]" />
-                            <col className="w-[20%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[5%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                        </colgroup>
-
-                        <thead>
-                            <tr key={'header'}>
-                                <th />
-                                <th>Song Title</th>
-                                <th>Level</th>
-                                <th>Rank</th>
-                                <th>Rating</th>
-                                <th>Score</th>
-                                <th>Type</th>
-                                <th>DX Score</th>
-                                <th>Combo</th>
-                                <th>Sync</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {oldSong.map((song, i) => (
-                                <tr
-                                    className={`hover:bg-base-300 bg-${song.diff}`}
-                                    key={i}
-                                >
-                                    <th>{i + 1}</th>
-                                    <td>{song.name}</td>
-                                    <td>{song.levelConst}</td>
-                                    <td>{song.rank}</td>
-                                    <td>{song.rating}</td>
-                                    <td>{song.score}</td>
-                                    <td>{song.isDx}</td>
-                                    <td>{song.dx}</td>
-                                    <td>{song.combo}</td>
-                                    <td>{song.sync}</td>
-                                </tr>
-                            ))}
-                            {newSong.map((song, i) => (
-                                <tr
-                                    className={`hover:bg-base-300 bg-${song.diff}`}
-                                    key={i}
-                                >
-                                    <th>{i + 36}</th>
-                                    <td>{song.name}</td>
-                                    <td>{song.levelConst}</td>
-                                    <td>{song.rank}</td>
-                                    <td>{song.rating}</td>
-                                    <td>{song.score}</td>
-                                    <td>{song.isDx}</td>
-                                    <td>{song.dx}</td>
-                                    <td>{song.combo}</td>
-                                    <td>{song.sync}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <B50Table oldSong={oldSong} newSong={newSong} />
                 </div>
             </div>
         </>
