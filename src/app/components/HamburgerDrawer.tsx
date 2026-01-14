@@ -6,7 +6,7 @@ import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import { useSession } from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
-import Logout from "@/app/components/Logout";
+import Logout from '@/app/components/Logout';
 
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
@@ -188,7 +188,10 @@ export default function HamburgerDrawer() {
                                                 'flex items-center gap-3'
                                             }
                                         >
-                                            <Link href={'/pages/UserProfile'} onClick={() => setOpen(false)}>
+                                            <Link
+                                                href={'/pages/UserProfile'}
+                                                onClick={() => setOpen(false)}
+                                            >
                                                 <Image
                                                     src={
                                                         session.user?.image ??

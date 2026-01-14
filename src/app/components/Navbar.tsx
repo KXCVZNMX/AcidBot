@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {signOut, useSession} from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
@@ -84,10 +84,22 @@ export default function Navbar() {
 
                         <div className={'hidden md:flex items-center gap-2'}>
                             <div className={'dropdown dropdown-end'}>
-                                <label tabIndex={0} className={'btn btn-ghost btn-circle avatar p-0'}>
-                                    <div className={'w-8 h-8 rounded-full overflow-hidden'}>
+                                <label
+                                    tabIndex={0}
+                                    className={
+                                        'btn btn-ghost btn-circle avatar p-0'
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            'w-8 h-8 rounded-full overflow-hidden'
+                                        }
+                                    >
                                         <Image
-                                            src={session?.user?.image ?? DefaultAvatar}
+                                            src={
+                                                session?.user?.image ??
+                                                DefaultAvatar
+                                            }
                                             alt={'user profile picture'}
                                             width={30}
                                             height={30}
@@ -98,15 +110,27 @@ export default function Navbar() {
 
                                 <ul
                                     tabIndex={0}
-                                    className={'dropdown-content menu p-2 shadow bg-base-300 rounded-box w-48'}
+                                    className={
+                                        'dropdown-content menu p-2 shadow bg-base-300 rounded-box w-48'
+                                    }
                                     role={'menu'}
                                     aria-label={'User menu'}
                                 >
                                     <li>
-                                        <Link href={'/pages/UserProfile'} role={'menuitem'}>Profile</Link>
+                                        <Link
+                                            href={'/pages/UserProfile'}
+                                            role={'menuitem'}
+                                        >
+                                            Profile
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href={'/pages/UserSettings'} role={'menuitem'}>Settings</Link>
+                                        <Link
+                                            href={'/pages/UserSettings'}
+                                            role={'menuitem'}
+                                        >
+                                            Settings
+                                        </Link>
                                     </li>
                                     <li>
                                         <button
