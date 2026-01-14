@@ -5,6 +5,7 @@ import { Best50Songs, MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50Table from '@/app/components/B50Table';
+import SuccessModal from "@/app/components/SuccessModal";
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
@@ -121,6 +122,8 @@ export default function Best50() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
+            <SuccessModal message={'Successfully saved!'} show={showSuccess} />
+
             <div className={'flex flex-col justify-center shadow-lg'}>
                 <div
                     className={
