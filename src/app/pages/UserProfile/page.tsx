@@ -12,8 +12,8 @@ export default async function UserProfile() {
 
     return (
         <div className={'flex items-center justify-center'}>
-            <div className={'p-3 w-full max-w-[1200px] grid grid-cols-2 gap-3'}>
-                <div className={'col-span-2'}>
+            <div className={'p-3 w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-2 gap-3'}>
+                <div className={'col-span-1 md:col-span-2'}>
                     <div className={'card bg-base-200'}>
                         <div className={'card-body'}>
                             <div className={'flex flex-row gap-5'}>
