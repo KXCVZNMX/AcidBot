@@ -4,8 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
-import LogoutIcon from '../../../public/logout-svg-svgrepo.svg';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
 import Logout from "@/app/components/Logout";
 
