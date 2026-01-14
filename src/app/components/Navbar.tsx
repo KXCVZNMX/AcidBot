@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import Logout from '@/app/components/Logout';
+import { signOut, useSession } from 'next-auth/react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
+import Icon from '../favicon.ico';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 import LoginModal from '@/app/components/LoginModal';
@@ -24,13 +24,16 @@ export default function Navbar() {
                 showLoginModal={showLoginModal}
                 setShowLoginModal={setShowLoginModal}
             />
-            <div className={'navbar backdrop-blur-sm shadow-lg'}>
+            <div className={'navbar backdrop-blur-sm shadow-lg relative z-50'}>
                 <div className={'p-3'}>
-                    <Link
-                        className={'btn btn-ghost text-lg rounded-2xl'}
-                        href={'/'}
-                    >
-                        AcidBot
+                    <Link href={'/'}>
+                        <Image
+                            src={Icon}
+                            alt={'logo'}
+                            width={40}
+                            height={40}
+                            priority
+                        />
                     </Link>
                 </div>
 
@@ -84,14 +87,74 @@ export default function Navbar() {
                         </div>
 
                         <div className={'hidden md:flex items-center gap-2'}>
-                            <Image
-                                src={session?.user?.image ?? DefaultAvatar}
-                                alt={'user profile picture'}
-                                width={30}
-                                height={30}
-                                className={'rounded-full'}
-                            />
-                            <Logout />
+                            <div className={'dropdown dropdown-end'}>
+                                <label
+                                    tabIndex={0}
+                                    className={
+                                        'btn btn-ghost btn-circle avatar p-0'
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            'w-8 h-8 rounded-full overflow-hidden'
+                                        }
+                                    >
+                                        <Image
+                                            src={
+                                                session?.user?.image ??
+                                                DefaultAvatar
+                                            }
+                                            alt={'user profile picture'}
+                                            width={30}
+                                            height={30}
+                                            className={'rounded-full'}
+                                        />
+                                    </div>
+                                </label>
+
+                                <ul
+                                    tabIndex={0}
+                                    className={
+                                        'dropdown-content menu p-2 shadow bg-base-300 rounded-box w-48'
+                                    }
+                                    role={'menu'}
+                                    aria-label={'User menu'}
+                                >
+                                    <li>
+                                        <Link
+                                            href={'/pages/UserProfile'}
+                                            role={'menuitem'}
+                                        >
+                                            Profile
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href={'/pages/UserSettings'}
+                                            role={'menuitem'}
+                                        >
+                                            Settings
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={() =>
+                                                signOut({ redirectTo: '/' })
+                                            }
+                                            aria-label={'Logout'}
+                                            title={'Logout'}
+                                            role={'menuitem'}
+                                            className={'text-red-500'}
+                                        >
+                                            Sign out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <h3 className={'text-md font-semibold pr-3'}>
+                                {session?.user?.name}
+                            </h3>
                         </div>
                     </>
                 )}

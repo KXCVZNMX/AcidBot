@@ -1,14 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MSSB50 } from '@/lib/types';
+import { Best50Songs, MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-
-interface Best50Songs {
-    b35: MSSB50[];
-    b15: MSSB50[];
-}
+import B50Table from '@/app/components/B50Table';
+import SuccessModal from '@/app/components/SuccessModal';
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
@@ -16,6 +13,7 @@ export default function Best50() {
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -83,97 +81,80 @@ export default function Best50() {
         }
     };
 
+    const saveB50 = async () => {
+        try {
+            if (newSong.length !== 15 || oldSong.length !== 35) {
+                throw new Error('Either one of b15 or b35 is incomplete');
+            }
+
+            const entry: Best50Songs = {
+                b35: oldSong,
+                b15: newSong,
+            };
+
+            const res = await fetch('/api/SaveB50', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(entry),
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                showError(error);
+                return;
+            }
+
+            setShowSuccess(true);
+            setTimeout(() => {
+                setShowSuccess(false);
+            }, 2000);
+        } catch (error) {
+            showError((error as Error).message);
+            console.error(error);
+        }
+    };
+
     const calculateRating = () =>
         [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
 
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
+            <SuccessModal message={'Successfully saved!'} show={showSuccess} />
+
             <div className={'flex flex-col justify-center shadow-lg'}>
                 <div
                     className={
                         'flex flex-col justify-center shadow-lg items-center'
                     }
                 >
-                    <button
-                        onClick={fetchB50WithClal}
-                        className={'btn btn-primary'}
-                    >
-                        Submit
-                    </button>
+                    <div className={'flex flex-row gap-2'}>
+                        <button
+                            onClick={fetchB50WithClal}
+                            className={'btn btn-primary'}
+                        >
+                            Submit
+                        </button>
+
+                        <button
+                            onClick={saveB50}
+                            className={'btn btn-secondary'}
+                        >
+                            Save
+                        </button>
+                    </div>
+
                     <h4 className={'p-3'}>
                         {oldSong.length !== 0 && newSong.length !== 0
                             ? calculateRating()
                             : 0}
                     </h4>
                 </div>
+
                 <div className={'overflow-x-auto'}>
-                    <table className={'table min-w-[900px]'}>
-                        <colgroup>
-                            <col className="w-[5%]" />
-                            <col className="w-[20%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[5%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                            <col className="w-[10%]" />
-                        </colgroup>
-
-                        <thead>
-                            <tr key={'header'}>
-                                <th />
-                                <th>Song Title</th>
-                                <th>Level</th>
-                                <th>Rank</th>
-                                <th>Rating</th>
-                                <th>Score</th>
-                                <th>Type</th>
-                                <th>DX Score</th>
-                                <th>Combo</th>
-                                <th>Sync</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {oldSong.map((song, i) => (
-                                <tr
-                                    className={`hover:bg-base-300 bg-${song.diff}`}
-                                    key={i}
-                                >
-                                    <th>{i + 1}</th>
-                                    <td>{song.name}</td>
-                                    <td>{song.levelConst}</td>
-                                    <td>{song.rank}</td>
-                                    <td>{song.rating}</td>
-                                    <td>{song.score}</td>
-                                    <td>{song.isDx}</td>
-                                    <td>{song.dx}</td>
-                                    <td>{song.combo}</td>
-                                    <td>{song.sync}</td>
-                                </tr>
-                            ))}
-                            {newSong.map((song, i) => (
-                                <tr
-                                    className={`hover:bg-base-300 bg-${song.diff}`}
-                                    key={i}
-                                >
-                                    <th>{i + 36}</th>
-                                    <td>{song.name}</td>
-                                    <td>{song.levelConst}</td>
-                                    <td>{song.rank}</td>
-                                    <td>{song.rating}</td>
-                                    <td>{song.score}</td>
-                                    <td>{song.isDx}</td>
-                                    <td>{song.dx}</td>
-                                    <td>{song.combo}</td>
-                                    <td>{song.sync}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <B50Table oldSong={oldSong} newSong={newSong} />
                 </div>
             </div>
         </>

@@ -34,3 +34,14 @@ export interface Rank {
     factor: number;
     maxFactor?: number;
 }
+
+export interface Best50Songs {
+    b35: MSSB50[];
+    b15: MSSB50[];
+}
+
+export interface Best50SongsWithDateRating {
+    b50: Best50Songs;
+    createdAt: Date;
+    rating: number;
+}

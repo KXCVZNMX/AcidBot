@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
-import LogoutIcon from '../../../public/logout-svg-svgrepo.svg';
 import { signOut, useSession } from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
 
@@ -178,26 +177,27 @@ export default function HamburgerDrawer() {
                                 className={'border-t border-base-200 mt-4 pt-4'}
                             >
                                 {session ? (
-                                    <div
-                                        className={
-                                            'flex items-center gap-3 px-3'
-                                        }
-                                    >
+                                    <div className={'flex flex-col gap-3 px-3'}>
                                         <div
                                             className={
                                                 'flex items-center gap-3'
                                             }
                                         >
-                                            <Image
-                                                src={
-                                                    session.user?.image ??
-                                                    DefaultAvatar
-                                                }
-                                                alt={'avatar'}
-                                                width={40}
-                                                height={40}
-                                                className={'rounded-full'}
-                                            />
+                                            <Link
+                                                href={'/pages/UserProfile'}
+                                                onClick={() => setOpen(false)}
+                                            >
+                                                <Image
+                                                    src={
+                                                        session.user?.image ??
+                                                        DefaultAvatar
+                                                    }
+                                                    alt={'avatar'}
+                                                    width={40}
+                                                    height={40}
+                                                    className={'rounded-full'}
+                                                />
+                                            </Link>
                                             <div>
                                                 <div
                                                     className={
@@ -208,25 +208,55 @@ export default function HamburgerDrawer() {
                                                         'User'}
                                                 </div>
                                             </div>
-
-                                            <button
-                                                onClick={() =>
-                                                    signOut({ redirectTo: '/' })
-                                                }
-                                                aria-label={'Logout'}
-                                                title={'Logout'}
-                                                className={
-                                                    'p-2 rounded hover:bg-base-200 transition-colors'
-                                                }
-                                            >
-                                                <Image
-                                                    src={LogoutIcon}
-                                                    alt={'logout icon'}
-                                                    width={20}
-                                                    height={20}
-                                                />
-                                            </button>
                                         </div>
+
+                                        <ul className={'flex flex-col gap-2'}>
+                                            <li>
+                                                <Link
+                                                    href={'/pages/UserProfile'}
+                                                    className={
+                                                        'block px-3 py-2 rounded hover:bg-base-200'
+                                                    }
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
+                                                >
+                                                    Profile
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <Link
+                                                    href={'/pages/UserSettings'}
+                                                    className={
+                                                        'block px-3 py-2 rounded hover:bg-base-200'
+                                                    }
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
+                                                >
+                                                    Settings
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <button
+                                                    onClick={() =>
+                                                        signOut({
+                                                            redirectTo: '/',
+                                                        })
+                                                    }
+                                                    aria-label={'Logout'}
+                                                    title={'Logout'}
+                                                    role={'menuitem'}
+                                                    className={
+                                                        'text-red-500 block px-3 py-2 rounded hover:bg-base-200 w-full text-left'
+                                                    }
+                                                >
+                                                    Sign out
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
                                 ) : (
                                     <div className={'px-3'}>
