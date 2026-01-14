@@ -1,11 +1,11 @@
-import {NextRequest, NextResponse} from "next/server";
-import client from "@/lib/db";
-import {ObjectId} from "mongodb";
+import { NextRequest, NextResponse } from 'next/server';
+import client from '@/lib/db';
+import { ObjectId } from 'mongodb';
 
 type OldB50 = {
     createdAt: Date;
     rating: number;
-}
+};
 
 export async function POST(req: NextRequest) {
     let id = req.nextUrl.searchParams.get('id') ?? '';
@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
             {
                 projection: {
                     _id: 0,
-                    "b50s.createdAt": 1,
-                    "b50s.rating": 1
-                }
+                    'b50s.createdAt': 1,
+                    'b50s.rating': 1,
+                },
             }
         );
 

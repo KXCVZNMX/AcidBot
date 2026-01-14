@@ -12,7 +12,7 @@ import B50Table from '@/app/components/B50Table';
 type OldB50 = {
     createdAt: Date;
     rating: number;
-}
+};
 
 export default function UserProfile() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
@@ -42,10 +42,10 @@ export default function UserProfile() {
         }
 
         (async () => {
-            if (status === "loading") return; // Wait for session to load
+            if (status === 'loading') return; // Wait for session to load
 
-            if (status === "unauthenticated") {
-                showError("Please sign in to view your profile");
+            if (status === 'unauthenticated') {
+                showError('Please sign in to view your profile');
                 return;
             }
 
@@ -62,9 +62,12 @@ export default function UserProfile() {
                 setOldSong(b50.b35);
                 setNewSong(b50.b15);
 
-                const resOldB50 = await fetch(`/api/fetchOldB50Profile?id=${session?.user?.id ?? ''}`, {
-                    method: 'POST',
-                })
+                const resOldB50 = await fetch(
+                    `/api/fetchOldB50Profile?id=${session?.user?.id ?? ''}`,
+                    {
+                        method: 'POST',
+                    }
+                );
 
                 const oldB50s: OldB50[] = await resOldB50.json();
 
@@ -133,9 +136,7 @@ export default function UserProfile() {
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
                             <div className={'card-body h-[540px]'}>
-                                <h3 className={'text-lg font-bold'}>
-                                    Best 50
-                                </h3>
+                                <h3 className={'text-lg font-bold'}>Best 50</h3>
                                 <div
                                     className={
                                         'overflow-x-auto overflow-y-auto'
@@ -161,36 +162,52 @@ export default function UserProfile() {
                                     <table className="table table-zebra w-full">
                                         {/* Table Header */}
                                         <thead>
-                                        <tr className="bg-base-300">
-                                            <th className="text-center">#</th>
-                                            <th>History (Rating & Date)</th>
-                                        </tr>
+                                            <tr className="bg-base-300">
+                                                <th className="text-center">
+                                                    #
+                                                </th>
+                                                <th>History (Rating & Date)</th>
+                                            </tr>
                                         </thead>
 
                                         <tbody>
-                                        {oldB50s.length > 0 ? (
-                                            oldB50s.map((entry, index) => {
-                                                const dateString = entry.createdAt.toString().split('T')[0]
+                                            {oldB50s.length > 0 ? (
+                                                oldB50s.map((entry, index) => {
+                                                    const dateString =
+                                                        entry.createdAt
+                                                            .toString()
+                                                            .split('T')[0];
 
-                                                return (
-                                                    <tr key={index} className="hover:bg-base-content/10 transition-colors">
-                                                        <th className="text-center">{index + 1}</th>
-                                                        <td className="font-medium text-lg">
-                                                            {entry.rating}
-                                                            <span className="text-sm opacity-60 ml-2">
-                                            ({dateString})
-                                        </span>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })
-                                        ) : (
-                                            <tr>
-                                                <td colSpan={2} className="text-center py-4 opacity-50 italic">
-                                                    No history records found.
-                                                </td>
-                                            </tr>
-                                        )}
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="hover:bg-base-content/10 transition-colors"
+                                                        >
+                                                            <th className="text-center">
+                                                                {index + 1}
+                                                            </th>
+                                                            <td className="font-medium text-lg">
+                                                                {entry.rating}
+                                                                <span className="text-sm opacity-60 ml-2">
+                                                                    (
+                                                                    {dateString}
+                                                                    )
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            ) : (
+                                                <tr>
+                                                    <td
+                                                        colSpan={2}
+                                                        className="text-center py-4 opacity-50 italic"
+                                                    >
+                                                        No history records
+                                                        found.
+                                                    </td>
+                                                </tr>
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>

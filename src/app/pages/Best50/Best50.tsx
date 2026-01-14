@@ -5,7 +5,7 @@ import { Best50Songs, MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50Table from '@/app/components/B50Table';
-import SuccessModal from "@/app/components/SuccessModal";
+import SuccessModal from '@/app/components/SuccessModal';
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
@@ -90,7 +90,7 @@ export default function Best50() {
             const entry: Best50Songs = {
                 b35: oldSong,
                 b15: newSong,
-            }
+            };
 
             const res = await fetch('/api/SaveB50', {
                 method: 'POST',
@@ -98,7 +98,7 @@ export default function Best50() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(entry),
-            })
+            });
 
             if (!res.ok) {
                 const { error } = await res.json();
@@ -114,7 +114,7 @@ export default function Best50() {
             showError((error as Error).message);
             console.error(error);
         }
-    }
+    };
 
     const calculateRating = () =>
         [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
