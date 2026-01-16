@@ -1,5 +1,7 @@
 # AcidBot
 
+<img src="public/HomeGIF.gif" alt="icon" width="300">
+
 A maimai DX (international ver.) bot.
 
 Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issues) page
