@@ -139,13 +139,61 @@ export default function UserProfile() {
                                 <h3 className={'text-lg font-bold'}>Best 50</h3>
                                 <div
                                     className={
-                                        'overflow-x-auto overflow-y-auto'
+                                        'overflow-x-auto overflow-y-auto rounded-xl border border-base-300'
                                     }
                                 >
-                                    <B50Table
-                                        oldSong={oldSong}
-                                        newSong={newSong}
-                                    />
+                                    <table
+                                        className={'table table-zebra w-full'}
+                                    >
+                                        <colgroup>
+                                            <col className={'w-[5%]'} />
+                                        </colgroup>
+
+                                        <thead>
+                                            <tr
+                                                className={'bg-base-300'}
+                                                key={'header'}
+                                            >
+                                                <th className={'text-center'}>
+                                                    #
+                                                </th>
+                                                <th>Song Title</th>
+                                                <th>Level</th>
+                                                <th>Rank</th>
+                                                <th>Rating</th>
+                                                <th>Score</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {oldSong.map((song, i) => (
+                                                <tr
+                                                    className={`hover:bg-base-content/10 transition-colors`}
+                                                    key={i}
+                                                >
+                                                    <th>{i + 1}</th>
+                                                    <td>{song.name}</td>
+                                                    <td>{song.levelConst}</td>
+                                                    <td>{song.rank}</td>
+                                                    <td>{song.rating}</td>
+                                                    <td>{song.score}</td>
+                                                </tr>
+                                            ))}
+                                            {newSong.map((song, i) => (
+                                                <tr
+                                                    className={`hover:bg-base-content/10 transition-colors`}
+                                                    key={i}
+                                                >
+                                                    <th>{i + 36}</th>
+                                                    <td>{song.name}</td>
+                                                    <td>{song.levelConst}</td>
+                                                    <td>{song.rank}</td>
+                                                    <td>{song.rating}</td>
+                                                    <td>{song.score}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -158,12 +206,17 @@ export default function UserProfile() {
                                     Old Best 50
                                 </h3>
 
-                                <div className="overflow-x-auto rounded-xl border border-base-300">
-                                    <table className="table table-zebra w-full">
-                                        {/* Table Header */}
+                                <div
+                                    className={
+                                        'overflow-x-auto overflow-y-auto rounded-xl border border-base-300'
+                                    }
+                                >
+                                    <table
+                                        className={'table table-zebra w-full'}
+                                    >
                                         <thead>
-                                            <tr className="bg-base-300">
-                                                <th className="text-center">
+                                            <tr className={'bg-base-300'}>
+                                                <th className={'text-center'}>
                                                     #
                                                 </th>
                                                 <th>History (Rating & Date)</th>
@@ -181,14 +234,28 @@ export default function UserProfile() {
                                                     return (
                                                         <tr
                                                             key={index}
-                                                            className="hover:bg-base-content/10 transition-colors"
+                                                            className={
+                                                                'hover:bg-base-content/10 transition-colors'
+                                                            }
                                                         >
-                                                            <th className="text-center">
+                                                            <th
+                                                                className={
+                                                                    'text-center'
+                                                                }
+                                                            >
                                                                 {index + 1}
                                                             </th>
-                                                            <td className="font-medium text-lg">
+                                                            <td
+                                                                className={
+                                                                    'font-medium text-lg'
+                                                                }
+                                                            >
                                                                 {entry.rating}
-                                                                <span className="text-sm opacity-60 ml-2">
+                                                                <span
+                                                                    className={
+                                                                        'text-sm opacity-60 ml-2'
+                                                                    }
+                                                                >
                                                                     (
                                                                     {dateString}
                                                                     )
@@ -201,7 +268,9 @@ export default function UserProfile() {
                                                 <tr>
                                                     <td
                                                         colSpan={2}
-                                                        className="text-center py-4 opacity-50 italic"
+                                                        className={
+                                                            'text-center py-4 opacity-50 italic'
+                                                        }
                                                     >
                                                         No history records
                                                         found.
