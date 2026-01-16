@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import B50Table from '@/app/components/B50Table';
 
 type OldB50 = {
     createdAt: Date;
