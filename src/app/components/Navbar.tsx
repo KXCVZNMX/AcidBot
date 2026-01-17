@@ -24,7 +24,7 @@ export default function Navbar() {
                 showLoginModal={showLoginModal}
                 setShowLoginModal={setShowLoginModal}
             />
-            <div className={'navbar backdrop-blur-sm shadow-lg relative z-50'}>
+            <nav className={'navbar backdrop-blur-sm shadow-lg fixed top-0 z-50'}>
                 <div className={'p-3'}>
                     <Link href={'/'}>
                         <Image
@@ -158,7 +158,7 @@ export default function Navbar() {
                         </div>
                     </>
                 )}
-            </div>
+            </nav>
 
             <HamburgerDrawer />
         </>

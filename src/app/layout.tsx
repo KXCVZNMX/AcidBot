@@ -22,7 +22,9 @@ export default function RootLayout({
                 >
                     <Navbar />
                     <Analytics />
-                    {children}
+                    <div className={'pt-20'}>
+                        {children}
+                    </div>
                 </SessionProvider>
             </body>
         </html>
