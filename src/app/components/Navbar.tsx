@@ -129,14 +129,6 @@ export default function Navbar() {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            href={'/pages/UserSettings'}
-                                            role={'menuitem'}
-                                        >
-                                            Settings
-                                        </Link>
-                                    </li>
-                                    <li>
                                         <button
                                             onClick={() =>
                                                 signOut({ redirectTo: '/' })
