@@ -226,20 +226,6 @@ export default function HamburgerDrawer() {
                                             </li>
 
                                             <li>
-                                                <Link
-                                                    href={'/pages/UserSettings'}
-                                                    className={
-                                                        'block px-3 py-2 rounded hover:bg-base-200'
-                                                    }
-                                                    onClick={() =>
-                                                        setOpen(false)
-                                                    }
-                                                >
-                                                    Settings
-                                                </Link>
-                                            </li>
-
-                                            <li>
                                                 <button
                                                     onClick={() =>
                                                         signOut({

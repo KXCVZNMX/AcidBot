@@ -6,12 +6,25 @@ import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50Table from '@/app/components/B50Table';
 import SuccessModal from '@/app/components/SuccessModal';
+import RatingNormal from '../../../../public/rating_plates/rating_base_normal.png';
+import RatingBlue from '../../../../public/rating_plates/rating_base_blue.png';
+import RatingGreen from '../../../../public/rating_plates/rating_base_green.png';
+import RatingYellow from '../../../../public/rating_plates/rating_base_orange.png';
+import RatingRed from '../../../../public/rating_plates/rating_base_red.png';
+import RatingPurple from '../../../../public/rating_plates/rating_base_purple.png';
+import RatingBronze from '../../../../public/rating_plates/rating_base_bronze.png';
+import RatingSilver from '../../../../public/rating_plates/rating_base_silver.png';
+import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
+import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
+import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
+import Image from 'next/image';
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
+    const [rating, setRating] = useState(0);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -23,6 +36,34 @@ export default function Best50() {
             setShowErrorModal(false);
             setError('');
         }, 2000);
+    };
+
+    const chooseRatingPlate = () => {
+        if (rating < 1000) {
+            return RatingNormal;
+        } else if (rating < 2000 && rating >= 1000) {
+            return RatingBlue;
+        } else if (rating < 4000 && rating >= 2000) {
+            return RatingGreen;
+        } else if (rating < 7000 && rating >= 4000) {
+            return RatingYellow;
+        } else if (rating < 10000 && rating >= 7000) {
+            return RatingRed;
+        } else if (rating < 12000 && rating >= 10000) {
+            return RatingPurple;
+        } else if (rating < 13000 && rating >= 12000) {
+            return RatingBronze;
+        } else if (rating < 14000 && rating >= 13000) {
+            return RatingSilver;
+        } else if (rating < 14500 && rating >= 14000) {
+            return RatingGold;
+        } else if (rating < 15000 && rating >= 14500) {
+            return RatingPlatinum;
+        } else if (rating >= 15000) {
+            return RatingRainbow;
+        } else {
+            return RatingRainbow;
+        }
     };
 
     useEffect(() => {
@@ -55,6 +96,10 @@ export default function Best50() {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        setRating(calculateRating());
+    }, [oldSong, newSong]);
 
     const fetchB50WithClal = async () => {
         setOldSong([]);
@@ -146,11 +191,22 @@ export default function Best50() {
                         </button>
                     </div>
 
-                    <h4 className={'p-3'}>
-                        {oldSong.length !== 0 && newSong.length !== 0
-                            ? calculateRating()
-                            : 0}
-                    </h4>
+                    <div className={'relative w-[300px] h-[50px]'}>
+                        <Image
+                            src={chooseRatingPlate()}
+                            alt={'rating plate'}
+                            fill
+                            className={'object-contain'}
+                        />
+
+                        <div
+                            className={
+                                'absolute inset-0 flex items-center justify-start pl-[140px] text-2xl tracking-[0.22em]'
+                            }
+                        >
+                            {rating}
+                        </div>
+                    </div>
                 </div>
 
                 <div className={'overflow-x-auto'}>
