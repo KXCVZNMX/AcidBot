@@ -146,11 +146,21 @@ export default function Best50() {
                         </button>
                     </div>
 
-                    <h4 className={'p-3'}>
-                        {oldSong.length !== 0 && newSong.length !== 0
-                            ? calculateRating()
-                            : 0}
-                    </h4>
+                    <div className="relative w-[300px] h-[50px]">
+                        <Image
+                            src={chooseRatingPlate()}
+                            alt="rating plate"
+                            fill
+                            className="object-contain"
+                        />
+
+                        <div
+                            className="absolute inset-0 flex items-center justify-start pl-[140px] text-2xl tracking-[0.22em]"
+                        >
+                            {rating}
+                        </div>
+                    </div>
+
                 </div>
 
                 <div className={'overflow-x-auto'}>
