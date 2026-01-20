@@ -64,6 +64,17 @@ import Trophy from '../../../../public/b50/trophy_normal.png';
 import {Best50Songs, MSSB50, ParsedProfile} from "@/lib/types";
 import {getCookie} from "@/lib/util";
 import ErrorModal from "@/app/components/ErrorModal";
+import RatingNormal from "../../../../public/rating_plates/rating_base_normal.png";
+import RatingBlue from "../../../../public/rating_plates/rating_base_blue.png";
+import RatingGreen from "../../../../public/rating_plates/rating_base_green.png";
+import RatingYellow from "../../../../public/rating_plates/rating_base_orange.png";
+import RatingRed from "../../../../public/rating_plates/rating_base_red.png";
+import RatingPurple from "../../../../public/rating_plates/rating_base_purple.png";
+import RatingBronze from "../../../../public/rating_plates/rating_base_bronze.png";
+import RatingSilver from "../../../../public/rating_plates/rating_base_silver.png";
+import RatingGold from "../../../../public/rating_plates/rating_base_gold.png";
+import RatingPlatinum from "../../../../public/rating_plates/rating_base_platinum.png";
+import RatingRainbow from "../../../../public/rating_plates/rating_base_rainbow.png";
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ["400", "500"],
@@ -222,6 +233,34 @@ const determineBackgroundColor = (diff: string) => {
     }
 }
 
+const determineRatingPlate = (rating: number) => {
+    if (rating < 1000) {
+        return RatingNormal;
+    } else if (rating < 2000 && rating >= 1000) {
+        return RatingBlue;
+    } else if (rating < 4000 && rating >= 2000) {
+        return RatingGreen;
+    } else if (rating < 7000 && rating >= 4000) {
+        return RatingYellow;
+    } else if (rating < 10000 && rating >= 7000) {
+        return RatingRed;
+    } else if (rating < 12000 && rating >= 10000) {
+        return RatingPurple;
+    } else if (rating < 13000 && rating >= 12000) {
+        return RatingBronze;
+    } else if (rating < 14000 && rating >= 13000) {
+        return RatingSilver;
+    } else if (rating < 14500 && rating >= 14000) {
+        return RatingGold;
+    } else if (rating < 15000 && rating >= 14500) {
+        return RatingPlatinum;
+    } else if (rating >= 15000) {
+        return RatingRainbow;
+    } else {
+        return RatingRainbow;
+    }
+};
+
 function Card({info}: {info: MSSB50}) {
     const backgroundColor = determineBackgroundColor(info.diff);
     return (
@@ -263,6 +302,7 @@ export default function Page() {
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [profile, setProfile] = useState<ParsedProfile>();
     const [nameplate, setNameplate] = useState(NP_salt_prism);
+    const [rating, setRating] = useState(0);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -317,6 +357,10 @@ export default function Page() {
         })()
     }, []);
 
+    useEffect(() => {
+        setRating([...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0))
+    }, [oldSong, newSong]);
+
     const fetchB50WithClal = async (clalS: string) => {
         setOldSong([]);
         setNewSong([]);
@@ -365,26 +409,30 @@ export default function Page() {
                     {profile ?
                         <>
                             <Image src={profile.profilePicture!} alt={'pfp'} width={100} height={100} className={'absolute top-[50px] left-[317px] z-20'} />
-                            <Image src={Trophy} alt={'trophy'} width={220} height={20} className={'absolute top-[50px] left-[425px] z-20'} />
-                            <p className={'absolute top-[49px] left-[450px] text-[14px] text-black font-extrabold z-20'}>
+                            <Image src={Trophy} alt={'trophy'} width={220} height={20} className={'absolute top-[50px] left-[440px] z-20'} />
+                            <p className={'absolute top-[49px] left-[465px] text-[14px] text-black font-extrabold z-20'}>
                                 {truncateByWidth(profile.userDetail!, 28)}
                             </p>
-                            <div className={'absolute top-[80px] left-[425px] w-[150px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'}>
+                            <div className={'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'}>
                                 <p className={'pl-1'}>
-                                    {profile.userName!}
+                                    {truncateByWidth(profile.userName!, 12)}
                                 </p>
+                            </div>
+                            <Image src={determineRatingPlate(rating)} alt={'rating plate'} width={110} height={30} className={'absolute top-[79px] left-[570px] z-20'} />
+                            <div className={'absolute top-[83px] left-[617px] text-white tracking-widest z-20'}>
+                                {rating}
                             </div>
                             <Image src={profile.dan!} alt={'dan'} width={75} height={50} className={'absolute top-[115px] left-[425px] z-20'} />
                             <Image src={profile.rank!} alt={'dan'} width={60} height={50} className={'absolute top-[113px] left-[505px] z-20'} />
-                            <Image src={profile.userCollectionCount!.img!} alt={'dan'} width={25} height={50} className={'absolute top-[115px] left-[575px] z-20'} />
-                            <p className={'absolute top-[116px] left-[605px] text-gray-900/90 font-semibold z-20'}>
+                            <Image src={profile.userCollectionCount!.img!} alt={'dan'} width={25} height={50} className={'absolute top-[115px] left-[590px] z-20'} />
+                            <p className={'absolute top-[116px] left-[620px] text-gray-900/90 font-semibold z-20'}>
                                 {profile.userCollectionCount!.text!}
                             </p>
                         </>
                         : null
                     }
-                    <div className={'absolute w-[345px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'} />
-                    <div className={'absolute w-[347px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'} />
+                    <div className={'absolute w-[375px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'} />
+                    <div className={'absolute w-[377px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'} />
 
                     <div className={'absolute top-[185px] grid grid-cols-5 gap-2 p-3'}>
                         {oldSong.map(s => (
