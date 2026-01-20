@@ -278,7 +278,7 @@ function Card({info}: {info: MSSB50}) {
                     {truncateByWidth(info.name, 20)}
                 </h2>
                 <hr className={'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'}/>
-                <h1 className={'absolute left-[91px] top-[22px] text-[26px] font-[400]'} style={{ color: textColor }}>
+                <h1 className={'absolute left-[91px] top-[22px] text-[26px] font-[500] '} style={{ color: textColor }}>
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
                 <p className={'absolute left-[95px] top-[56px] text-xs'} style={{ color: textColor }}>
