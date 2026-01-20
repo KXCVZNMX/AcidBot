@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import { RANK_DEFINITIONS } from '@/lib/consts';
+import {PRISM_PLUS_SONGS, RANK_DEFINITIONS} from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
@@ -36,14 +36,12 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
     }
 }
 
-function isNew(version: string, name: string) {
+function isNew(name: string) {
     return (
-        version === 'PRiSM PLUS' ||
+        PRISM_PLUS_SONGS.includes(name) ||
         // Hotfixes: KOP Songs and songs that somehow miss the first check
         name ===
-            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)' ||
-        name === 'Åntinomiε' ||
-        name === "World's end BLACKBOX"
+            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)'
     );
 }
 
@@ -164,7 +162,7 @@ export async function GET(req: NextRequest) {
                 getRatingByAchievement(r.achievement, r.levelConst)
             );
 
-            if (isNew(r.version, r.name)) b15.push(r);
+            if (isNew(r.name)) b15.push(r);
             else b35.push(r);
         }
 
