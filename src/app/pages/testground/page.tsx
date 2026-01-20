@@ -219,7 +219,7 @@ const determineStarCount = (dx: string) => {
 
 const determineBackgroundColor = (diff: string) => {
     if (diff === 'remaster') {
-        return '#da67ff';
+        return '#DFC7F8';
     } else if (diff === 'master') {
         return '#9e45e2';
     } else if (diff === 'expert') {
@@ -263,9 +263,10 @@ const determineRatingPlate = (rating: number) => {
 
 function Card({info}: {info: MSSB50}) {
     const backgroundColor = determineBackgroundColor(info.diff);
+    const textColor = info.diff === 'remaster' ? '#9e45e2' : '#fff';
     return (
         <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
-            <div className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`} style={{ backgroundColor }}>
+            <div className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`} style={{ backgroundColor, color: textColor }}>
                 <Image
                     src={`https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/${info.jacketURL}`}
                     alt={'jacket'}
@@ -273,17 +274,17 @@ function Card({info}: {info: MSSB50}) {
                     height={75}
                     className={'absolute left-3 top-3 border-4 border-b-0 border-[#fff] rounded-lg'}
                 />
-                <h2 className={'absolute left-24 top-[2px] text-md font-semibold text-white'}>
+                <h2 className={'absolute left-24 top-[2px] text-md font-semibold'} style={{ color: textColor }}>
                     {truncateByWidth(info.name, 20)}
                 </h2>
                 <hr className={'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'}/>
-                <h1 className={'absolute left-[91px] top-[22px] text-[26px] text-white font-[400]'}>
+                <h1 className={'absolute left-[91px] top-[22px] text-[26px] font-[400]'} style={{ color: textColor }}>
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
-                <p className={'absolute left-[95px] top-[56px] text-white text-xs'}>
+                <p className={'absolute left-[95px] top-[56px] text-xs'} style={{ color: textColor }}>
                     {`${info.levelConst.toFixed(1)} → ${info.rating}`}
                 </p>
-                <p className={'absolute left-[171px] top-[56px] text-white text-xs'}>
+                <p className={'absolute left-[171px] top-[56px] text-xs'} style={{ color: textColor }}>
                     {info.dx}
                 </p>
                 <Image src={info.isDx === 'dx' ? MusicDX : MusicSTD} alt={'music_dx_std'} width={50} className={'absolute top-[88px] left-6 '} />
