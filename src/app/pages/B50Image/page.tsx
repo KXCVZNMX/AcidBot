@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Image, { StaticImageData } from 'next/image';
 import { M_PLUS_Rounded_1c } from 'next/font/google';
 import BGBase from '../../../../public/b50/back_area.png';
@@ -62,7 +62,7 @@ import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import { getCookie } from '@/lib/util';
+import {getCookie} from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import RatingNormal from '../../../../public/rating_plates/rating_base_normal.png';
 import RatingBlue from '../../../../public/rating_plates/rating_base_blue.png';
@@ -75,6 +75,7 @@ import RatingSilver from '../../../../public/rating_plates/rating_base_silver.pn
 import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
 import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
 import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
+import {toBlob} from "html-to-image";
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
@@ -311,7 +312,7 @@ function Card({ info }: { info: MSSB50 }) {
     return (
         <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
             <div
-                className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`}
+                className={`absolute mx-auto h-[75px] w-[255px] rounded-t-xl left-[5px]`}
                 style={{ backgroundColor, color: textColor }}
             >
                 <Image
@@ -392,8 +393,12 @@ export default function Page() {
     const [profile, setProfile] = useState<ParsedProfile>();
     const [nameplate, setNameplate] = useState(NP_salt_prism);
     const [rating, setRating] = useState(0);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [generating, setGenerating] = useState(false);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
+
+    const captureRef = useRef<HTMLDivElement | null>(null);
 
     const NP = [
         NP_bhx,
@@ -452,12 +457,73 @@ export default function Page() {
         );
     }, [oldSong, newSong]);
 
+    useEffect(() => {
+        return () => {
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+        };
+    }, [imageUrl]);
+
+    const buttonAction = async () => {
+        setError('');
+        setImageUrl((prev) => {
+            if (prev) {
+                URL.revokeObjectURL(prev);
+            }
+            return null;
+        });
+
+        await new Promise<void>((resolve) => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => resolve());
+                });
+            });
+        });
+
+        await document.fonts?.ready;
+        await new Promise((r) => setTimeout(r, 50));
+
+        await generateImageFromRef();
+    };
+
+    const generateImageFromRef = async () => {
+        if (!captureRef.current) return;
+        setGenerating(true);
+
+        try {
+            const blob = await toBlob(captureRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+            });
+
+            if (!blob) {
+                setError('Failed to generate image blob.');
+                setGenerating(false);
+                return;
+            }
+
+            const url = URL.createObjectURL(blob);
+
+            setImageUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return url;
+            });
+        } catch (err) {
+            console.error(err);
+            setError((err as Error).message ?? 'Error generating image');
+        } finally {
+            setGenerating(false);
+        }
+    };
+
     const fetchB50WithClal = async (clalS: string) => {
         setOldSong([]);
         setNewSong([]);
 
         try {
-            const res = await fetch(`/api/getB50?clal=${clalS}`, {
+            const res = await fetch(`/api/fetchOldB50`, {
                 method: 'GET',
             });
 
@@ -493,13 +559,49 @@ export default function Page() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
+            <div className={'flex justify-center p-5'}>
+                <button
+                    className={'btn btn-primary'}
+                    onClick={async () => await buttonAction()}
+                    disabled={generating || !profile}
+                >
+                    {generating || !profile ? 'Generating…' : 'Get Image'}
+                </button>
+            </div>
             <div
                 className={
                     'flex flex-col justify-center items-center p-3 gap-3'
                 }
             >
+                <div className={'flex gap-2 items-center mt-4 mb-6'}>
+                    {imageUrl && (
+                        <>
+                            <a
+                                className={'btn btn-primary'}
+                                href={imageUrl}
+                                download={'radar.png'}
+                            >
+                                Download PNG
+                            </a>
+                        </>
+                    )}
+                </div>
+                {imageUrl && (
+                    <div className={'w-full max-w-[720px] px-4'}>
+                        <img
+                            src={imageUrl}
+                            alt={'Generated radar'}
+                            style={{
+                                maxWidth: '100%',
+                                height: 'auto',
+                                display: 'block',
+                            }}
+                        />
+                    </div>
+                )}
                 <div
                     className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
+                    ref={captureRef}
                 >
                     <Image
                         src={Logo}
