@@ -19,6 +19,7 @@ export interface MSSB50 extends MaimaiSongScore {
     rating: number;
     version: string;
     achievement: number;
+    jacketURL: string;
 }
 
 export interface SongTags {

@@ -1,50 +1,227 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Image from "next/image";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import BGBase from '../../../../public/b50/back_area.png';
-import ImageIcon from '../../../../public/b50/temp.png';
 import MusicDX from '../../../../public/b50/music_dx.png';
-import EmptyCircle from '../../../../public/b50/empty_circle.svg';
+import MusicSTD from '../../../../public/b50/music_standard.png'
+import EmptyCircle from '../../../../public/b50/music_icon_back.png';
 import FiveStar from '../../../../public/b50/music_icon_dxstar_detail_5.png';
+import FourStar from '../../../../public/b50/music_icon_dxstar_detail_4.png';
+import ThreeStar from '../../../../public/b50/music_icon_dxstar_detail_3.png';
+import TwoStar from '../../../../public/b50/music_icon_dxstar_detail_2.png';
+import OneStar from '../../../../public/b50/music_icon_dxstar_detail_1.png';
 import SSSP from '../../../../public/b50/SSSp.png';
+import SSS from '../../../../public/b50/SSS.png';
+import SSP from '../../../../public/b50/SSp.png';
+import SS from '../../../../public/b50/SS.png';
+import SP from '../../../../public/b50/Sp.png';
+import S from '../../../../public/b50/S.png';
+import AAA from '../../../../public/b50/AAA.png';
+import AA from '../../../../public/b50/AA.png';
+import A from '../../../../public/b50/A.png';
+import BBB from '../../../../public/b50/BBB.png';
+import BB from '../../../../public/b50/BB.png';
+import B from '../../../../public/b50/B.png';
+import C from '../../../../public/b50/C.png';
+import D from '../../../../public/b50/D.png';
+import APP from '../../../../public/b50/music_icon_app.png'
+import AP from '../../../../public/b50/music_icon_ap.png'
+import FCP from '../../../../public/b50/music_icon_fcp.png'
+import FC from '../../../../public/b50/music_icon_fc.png'
+import FDXP from '../../../../public/b50/music_icon_fdxp.png'
+import FDX from '../../../../public/b50/music_icon_fdx.png'
+import FSP from '../../../../public/b50/music_icon_fsp.png'
+import FS from '../../../../public/b50/music_icon_fs.png'
+import SYNC from '../../../../public/b50/music_icon_sync.png'
+import Empty from '../../../../public/b50/Empty.png';
+import {Best50Songs, MSSB50} from "@/lib/types";
+import {getCookie} from "@/lib/util";
+import ErrorModal from "@/app/components/ErrorModal";
 
 const mPlus = M_PLUS_Rounded_1c({
-    weight: ["400", "700"],
+    weight: ["400"],
     display: "swap",
 });
 
-// https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/7f1e94161551e3863a590428813241950678cf838e9aac8be0fa6005d0fc8967.png
-function Card() {
+function truncateByWidth(
+    input: string,
+    maxWidth: number,
+    ellipsis = "..."
+): string {
+    let width = 0;
+    let result = "";
+
+    const ellipsisWidth = getCharWidth(ellipsis);
+
+    for (const char of input) {
+        const charWidth = getCharWidth(char);
+
+        if (width + charWidth + ellipsisWidth > maxWidth) {
+            return result + ellipsis;
+        }
+
+        width += charWidth;
+        result += char;
+    }
+
+    return result;
+}
+
+function getCharWidth(char: string): number {
+    if (char.length > 1) {
+        let total = 0;
+        for (const c of char) total += getCharWidth(c);
+        return total;
+    }
+
+    const code = char.codePointAt(0)!;
+
+    if (
+        (code >= 0x4e00 && code <= 0x9fff) || // CJK
+        (code >= 0x3040 && code <= 0x30ff) || // Hiragana / Katakana
+        (code >= 0xac00 && code <= 0xd7af) || // Hangul
+        (code >= 0xff01 && code <= 0xff60) || // Fullwidth forms
+        (code >= 0x1f300 && code <= 0x1faff)   // Emoji (approximation)
+    ) {
+        return 2;
+    } else if (code >= 0x41 && code <= 0x5a) {
+        return 1.5
+    }
+
+    return 1;
+}
+
+
+const determineRankImage = (rank: string | null) => {
+    if (rank === 'SSS+') {
+        return SSSP;
+    } else if (rank === 'SSS') {
+        return SSS;
+    } else if (rank === 'SSP') {
+        return SSP;
+    } else if (rank === 'SS') {
+        return SS;
+    } else if (rank === 'SP') {
+        return SP;
+    } else if (rank === 'S') {
+        return S;
+    } else if (rank === 'AAA') {
+        return AAA;
+    } else if (rank === 'AA') {
+        return AA;
+    } else if (rank === 'A') {
+        return A;
+    } else if (rank === 'BBB') {
+        return BBB;
+    } else if (rank === 'BB') {
+        return BB;
+    } else if (rank === 'B') {
+        return B;
+    } else if (rank === 'C') {
+        return C;
+    } else {
+        return D;
+    }
+}
+
+const determineComboImage = (combo: string | null) => {
+    if (combo === 'AP+') {
+        return APP;
+    } else if (combo === 'AP') {
+        return AP;
+    } else if (combo === 'FC+') {
+        return FCP;
+    } else if (combo === 'FC') {
+        return FC;
+    } else {
+        return EmptyCircle;
+    }
+}
+
+const determineSyncImage = (sync: string | null) => {
+    if (sync === 'FDX+') {
+        return FDXP;
+    } else if (sync === 'FDX') {
+        return FDX;
+    } else if (sync === 'FS+') {
+        return FSP;
+    } else if (sync === 'FS') {
+        return FS;
+    } else if (sync === 'SYNC') {
+        return SYNC;
+    } else {
+        return EmptyCircle;
+    }
+}
+
+const determineStarCount = (dx: string) => {
+    const dxScore = dx.split('/');
+    const achievedDx = parseInt(dxScore[0].replace(/,/g, ""));
+    const maxDx = parseInt(dxScore[1].replace(/,/g, ""));
+    const percentage = achievedDx / maxDx;
+    if (percentage >= 0.97) {
+        return <Image src={FiveStar} alt={'dx stars'} width={52} className={'absolute top-[86px] left-[202px]'} />;
+    } else if (percentage >= 0.95) {
+        return <Image src={FourStar} alt={'dx stars'} width={55} className={'absolute top-[86px] left-[201px]'} />;
+    } else if (percentage >= 0.93) {
+        return <Image src={ThreeStar} alt={'dx stars'} width={60} className={'absolute top-[85px] left-[198px]'} />;
+    } else if (percentage >= 0.90) {
+        return <Image src={TwoStar} alt={'dx stars'} width={65} className={'absolute top-[85px] left-[196px]'} />;
+    } else if (percentage >= 0.85) {
+        return <Image src={OneStar} alt={'dx stars'} width={65} className={'absolute top-[85px] left-[194px]'} />;
+    } else {
+        return null;
+    }
+}
+
+const determineBackgroundColor = (diff: string) => {
+    if (diff === 'remaster') {
+        return '#da67ff';
+    } else if (diff === 'master') {
+        return '#9e45e2';
+    } else if (diff === 'expert') {
+        return '#f64861';
+    } else if (diff === 'advanced') {
+        return '#fb9c2d';
+    } else if (diff === 'basic') {
+        return '#22bb5b';
+    } else {
+        return '#22bb5b'
+    }
+}
+
+function Card({info}: {info: MSSB50}) {
+    const backgroundColor = determineBackgroundColor(info.diff);
     return (
         <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
-            <div className={'relative mx-auto bg-[#9e45e2] h-[75px] w-[255px] rounded-t-xl'}>
+            <div className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`} style={{ backgroundColor }}>
                 <Image
-                    src={ImageIcon}
+                    src={`https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/${info.jacketURL}`}
                     alt={'jacket'}
                     width={75}
                     height={75}
                     className={'absolute left-3 top-3 border-4 border-b-0 border-[#fff] rounded-lg'}
                 />
-                <h2 className={'absolute left-24 top-[0.5px] text-lg font-semibold text-white'}>
-                    title
+                <h2 className={'absolute left-24 top-[2px] text-md font-semibold text-white'}>
+                    {truncateByWidth(info.name, 20)}
                 </h2>
                 <hr className={'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'}/>
-                <h1 className={'absolute left-[91px] top-[22px] text-[27px] text-white font-semibold'}>
-                    100.9999%
+                <h1 className={'absolute left-[91px] top-[22px] text-[26px] text-white font-semibold'}>
+                    {`${info.achievement.toFixed(4)}%`}
                 </h1>
                 <p className={'absolute left-[95px] top-[56px] text-white text-xs'}>
-                    {'14.6 -> 328'}
+                    {`${info.levelConst} → ${info.rating}`}
                 </p>
-                <p className={'absolute left-[175px] top-[56px] text-white text-xs'}>
-                    {'9999 / 9999'}
+                <p className={'absolute left-[171px] top-[56px] text-white text-xs'}>
+                    {info.dx}
                 </p>
-                <Image src={MusicDX} alt={'music_dx'} width={50} className={'absolute top-[88px] left-6'} />
-                <Image src={SSSP} alt={'sss+'} width={50} className={'absolute top-[79px] left-[90px]'} />
-                <Image src={EmptyCircle} alt={'empty_circle'} width={24} className={'absolute top-[79px] left-[150px]'} />
-                <Image src={EmptyCircle} alt={'empty_circle'} width={24} className={'absolute top-[79px] left-[178px]'} />
-                <Image src={FiveStar} alt={'five star'} width={45} className={'absolute top-[87px] left-[207px]'} />
+                <Image src={info.isDx === 'dx' ? MusicDX : MusicSTD} alt={'music_dx_std'} width={50} className={'absolute top-[88px] left-6 '} />
+                <Image src={determineRankImage(info.rank)} alt={'rank'} width={50} className={'absolute top-[79px] left-[90px]'} />
+                <Image src={determineComboImage(info.combo)} alt={'combo'} width={28} className={'absolute top-[75px] left-[145px]'} />
+                <Image src={determineSyncImage(info.sync)} alt={'sync'} width={28} className={'absolute top-[75px] left-[173px]'} />
+                {(determineStarCount(info.dx))}
             </div>
         </div>
     );
@@ -52,25 +229,78 @@ function Card() {
 
 
 export default function Page() {
+    const [oldSong, setOldSong] = useState<MSSB50[]>([]);
+    const [newSong, setNewSong] = useState<MSSB50[]>([]);
+    const [clal, setClal] = useState('');
+    const [error, setError] = useState('');
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    const showError = (errorMessage: string) => {
+        setError(errorMessage);
+        setShowErrorModal(true);
+
+        setTimeout(() => {
+            setShowErrorModal(false);
+            setError('');
+        }, 2000);
+    };
+
+    useEffect(() => {
+        const clalCookie = getCookie('clal');
+        if (!clalCookie) {
+            showError(
+                'Missing Clal, please go to the guide page to fetch a new clal'
+            );
+            return;
+        }
+
+        setClal(clalCookie);
+    }, []);
+
+    const fetchB50WithClal = async () => {
+        setOldSong([]);
+        setNewSong([]);
+
+        try {
+            const res = await fetch(`/api/getB50?clal=${clal}`, {
+                method: 'GET',
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                showError(error);
+                return;
+            }
+
+            const b50: Best50Songs = await res.json();
+
+            setOldSong(b50.b35);
+            setNewSong(b50.b15);
+        } catch (error) {
+            setError((error as Error).message);
+            console.error(error);
+        }
+    };
+
     return (
-        <div className={'flex justify-center items-center'}>
-            <div className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}>
-                <div className={'grid grid-cols-5 gap-3 pl-1.5'}>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
+        <>
+            <ErrorModal error={error} show={showErrorModal} />
+            <div className={'flex flex-col justify-center items-center'}>
+                <button className={'btn btn-primary'} onClick={fetchB50WithClal}>
+                    Submit
+                </button>
+                <div className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}>
+                    <div className={'grid grid-cols-5 gap-3 pl-1.5'}>
+                        {oldSong.map(s => (
+                            <Card info={s} key={s.name}/>
+                        ))}
+                    </div>
+
+                    <Image src={BGBase} alt={'bg base'} height={107} width={1400} className={'absolute bottom-10'} />
+                    <div className={'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'} />
                 </div>
-                
-                <Image src={BGBase} alt={'bg base'} height={107} width={1400} className={'absolute bottom-10'} />
-                <div className={'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'} />
             </div>
-        </div>
+        </>
     )
 }
