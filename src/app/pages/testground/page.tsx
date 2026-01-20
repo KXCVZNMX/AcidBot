@@ -417,8 +417,8 @@ export default function Page() {
                     {profile ?
                         <>
                             <Image src={profile.profilePicture!} alt={'pfp'} width={100} height={100} className={'absolute top-[50px] left-[317px] z-20'} />
-                            <Image src={Trophy} alt={'trophy'} width={220} height={20} className={'absolute top-[50px] left-[440px] z-20'} />
-                            <p className={'absolute top-[49px] left-[465px] text-[14px] text-black font-extrabold z-20'}>
+                            <Image src={Trophy} alt={'trophy'} width={220} height={20} className={'absolute top-[53px] left-[440px] z-20'} />
+                            <p className={'absolute top-[52px] left-[465px] text-[14px] text-black font-extrabold z-20'}>
                                 {truncateByWidth(profile.userDetail!, 28)}
                             </p>
                             <div className={'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'}>
@@ -430,10 +430,10 @@ export default function Page() {
                             <div className={'absolute top-[83px] left-[617px] text-white tracking-widest z-20'}>
                                 {rating}
                             </div>
-                            <Image src={profile.dan!} alt={'dan'} width={75} height={50} className={'absolute top-[115px] left-[425px] z-20'} />
-                            <Image src={profile.rank!} alt={'dan'} width={60} height={50} className={'absolute top-[113px] left-[505px] z-20'} />
-                            <Image src={profile.userCollectionCount!.img!} alt={'dan'} width={25} height={50} className={'absolute top-[115px] left-[590px] z-20'} />
-                            <p className={'absolute top-[116px] left-[620px] text-gray-900/90 font-semibold z-20'}>
+                            <Image src={profile.dan!} alt={'dan'} width={75} height={50} className={'absolute top-[116px] left-[425px] z-20'} />
+                            <Image src={profile.rank!} alt={'dan'} width={60} height={50} className={'absolute top-[114px] left-[505px] z-20'} />
+                            <Image src={profile.userCollectionCount!.img!} alt={'dan'} width={25} height={50} className={'absolute top-[116px] left-[590px] z-20'} />
+                            <p className={'absolute top-[117px] left-[620px] text-gray-900/90 font-semibold z-20'}>
                                 {profile.userCollectionCount!.text!}
                             </p>
                         </>
