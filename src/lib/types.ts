@@ -19,6 +19,7 @@ export interface MSSB50 extends MaimaiSongScore {
     rating: number;
     version: string;
     achievement: number;
+    jacketURL: string;
 }
 
 export interface SongTags {
@@ -44,4 +45,18 @@ export interface Best50SongsWithDateRating {
     b50: Best50Songs;
     createdAt: Date;
     rating: number;
+}
+
+export interface UserCollectionCount {
+    img: string | null;
+    text: string | null;
+}
+
+export interface ParsedProfile {
+    profilePicture: string | null;
+    dan: string | null;
+    rank: string | null;
+    userName: string | null;
+    userDetail: string | null;
+    userCollectionCount: UserCollectionCount | null;
 }

@@ -18,6 +18,7 @@ import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
 import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
 import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
@@ -189,6 +190,12 @@ export default function Best50() {
                         >
                             Save
                         </button>
+                        <Link
+                            href={'/pages/B50Image'}
+                            className={'btn btn-secondary'}
+                        >
+                            Get Image
+                        </Link>
                     </div>
 
                     <div className={'relative w-[300px] h-[50px]'}>

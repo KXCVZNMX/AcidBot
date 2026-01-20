@@ -1,10 +1,9 @@
-import fetchPages from '@/lib/fetchPage';
 import { NextRequest, NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import { RANK_DEFINITIONS } from '@/lib/consts';
+import { PRISM_PLUS_SONGS, RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
@@ -37,14 +36,12 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
     }
 }
 
-function isNew(version: string, name: string) {
+function isNew(name: string) {
     return (
-        version === 'PRiSM PLUS' ||
+        PRISM_PLUS_SONGS.includes(name) ||
         // Hotfixes: KOP Songs and songs that somehow miss the first check
         name ===
-            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)' ||
-        name === 'Åntinomiε' ||
-        name === "World's end BLACKBOX"
+            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)'
     );
 }
 
@@ -104,11 +101,14 @@ export async function GET(req: NextRequest) {
         const docs = await collection
             .find(
                 { title: { $in: titles } },
-                { projection: { title: 1, sheets: 1 } }
+                { projection: { title: 1, sheets: 1, imageName: 1 } }
             )
             .toArray();
 
-        const docMap = new Map<string, { title: string; sheets: MoreInfo[] }>();
+        const docMap = new Map<
+            string,
+            { title: string; imageName: string; sheets: MoreInfo[] }
+        >();
         for (const d of docs) {
             if (d && d.title) docMap.set(d.title, d as any);
         }
@@ -133,6 +133,11 @@ export async function GET(req: NextRequest) {
                 continue;
             }
 
+            if (!qRes.imageName) {
+                console.warn(`Failed to find jacket information for ${r.name}`);
+                continue;
+            }
+
             finalRes.push({
                 levelConst: sheet.internalLevelValue,
                 name: r.name,
@@ -146,6 +151,7 @@ export async function GET(req: NextRequest) {
                 rating: 0,
                 version: sheet.version,
                 achievement: Number(r.score.slice(0, -1)),
+                jacketURL: qRes.imageName,
             });
         }
 
@@ -157,7 +163,7 @@ export async function GET(req: NextRequest) {
                 getRatingByAchievement(r.achievement, r.levelConst)
             );
 
-            if (isNew(r.version, r.name)) b15.push(r);
+            if (isNew(r.name)) b15.push(r);
             else b35.push(r);
         }
 
