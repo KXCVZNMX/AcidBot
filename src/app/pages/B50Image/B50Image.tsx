@@ -579,7 +579,7 @@ export default function B50Image() {
                             <a
                                 className={'btn btn-primary'}
                                 href={imageUrl}
-                                download={'radar.png'}
+                                download={'b50.png'}
                             >
                                 Download PNG
                             </a>
