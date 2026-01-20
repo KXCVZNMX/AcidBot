@@ -264,6 +264,13 @@ const determineRatingPlate = (rating: number) => {
 function Card({info}: {info: MSSB50}) {
     const backgroundColor = determineBackgroundColor(info.diff);
     const textColor = info.diff === 'remaster' ? '#9e45e2' : '#fff';
+    const textShadow = info.diff === 'remaster' ? `
+      1px 1px 1px rgba(130,130,130,0.6),
+      1px 2px 2px rgba(130,130,130,0.5)
+    ` : `
+      1px 1px 1px rgba(0,0,0,0.6),
+      1px 2px 2px rgba(0,0,0,0.5)
+    `
     return (
         <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
             <div className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`} style={{ backgroundColor, color: textColor }}>
@@ -278,10 +285,10 @@ function Card({info}: {info: MSSB50}) {
                     {truncateByWidth(info.name, 20)}
                 </h2>
                 <hr className={'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'}/>
-                <h1 className={'absolute left-[91px] top-[22px] text-[26px] font-[500] '} style={{ color: textColor }}>
+                <h1 className={'absolute left-[91px] top-[22px] text-[26px] font-[500] '} style={{ color: textColor, textShadow }}>
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
-                <p className={'absolute left-[95px] top-[56px] text-xs'} style={{ color: textColor }}>
+                <p className={'absolute left-[95px] top-[56px] text-xs'} style={{ color: textColor,  }}>
                     {`${info.levelConst.toFixed(1)} → ${info.rating}`}
                 </p>
                 <p className={'absolute left-[171px] top-[56px] text-xs'} style={{ color: textColor }}>
