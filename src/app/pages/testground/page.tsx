@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
-import Image from "next/image";
+import Image, {StaticImageData} from "next/image";
 import { M_PLUS_Rounded_1c } from "next/font/google";
 import BGBase from '../../../../public/b50/back_area.png';
 import MusicDX from '../../../../public/b50/music_dx.png';
@@ -35,15 +35,45 @@ import FDX from '../../../../public/b50/music_icon_fdx.png'
 import FSP from '../../../../public/b50/music_icon_fsp.png'
 import FS from '../../../../public/b50/music_icon_fs.png'
 import SYNC from '../../../../public/b50/music_icon_sync.png'
-import Empty from '../../../../public/b50/Empty.png';
-import {Best50Songs, MSSB50} from "@/lib/types";
+import Logo from '../../../../public/b50/kv_logo_pc.png';
+import NP_bhx from '../../../../public/b50/NP_bhx.webp';
+import NP_cf from '../../../../public/b50/NP_cf.webp';
+import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
+import NP_cf_prism from '../../../../public/b50/NP_cf_prism.webp';
+import NP_dlx from '../../../../public/b50/NP_dlx.webp';
+import NP_kuro from '../../../../public/b50/NP_kuro.webp';
+import NP_lime from '../../../../public/b50/NP_lime.webp';
+import NP_lime_bud from '../../../../public/b50/NP_lime_bud.webp';
+import NP_milk from '../../../../public/b50/NP_milk.webp';
+import NP_milk_cat from '../../../../public/b50/NP_milk_cat.webp';
+import NP_milk_prism from '../../../../public/b50/NP_milk_prism.webp';
+import NP_milk_splash from '../../../../public/b50/NP_milk_splash.webp';
+import NP_rasu from '../../../../public/b50/NP_rasu.webp';
+import NP_rasu_bud from '../../../../public/b50/NP_rasu_bud.webp';
+import NP_rasu_festival from '../../../../public/b50/NP_rasu_festival.webp';
+import NP_riz_prism from '../../../../public/b50/NP_riz_prism.webp';
+import NP_salt from '../../../../public/b50/NP_salt.webp';
+import NP_salt_festival from '../../../../public/b50/NP_salt_festival.webp';
+import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
+import NP_sm from '../../../../public/b50/NP_sm.webp';
+import NP_sm_splash from '../../../../public/b50/NP_sm_splash.webp';
+import NP_yj from '../../../../public/b50/NP_yj.webp';
+import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
+import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
+import Trophy from '../../../../public/b50/trophy_normal.png';
+import {Best50Songs, MSSB50, ParsedProfile} from "@/lib/types";
 import {getCookie} from "@/lib/util";
 import ErrorModal from "@/app/components/ErrorModal";
 
 const mPlus = M_PLUS_Rounded_1c({
-    weight: ["400"],
+    weight: ["400", "500"],
     display: "swap",
 });
+
+function chooseNameplate(arr: StaticImageData[]) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+}
 
 function truncateByWidth(
     input: string,
@@ -208,11 +238,11 @@ function Card({info}: {info: MSSB50}) {
                     {truncateByWidth(info.name, 20)}
                 </h2>
                 <hr className={'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'}/>
-                <h1 className={'absolute left-[91px] top-[22px] text-[26px] text-white font-semibold'}>
+                <h1 className={'absolute left-[91px] top-[22px] text-[26px] text-white font-[400]'}>
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
                 <p className={'absolute left-[95px] top-[56px] text-white text-xs'}>
-                    {`${info.levelConst} → ${info.rating}`}
+                    {`${info.levelConst.toFixed(1)} → ${info.rating}`}
                 </p>
                 <p className={'absolute left-[171px] top-[56px] text-white text-xs'}>
                     {info.dx}
@@ -231,10 +261,37 @@ function Card({info}: {info: MSSB50}) {
 export default function Page() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
-    const [clal, setClal] = useState('');
+    const [profile, setProfile] = useState<ParsedProfile>();
+    const [nameplate, setNameplate] = useState(NP_salt_prism);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
-    const [showSuccess, setShowSuccess] = useState(false);
+
+    const NP = [
+        NP_bhx,
+        NP_cf,
+        NP_cf_prism,
+        NP_cf_festival,
+        NP_dlx,
+        NP_kuro,
+        NP_lime,
+        NP_lime_bud,
+        NP_milk,
+        NP_milk_cat,
+        NP_milk_prism,
+        NP_milk_splash,
+        NP_rasu,
+        NP_rasu_bud,
+        NP_rasu_festival,
+        NP_riz_prism,
+        NP_salt,
+        NP_salt_festival,
+        NP_salt_prism,
+        NP_sm,
+        NP_sm_splash,
+        NP_yj,
+        NP_yj_bud,
+        NP_yj_splash,
+    ]
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -255,15 +312,17 @@ export default function Page() {
             return;
         }
 
-        setClal(clalCookie);
+        (async () => {
+            await fetchB50WithClal(clalCookie)
+        })()
     }, []);
 
-    const fetchB50WithClal = async () => {
+    const fetchB50WithClal = async (clalS: string) => {
         setOldSong([]);
         setNewSong([]);
 
         try {
-            const res = await fetch(`/api/getB50?clal=${clal}`, {
+            const res = await fetch(`/api/getB50?clal=${clalS}`, {
                 method: 'GET',
             });
 
@@ -277,6 +336,19 @@ export default function Page() {
 
             setOldSong(b50.b35);
             setNewSong(b50.b15);
+
+            const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {
+                method: 'GET',
+            });
+
+            if (!sRes.ok) {
+                const { error } = await res.json();
+                showError(error);
+                return;
+            }
+
+            setProfile(await sRes.json());
+            setNameplate(chooseNameplate(NP))
         } catch (error) {
             setError((error as Error).message);
             console.error(error);
@@ -286,13 +358,42 @@ export default function Page() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
-            <div className={'flex flex-col justify-center items-center'}>
-                <button className={'btn btn-primary'} onClick={fetchB50WithClal}>
-                    Submit
-                </button>
+            <div className={'flex flex-col justify-center items-center p-3 gap-3'}>
                 <div className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}>
-                    <div className={'grid grid-cols-5 gap-3 pl-1.5'}>
+                    <Image src={Logo} alt={'logo'} height={100} className={'absolute top-[60px] left-[20px]'}/>
+                    <Image src={nameplate} alt={'nameplate'} width={800} className={'absolute top-[35px] left-[300px] rounded-xl'} />
+                    {profile ?
+                        <>
+                            <Image src={profile.profilePicture!} alt={'pfp'} width={100} height={100} className={'absolute top-[50px] left-[317px] z-20'} />
+                            <Image src={Trophy} alt={'trophy'} width={220} height={20} className={'absolute top-[50px] left-[425px] z-20'} />
+                            <p className={'absolute top-[49px] left-[450px] text-[14px] text-black font-extrabold z-20'}>
+                                {truncateByWidth(profile.userDetail!, 28)}
+                            </p>
+                            <div className={'absolute top-[80px] left-[425px] w-[150px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'}>
+                                <p className={'pl-1'}>
+                                    {profile.userName!}
+                                </p>
+                            </div>
+                            <Image src={profile.dan!} alt={'dan'} width={75} height={50} className={'absolute top-[115px] left-[425px] z-20'} />
+                            <Image src={profile.rank!} alt={'dan'} width={60} height={50} className={'absolute top-[113px] left-[505px] z-20'} />
+                            <Image src={profile.userCollectionCount!.img!} alt={'dan'} width={25} height={50} className={'absolute top-[115px] left-[575px] z-20'} />
+                            <p className={'absolute top-[116px] left-[605px] text-gray-900/90 font-semibold z-20'}>
+                                {profile.userCollectionCount!.text!}
+                            </p>
+                        </>
+                        : null
+                    }
+                    <div className={'absolute w-[345px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'} />
+                    <div className={'absolute w-[347px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'} />
+
+                    <div className={'absolute top-[185px] grid grid-cols-5 gap-2 p-3'}>
                         {oldSong.map(s => (
+                            <Card info={s} key={s.name}/>
+                        ))}
+
+                        <hr className={'h-[50px] w-[1400px] bg-none border-none col-span-5'} />
+
+                        {newSong.map(s => (
                             <Card info={s} key={s.name}/>
                         ))}
                     </div>

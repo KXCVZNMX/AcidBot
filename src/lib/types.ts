@@ -46,3 +46,17 @@ export interface Best50SongsWithDateRating {
     createdAt: Date;
     rating: number;
 }
+
+export interface UserCollectionCount {
+    img: string | null;
+    text: string | null;
+}
+
+export interface ParsedProfile {
+    profilePicture: string | null;
+    dan: string | null;
+    rank: string | null;
+    userName: string | null;
+    userDetail: string | null;
+    userCollectionCount: UserCollectionCount | null;
+}
