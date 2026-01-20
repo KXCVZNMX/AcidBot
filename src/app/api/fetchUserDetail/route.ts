@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
-import {ParsedProfile, UserCollectionCount} from "@/lib/types";
-import {NextRequest, NextResponse} from "next/server";
-import {auth} from "@/auth";
-import {unauthorized} from "next/navigation";
-import fetchPage from "@/lib/fetchPage";
+import { ParsedProfile, UserCollectionCount } from '@/lib/types';
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/auth';
+import { unauthorized } from 'next/navigation';
+import fetchPage from '@/lib/fetchPage';
 
 export function parseProfileBlock(html: string): ParsedProfile | null {
     const $ = cheerio.load(html);
@@ -11,11 +11,22 @@ export function parseProfileBlock(html: string): ParsedProfile | null {
     const container = $('div.basic_block.p_10.f_0').first();
     if (container.length === 0) return null;
 
-    const profilePicture = container.find('img.w_112.f_l').first().attr('src') ?? '';
-    const dan = container.find('img.h_35.f_l:not(.p_l_10)').first().attr('src') ?? '';
-    const rank = container.find('img.p_l_10.h_35.f_l').first().attr('src') ?? '';
-    const userName = container.find('div.name_block.f_l.f_16').first().text().trim();
-    const userDetail = container.find('div.trophy_inner_block.f_13').first().text().trim();
+    const profilePicture =
+        container.find('img.w_112.f_l').first().attr('src') ?? '';
+    const dan =
+        container.find('img.h_35.f_l:not(.p_l_10)').first().attr('src') ?? '';
+    const rank =
+        container.find('img.p_l_10.h_35.f_l').first().attr('src') ?? '';
+    const userName = container
+        .find('div.name_block.f_l.f_16')
+        .first()
+        .text()
+        .trim();
+    const userDetail = container
+        .find('div.trophy_inner_block.f_13')
+        .first()
+        .text()
+        .trim();
     const collectionDiv = container.find('div.p_l_10.f_l.f_14').first();
 
     let userCollectionCount: UserCollectionCount | null = null;

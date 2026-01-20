@@ -1,11 +1,11 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import Image, {StaticImageData} from "next/image";
-import { M_PLUS_Rounded_1c } from "next/font/google";
+import React, { useEffect, useState } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import { M_PLUS_Rounded_1c } from 'next/font/google';
 import BGBase from '../../../../public/b50/back_area.png';
 import MusicDX from '../../../../public/b50/music_dx.png';
-import MusicSTD from '../../../../public/b50/music_standard.png'
+import MusicSTD from '../../../../public/b50/music_standard.png';
 import EmptyCircle from '../../../../public/b50/music_icon_back.png';
 import FiveStar from '../../../../public/b50/music_icon_dxstar_detail_5.png';
 import FourStar from '../../../../public/b50/music_icon_dxstar_detail_4.png';
@@ -26,15 +26,15 @@ import BB from '../../../../public/b50/BB.png';
 import B from '../../../../public/b50/B.png';
 import C from '../../../../public/b50/C.png';
 import D from '../../../../public/b50/D.png';
-import APP from '../../../../public/b50/music_icon_app.png'
-import AP from '../../../../public/b50/music_icon_ap.png'
-import FCP from '../../../../public/b50/music_icon_fcp.png'
-import FC from '../../../../public/b50/music_icon_fc.png'
-import FDXP from '../../../../public/b50/music_icon_fdxp.png'
-import FDX from '../../../../public/b50/music_icon_fdx.png'
-import FSP from '../../../../public/b50/music_icon_fsp.png'
-import FS from '../../../../public/b50/music_icon_fs.png'
-import SYNC from '../../../../public/b50/music_icon_sync.png'
+import APP from '../../../../public/b50/music_icon_app.png';
+import AP from '../../../../public/b50/music_icon_ap.png';
+import FCP from '../../../../public/b50/music_icon_fcp.png';
+import FC from '../../../../public/b50/music_icon_fc.png';
+import FDXP from '../../../../public/b50/music_icon_fdxp.png';
+import FDX from '../../../../public/b50/music_icon_fdx.png';
+import FSP from '../../../../public/b50/music_icon_fsp.png';
+import FS from '../../../../public/b50/music_icon_fs.png';
+import SYNC from '../../../../public/b50/music_icon_sync.png';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
 import NP_bhx from '../../../../public/b50/NP_bhx.webp';
 import NP_cf from '../../../../public/b50/NP_cf.webp';
@@ -61,24 +61,24 @@ import NP_yj from '../../../../public/b50/NP_yj.webp';
 import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Trophy from '../../../../public/b50/trophy_normal.png';
-import {Best50Songs, MSSB50, ParsedProfile} from "@/lib/types";
-import {getCookie} from "@/lib/util";
-import ErrorModal from "@/app/components/ErrorModal";
-import RatingNormal from "../../../../public/rating_plates/rating_base_normal.png";
-import RatingBlue from "../../../../public/rating_plates/rating_base_blue.png";
-import RatingGreen from "../../../../public/rating_plates/rating_base_green.png";
-import RatingYellow from "../../../../public/rating_plates/rating_base_orange.png";
-import RatingRed from "../../../../public/rating_plates/rating_base_red.png";
-import RatingPurple from "../../../../public/rating_plates/rating_base_purple.png";
-import RatingBronze from "../../../../public/rating_plates/rating_base_bronze.png";
-import RatingSilver from "../../../../public/rating_plates/rating_base_silver.png";
-import RatingGold from "../../../../public/rating_plates/rating_base_gold.png";
-import RatingPlatinum from "../../../../public/rating_plates/rating_base_platinum.png";
-import RatingRainbow from "../../../../public/rating_plates/rating_base_rainbow.png";
+import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
+import { getCookie } from '@/lib/util';
+import ErrorModal from '@/app/components/ErrorModal';
+import RatingNormal from '../../../../public/rating_plates/rating_base_normal.png';
+import RatingBlue from '../../../../public/rating_plates/rating_base_blue.png';
+import RatingGreen from '../../../../public/rating_plates/rating_base_green.png';
+import RatingYellow from '../../../../public/rating_plates/rating_base_orange.png';
+import RatingRed from '../../../../public/rating_plates/rating_base_red.png';
+import RatingPurple from '../../../../public/rating_plates/rating_base_purple.png';
+import RatingBronze from '../../../../public/rating_plates/rating_base_bronze.png';
+import RatingSilver from '../../../../public/rating_plates/rating_base_silver.png';
+import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
+import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
+import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
 
 const mPlus = M_PLUS_Rounded_1c({
-    weight: ["400", "500"],
-    display: "swap",
+    weight: ['400', '500'],
+    display: 'swap',
 });
 
 function chooseNameplate(arr: StaticImageData[]) {
@@ -89,10 +89,10 @@ function chooseNameplate(arr: StaticImageData[]) {
 function truncateByWidth(
     input: string,
     maxWidth: number,
-    ellipsis = "..."
+    ellipsis = '...'
 ): string {
     let width = 0;
-    let result = "";
+    let result = '';
 
     const ellipsisWidth = getCharWidth(ellipsis);
 
@@ -124,16 +124,15 @@ function getCharWidth(char: string): number {
         (code >= 0x3040 && code <= 0x30ff) || // Hiragana / Katakana
         (code >= 0xac00 && code <= 0xd7af) || // Hangul
         (code >= 0xff01 && code <= 0xff60) || // Fullwidth forms
-        (code >= 0x1f300 && code <= 0x1faff)   // Emoji (approximation)
+        (code >= 0x1f300 && code <= 0x1faff) // Emoji (approximation)
     ) {
         return 2;
     } else if (code >= 0x41 && code <= 0x5a) {
-        return 1.5
+        return 1.5;
     }
 
     return 1;
 }
-
 
 const determineRankImage = (rank: string | null) => {
     if (rank === 'SSS+') {
@@ -165,7 +164,7 @@ const determineRankImage = (rank: string | null) => {
     } else {
         return D;
     }
-}
+};
 
 const determineComboImage = (combo: string | null) => {
     if (combo === 'AP+') {
@@ -179,7 +178,7 @@ const determineComboImage = (combo: string | null) => {
     } else {
         return EmptyCircle;
     }
-}
+};
 
 const determineSyncImage = (sync: string | null) => {
     if (sync === 'FDX+') {
@@ -195,27 +194,62 @@ const determineSyncImage = (sync: string | null) => {
     } else {
         return EmptyCircle;
     }
-}
+};
 
 const determineStarCount = (dx: string) => {
     const dxScore = dx.split('/');
-    const achievedDx = parseInt(dxScore[0].replace(/,/g, ""));
-    const maxDx = parseInt(dxScore[1].replace(/,/g, ""));
+    const achievedDx = parseInt(dxScore[0].replace(/,/g, ''));
+    const maxDx = parseInt(dxScore[1].replace(/,/g, ''));
     const percentage = achievedDx / maxDx;
     if (percentage >= 0.97) {
-        return <Image src={FiveStar} alt={'dx stars'} width={52} className={'absolute top-[86px] left-[202px]'} />;
+        return (
+            <Image
+                src={FiveStar}
+                alt={'dx stars'}
+                width={52}
+                className={'absolute top-[86px] left-[202px]'}
+            />
+        );
     } else if (percentage >= 0.95) {
-        return <Image src={FourStar} alt={'dx stars'} width={55} className={'absolute top-[86px] left-[201px]'} />;
+        return (
+            <Image
+                src={FourStar}
+                alt={'dx stars'}
+                width={55}
+                className={'absolute top-[86px] left-[201px]'}
+            />
+        );
     } else if (percentage >= 0.93) {
-        return <Image src={ThreeStar} alt={'dx stars'} width={60} className={'absolute top-[85px] left-[198px]'} />;
-    } else if (percentage >= 0.90) {
-        return <Image src={TwoStar} alt={'dx stars'} width={65} className={'absolute top-[85px] left-[196px]'} />;
+        return (
+            <Image
+                src={ThreeStar}
+                alt={'dx stars'}
+                width={60}
+                className={'absolute top-[85px] left-[198px]'}
+            />
+        );
+    } else if (percentage >= 0.9) {
+        return (
+            <Image
+                src={TwoStar}
+                alt={'dx stars'}
+                width={65}
+                className={'absolute top-[85px] left-[196px]'}
+            />
+        );
     } else if (percentage >= 0.85) {
-        return <Image src={OneStar} alt={'dx stars'} width={65} className={'absolute top-[85px] left-[194px]'} />;
+        return (
+            <Image
+                src={OneStar}
+                alt={'dx stars'}
+                width={65}
+                className={'absolute top-[85px] left-[194px]'}
+            />
+        );
     } else {
         return null;
     }
-}
+};
 
 const determineBackgroundColor = (diff: string) => {
     if (diff === 'remaster') {
@@ -229,9 +263,9 @@ const determineBackgroundColor = (diff: string) => {
     } else if (diff === 'basic') {
         return '#22bb5b';
     } else {
-        return '#22bb5b'
+        return '#22bb5b';
     }
-}
+};
 
 const determineRatingPlate = (rating: number) => {
     if (rating < 1000) {
@@ -261,49 +295,96 @@ const determineRatingPlate = (rating: number) => {
     }
 };
 
-function Card({info}: {info: MSSB50}) {
+function Card({ info }: { info: MSSB50 }) {
     const backgroundColor = determineBackgroundColor(info.diff);
     const textColor = info.diff === 'remaster' ? '#9e45e2' : '#fff';
-    const textShadow = info.diff === 'remaster' ? `
+    const textShadow =
+        info.diff === 'remaster'
+            ? `
       1px 1px 1px rgba(130,130,130,0.6),
       1px 2px 2px rgba(130,130,130,0.5)
-    ` : `
+    `
+            : `
       1px 1px 1px rgba(0,0,0,0.6),
       1px 2px 2px rgba(0,0,0,0.5)
-    `
+    `;
     return (
         <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
-            <div className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`} style={{ backgroundColor, color: textColor }}>
+            <div
+                className={`relative mx-auto h-[75px] w-[255px] rounded-t-xl`}
+                style={{ backgroundColor, color: textColor }}
+            >
                 <Image
                     src={`https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/${info.jacketURL}`}
                     alt={'jacket'}
                     width={75}
                     height={75}
-                    className={'absolute left-3 top-3 border-4 border-b-0 border-[#fff] rounded-lg'}
+                    className={
+                        'absolute left-3 top-3 border-4 border-b-0 border-[#fff] rounded-lg'
+                    }
                 />
-                <h2 className={'absolute left-24 top-[2px] text-md font-semibold'} style={{ color: textColor }}>
+                <h2
+                    className={
+                        'absolute left-24 top-[2px] text-md font-semibold'
+                    }
+                    style={{ color: textColor }}
+                >
                     {truncateByWidth(info.name, 20)}
                 </h2>
-                <hr className={'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'}/>
-                <h1 className={'absolute left-[91px] top-[22px] text-[26px] font-[500] '} style={{ color: textColor, textShadow }}>
+                <hr
+                    className={
+                        'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'
+                    }
+                />
+                <h1
+                    className={
+                        'absolute left-[91px] top-[22px] text-[26px] font-[500] '
+                    }
+                    style={{ color: textColor, textShadow }}
+                >
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
-                <p className={'absolute left-[95px] top-[56px] text-xs'} style={{ color: textColor,  }}>
+                <p
+                    className={'absolute left-[95px] top-[56px] text-xs'}
+                    style={{ color: textColor }}
+                >
                     {`${info.levelConst.toFixed(1)} → ${info.rating}`}
                 </p>
-                <p className={'absolute left-[171px] top-[56px] text-xs'} style={{ color: textColor }}>
+                <p
+                    className={'absolute left-[171px] top-[56px] text-xs'}
+                    style={{ color: textColor }}
+                >
                     {info.dx}
                 </p>
-                <Image src={info.isDx === 'dx' ? MusicDX : MusicSTD} alt={'music_dx_std'} width={50} className={'absolute top-[88px] left-6 '} />
-                <Image src={determineRankImage(info.rank)} alt={'rank'} width={50} className={'absolute top-[79px] left-[90px]'} />
-                <Image src={determineComboImage(info.combo)} alt={'combo'} width={28} className={'absolute top-[75px] left-[145px]'} />
-                <Image src={determineSyncImage(info.sync)} alt={'sync'} width={28} className={'absolute top-[75px] left-[173px]'} />
-                {(determineStarCount(info.dx))}
+                <Image
+                    src={info.isDx === 'dx' ? MusicDX : MusicSTD}
+                    alt={'music_dx_std'}
+                    width={50}
+                    className={'absolute top-[88px] left-6 '}
+                />
+                <Image
+                    src={determineRankImage(info.rank)}
+                    alt={'rank'}
+                    width={50}
+                    className={'absolute top-[79px] left-[90px]'}
+                />
+                <Image
+                    src={determineComboImage(info.combo)}
+                    alt={'combo'}
+                    width={28}
+                    className={'absolute top-[75px] left-[145px]'}
+                />
+                <Image
+                    src={determineSyncImage(info.sync)}
+                    alt={'sync'}
+                    width={28}
+                    className={'absolute top-[75px] left-[173px]'}
+                />
+                {determineStarCount(info.dx)}
             </div>
         </div>
     );
 }
-
 
 export default function Page() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
@@ -339,7 +420,7 @@ export default function Page() {
         NP_yj,
         NP_yj_bud,
         NP_yj_splash,
-    ]
+    ];
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -361,12 +442,14 @@ export default function Page() {
         }
 
         (async () => {
-            await fetchB50WithClal(clalCookie)
-        })()
+            await fetchB50WithClal(clalCookie);
+        })();
     }, []);
 
     useEffect(() => {
-        setRating([...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0))
+        setRating(
+            [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0)
+        );
     }, [oldSong, newSong]);
 
     const fetchB50WithClal = async (clalS: string) => {
@@ -400,7 +483,7 @@ export default function Page() {
             }
 
             setProfile(await sRes.json());
-            setNameplate(chooseNameplate(NP))
+            setNameplate(chooseNameplate(NP));
         } catch (error) {
             setError((error as Error).message);
             console.error(error);
@@ -410,57 +493,168 @@ export default function Page() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
-            <div className={'flex flex-col justify-center items-center p-3 gap-3'}>
-                <div className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}>
-                    <Image src={Logo} alt={'logo'} height={100} className={'absolute top-[60px] left-[20px]'}/>
-                    <Image src={nameplate} alt={'nameplate'} width={800} className={'absolute top-[35px] left-[300px] rounded-xl'} />
-                    {profile ?
+            <div
+                className={
+                    'flex flex-col justify-center items-center p-3 gap-3'
+                }
+            >
+                <div
+                    className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
+                >
+                    <Image
+                        src={Logo}
+                        alt={'logo'}
+                        height={100}
+                        className={'absolute top-[60px] left-[20px]'}
+                    />
+                    <Image
+                        src={nameplate}
+                        alt={'nameplate'}
+                        width={800}
+                        className={
+                            'absolute top-[35px] left-[300px] rounded-xl'
+                        }
+                    />
+                    {profile ? (
                         <>
-                            <Image src={profile.profilePicture!} alt={'pfp'} width={100} height={100} className={'absolute top-[50px] left-[317px] z-20'} />
-                            <Image src={Trophy} alt={'trophy'} width={220} height={20} className={'absolute top-[53px] left-[440px] z-20'} />
-                            <p className={'absolute top-[52px] left-[465px] text-[14px] text-black font-extrabold z-20'}>
+                            <Image
+                                src={profile.profilePicture!}
+                                alt={'pfp'}
+                                width={100}
+                                height={100}
+                                className={
+                                    'absolute top-[50px] left-[317px] z-20'
+                                }
+                            />
+                            <Image
+                                src={Trophy}
+                                alt={'trophy'}
+                                width={220}
+                                height={20}
+                                className={
+                                    'absolute top-[53px] left-[440px] z-20'
+                                }
+                            />
+                            <p
+                                className={
+                                    'absolute top-[52px] left-[465px] text-[14px] text-black font-extrabold z-20'
+                                }
+                            >
                                 {truncateByWidth(profile.userDetail!, 28)}
                             </p>
-                            <div className={'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'}>
+                            <div
+                                className={
+                                    'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'
+                                }
+                            >
                                 <p className={'pl-1'}>
                                     {truncateByWidth(profile.userName!, 12)}
                                 </p>
                             </div>
-                            <Image src={determineRatingPlate(rating)} alt={'rating plate'} width={110} height={30} className={'absolute top-[79px] left-[570px] z-20'} />
-                            <div className={'absolute top-[83px] left-[617px] text-white tracking-widest z-20'}>
+                            <Image
+                                src={determineRatingPlate(rating)}
+                                alt={'rating plate'}
+                                width={110}
+                                height={30}
+                                className={
+                                    'absolute top-[79px] left-[570px] z-20'
+                                }
+                            />
+                            <div
+                                className={
+                                    'absolute top-[83px] left-[617px] text-white tracking-widest z-20'
+                                }
+                            >
                                 {rating}
                             </div>
-                            <Image src={profile.dan!} alt={'dan'} width={75} height={50} className={'absolute top-[116px] left-[425px] z-20'} />
-                            <Image src={profile.rank!} alt={'dan'} width={60} height={50} className={'absolute top-[114px] left-[505px] z-20'} />
-                            <Image src={profile.userCollectionCount!.img!} alt={'dan'} width={25} height={50} className={'absolute top-[116px] left-[590px] z-20'} />
-                            <p className={'absolute top-[117px] left-[620px] text-gray-900/90 font-semibold z-20'}>
+                            <Image
+                                src={profile.dan!}
+                                alt={'dan'}
+                                width={75}
+                                height={50}
+                                className={
+                                    'absolute top-[116px] left-[425px] z-20'
+                                }
+                            />
+                            <Image
+                                src={profile.rank!}
+                                alt={'dan'}
+                                width={60}
+                                height={50}
+                                className={
+                                    'absolute top-[114px] left-[505px] z-20'
+                                }
+                            />
+                            <Image
+                                src={profile.userCollectionCount!.img!}
+                                alt={'dan'}
+                                width={25}
+                                height={50}
+                                className={
+                                    'absolute top-[116px] left-[590px] z-20'
+                                }
+                            />
+                            <p
+                                className={
+                                    'absolute top-[117px] left-[620px] text-gray-900/90 font-semibold z-20'
+                                }
+                            >
                                 {profile.userCollectionCount!.text!}
                             </p>
                         </>
-                        : null
-                    }
-                    <div className={'absolute w-[375px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'} />
-                    <div className={'absolute w-[377px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'} />
+                    ) : null}
+                    <div
+                        className={
+                            'absolute w-[375px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'
+                        }
+                    />
+                    <div
+                        className={
+                            'absolute w-[377px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'
+                        }
+                    />
 
-                    <div className={'absolute top-[185px] grid grid-cols-5 gap-2 p-3'}>
-                        {oldSong.map(s => (
-                            <Card info={s} key={s.name}/>
+                    <div
+                        className={
+                            'absolute top-[185px] grid grid-cols-5 gap-2 p-3'
+                        }
+                    >
+                        {oldSong.map((s) => (
+                            <Card info={s} key={s.name} />
                         ))}
 
-                        <hr className={'h-[50px] w-[1400px] bg-none border-none col-span-5'} />
+                        <hr
+                            className={
+                                'h-[50px] w-[1400px] bg-none border-none col-span-5'
+                            }
+                        />
 
-                        {newSong.map(s => (
-                            <Card info={s} key={s.name}/>
+                        {newSong.map((s) => (
+                            <Card info={s} key={s.name} />
                         ))}
                     </div>
 
-                    <Image src={BGBase} alt={'bg base'} height={107} width={1400} className={'absolute bottom-10'} />
-                    <div className={'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'} />
-                    <h3 className={'absolute bottom-3 w-full text-center text-white font-bold text-xl'}>
+                    <Image
+                        src={BGBase}
+                        alt={'bg base'}
+                        height={107}
+                        width={1400}
+                        className={'absolute bottom-10'}
+                    />
+                    <div
+                        className={
+                            'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'
+                        }
+                    />
+                    <h3
+                        className={
+                            'absolute bottom-3 w-full text-center text-white font-bold text-xl'
+                        }
+                    >
                         Designed by KVZ. Generated by AcidBot
                     </h3>
                 </div>
             </div>
         </>
-    )
+    );
 }

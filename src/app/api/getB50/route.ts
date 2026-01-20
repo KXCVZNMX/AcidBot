@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import {PRISM_PLUS_SONGS, RANK_DEFINITIONS} from '@/lib/consts';
+import { PRISM_PLUS_SONGS, RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
@@ -105,7 +105,10 @@ export async function GET(req: NextRequest) {
             )
             .toArray();
 
-        const docMap = new Map<string, { title: string; imageName: string; sheets: MoreInfo[] }>();
+        const docMap = new Map<
+            string,
+            { title: string; imageName: string; sheets: MoreInfo[] }
+        >();
         for (const d of docs) {
             if (d && d.title) docMap.set(d.title, d as any);
         }
@@ -131,9 +134,7 @@ export async function GET(req: NextRequest) {
             }
 
             if (!qRes.imageName) {
-                console.warn(
-                    `Failed to find jacket information for ${r.name}`
-                );
+                console.warn(`Failed to find jacket information for ${r.name}`);
                 continue;
             }
 
