@@ -75,7 +75,6 @@ export async function GET(req: NextRequest) {
             throw new Error('Missing clal');
         }
 
-        console.time('fetchHTML');
         let html;
         try {
             html = await fetchPage(
@@ -91,16 +90,11 @@ export async function GET(req: NextRequest) {
                 { status: 500 }
             );
         }
-        console.timeEnd('fetchHTML');
-
-        console.log(typeof html);
-
-        console.log(html);
 
         const res = parseProfileBlock(html[0]);
 
         if (!res) {
-            throw new Error('Missing profile block');
+            return NextResponse.json({ error: 'Missing profile block' }, { status: 500 });
         }
 
         return NextResponse.json(res);
