@@ -52,9 +52,7 @@ export const extractScore = ($: cheerio.Root) => {
 
         const icons = root.find("img[src*='music_icon_']");
 
-        const container = root.parent();
-
-        const dxVal = container.find(
+        const dxVal = root.find(
             "img[src*='music_dx'], img[src*='music_standard']"
         );
         const lvVal = root.find("img[src*='diff_']");
@@ -98,6 +96,7 @@ export const extractScore = ($: cheerio.Root) => {
                 combo: comboState,
                 rank: determineRank(score),
             });
+            console.log(`${name} -> ${dxState}`)
         }
     });
 

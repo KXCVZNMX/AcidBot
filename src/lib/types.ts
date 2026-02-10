@@ -60,3 +60,22 @@ export interface ParsedProfile {
     userDetail: string | null;
     userCollectionCount: UserCollectionCount | null;
 }
+
+export interface SongEntry {
+    songId: string;
+    category: string;
+    title: string;
+    artist: string;
+    imageURL: string;
+    version: string;
+    isNew: boolean;
+    sheets: SheetEntry[];
+}
+
+export interface SheetEntry {
+    type: 'dx' | 'std';
+    difficulty: 'remaster' | 'master' | 'expert' | 'advanced' | 'basic';
+    internalLevelValue: number;
+    isSpecial: boolean;
+    version: string;
+}
