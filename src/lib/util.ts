@@ -1,5 +1,17 @@
 import { MaimaiSongScore } from '@/lib/types';
 import { COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES } from '@/lib/consts';
+import {StaticImageData} from "next/image";
+import RatingNormal from "../../public/rating_plates/rating_base_normal.png";
+import RatingBlue from "../../public/rating_plates/rating_base_blue.png";
+import RatingGreen from "../../public/rating_plates/rating_base_green.png";
+import RatingYellow from "../../public/rating_plates/rating_base_orange.png";
+import RatingRed from "../../public/rating_plates/rating_base_red.png";
+import RatingPurple from "../../public/rating_plates/rating_base_purple.png";
+import RatingBronze from "../../public/rating_plates/rating_base_bronze.png";
+import RatingSilver from "../../public/rating_plates/rating_base_silver.png";
+import RatingGold from "../../public/rating_plates/rating_base_gold.png";
+import RatingPlatinum from "../../public/rating_plates/rating_base_platinum.png";
+import RatingRainbow from "../../public/rating_plates/rating_base_rainbow.png";
 
 export const matchRule = (
     src: string,
@@ -203,3 +215,36 @@ function getCharWidth(char: string): number {
 
     return 1;
 }
+
+export const chooseNameplate = (arr: StaticImageData[]) => {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+}
+
+export const determineRatingPlate = (rating: number) => {
+    if (rating < 1000) {
+        return RatingNormal;
+    } else if (rating < 2000 && rating >= 1000) {
+        return RatingBlue;
+    } else if (rating < 4000 && rating >= 2000) {
+        return RatingGreen;
+    } else if (rating < 7000 && rating >= 4000) {
+        return RatingYellow;
+    } else if (rating < 10000 && rating >= 7000) {
+        return RatingRed;
+    } else if (rating < 12000 && rating >= 10000) {
+        return RatingPurple;
+    } else if (rating < 13000 && rating >= 12000) {
+        return RatingBronze;
+    } else if (rating < 14000 && rating >= 13000) {
+        return RatingSilver;
+    } else if (rating < 14500 && rating >= 14000) {
+        return RatingGold;
+    } else if (rating < 15000 && rating >= 14500) {
+        return RatingPlatinum;
+    } else if (rating >= 15000) {
+        return RatingRainbow;
+    } else {
+        return RatingRainbow;
+    }
+};
