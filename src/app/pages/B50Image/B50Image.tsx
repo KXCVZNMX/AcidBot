@@ -32,58 +32,14 @@ import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import {getCookie, truncateByWidth} from '@/lib/util';
+import {chooseNameplate, determineRatingPlate, getCookie, truncateByWidth} from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import RatingNormal from '../../../../public/rating_plates/rating_base_normal.png';
-import RatingBlue from '../../../../public/rating_plates/rating_base_blue.png';
-import RatingGreen from '../../../../public/rating_plates/rating_base_green.png';
-import RatingYellow from '../../../../public/rating_plates/rating_base_orange.png';
-import RatingRed from '../../../../public/rating_plates/rating_base_red.png';
-import RatingPurple from '../../../../public/rating_plates/rating_base_purple.png';
-import RatingBronze from '../../../../public/rating_plates/rating_base_bronze.png';
-import RatingSilver from '../../../../public/rating_plates/rating_base_silver.png';
-import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
-import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
-import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
 import {toBlob} from "html-to-image";
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
     display: 'swap',
 });
-
-function chooseNameplate(arr: StaticImageData[]) {
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex];
-}
-
-const determineRatingPlate = (rating: number) => {
-    if (rating < 1000) {
-        return RatingNormal;
-    } else if (rating < 2000 && rating >= 1000) {
-        return RatingBlue;
-    } else if (rating < 4000 && rating >= 2000) {
-        return RatingGreen;
-    } else if (rating < 7000 && rating >= 4000) {
-        return RatingYellow;
-    } else if (rating < 10000 && rating >= 7000) {
-        return RatingRed;
-    } else if (rating < 12000 && rating >= 10000) {
-        return RatingPurple;
-    } else if (rating < 13000 && rating >= 12000) {
-        return RatingBronze;
-    } else if (rating < 14000 && rating >= 13000) {
-        return RatingSilver;
-    } else if (rating < 14500 && rating >= 14000) {
-        return RatingGold;
-    } else if (rating < 15000 && rating >= 14500) {
-        return RatingPlatinum;
-    } else if (rating >= 15000) {
-        return RatingRainbow;
-    } else {
-        return RatingRainbow;
-    }
-};
 
 export default function B50Image() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
@@ -288,7 +244,7 @@ export default function B50Image() {
                     <div className={'w-full max-w-[720px] px-4'}>
                         <img
                             src={imageUrl}
-                            alt={'Generated radar'}
+                            alt={'Generated b50'}
                             style={{
                                 maxWidth: '100%',
                                 height: 'auto',
