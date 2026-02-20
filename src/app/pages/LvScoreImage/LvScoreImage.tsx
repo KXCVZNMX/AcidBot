@@ -102,6 +102,23 @@ export default function LvScoreImage() {
         if (clalCookie) {
             setClal(clalCookie);
         }
+
+        (async () => {
+            const res = await fetch(`/api/fetchOldB50`, {
+                method: 'GET',
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                showError(error);
+                return;
+            }
+
+            const b50: Best50Songs = await res.json();
+            setRating(
+                [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0)
+            );
+        })()
     }, []);
 
     useEffect(() => {
