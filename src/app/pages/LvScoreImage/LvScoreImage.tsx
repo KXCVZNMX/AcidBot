@@ -1,9 +1,9 @@
 'use client';
 
-import {Best50Songs, MaimaiFetchData, MSSB50} from "@/lib/types";
+import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from "@/lib/types";
 import React, {useEffect, useRef, useState} from "react";
 import ErrorModal from "@/app/components/ErrorModal";
-import {getCookie} from "@/lib/util";
+import {chooseNameplate, determineRatingPlate, getCookie, truncateByWidth} from "@/lib/util";
 import NP_bhx from '../../../../public/b50/NP_bhx.webp';
 import NP_cf from '../../../../public/b50/NP_cf.webp';
 import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
@@ -33,6 +33,8 @@ import {toBlob} from "html-to-image";
 import {M_PLUS_Rounded_1c} from "next/font/google";
 import B50Card from "@/app/components/B50Card";
 import {MaimaiLevelMap} from "@/lib/consts";
+import Image from "next/image";
+import Logo from "../../../../public/b50/kv_logo_pc.png";
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
@@ -44,6 +46,9 @@ export default function LvScoreImage() {
     const [songs, setSongs] = useState<MSSB50[]>([]);
     const [clal, setClal] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [profile, setProfile] = useState<ParsedProfile>();
+    const [nameplate, setNameplate] = useState(NP_salt_prism);
+    const [rating, setRating] = useState(0);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [generating, setGenerating] = useState(false);
     const [error, setError] = useState('');
@@ -209,6 +214,19 @@ export default function LvScoreImage() {
             setSongs(songRes);
             console.log(songs);
             setShowModal(true)
+
+            const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {
+                method: 'GET',
+            });
+
+            if (!sRes.ok) {
+                const { error } = await res.json();
+                showError(error);
+                return;
+            }
+
+            setProfile(await sRes.json());
+            setNameplate(chooseNameplate(NP));
         } catch (error) {
             showError((error as Error).message);
             console.error(error);
@@ -287,12 +305,119 @@ export default function LvScoreImage() {
                     className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
                     ref={captureRef}
                 >
+                    <Image
+                        src={Logo}
+                        alt={'logo'}
+                        height={100}
+                        className={'absolute top-[60px] left-[20px]'}
+                    />
+                    <Image
+                        src={nameplate}
+                        alt={'nameplate'}
+                        width={800}
+                        className={
+                            'absolute top-[35px] left-[300px] rounded-xl'
+                        }
+                    />
+                    {profile ? (
+                        <>
+                            <Image
+                                src={profile.profilePicture!}
+                                alt={'pfp'}
+                                width={100}
+                                height={100}
+                                className={
+                                    'absolute top-[50px] left-[317px] z-20'
+                                }
+                            />
+                            <Image
+                                src={Trophy}
+                                alt={'trophy'}
+                                width={220}
+                                height={20}
+                                className={
+                                    'absolute top-[53px] left-[440px] z-20'
+                                }
+                            />
+                            <p
+                                className={
+                                    'absolute top-[52px] left-[465px] text-[14px] text-black font-extrabold z-20'
+                                }
+                            >
+                                {truncateByWidth(profile.userDetail!, 28)}
+                            </p>
+                            <div
+                                className={
+                                    'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'
+                                }
+                            >
+                                <p className={'pl-1'}>
+                                    {truncateByWidth(profile.userName!, 12)}
+                                </p>
+                            </div>
+                            <Image
+                                src={determineRatingPlate(rating)}
+                                alt={'rating plate'}
+                                width={110}
+                                height={30}
+                                className={
+                                    'absolute top-[79px] left-[570px] z-20'
+                                }
+                            />
+                            <div
+                                className={
+                                    'absolute top-[83px] left-[617px] text-white tracking-widest z-20'
+                                }
+                            >
+                                {rating}
+                            </div>
+                            <Image
+                                src={profile.dan!}
+                                alt={'dan'}
+                                width={75}
+                                height={50}
+                                className={
+                                    'absolute top-[116px] left-[425px] z-20'
+                                }
+                            />
+                            <Image
+                                src={profile.rank!}
+                                alt={'dan'}
+                                width={60}
+                                height={50}
+                                className={
+                                    'absolute top-[114px] left-[505px] z-20'
+                                }
+                            />
+                            <Image
+                                src={profile.userCollectionCount!.img!}
+                                alt={'dan'}
+                                width={25}
+                                height={50}
+                                className={
+                                    'absolute top-[116px] left-[590px] z-20'
+                                }
+                            />
+                            <p
+                                className={
+                                    'absolute top-[117px] left-[620px] text-gray-900/90 font-semibold z-20'
+                                }
+                            >
+                                {profile.userCollectionCount!.text!}
+                            </p>
+                        </>
+                    ) : null}
                     <div
                         className={
-                            'absolute top-[185px] grid grid-cols-5 gap-2 p-3'
+                            'absolute w-[375px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'
+                        }
+                    />
+                    <div
+                        className={
+                            'absolute top-[185px] grid grid-cols-5 gap-2 p-3 gap-y-4'
                         }
                     >
-                        {songs.map((s) => (
+                        {songs.slice(0, 55).map((s) => (
                             <B50Card info={s} key={s.name} />
                         ))}
                     </div>
