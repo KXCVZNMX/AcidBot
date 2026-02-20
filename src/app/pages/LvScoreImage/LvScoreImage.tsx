@@ -268,6 +268,10 @@ export default function LvScoreImage() {
                 >
                     Submit
                 </button>
+
+                <button onClick={async () => await buttonAction()} disabled={generating || !profile} className={'btn btn-secondary'}>
+                    {generating || !profile ? 'Generating…' : 'Get Image'}
+                </button>
             </div>
 
             <div
