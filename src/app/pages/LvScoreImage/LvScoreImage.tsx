@@ -285,7 +285,7 @@ export default function LvScoreImage() {
                             <a
                                 className={'btn btn-primary'}
                                 href={imageUrl}
-                                download={'b50.png'}
+                                download={`level.png`}
                             >
                                 Download PNG
                             </a>
