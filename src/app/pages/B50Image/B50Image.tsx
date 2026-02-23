@@ -253,6 +253,7 @@ export default function B50Image() {
                         />
                     </div>
                 )}
+                <div className={'relative h-[1000px]'} />
                 <div
                     className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
                     ref={captureRef}
