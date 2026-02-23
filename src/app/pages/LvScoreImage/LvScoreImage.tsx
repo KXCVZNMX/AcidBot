@@ -1,11 +1,9 @@
 'use client';
 
-import React, {useEffect, useRef, useState} from 'react';
-import Image, { StaticImageData } from 'next/image';
-import { M_PLUS_Rounded_1c } from 'next/font/google';
-import B50Card from "@/app/components/B50Card";
-import BGBase from '../../../../public/b50/back_area.png';
-import Logo from '../../../../public/b50/kv_logo_pc.png';
+import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from "@/lib/types";
+import React, {useEffect, useRef, useState} from "react";
+import ErrorModal from "@/app/components/ErrorModal";
+import {chooseNameplate, determineRatingPlate, getCookie, truncateByWidth} from "@/lib/util";
 import NP_bhx from '../../../../public/b50/NP_bhx.webp';
 import NP_cf from '../../../../public/b50/NP_cf.webp';
 import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
@@ -31,24 +29,30 @@ import NP_yj from '../../../../public/b50/NP_yj.webp';
 import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Trophy from '../../../../public/b50/trophy_normal.png';
-import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import {chooseNameplate, determineRatingPlate, getCookie, truncateByWidth} from '@/lib/util';
-import ErrorModal from '@/app/components/ErrorModal';
 import {toBlob} from "html-to-image";
+import {M_PLUS_Rounded_1c} from "next/font/google";
+import B50Card from "@/app/components/B50Card";
+import {MaimaiLevelMap} from "@/lib/consts";
+import Image from "next/image";
+import Logo from "../../../../public/b50/kv_logo_pc.png";
+import BGBase from "../../../../public/b50/back_area.png";
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
     display: 'swap',
 });
 
-export default function B50Image() {
-    const [oldSong, setOldSong] = useState<MSSB50[]>([]);
-    const [newSong, setNewSong] = useState<MSSB50[]>([]);
+export default function LvScoreImage() {
+    const [level, setLevel] = useState('');
+    const [songs, setSongs] = useState<MSSB50[]>([]);
+    const [clal, setClal] = useState('');
+    const [showModal, setShowModal] = useState(false);
     const [profile, setProfile] = useState<ParsedProfile>();
     const [nameplate, setNameplate] = useState(NP_salt_prism);
     const [rating, setRating] = useState(0);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [generating, setGenerating] = useState(false);
+    const [showBtn, setShowBtn] = useState(false);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -100,16 +104,29 @@ export default function B50Image() {
             return;
         }
 
-        (async () => {
-            await fetchB50WithClal(clalCookie);
-        })();
-    }, []);
+        setClal(clalCookie);
 
-    useEffect(() => {
-        setRating(
-            [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0)
-        );
-    }, [oldSong, newSong]);
+        if (clalCookie) {
+            setClal(clalCookie);
+        }
+
+        (async () => {
+            const res = await fetch(`/api/fetchOldB50`, {
+                method: 'GET',
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                showError(error);
+                return;
+            }
+
+            const b50: Best50Songs = await res.json();
+            setRating(
+                [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0)
+            );
+        })()
+    }, []);
 
     useEffect(() => {
         return () => {
@@ -172,13 +189,22 @@ export default function B50Image() {
         }
     };
 
-    const fetchB50WithClal = async (clalS: string) => {
-        setOldSong([]);
-        setNewSong([]);
+    const fetchResultWithClal = async (clalS: string) => {
+        setSongs([]);
+        setShowBtn(true);
 
         try {
-            const res = await fetch(`/api/fetchOldB50`, {
-                method: 'GET',
+            const config: MaimaiFetchData = {
+                clal: clalS,
+                redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
+            };
+
+            const res = await fetch('/api/getLevel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(config),
             });
 
             if (!res.ok) {
@@ -187,10 +213,10 @@ export default function B50Image() {
                 return;
             }
 
-            const b50: Best50Songs = await res.json();
-
-            setOldSong(b50.b35);
-            setNewSong(b50.b15);
+            const songRes: MSSB50[] = await res.json();
+            setSongs(songRes);
+            console.log(songs);
+            setShowModal(true)
 
             const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {
                 method: 'GET',
@@ -205,23 +231,52 @@ export default function B50Image() {
             setProfile(await sRes.json());
             setNameplate(chooseNameplate(NP));
         } catch (error) {
-            setError((error as Error).message);
+            showError((error as Error).message);
             console.error(error);
         }
     };
 
+    songs.sort(
+        (a, b) =>
+            parseFloat(b.score.replace('%', '')) -
+            parseFloat(a.score.replace('%', ''))
+    );
+
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
-            <div className={'flex justify-center p-5'}>
+
+            <div
+                className={
+                    'flex flex-col justify-center shadow-lg items-center'
+                }
+            >
+                <form className={'text-center p-3 shadow-lg'}>
+                    <select
+                        name={'level'}
+                        className={'w-30 text-center'}
+                        onChange={(e) => setLevel(e.target.value)}
+                    >
+                        {Array.from({ length: 23 }, (_, i) => (
+                            <option key={i} value={i + 1}>
+                                LEVEL {MaimaiLevelMap[i + 1]}
+                            </option>
+                        ))}
+                    </select>
+                </form>
+
                 <button
+                    onClick={async () => fetchResultWithClal(clal)}
                     className={'btn btn-primary'}
-                    onClick={async () => await buttonAction()}
-                    disabled={generating || !profile}
                 >
+                    Submit
+                </button>
+
+                <button onClick={async () => await buttonAction()} disabled={generating || !profile} className={`btn btn-secondary ${showBtn ? '' : 'hidden'}`}>
                     {generating || !profile ? 'Generating…' : 'Get Image'}
                 </button>
             </div>
+
             <div
                 className={
                     'flex flex-col justify-center items-center p-3 gap-3'
@@ -233,7 +288,7 @@ export default function B50Image() {
                             <a
                                 className={'btn btn-primary'}
                                 href={imageUrl}
-                                download={'b50.png'}
+                                download={`level.png`}
                             >
                                 Download PNG
                             </a>
@@ -244,7 +299,7 @@ export default function B50Image() {
                     <div className={'w-full max-w-[720px] px-4'}>
                         <img
                             src={imageUrl}
-                            alt={'Generated b50'}
+                            alt={'Generated '}
                             style={{
                                 maxWidth: '100%',
                                 height: 'auto',
@@ -367,26 +422,10 @@ export default function B50Image() {
                     />
                     <div
                         className={
-                            'absolute w-[377px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'
-                        }
-                    />
-
-                    <div
-                        className={
-                            'absolute top-[185px] grid grid-cols-5 gap-2 p-3'
+                            'absolute top-[245px] grid grid-cols-5 gap-2 p-3 gap-y-[8px]'
                         }
                     >
-                        {oldSong.map((s) => (
-                            <B50Card info={s} key={s.name} />
-                        ))}
-
-                        <hr
-                            className={
-                                'h-[50px] w-[1400px] bg-none border-none col-span-5'
-                            }
-                        />
-
-                        {newSong.map((s) => (
+                        {songs.slice(0, 50).map((s) => (
                             <B50Card info={s} key={s.name} />
                         ))}
                     </div>
@@ -413,5 +452,5 @@ export default function B50Image() {
                 </div>
             </div>
         </>
-    );
+    )
 }
