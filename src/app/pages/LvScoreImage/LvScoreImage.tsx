@@ -422,7 +422,7 @@ export default function LvScoreImage() {
                             'absolute top-[245px] grid grid-cols-5 gap-2 p-3 gap-y-[8px]'
                         }
                     >
-                        {songs.slice(0, 55).map((s) => (
+                        {songs.slice(0, 50).map((s) => (
                             <B50Card info={s} key={s.name} />
                         ))}
                     </div>
