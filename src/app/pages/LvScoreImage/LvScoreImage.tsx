@@ -419,7 +419,7 @@ export default function LvScoreImage() {
                     />
                     <div
                         className={
-                            'absolute top-[185px] grid grid-cols-5 gap-2 p-3 gap-y-4'
+                            'absolute top-[245px] grid grid-cols-5 gap-2 p-3 gap-y-[8px]'
                         }
                     >
                         {songs.slice(0, 55).map((s) => (
