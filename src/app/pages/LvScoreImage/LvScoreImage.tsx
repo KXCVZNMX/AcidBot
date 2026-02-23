@@ -35,6 +35,7 @@ import B50Card from "@/app/components/B50Card";
 import {MaimaiLevelMap} from "@/lib/consts";
 import Image from "next/image";
 import Logo from "../../../../public/b50/kv_logo_pc.png";
+import BGBase from "../../../../public/b50/back_area.png";
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
