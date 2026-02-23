@@ -52,6 +52,7 @@ export default function LvScoreImage() {
     const [rating, setRating] = useState(0);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [generating, setGenerating] = useState(false);
+    const [showBtn, setShowBtn] = useState(false);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
 
@@ -190,6 +191,7 @@ export default function LvScoreImage() {
 
     const fetchResultWithClal = async (clalS: string) => {
         setSongs([]);
+        setShowBtn(true);
 
         try {
             const config: MaimaiFetchData = {
@@ -270,7 +272,7 @@ export default function LvScoreImage() {
                     Submit
                 </button>
 
-                <button onClick={async () => await buttonAction()} disabled={generating || !profile} className={'btn btn-secondary'}>
+                <button onClick={async () => await buttonAction()} disabled={generating || !profile} className={`btn btn-secondary ${showBtn ? '' : 'hidden'}`}>
                     {generating || !profile ? 'Generating…' : 'Get Image'}
                 </button>
             </div>
