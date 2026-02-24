@@ -5,6 +5,7 @@ import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
+import Link from "next/link";
 
 export default function LvScore() {
     const [level, setLevel] = useState('');
@@ -98,12 +99,21 @@ export default function LvScore() {
                         </select>
                     </form>
 
-                    <button
-                        onClick={fetchResultWithClal}
-                        className={'btn btn-primary'}
-                    >
-                        Submit
-                    </button>
+                    <div className={'flex flex-row justify-center'}>
+                        <button
+                            onClick={fetchResultWithClal}
+                            className={'btn btn-primary'}
+                        >
+                            Submit
+                        </button>
+
+                        <Link
+                            href={'/pages/LvScoreImage'}
+                            className={'btn btn-secondary'}
+                        >
+                            Get Image
+                        </Link>
+                    </div>
                 </div>
 
                 <div className={'overflow-x-auto'}>
