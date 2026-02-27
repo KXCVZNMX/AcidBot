@@ -26,6 +26,7 @@ export default function Best50() {
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
     const [rating, setRating] = useState(0);
+    const [generating, setGenerating] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -103,6 +104,7 @@ export default function Best50() {
     }, [oldSong, newSong]);
 
     const fetchB50WithClal = async () => {
+        setGenerating(true);
         setOldSong([]);
         setNewSong([]);
 
@@ -121,9 +123,12 @@ export default function Best50() {
 
             setOldSong(b50.b35);
             setNewSong(b50.b15);
+            setGenerating(false);
         } catch (error) {
             setError((error as Error).message);
             console.error(error);
+        } finally {
+            setGenerating(false);
         }
     };
 
@@ -180,15 +185,16 @@ export default function Best50() {
                         <button
                             onClick={fetchB50WithClal}
                             className={'btn btn-primary'}
+                            disabled={generating}
                         >
-                            Submit
+                            {generating ? 'Generating...' : 'Generate B50'}
                         </button>
 
                         <button
                             onClick={saveB50}
                             className={'btn btn-secondary'}
                         >
-                            Save
+                            Save B50
                         </button>
                         <Link
                             href={'/pages/B50Image'}
