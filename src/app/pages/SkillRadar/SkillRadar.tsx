@@ -63,7 +63,6 @@ export default function SkillRadar() {
 
     const generateImageFromRef = useCallback(async () => {
         if (!captureRef.current) return;
-        setGenerating(true);
 
         try {
             const blob = await toBlob(captureRef.current, {
@@ -124,6 +123,7 @@ export default function SkillRadar() {
 
     const buttonAction = async () => {
         setError('');
+        setGenerating(true);
         setImageUrl((prev) => {
             if (prev) {
                 URL.revokeObjectURL(prev);
@@ -171,11 +171,23 @@ export default function SkillRadar() {
                     onClick={async () => await buttonAction()}
                     disabled={generating}
                 >
-                    {generating ? 'Generating…' : 'Get Results'}
+                    {generating ? 'Generating...' : 'Generate Radar'}
                 </button>
             </div>
 
             <div className={'flex items-center flex-col'}>
+                {generating && (
+                    <div className={'mb-4 text-sm opacity-80'}>
+                        Rendering radar image, please wait...
+                    </div>
+                )}
+
+                {error && (
+                    <div className={'mb-4 text-sm text-error'}>
+                        {error}
+                    </div>
+                )}
+
                 {showRadars && (
                     <>
                         <div ref={captureRef} className={'overflow-x-auto'}>
@@ -200,6 +212,16 @@ export default function SkillRadar() {
                             </div>
                         </div>
                     </>
+                )}
+
+                {!showRadars && !imageUrl && !generating && (
+                    <div
+                        className={
+                            'w-full max-w-[720px] px-4 py-10 border border-dashed rounded-lg text-center text-sm opacity-70'
+                        }
+                    >
+                        No radar image yet. Click "Generate Radar" to create one.
+                    </div>
                 )}
 
                 <div className={'flex gap-2 items-center mt-4 mb-6'}>
