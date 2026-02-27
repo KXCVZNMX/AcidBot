@@ -215,7 +215,6 @@ export default function LvScoreImage() {
 
             const songRes: MSSB50[] = await res.json();
             setSongs(songRes);
-            console.log(songs);
             setShowModal(true)
 
             const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {

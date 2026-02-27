@@ -63,7 +63,6 @@ export default function LvScore() {
 
             const songRes: MaimaiSongScore[] = await res.json();
             setSongs(songRes);
-            console.log(songs);
         } catch (error) {
             showError((error as Error).message);
             console.error(error);
