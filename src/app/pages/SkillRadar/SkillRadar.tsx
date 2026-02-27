@@ -1,7 +1,7 @@
 'use client';
 
 import { SongTags } from '@/lib/types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import {
     EVAL_TAG_NAMES,
     PATTERN_TAG_NAMES,
@@ -44,7 +44,7 @@ export default function SkillRadar() {
 
     const maxValue = (values: number[]) => {
         if (values.length === 0) {
-            throw new Error('Cannot compute max of an empty list');
+            return 0;
         }
         let max = values[0];
         for (let i = 1; i < values.length; i++) {
@@ -60,6 +60,67 @@ export default function SkillRadar() {
             return 0.75 + (levelConst - meanLevelConst) / 20;
         }
     };
+
+    const generateImageFromRef = useCallback(async () => {
+        if (!captureRef.current) return;
+        setGenerating(true);
+
+        try {
+            const blob = await toBlob(captureRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+                backgroundColor: '#ffffff',
+            });
+
+            if (!blob) {
+                setError('Failed to generate image blob.');
+                return;
+            }
+
+            const url = URL.createObjectURL(blob);
+
+            setImageUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return url;
+            });
+        } catch (err) {
+            console.error(err);
+            setError((err as Error).message ?? 'Error generating image');
+        } finally {
+            setGenerating(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!showRadars) return;
+        let cancelled = false;
+
+        const runCapture = async () => {
+            await new Promise<void>((resolve) =>
+                requestAnimationFrame(() => resolve())
+            );
+            await document.fonts?.ready;
+            if (!cancelled) {
+                await generateImageFromRef();
+                setShowRadars(false);
+            }
+        };
+
+        runCapture();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [showRadars, generateImageFromRef]);
+
+    const maxEval = useMemo(
+        () => maxValue(evalRadarValues),
+        [evalRadarValues]
+    );
+    const maxPattern = useMemo(
+        () => maxValue(patternRadarValues),
+        [patternRadarValues]
+    );
 
     const buttonAction = async () => {
         setError('');
@@ -100,52 +161,6 @@ export default function SkillRadar() {
         setEvalRadarValues(eRadarVal);
         setPatternRadarValues(pRadarVal);
         setShowRadars(true);
-
-        await new Promise<void>((resolve) => {
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => resolve());
-                });
-            });
-        });
-
-        await document.fonts?.ready;
-        await new Promise((r) => setTimeout(r, 50));
-
-        await generateImageFromRef();
-
-        setShowRadars(false);
-    };
-
-    const generateImageFromRef = async () => {
-        if (!captureRef.current) return;
-        setGenerating(true);
-
-        try {
-            const blob = await toBlob(captureRef.current, {
-                cacheBust: true,
-                pixelRatio: 2,
-                backgroundColor: '#ffffff',
-            });
-
-            if (!blob) {
-                setError('Failed to generate image blob.');
-                setGenerating(false);
-                return;
-            }
-
-            const url = URL.createObjectURL(blob);
-
-            setImageUrl((prev) => {
-                if (prev) URL.revokeObjectURL(prev);
-                return url;
-            });
-        } catch (err) {
-            console.error(err);
-            setError((err as Error).message ?? 'Error generating image');
-        } finally {
-            setGenerating(false);
-        }
     };
 
     return (
@@ -169,7 +184,7 @@ export default function SkillRadar() {
                                     <PERadar
                                         tags={patternRadarValues}
                                         tagName={PATTERN_TAG_NAMES}
-                                        maxV={maxValue(patternRadarValues)}
+                                        maxV={maxPattern}
                                         name={'Pattern'}
                                     />
                                 </div>
@@ -178,7 +193,7 @@ export default function SkillRadar() {
                                     <PERadar
                                         tags={evalRadarValues}
                                         tagName={EVAL_TAG_NAMES}
-                                        maxV={maxValue(evalRadarValues)}
+                                        maxV={maxEval}
                                         name={'Chart Type'}
                                     />
                                 </div>
