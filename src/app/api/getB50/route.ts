@@ -113,10 +113,20 @@ export async function GET(req: NextRequest) {
             if (d && d.title) docMap.set(d.title, d as any);
         }
 
+
         for (const r of res) {
             const qRes = docMap.get(r.name);
 
             if (!qRes) {
+                console.error('\n=== LOOKUP FAILED ===');
+                console.error(`Looking for: "${r.name}"`);
+                console.error(`Difficulty: ${r.diff}`);
+                console.error(`Length: ${r.name.length}`);
+                console.error(`Character codes:`, r.name.split('').map(c => `${c}(${c.charCodeAt(0)})`).join(' '));
+                console.error('\nFirst 5 available titles in docMap:');
+                Array.from(docMap.keys()).slice(0, 5).forEach((title, i) => {
+                    console.error(`  ${i + 1}. "${title}" (len: ${title.length})`);
+                });
                 throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
             }
 
@@ -173,10 +183,10 @@ export async function GET(req: NextRequest) {
         const slicedB35 = b35.slice(0, 35);
         const slicedB15 = b15.slice(0, 15);
 
-        if (slicedB15.length === 0 || b35.length === 0) {
+        if (slicedB15.length === 0 && b35.length === 0) {
             return NextResponse.json(
                 {
-                    error: `Either one of B15 or B35 was empty, get clal again.`,
+                    error: `Both of your B15 or B35 was empty, get clal again. (or you just haven't played)`,
                 },
                 { status: 500 }
             );

@@ -62,9 +62,11 @@ export const extractScore = ($: cheerio.Root) => {
     $("div[class*='music_'][class*='_score_back']").each((_, el) => {
         const root = $(el);
 
+        const wrapper = root.parent();
+
         const icons = root.find("img[src*='music_icon_']");
 
-        const dxVal = root.find(
+        const dxVal = wrapper.find(
             "img[src*='music_dx'], img[src*='music_standard']"
         );
         const lvVal = root.find("img[src*='diff_']");
@@ -108,7 +110,6 @@ export const extractScore = ($: cheerio.Root) => {
                 combo: comboState,
                 rank: determineRank(score),
             });
-            console.log(`${name} -> ${dxState}`)
         }
     });
 
