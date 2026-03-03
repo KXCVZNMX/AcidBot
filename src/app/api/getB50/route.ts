@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
 
         for (const html of htmls) {
             const $ = cheerio.load(html);
-            res.push(...extractScore($));
+            res.push(...extractScore($, 'getB50'));
         }
 
         let db = client.db();

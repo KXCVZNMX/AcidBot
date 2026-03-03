@@ -56,19 +56,33 @@ export const determineRank = (achievement: string) => {
     }
 };
 
-export const extractScore = ($: cheerio.Root) => {
+export const extractScore = (
+    $: cheerio.Root,
+    source: 'getB50' | 'getLevel' = 'getB50'
+) => {
     const results: MaimaiSongScore[] = [];
 
     $("div[class*='music_'][class*='_score_back']").each((_, el) => {
         const root = $(el);
-
         const wrapper = root.parent();
 
         const icons = root.find("img[src*='music_icon_']");
 
-        const dxVal = wrapper.find(
-            "img[src*='music_dx'], img[src*='music_standard']"
-        );
+        // getLevel pages place DX/STD marker on the card itself, while getB50 is more reliable from wrapper.
+        let dxVal =
+            source === 'getLevel'
+                ? root.find('img.music_kind_icon')
+                : wrapper.find(
+                      "img[src*='music_dx'], img[src*='music_standard']"
+                  );
+
+        // Fallback for mixed/changed layouts.
+        if (dxVal.length === 0) {
+            dxVal = root.find(
+                "img.music_kind_icon, img[src*='music_dx'], img[src*='music_standard']"
+            );
+        }
+
         const lvVal = root.find("img[src*='diff_']");
 
         let dxState: string | null = null;
@@ -99,13 +113,13 @@ export const extractScore = ($: cheerio.Root) => {
         const score = scoreBlocks.eq(0).text().trim();
         const dx = scoreBlocks.eq(1).text().trim();
 
-        if (score !== '' && dx !== '') {
+        if (score !== '' && dx !== '' && dxState && diffState) {
             results.push({
                 name,
                 score,
                 dx,
-                isDx: dxState!,
-                diff: diffState!,
+                isDx: dxState,
+                diff: diffState,
                 sync: syncState,
                 combo: comboState,
                 rank: determineRank(score),
