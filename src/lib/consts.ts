@@ -199,6 +199,7 @@ export const EVAL_TAG_NAMES: string[] = [
 export const EVAL_TAG_NUMBERS: Readonly<number[]> = [15, 14, 21, 16, 22];
 
 export const PRISM_PLUS_SONGS: Readonly<string[]> = [
+    'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)',
     'Fraq',
     'ウタヒメナイトストーム',
     'Feel The Luv',

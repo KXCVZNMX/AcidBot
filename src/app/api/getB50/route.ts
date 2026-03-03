@@ -37,12 +37,7 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
 }
 
 function isNew(name: string) {
-    return (
-        PRISM_PLUS_SONGS.includes(name) || CIRCLE_SONGS.includes(name) ||
-        // Hotfixes: KOP Songs and songs that somehow miss the first check
-        name ===
-            'False Amber (from the Black Bazaar, Or by A Kervan Trader from the Lands Afar, Or Buried Beneath the Shifting Sands That Lead Everywhere but Nowhere)'
-    );
+    return PRISM_PLUS_SONGS.includes(name) || CIRCLE_SONGS.includes(name)
 }
 
 export async function GET(req: NextRequest) {
