@@ -61,7 +61,7 @@ export default function Best50() {
     const [profile, setProfile] = useState<ParsedProfile>();
     const [nameplate, setNameplate] = useState(NP_salt_prism);
 
-    const captureRef = useRef<HTMLDivElement | null>(null);
+    const captureRef = useRef<HTMLDivElement>(null);
 
     const NP = [
         NP_bhx,
@@ -337,12 +337,12 @@ export default function Best50() {
 
             <div
                 className={
-                    'flex flex-col items-center gap-6 p-6 max-w-[1800px] mx-auto'
+                    'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'
                 }
             >
                 {/* Rating Plate Section */}
                 <div className={'flex flex-col items-center gap-4'}>
-                    <div className={'relative w-[300px] h-[50px]'}>
+                    <div className={'relative w-75 h-12.5'}>
                         <Image
                             src={chooseRatingPlate()}
                             alt={'rating plate'}
@@ -352,7 +352,7 @@ export default function Best50() {
 
                         <div
                             className={
-                                'absolute inset-0 flex items-center justify-start pl-[140px] text-2xl tracking-[0.20em]'
+                                'absolute inset-0 flex items-center justify-start pl-35 text-2xl tracking-[0.20em]'
                             }
                         >
                             {rating}
@@ -363,7 +363,7 @@ export default function Best50() {
                     <div className={'flex flex-wrap gap-3 justify-center'}>
                         <button
                             onClick={fetchB50WithClal}
-                            className={'btn btn-primary min-w-[140px]'}
+                            className={'btn btn-primary min-w-35'}
                             disabled={generating}
                         >
                             {generating ? (
@@ -378,14 +378,14 @@ export default function Best50() {
 
                         <button
                             onClick={saveB50}
-                            className={'btn btn-secondary min-w-[140px]'}
+                            className={'btn btn-secondary min-w-35'}
                         >
                             Save B50
                         </button>
 
                         <button
                             onClick={generateImage}
-                            className={'btn btn-accent min-w-[140px]'}
+                            className={'btn btn-accent min-w-35'}
                             disabled={
                                 oldSong.length === 0 || newSong.length === 0
                             }

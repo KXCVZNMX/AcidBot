@@ -26,7 +26,7 @@ export default function B50ImageRenderer({
     profile?: ParsedProfile;
     nameplate: any;
     rating: number;
-    captureRef: React.RefObject<HTMLDivElement>;
+    captureRef: React.RefObject<HTMLDivElement | null>;
 }) {
     return (
         <div className="absolute -left-[9999px] top-0">
