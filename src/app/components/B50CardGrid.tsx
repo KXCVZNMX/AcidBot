@@ -39,6 +39,7 @@ export default function B50CardGrid({
                         {newSong.map((song, i) => (
                             <div key={i} className="relative">
                                 <div className="absolute -top-2 -left-2 bg-secondary text-secondary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg">
+                                    {i + 1}
                                 </div>
                                 <B50Card info={song} />
                             </div>
