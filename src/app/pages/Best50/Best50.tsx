@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Best50Songs, MSSB50 } from '@/lib/types';
-import { getCookie } from '@/lib/util';
+import { useEffect, useState, useRef } from 'react';
+import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
+import { getCookie, chooseNameplate } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50CardGrid from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
+import ImageGenerationModal from '@/app/components/ImageGenerationModal';
+import B50ImageRenderer from '@/app/components/B50ImageRenderer';
 import RatingNormal from '../../../../public/rating_plates/rating_base_normal.png';
 import RatingBlue from '../../../../public/rating_plates/rating_base_blue.png';
 import RatingGreen from '../../../../public/rating_plates/rating_base_green.png';
@@ -17,8 +19,32 @@ import RatingSilver from '../../../../public/rating_plates/rating_base_silver.pn
 import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
 import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
 import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
+import NP_bhx from '../../../../public/b50/NP_bhx.webp';
+import NP_cf from '../../../../public/b50/NP_cf.webp';
+import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
+import NP_cf_prism from '../../../../public/b50/NP_cf_prism.webp';
+import NP_dlx from '../../../../public/b50/NP_dlx.webp';
+import NP_kuro from '../../../../public/b50/NP_kuro.webp';
+import NP_lime from '../../../../public/b50/NP_lime.webp';
+import NP_lime_bud from '../../../../public/b50/NP_lime_bud.webp';
+import NP_milk from '../../../../public/b50/NP_milk.webp';
+import NP_milk_cat from '../../../../public/b50/NP_milk_cat.webp';
+import NP_milk_prism from '../../../../public/b50/NP_milk_prism.webp';
+import NP_milk_splash from '../../../../public/b50/NP_milk_splash.webp';
+import NP_rasu from '../../../../public/b50/NP_rasu.webp';
+import NP_rasu_bud from '../../../../public/b50/NP_rasu_bud.webp';
+import NP_rasu_festival from '../../../../public/b50/NP_rasu_festival.webp';
+import NP_riz_prism from '../../../../public/b50/NP_riz_prism.webp';
+import NP_salt from '../../../../public/b50/NP_salt.webp';
+import NP_salt_festival from '../../../../public/b50/NP_salt_festival.webp';
+import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
+import NP_sm from '../../../../public/b50/NP_sm.webp';
+import NP_sm_splash from '../../../../public/b50/NP_sm_splash.webp';
+import NP_yj from '../../../../public/b50/NP_yj.webp';
+import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
+import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Image from 'next/image';
-import Link from 'next/link';
+import { toBlob } from 'html-to-image';
 
 export default function Best50() {
     const [clal, setClal] = useState('0');
@@ -29,6 +55,21 @@ export default function Best50() {
     const [generating, setGenerating] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [generatingImage, setGeneratingImage] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [profile, setProfile] = useState<ParsedProfile>();
+    const [nameplate, setNameplate] = useState(NP_salt_prism);
+
+    const captureRef = useRef<HTMLDivElement | null>(null);
+
+    const NP = [
+        NP_bhx, NP_cf, NP_cf_prism, NP_cf_festival, NP_dlx, NP_kuro,
+        NP_lime, NP_lime_bud, NP_milk, NP_milk_cat, NP_milk_prism,
+        NP_milk_splash, NP_rasu, NP_rasu_bud, NP_rasu_festival,
+        NP_riz_prism, NP_salt, NP_salt_festival, NP_salt_prism,
+        NP_sm, NP_sm_splash, NP_yj, NP_yj_bud, NP_yj_splash,
+    ];
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -103,6 +144,88 @@ export default function Best50() {
         setRating(calculateRating());
     }, [oldSong, newSong]);
 
+    useEffect(() => {
+        return () => {
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+        };
+    }, [imageUrl]);
+
+    const generateImage = async () => {
+        if (!clal) {
+            showError('Missing Clal, please go to the guide page to fetch a new clal');
+            return;
+        }
+
+        setShowImageModal(true);
+        setGeneratingImage(true);
+        setImageUrl(null);
+
+        try {
+            // Fetch profile if not already loaded
+            if (!profile) {
+                const res = await fetch(`/api/fetchUserDetail?clal=${clal}`, {
+                    method: 'GET',
+                });
+
+                if (!res.ok) {
+                    const { error } = await res.json();
+                    throw new Error(error);
+                }
+
+                const profileData = await res.json();
+                setProfile(profileData);
+                setNameplate(chooseNameplate(NP));
+            }
+
+            // Wait for DOM updates and fonts to load
+            await new Promise<void>((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => resolve());
+                    });
+                });
+            });
+
+            await document.fonts?.ready;
+            await new Promise((r) => setTimeout(r, 100));
+
+            // Generate image
+            if (!captureRef.current) {
+                throw new Error('Image renderer not ready');
+            }
+
+            const blob = await toBlob(captureRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+            });
+
+            if (!blob) {
+                throw new Error('Failed to generate image blob');
+            }
+
+            const url = URL.createObjectURL(blob);
+            setImageUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return url;
+            });
+        } catch (error) {
+            showError((error as Error).message);
+            setShowImageModal(false);
+        } finally {
+            setGeneratingImage(false);
+        }
+    };
+
+    const closeImageModal = () => {
+        setShowImageModal(false);
+        if (imageUrl) {
+            URL.revokeObjectURL(imageUrl);
+            setImageUrl(null);
+        }
+    };
+
     const fetchB50WithClal = async () => {
         setGenerating(true);
         setOldSong([]);
@@ -174,6 +297,22 @@ export default function Best50() {
         <>
             <ErrorModal error={error} show={showErrorModal} />
             <SuccessModal message={'Successfully saved!'} show={showSuccess} />
+            <ImageGenerationModal
+                show={showImageModal}
+                generating={generatingImage}
+                imageUrl={imageUrl}
+                onClose={closeImageModal}
+            />
+
+            {/* Hidden image renderer for capture */}
+            <B50ImageRenderer
+                oldSong={oldSong}
+                newSong={newSong}
+                profile={profile}
+                nameplate={nameplate}
+                rating={rating}
+                captureRef={captureRef}
+            />
 
             <div className={'flex flex-col items-center gap-6 p-6 max-w-[1800px] mx-auto'}>
                 {/* Rating Plate Section */}
@@ -219,12 +358,13 @@ export default function Best50() {
                             Save B50
                         </button>
 
-                        <Link
-                            href={'/pages/B50Image'}
+                        <button
+                            onClick={generateImage}
                             className={'btn btn-accent min-w-[140px]'}
+                            disabled={oldSong.length === 0 || newSong.length === 0}
                         >
                             Get Image
-                        </Link>
+                        </button>
                     </div>
                 </div>
 
