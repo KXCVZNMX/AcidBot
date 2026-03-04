@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        let db = client.db();
+        const db = client.db();
 
         const collection = db.collection<SongEntry>('maimaiSongs');
         const finalRes: MSSB50[] = [];

@@ -28,7 +28,7 @@ export async function GET() {
         const res: SongTags[] = [];
 
         for (const song of doc.b15.concat(doc.b35)) {
-            let doc = await db.collection('songTags').findOne({
+            const doc = await db.collection('songTags').findOne({
                 songName: song.name,
                 sheetDifficulty: song.diff,
             });

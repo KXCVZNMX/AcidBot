@@ -8,7 +8,7 @@ type OldB50 = {
 };
 
 export async function POST(req: NextRequest) {
-    let id = req.nextUrl.searchParams.get('id') ?? '';
+    const id = req.nextUrl.searchParams.get('id') ?? '';
 
     try {
         const db = client.db();

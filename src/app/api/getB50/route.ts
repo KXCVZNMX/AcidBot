@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
             res.push(...extractScore($, 'getB50'));
         }
 
-        let db = client.db();
+        const db = client.db();
 
         const collection = db.collection('maimaiSongs');
         const finalRes: MSSB50[] = [];
@@ -169,8 +169,8 @@ export async function GET(req: NextRequest) {
             });
         }
 
-        let b35: MSSB50[] = [];
-        let b15: MSSB50[] = [];
+        const b35: MSSB50[] = [];
+        const b15: MSSB50[] = [];
 
         for (const r of finalRes) {
             r.rating = Math.floor(

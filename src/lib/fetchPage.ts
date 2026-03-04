@@ -38,7 +38,7 @@ export default async function fetchPage(
             throw new Error('The link did not return a redirect');
         }
 
-        let next = res.headers.get('location');
+        const next = res.headers.get('location');
 
         if (!next) {
             throw new Error('The Link did not return a valid redirect');
