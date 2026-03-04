@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Best50Songs, MSSB50 } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import B50Table from '@/app/components/B50Table';
+import B50CardGrid from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
 import RatingNormal from '../../../../public/rating_plates/rating_base_normal.png';
 import RatingBlue from '../../../../public/rating_plates/rating_base_blue.png';
@@ -175,35 +175,9 @@ export default function Best50() {
             <ErrorModal error={error} show={showErrorModal} />
             <SuccessModal message={'Successfully saved!'} show={showSuccess} />
 
-            <div className={'flex flex-col justify-center shadow-lg'}>
-                <div
-                    className={
-                        'flex flex-col justify-center shadow-lg items-center'
-                    }
-                >
-                    <div className={'flex flex-row gap-2'}>
-                        <button
-                            onClick={fetchB50WithClal}
-                            className={'btn btn-primary'}
-                            disabled={generating}
-                        >
-                            {generating ? 'Generating...' : 'Generate B50'}
-                        </button>
-
-                        <button
-                            onClick={saveB50}
-                            className={'btn btn-secondary'}
-                        >
-                            Save B50
-                        </button>
-                        <Link
-                            href={'/pages/B50Image'}
-                            className={'btn btn-secondary'}
-                        >
-                            Get Image
-                        </Link>
-                    </div>
-
+            <div className={'flex flex-col items-center gap-6 p-6 max-w-[1800px] mx-auto'}>
+                {/* Rating Plate Section */}
+                <div className={'flex flex-col items-center gap-4'}>
                     <div className={'relative w-[300px] h-[50px]'}>
                         <Image
                             src={chooseRatingPlate()}
@@ -214,16 +188,49 @@ export default function Best50() {
 
                         <div
                             className={
-                                'absolute inset-0 flex items-center justify-start pl-[140px] text-2xl tracking-[0.22em]'
+                                'absolute inset-0 flex items-center justify-start pl-[140px] text-2xl tracking-[0.20em]'
                             }
                         >
                             {rating}
                         </div>
                     </div>
+
+                    {/* Action Buttons */}
+                    <div className={'flex flex-wrap gap-3 justify-center'}>
+                        <button
+                            onClick={fetchB50WithClal}
+                            className={'btn btn-primary min-w-[140px]'}
+                            disabled={generating}
+                        >
+                            {generating ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="loading loading-spinner loading-sm"></span>
+                                    Generating...
+                                </span>
+                            ) : (
+                                'Generate B50'
+                            )}
+                        </button>
+
+                        <button
+                            onClick={saveB50}
+                            className={'btn btn-secondary min-w-[140px]'}
+                        >
+                            Save B50
+                        </button>
+
+                        <Link
+                            href={'/pages/B50Image'}
+                            className={'btn btn-accent min-w-[140px]'}
+                        >
+                            Get Image
+                        </Link>
+                    </div>
                 </div>
 
-                <div className={'overflow-x-auto'}>
-                    <B50Table oldSong={oldSong} newSong={newSong} />
+                {/* Cards Grid Section */}
+                <div className={'w-full'}>
+                    <B50CardGrid oldSong={oldSong} newSong={newSong} />
                 </div>
             </div>
         </>
