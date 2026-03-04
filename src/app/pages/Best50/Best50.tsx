@@ -128,6 +128,9 @@ export default function Best50() {
         }
     };
 
+    const calculateRating = () =>
+        [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
+
     useEffect(() => {
         const clalCookie = getCookie('clal');
         if (!clalCookie) {
@@ -161,7 +164,7 @@ export default function Best50() {
 
     useEffect(() => {
         setRating(calculateRating());
-    }, [oldSong, newSong]);
+    }, [oldSong, newSong, calculateRating]);
 
     useEffect(() => {
         return () => {
@@ -310,9 +313,6 @@ export default function Best50() {
             console.error(error);
         }
     };
-
-    const calculateRating = () =>
-        [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
 
     return (
         <>
