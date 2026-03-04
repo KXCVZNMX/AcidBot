@@ -134,7 +134,9 @@ export default function B50ImageRenderer({
                 />
 
                 <div
-                    className={'absolute top-[185px] grid grid-cols-5 gap-2 p-3'}
+                    className={
+                        'absolute top-[185px] grid grid-cols-5 gap-2 p-3'
+                    }
                 >
                     {oldSong.map((s, idx) => (
                         <B50Card info={s} key={`old-${idx}`} />
@@ -172,4 +174,3 @@ export default function B50ImageRenderer({
         </div>
     );
 }
-

@@ -64,11 +64,30 @@ export default function Best50() {
     const captureRef = useRef<HTMLDivElement | null>(null);
 
     const NP = [
-        NP_bhx, NP_cf, NP_cf_prism, NP_cf_festival, NP_dlx, NP_kuro,
-        NP_lime, NP_lime_bud, NP_milk, NP_milk_cat, NP_milk_prism,
-        NP_milk_splash, NP_rasu, NP_rasu_bud, NP_rasu_festival,
-        NP_riz_prism, NP_salt, NP_salt_festival, NP_salt_prism,
-        NP_sm, NP_sm_splash, NP_yj, NP_yj_bud, NP_yj_splash,
+        NP_bhx,
+        NP_cf,
+        NP_cf_prism,
+        NP_cf_festival,
+        NP_dlx,
+        NP_kuro,
+        NP_lime,
+        NP_lime_bud,
+        NP_milk,
+        NP_milk_cat,
+        NP_milk_prism,
+        NP_milk_splash,
+        NP_rasu,
+        NP_rasu_bud,
+        NP_rasu_festival,
+        NP_riz_prism,
+        NP_salt,
+        NP_salt_festival,
+        NP_salt_prism,
+        NP_sm,
+        NP_sm_splash,
+        NP_yj,
+        NP_yj_bud,
+        NP_yj_splash,
     ];
 
     const showError = (errorMessage: string) => {
@@ -154,7 +173,9 @@ export default function Best50() {
 
     const generateImage = async () => {
         if (!clal) {
-            showError('Missing Clal, please go to the guide page to fetch a new clal');
+            showError(
+                'Missing Clal, please go to the guide page to fetch a new clal'
+            );
             return;
         }
 
@@ -314,7 +335,11 @@ export default function Best50() {
                 captureRef={captureRef}
             />
 
-            <div className={'flex flex-col items-center gap-6 p-6 max-w-[1800px] mx-auto'}>
+            <div
+                className={
+                    'flex flex-col items-center gap-6 p-6 max-w-[1800px] mx-auto'
+                }
+            >
                 {/* Rating Plate Section */}
                 <div className={'flex flex-col items-center gap-4'}>
                     <div className={'relative w-[300px] h-[50px]'}>
@@ -361,7 +386,9 @@ export default function Best50() {
                         <button
                             onClick={generateImage}
                             className={'btn btn-accent min-w-[140px]'}
-                            disabled={oldSong.length === 0 || newSong.length === 0}
+                            disabled={
+                                oldSong.length === 0 || newSong.length === 0
+                            }
                         >
                             Get Image
                         </button>

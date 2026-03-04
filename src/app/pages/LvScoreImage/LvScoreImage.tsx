@@ -1,9 +1,19 @@
 'use client';
 
-import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from "@/lib/types";
-import React, {useEffect, useRef, useState} from "react";
-import ErrorModal from "@/app/components/ErrorModal";
-import {chooseNameplate, determineRatingPlate, getCookie, truncateByWidth} from "@/lib/util";
+import {
+    Best50Songs,
+    MaimaiFetchData,
+    MSSB50,
+    ParsedProfile,
+} from '@/lib/types';
+import React, { useEffect, useRef, useState } from 'react';
+import ErrorModal from '@/app/components/ErrorModal';
+import {
+    chooseNameplate,
+    determineRatingPlate,
+    getCookie,
+    truncateByWidth,
+} from '@/lib/util';
 import NP_bhx from '../../../../public/b50/NP_bhx.webp';
 import NP_cf from '../../../../public/b50/NP_cf.webp';
 import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
@@ -29,13 +39,13 @@ import NP_yj from '../../../../public/b50/NP_yj.webp';
 import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Trophy from '../../../../public/b50/trophy_normal.png';
-import {toBlob} from "html-to-image";
-import {M_PLUS_Rounded_1c} from "next/font/google";
-import B50Card from "@/app/components/B50Card";
-import {MaimaiLevelMap} from "@/lib/consts";
-import Image from "next/image";
-import Logo from "../../../../public/b50/kv_logo_pc.png";
-import BGBase from "../../../../public/b50/back_area.png";
+import { toBlob } from 'html-to-image';
+import { M_PLUS_Rounded_1c } from 'next/font/google';
+import B50Card from '@/app/components/B50Card';
+import { MaimaiLevelMap } from '@/lib/consts';
+import Image from 'next/image';
+import Logo from '../../../../public/b50/kv_logo_pc.png';
+import BGBase from '../../../../public/b50/back_area.png';
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
@@ -125,7 +135,7 @@ export default function LvScoreImage() {
             setRating(
                 [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0)
             );
-        })()
+        })();
     }, []);
 
     useEffect(() => {
@@ -215,7 +225,7 @@ export default function LvScoreImage() {
 
             const songRes: MSSB50[] = await res.json();
             setSongs(songRes);
-            setShowModal(true)
+            setShowModal(true);
 
             const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {
                 method: 'GET',
@@ -271,7 +281,11 @@ export default function LvScoreImage() {
                     Submit
                 </button>
 
-                <button onClick={async () => await buttonAction()} disabled={generating || !profile} className={`btn btn-secondary ${showBtn ? '' : 'hidden'}`}>
+                <button
+                    onClick={async () => await buttonAction()}
+                    disabled={generating || !profile}
+                    className={`btn btn-secondary ${showBtn ? '' : 'hidden'}`}
+                >
                     {generating || !profile ? 'Generating…' : 'Get Image'}
                 </button>
             </div>
@@ -451,5 +465,5 @@ export default function LvScoreImage() {
                 </div>
             </div>
         </>
-    )
+    );
 }

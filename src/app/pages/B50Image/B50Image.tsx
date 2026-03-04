@@ -1,9 +1,9 @@
 'use client';
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import { M_PLUS_Rounded_1c } from 'next/font/google';
-import B50Card from "@/app/components/B50Card";
+import B50Card from '@/app/components/B50Card';
 import BGBase from '../../../../public/b50/back_area.png';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
 import NP_bhx from '../../../../public/b50/NP_bhx.webp';
@@ -32,9 +32,14 @@ import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import {chooseNameplate, determineRatingPlate, getCookie, truncateByWidth} from '@/lib/util';
+import {
+    chooseNameplate,
+    determineRatingPlate,
+    getCookie,
+    truncateByWidth,
+} from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import {toBlob} from "html-to-image";
+import { toBlob } from 'html-to-image';
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],

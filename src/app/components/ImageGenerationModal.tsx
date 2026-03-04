@@ -15,7 +15,9 @@ export default function ImageGenerationModal({
                 {/* Header */}
                 <div className="flex justify-between items-center mb-4">
                     <h3 className={'font-bold text-lg'}>
-                        {generating ? 'Generating B50 Image...' : 'B50 Image Ready'}
+                        {generating
+                            ? 'Generating B50 Image...'
+                            : 'B50 Image Ready'}
                     </h3>
                     <button
                         className="btn btn-sm btn-circle btn-ghost"
@@ -74,4 +76,3 @@ export default function ImageGenerationModal({
         </div>
     );
 }
-

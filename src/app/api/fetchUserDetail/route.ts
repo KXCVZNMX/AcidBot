@@ -94,7 +94,10 @@ export async function GET(req: NextRequest) {
         const res = parseProfileBlock(html[0]);
 
         if (!res) {
-            return NextResponse.json({ error: 'Missing profile block' }, { status: 500 });
+            return NextResponse.json(
+                { error: 'Missing profile block' },
+                { status: 500 }
+            );
         }
 
         return NextResponse.json(res);

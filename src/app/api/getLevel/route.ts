@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {MaimaiSongScore, MSSB50, SongEntry} from '@/lib/types';
+import { MaimaiSongScore, MSSB50, SongEntry } from '@/lib/types';
 import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
-import client from "@/lib/db";
-import {RANK_DEFINITIONS} from "@/lib/consts";
+import client from '@/lib/db';
+import { RANK_DEFINITIONS } from '@/lib/consts';
 
 type MoreInfo = {
     type: 'dx' | 'std';

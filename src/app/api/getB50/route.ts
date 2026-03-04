@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import {CIRCLE_SONGS, PRISM_PLUS_SONGS, RANK_DEFINITIONS} from '@/lib/consts';
+import { CIRCLE_SONGS, PRISM_PLUS_SONGS, RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
@@ -37,7 +37,7 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
 }
 
 function isNew(name: string) {
-    return PRISM_PLUS_SONGS.includes(name) || CIRCLE_SONGS.includes(name)
+    return PRISM_PLUS_SONGS.includes(name) || CIRCLE_SONGS.includes(name);
 }
 
 export async function GET(req: NextRequest) {
@@ -108,7 +108,6 @@ export async function GET(req: NextRequest) {
             if (d && d.title) docMap.set(d.title, d as any);
         }
 
-
         for (const r of res) {
             const qRes = docMap.get(r.name);
 
@@ -117,11 +116,21 @@ export async function GET(req: NextRequest) {
                 console.error(`Looking for: "${r.name}"`);
                 console.error(`Difficulty: ${r.diff}`);
                 console.error(`Length: ${r.name.length}`);
-                console.error(`Character codes:`, r.name.split('').map(c => `${c}(${c.charCodeAt(0)})`).join(' '));
+                console.error(
+                    `Character codes:`,
+                    r.name
+                        .split('')
+                        .map((c) => `${c}(${c.charCodeAt(0)})`)
+                        .join(' ')
+                );
                 console.error('\nFirst 5 available titles in docMap:');
-                Array.from(docMap.keys()).slice(0, 5).forEach((title, i) => {
-                    console.error(`  ${i + 1}. "${title}" (len: ${title.length})`);
-                });
+                Array.from(docMap.keys())
+                    .slice(0, 5)
+                    .forEach((title, i) => {
+                        console.error(
+                            `  ${i + 1}. "${title}" (len: ${title.length})`
+                        );
+                    });
                 throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
             }
 

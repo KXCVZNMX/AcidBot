@@ -112,10 +112,7 @@ export default function SkillRadar() {
         };
     }, [showRadars, generateImageFromRef]);
 
-    const maxEval = useMemo(
-        () => maxValue(evalRadarValues),
-        [evalRadarValues]
-    );
+    const maxEval = useMemo(() => maxValue(evalRadarValues), [evalRadarValues]);
     const maxPattern = useMemo(
         () => maxValue(patternRadarValues),
         [patternRadarValues]
@@ -183,9 +180,7 @@ export default function SkillRadar() {
                 )}
 
                 {error && (
-                    <div className={'mb-4 text-sm text-error'}>
-                        {error}
-                    </div>
+                    <div className={'mb-4 text-sm text-error'}>{error}</div>
                 )}
 
                 {showRadars && (
@@ -220,7 +215,8 @@ export default function SkillRadar() {
                             'w-full max-w-[720px] px-4 py-10 border border-dashed rounded-lg text-center text-sm opacity-70'
                         }
                     >
-                        No radar image yet. Click "Generate Radar" to create one.
+                        No radar image yet. Click "Generate Radar" to create
+                        one.
                     </div>
                 )}
 

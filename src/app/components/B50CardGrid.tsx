@@ -51,10 +51,11 @@ export default function B50CardGrid({
             {/* Empty State */}
             {oldSong.length === 0 && newSong.length === 0 && (
                 <div className="text-center py-12 text-gray-500">
-                    <p className="text-lg">No songs available. Generate your B50 to see results!</p>
+                    <p className="text-lg">
+                        No songs available. Generate your B50 to see results!
+                    </p>
                 </div>
             )}
         </div>
     );
 }
-

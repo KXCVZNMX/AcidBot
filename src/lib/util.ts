@@ -1,17 +1,17 @@
 import { MaimaiSongScore } from '@/lib/types';
 import { COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES } from '@/lib/consts';
-import {StaticImageData} from "next/image";
-import RatingNormal from "../../public/rating_plates/rating_base_normal.png";
-import RatingBlue from "../../public/rating_plates/rating_base_blue.png";
-import RatingGreen from "../../public/rating_plates/rating_base_green.png";
-import RatingYellow from "../../public/rating_plates/rating_base_orange.png";
-import RatingRed from "../../public/rating_plates/rating_base_red.png";
-import RatingPurple from "../../public/rating_plates/rating_base_purple.png";
-import RatingBronze from "../../public/rating_plates/rating_base_bronze.png";
-import RatingSilver from "../../public/rating_plates/rating_base_silver.png";
-import RatingGold from "../../public/rating_plates/rating_base_gold.png";
-import RatingPlatinum from "../../public/rating_plates/rating_base_platinum.png";
-import RatingRainbow from "../../public/rating_plates/rating_base_rainbow.png";
+import { StaticImageData } from 'next/image';
+import RatingNormal from '../../public/rating_plates/rating_base_normal.png';
+import RatingBlue from '../../public/rating_plates/rating_base_blue.png';
+import RatingGreen from '../../public/rating_plates/rating_base_green.png';
+import RatingYellow from '../../public/rating_plates/rating_base_orange.png';
+import RatingRed from '../../public/rating_plates/rating_base_red.png';
+import RatingPurple from '../../public/rating_plates/rating_base_purple.png';
+import RatingBronze from '../../public/rating_plates/rating_base_bronze.png';
+import RatingSilver from '../../public/rating_plates/rating_base_silver.png';
+import RatingGold from '../../public/rating_plates/rating_base_gold.png';
+import RatingPlatinum from '../../public/rating_plates/rating_base_platinum.png';
+import RatingRainbow from '../../public/rating_plates/rating_base_rainbow.png';
 
 export const matchRule = (
     src: string,
@@ -234,7 +234,7 @@ function getCharWidth(char: string): number {
 export const chooseNameplate = (arr: StaticImageData[]) => {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
-}
+};
 
 export const determineRatingPlate = (rating: number) => {
     if (rating < 1000) {

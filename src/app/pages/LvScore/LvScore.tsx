@@ -5,7 +5,7 @@ import { MaimaiLevelMap } from '@/lib/consts';
 import { MaimaiFetchData, MaimaiSongScore } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function LvScore() {
     const [level, setLevel] = useState('');
