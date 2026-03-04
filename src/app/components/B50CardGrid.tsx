@@ -1,6 +1,8 @@
 import { MSSB50 } from '@/lib/types';
 import B50Card from './B50Card';
 
+export const B50_GRID_BASE_WIDTH = 1389;
+
 export default function B50CardGrid({
     oldSong,
     newSong,
@@ -16,7 +18,7 @@ export default function B50CardGrid({
                     <h2 className="text-2xl font-bold mb-4 text-center">
                         Best 35
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-4 justify-items-center">
+                    <div className="grid grid-cols-5 gap-4 w-max mx-auto">
                         {oldSong.map((song, i) => (
                             <div key={i} className="relative">
                                 <div className="absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg">
@@ -35,7 +37,7 @@ export default function B50CardGrid({
                     <h2 className="text-2xl font-bold mb-4 text-center">
                         Best 15 (New)
                     </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-4 justify-items-center">
+                    <div className="grid grid-cols-5 gap-4 w-max mx-auto">
                         {newSong.map((song, i) => (
                             <div key={i} className="relative">
                                 <div className="absolute -top-2 -left-2 bg-secondary text-secondary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg">

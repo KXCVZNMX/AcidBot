@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
 import { getCookie, chooseNameplate } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import B50CardGrid from '@/app/components/B50CardGrid';
+import B50CardGrid, { B50_GRID_BASE_WIDTH } from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
 import B50ImageRenderer from '@/app/components/B50ImageRenderer';
@@ -60,8 +60,12 @@ export default function Best50() {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [profile, setProfile] = useState<ParsedProfile>();
     const [nameplate, setNameplate] = useState(NP_salt_prism);
+    const [gridScale, setGridScale] = useState(1);
+    const [scaledGridHeight, setScaledGridHeight] = useState(0);
 
     const captureRef = useRef<HTMLDivElement>(null);
+    const gridShellRef = useRef<HTMLDivElement>(null);
+    const gridStageRef = useRef<HTMLDivElement>(null);
 
     const NP = [
         NP_bhx,
@@ -313,6 +317,53 @@ export default function Best50() {
         }
     };
 
+    const hasSongs = oldSong.length > 0 || newSong.length > 0;
+
+    const updateScaledGrid = useCallback(() => {
+        if (!hasSongs) {
+            setGridScale(1);
+            setScaledGridHeight(0);
+            return;
+        }
+
+        const shellWidth = gridShellRef.current?.clientWidth;
+        const stageHeight = gridStageRef.current?.scrollHeight;
+
+        if (!shellWidth || !stageHeight) {
+            return;
+        }
+
+        const availableWidth = Math.max(shellWidth - 16, 0);
+        const nextScale = Math.min(1, availableWidth / B50_GRID_BASE_WIDTH);
+
+        setGridScale((prev) => (Math.abs(prev - nextScale) > 0.001 ? nextScale : prev));
+        setScaledGridHeight((prev) => {
+            const nextHeight = stageHeight * nextScale;
+            return Math.abs(prev - nextHeight) > 0.5 ? nextHeight : prev;
+        });
+    }, [hasSongs]);
+
+    useEffect(() => {
+        updateScaledGrid();
+
+        if (typeof ResizeObserver === 'undefined') {
+            window.addEventListener('resize', updateScaledGrid);
+            return () => window.removeEventListener('resize', updateScaledGrid);
+        }
+
+        const observer = new ResizeObserver(() => updateScaledGrid());
+
+        if (gridShellRef.current) {
+            observer.observe(gridShellRef.current);
+        }
+
+        if (gridStageRef.current) {
+            observer.observe(gridStageRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, [updateScaledGrid]);
+
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
@@ -395,9 +446,33 @@ export default function Best50() {
                 </div>
 
                 {/* Cards Grid Section */}
-                <div className={'w-full'}>
-                    <B50CardGrid oldSong={oldSong} newSong={newSong} />
-                </div>
+                {hasSongs ? (
+                    <div
+                        ref={gridShellRef}
+                        className={'relative w-full overflow-hidden'}
+                        style={{
+                            height:
+                                scaledGridHeight > 0
+                                    ? `${scaledGridHeight}px`
+                                    : undefined,
+                        }}
+                    >
+                        <div
+                            ref={gridStageRef}
+                            className={'absolute left-1/2 top-0 origin-top'}
+                            style={{
+                                width: `${B50_GRID_BASE_WIDTH}px`,
+                                transform: `translateX(-50%) scale(${gridScale})`,
+                            }}
+                        >
+                            <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                        </div>
+                    </div>
+                ) : (
+                    <div className={'w-full'}>
+                        <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                    </div>
+                )}
             </div>
         </>
     );
