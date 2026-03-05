@@ -2,7 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
-import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
+import {
+    Best50Songs,
+    MaimaiFetchData,
+    MSSB50,
+    ParsedProfile,
+} from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50Card from '@/app/components/B50Card';
@@ -58,7 +63,9 @@ export default function LvScore() {
 
     const fetchResultWithClal = async () => {
         if (!clal) {
-            showError('Missing Clal, please fetch a new clal from the guide page');
+            showError(
+                'Missing Clal, please fetch a new clal from the guide page'
+            );
             return;
         }
 
@@ -120,12 +127,16 @@ export default function LvScore() {
 
     const generateImage = async () => {
         if (!clal) {
-            showError('Missing Clal, please fetch a new clal from the guide page');
+            showError(
+                'Missing Clal, please fetch a new clal from the guide page'
+            );
             return;
         }
 
         if (sortedSongs.length === 0) {
-            showError('No songs available. Generate LvScore before creating an image.');
+            showError(
+                'No songs available. Generate LvScore before creating an image.'
+            );
             return;
         }
 
@@ -138,9 +149,12 @@ export default function LvScore() {
 
         try {
             if (!profile) {
-                const profileRes = await fetch(`/api/fetchUserDetail?clal=${clal}`, {
-                    method: 'GET',
-                });
+                const profileRes = await fetch(
+                    `/api/fetchUserDetail?clal=${clal}`,
+                    {
+                        method: 'GET',
+                    }
+                );
 
                 if (!profileRes.ok) {
                     const { error } = await profileRes.json();
@@ -219,12 +233,22 @@ export default function LvScore() {
                 captureRef={captureRef}
             />
 
-            <div className={'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'}>
+            <div
+                className={
+                    'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'
+                }
+            >
                 <div className={'flex flex-col items-center gap-4'}>
-                    <form className={'text-center p-3 shadow-lg rounded-box bg-base-100'}>
+                    <form
+                        className={
+                            'text-center p-3 shadow-lg rounded-box bg-base-100'
+                        }
+                    >
                         <select
                             name={'level'}
-                            className={'select select-bordered w-48 text-center'}
+                            className={
+                                'select select-bordered w-48 text-center'
+                            }
                             value={level}
                             onChange={(e) => setLevel(e.target.value)}
                         >
@@ -244,7 +268,11 @@ export default function LvScore() {
                         >
                             {generating ? (
                                 <span className={'flex items-center gap-2'}>
-                                    <span className={'loading loading-spinner loading-sm'}></span>
+                                    <span
+                                        className={
+                                            'loading loading-spinner loading-sm'
+                                        }
+                                    ></span>
                                     Generating...
                                 </span>
                             ) : (
@@ -255,7 +283,9 @@ export default function LvScore() {
                         <button
                             onClick={generateImage}
                             className={'btn btn-accent min-w-35'}
-                            disabled={sortedSongs.length === 0 || generatingImage}
+                            disabled={
+                                sortedSongs.length === 0 || generatingImage
+                            }
                         >
                             Get Image
                         </button>
@@ -263,10 +293,21 @@ export default function LvScore() {
                 </div>
 
                 {sortedSongs.length > 0 ? (
-                    <div className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full place-items-center'}>
+                    <div
+                        className={
+                            'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full place-items-center'
+                        }
+                    >
                         {sortedSongs.map((song, i) => (
-                            <div key={`${song.name}-${song.diff}-${i}`} className={'relative'}>
-                                <div className={'absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg'}>
+                            <div
+                                key={`${song.name}-${song.diff}-${i}`}
+                                className={'relative'}
+                            >
+                                <div
+                                    className={
+                                        'absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg'
+                                    }
+                                >
                                     {i + 1}
                                 </div>
                                 <B50Card info={song} />

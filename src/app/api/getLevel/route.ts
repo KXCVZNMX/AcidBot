@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
         if (results.length === 0) {
             return NextResponse.json(
                 {
-                    error: 'Either the page didn\'t return a redirect (get a new clal), or you don\'t have any results for this level',
+                    error: "Either the page didn't return a redirect (get a new clal), or you don't have any results for this level",
                 },
                 { status: 500 }
             );

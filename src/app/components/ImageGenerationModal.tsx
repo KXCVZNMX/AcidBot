@@ -35,8 +35,14 @@ export default function ImageGenerationModal({
                 {/* Content */}
                 <div className={'flex flex-col items-center gap-4'}>
                     {generating ? (
-                        <div className={'flex flex-col items-center gap-4 py-12'}>
-                            <span className={'loading loading-spinner loading-lg text-primary'}></span>
+                        <div
+                            className={'flex flex-col items-center gap-4 py-12'}
+                        >
+                            <span
+                                className={
+                                    'loading loading-spinner loading-lg text-primary'
+                                }
+                            ></span>
                             <p className={'text-center'}>
                                 {`Generating your ${label} image...`}
                                 <br />
@@ -51,7 +57,9 @@ export default function ImageGenerationModal({
                                 <img
                                     src={imageUrl}
                                     alt={`Generated ${label}`}
-                                    className={'w-full h-auto rounded-lg shadow-lg'}
+                                    className={
+                                        'w-full h-auto rounded-lg shadow-lg'
+                                    }
                                 />
                             </div>
                             <div className={'flex gap-3 mt-4'}>

@@ -167,7 +167,9 @@ export default function UserProfile() {
                                         <tbody>
                                             {oldSong.map((song, i) => (
                                                 <tr
-                                                    className={'hover:bg-base-content/10 transition-colors'}
+                                                    className={
+                                                        'hover:bg-base-content/10 transition-colors'
+                                                    }
                                                     key={i}
                                                 >
                                                     <th>{i + 1}</th>
@@ -180,7 +182,9 @@ export default function UserProfile() {
                                             ))}
                                             {newSong.map((song, i) => (
                                                 <tr
-                                                    className={'hover:bg-base-content/10 transition-colors'}
+                                                    className={
+                                                        'hover:bg-base-content/10 transition-colors'
+                                                    }
                                                     key={i}
                                                 >
                                                     <th>{i + 36}</th>

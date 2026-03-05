@@ -336,7 +336,9 @@ export default function Best50() {
         const availableWidth = Math.max(shellWidth - 16, 0);
         const nextScale = Math.min(1, availableWidth / B50_GRID_BASE_WIDTH);
 
-        setGridScale((prev) => (Math.abs(prev - nextScale) > 0.001 ? nextScale : prev));
+        setGridScale((prev) =>
+            Math.abs(prev - nextScale) > 0.001 ? nextScale : prev
+        );
         setScaledGridHeight((prev) => {
             const nextHeight = stageHeight * nextScale;
             return Math.abs(prev - nextHeight) > 0.5 ? nextHeight : prev;
@@ -418,7 +420,11 @@ export default function Best50() {
                         >
                             {generating ? (
                                 <span className={'flex items-center gap-2'}>
-                                    <span className={'loading loading-spinner loading-sm'}></span>
+                                    <span
+                                        className={
+                                            'loading loading-spinner loading-sm'
+                                        }
+                                    ></span>
                                     Generating...
                                 </span>
                             ) : (

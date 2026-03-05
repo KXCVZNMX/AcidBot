@@ -132,7 +132,10 @@ export default function LvScoreImageRenderer({
                     }
                 >
                     {songs.slice(0, 50).map((song, idx) => (
-                        <B50Card info={song} key={`${song.name}-${song.diff}-${idx}`} />
+                        <B50Card
+                            info={song}
+                            key={`${song.name}-${song.diff}-${idx}`}
+                        />
                     ))}
                 </div>
 
@@ -143,7 +146,9 @@ export default function LvScoreImageRenderer({
                     width={1400}
                     className={'absolute bottom-10'}
                 />
-                <div className={'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'} />
+                <div
+                    className={'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'}
+                />
                 <h3
                     className={
                         'absolute bottom-3 w-full text-center text-white font-bold text-xl'
@@ -155,4 +160,3 @@ export default function LvScoreImageRenderer({
         </div>
     );
 }
-

@@ -9,8 +9,8 @@ export async function GET() {
         '}\n' +
         '\n' +
         'javascript: void(function(d) {\n' +
-        '    if (d.location.host === \'lng-tgk-aime-gw.am-all.net\') {\n' +
-        '        let code = new URL(document.location.href).searchParams.get(\'id\') ?? reject();\n' +
+        "    if (d.location.host === 'lng-tgk-aime-gw.am-all.net') {\n" +
+        "        let code = new URL(document.location.href).searchParams.get('id') ?? reject();\n" +
         '        if (code) {\n' +
         '            let cookie = d.cookie.match(/clal=([^;]*)/)?.[1];\n' +
         '            if (cookie.length !== 64) return alert("Error!\\nI can\\\'t fetch your session, try logging in again or switch browsers.");\n' +

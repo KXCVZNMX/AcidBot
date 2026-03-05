@@ -62,28 +62,28 @@ export const extractScore = (
 ) => {
     const results: MaimaiSongScore[] = [];
 
-    $('div[class*=\'music_\'][class*=\'_score_back\']').each((_, el) => {
+    $("div[class*='music_'][class*='_score_back']").each((_, el) => {
         const root = $(el);
         const wrapper = root.parent();
 
-        const icons = root.find('img[src*=\'music_icon_\']');
+        const icons = root.find("img[src*='music_icon_']");
 
         // getLevel pages place DX/STD marker on the card itself, while getB50 is more reliable from wrapper.
         let dxVal =
             source === 'getLevel'
                 ? root.find('img.music_kind_icon')
                 : wrapper.find(
-                      'img[src*=\'music_dx\'], img[src*=\'music_standard\']'
+                      "img[src*='music_dx'], img[src*='music_standard']"
                   );
 
         // Fallback for mixed/changed layouts.
         if (dxVal.length === 0) {
             dxVal = root.find(
-                'img.music_kind_icon, img[src*=\'music_dx\'], img[src*=\'music_standard\']'
+                "img.music_kind_icon, img[src*='music_dx'], img[src*='music_standard']"
             );
         }
 
-        const lvVal = root.find('img[src*=\'diff_\']');
+        const lvVal = root.find("img[src*='diff_']");
 
         let dxState: string | null = null;
         let diffState: string | null = null;

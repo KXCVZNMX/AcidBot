@@ -8,7 +8,9 @@ export default function ErrorModal({
     return (
         <div
             aria-live={'assertive'}
-            className={'pointer-events-none fixed right-4 top-24 z-50 w-[min(92vw,24rem)]'}
+            className={
+                'pointer-events-none fixed right-4 top-24 z-50 w-[min(92vw,24rem)]'
+            }
         >
             <div
                 className={`rounded-xl border border-red-300/30 bg-red-500/90 p-4 text-white shadow-2xl backdrop-blur transition-all duration-300 ${
