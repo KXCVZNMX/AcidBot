@@ -50,7 +50,7 @@ export default function UsageGuide() {
                 <Step title={'Best 50'} bg={'300'}>
                     <p>
                         Fetch your Best 50 scores which makes up your DX Rating.
-                        See each song's level constant, and your results on
+                        See each song&#39;s level constant, and your results on
                         those songs.{' '}
                         <CLink href={'/pages/Best50'}>{'go to >>'}</CLink>
                     </p>

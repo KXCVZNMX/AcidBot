@@ -16,7 +16,7 @@ export default function Card({
 
     return (
         <Wrapper
-            href={href as any}
+            href={href as never}
             target={newPage ? '_blank' : ''}
             rel={'noreferrer'}
             className={

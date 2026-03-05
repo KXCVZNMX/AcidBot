@@ -187,7 +187,7 @@ export default function SkillRadar() {
                     <>
                         <div ref={captureRef} className={'overflow-x-auto'}>
                             <div className={'flex flex-nowrap gap-4 px-4'}>
-                                <div className={'w-[400px] h-[400px] shrink-0'}>
+                                <div className={'w-100 h-100 shrink-0'}>
                                     <PERadar
                                         tags={patternRadarValues}
                                         tagName={PATTERN_TAG_NAMES}
@@ -196,7 +196,7 @@ export default function SkillRadar() {
                                     />
                                 </div>
 
-                                <div className={'w-[400px] h-[400px] shrink-0'}>
+                                <div className={'w-100 h-100 shrink-0'}>
                                     <PERadar
                                         tags={evalRadarValues}
                                         tagName={EVAL_TAG_NAMES}
@@ -212,10 +212,10 @@ export default function SkillRadar() {
                 {!showRadars && !imageUrl && !generating && (
                     <div
                         className={
-                            'w-full max-w-[720px] px-4 py-10 border border-dashed rounded-lg text-center text-sm opacity-70'
+                            'w-full max-w-180 px-4 py-10 border border-dashed rounded-lg text-center text-sm opacity-70'
                         }
                     >
-                        No radar image yet. Click "Generate Radar" to create
+                        No radar image yet. Click &#34;Generate Radar&#34; to create
                         one.
                     </div>
                 )}
@@ -235,7 +235,7 @@ export default function SkillRadar() {
                 </div>
 
                 {imageUrl && (
-                    <div className={'w-full max-w-[720px] px-4'}>
+                    <div className={'w-full max-w-180 px-4'}>
                         <img
                             src={imageUrl}
                             alt={'Generated radar'}

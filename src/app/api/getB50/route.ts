@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
             { title: string; imageName: string; sheets: MoreInfo[] }
         >();
         for (const d of docs) {
-            if (d && d.title) docMap.set(d.title, d as any);
+            if (d && d.title) docMap.set(d.title, d as unknown as { title: string; imageName: string; sheets: MoreInfo[] });
         }
 
         for (const r of res) {
@@ -190,7 +190,7 @@ export async function GET(req: NextRequest) {
         if (slicedB15.length === 0 && b35.length === 0) {
             return NextResponse.json(
                 {
-                    error: "Both of your B15 or B35 was empty, get clal again. (or you just haven't played)",
+                    error: 'Both of your B15 or B35 was empty, get clal again. (or you just haven\'t played)',
                 },
                 { status: 500 }
             );

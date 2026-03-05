@@ -24,7 +24,7 @@ export default function ClalGuide() {
     const bookmarklet =
         'javascript:' +
         '(function () {' +
-        "var s=document.createElement('script');" +
+        'var s=document.createElement(\'script\');' +
         `s.src='${site_link}/api/getClal';` +
         'document.body.appendChild(s);' +
         '})();void(0);';
@@ -67,7 +67,7 @@ export default function ClalGuide() {
             <Step title={'Step 3 — Install the bookmarklet'}>
                 <p>
                     Click this button to copy the bookmarklet and paste it into
-                    a bookmark's URL field.
+                    a bookmark&#39;s URL field.
                 </p>
 
                 <div className={'pt-2'}>

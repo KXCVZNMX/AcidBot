@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { M_PLUS_Rounded_1c } from 'next/font/google';
 import B50Card from '@/app/components/B50Card';
 import BGBase from '../../../../public/b50/back_area.png';
@@ -59,33 +59,6 @@ export default function B50Image() {
 
     const captureRef = useRef<HTMLDivElement | null>(null);
 
-    const NP = [
-        NP_bhx,
-        NP_cf,
-        NP_cf_prism,
-        NP_cf_festival,
-        NP_dlx,
-        NP_kuro,
-        NP_lime,
-        NP_lime_bud,
-        NP_milk,
-        NP_milk_cat,
-        NP_milk_prism,
-        NP_milk_splash,
-        NP_rasu,
-        NP_rasu_bud,
-        NP_rasu_festival,
-        NP_riz_prism,
-        NP_salt,
-        NP_salt_festival,
-        NP_salt_prism,
-        NP_sm,
-        NP_sm_splash,
-        NP_yj,
-        NP_yj_bud,
-        NP_yj_splash,
-    ];
-
     const showError = (errorMessage: string) => {
         setError(errorMessage);
         setShowErrorModal(true);
@@ -106,6 +79,70 @@ export default function B50Image() {
         }
 
         (async () => {
+            const NP = [
+                NP_bhx,
+                NP_cf,
+                NP_cf_prism,
+                NP_cf_festival,
+                NP_dlx,
+                NP_kuro,
+                NP_lime,
+                NP_lime_bud,
+                NP_milk,
+                NP_milk_cat,
+                NP_milk_prism,
+                NP_milk_splash,
+                NP_rasu,
+                NP_rasu_bud,
+                NP_rasu_festival,
+                NP_riz_prism,
+                NP_salt,
+                NP_salt_festival,
+                NP_salt_prism,
+                NP_sm,
+                NP_sm_splash,
+                NP_yj,
+                NP_yj_bud,
+                NP_yj_splash,
+            ];
+
+            const fetchB50WithClal = async (clalS: string) => {
+                setOldSong([]);
+                setNewSong([]);
+
+                try {
+                    const res = await fetch('/api/fetchOldB50', {
+                        method: 'GET',
+                    });
+
+                    if (!res.ok) {
+                        const { error } = await res.json();
+                        showError(error);
+                        return;
+                    }
+
+                    const b50: Best50Songs = await res.json();
+
+                    setOldSong(b50.b35);
+                    setNewSong(b50.b15);
+
+                    const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {
+                        method: 'GET',
+                    });
+
+                    if (!sRes.ok) {
+                        const { error } = await res.json();
+                        showError(error);
+                        return;
+                    }
+
+                    setProfile(await sRes.json());
+                    setNameplate(chooseNameplate(NP));
+                } catch (error) {
+                    setError((error as Error).message);
+                    console.error(error);
+                }
+            };
             await fetchB50WithClal(clalCookie);
         })();
     }, []);
@@ -177,44 +214,6 @@ export default function B50Image() {
         }
     };
 
-    const fetchB50WithClal = async (clalS: string) => {
-        setOldSong([]);
-        setNewSong([]);
-
-        try {
-            const res = await fetch('/api/fetchOldB50', {
-                method: 'GET',
-            });
-
-            if (!res.ok) {
-                const { error } = await res.json();
-                showError(error);
-                return;
-            }
-
-            const b50: Best50Songs = await res.json();
-
-            setOldSong(b50.b35);
-            setNewSong(b50.b15);
-
-            const sRes = await fetch(`/api/fetchUserDetail?clal=${clalS}`, {
-                method: 'GET',
-            });
-
-            if (!sRes.ok) {
-                const { error } = await res.json();
-                showError(error);
-                return;
-            }
-
-            setProfile(await sRes.json());
-            setNameplate(chooseNameplate(NP));
-        } catch (error) {
-            setError((error as Error).message);
-            console.error(error);
-        }
-    };
-
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
@@ -246,7 +245,7 @@ export default function B50Image() {
                     )}
                 </div>
                 {imageUrl && (
-                    <div className={'w-full max-w-[720px] px-4'}>
+                    <div className={'w-full max-w-180 px-4'}>
                         <img
                             src={imageUrl}
                             alt={'Generated b50'}
@@ -258,23 +257,23 @@ export default function B50Image() {
                         />
                     </div>
                 )}
-                <div className={'relative h-[1000px]'} />
+                <div className={'relative h-250'} />
                 <div
-                    className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
+                    className={`relative bg-[#6fbaee] w-350 h-400 shrink-0 ${mPlus.className}`}
                     ref={captureRef}
                 >
                     <Image
                         src={Logo}
                         alt={'logo'}
                         height={100}
-                        className={'absolute top-[60px] left-[20px]'}
+                        className={'absolute top-15 left-5'}
                     />
                     <Image
                         src={nameplate}
                         alt={'nameplate'}
                         width={800}
                         className={
-                            'absolute top-[35px] left-[300px] rounded-xl'
+                            'absolute top-8.75 left-75 rounded-xl'
                         }
                     />
                     {profile ? (
@@ -285,7 +284,7 @@ export default function B50Image() {
                                 width={100}
                                 height={100}
                                 className={
-                                    'absolute top-[50px] left-[317px] z-20'
+                                    'absolute top-12.5 left-79.25 z-20'
                                 }
                             />
                             <Image
@@ -294,19 +293,19 @@ export default function B50Image() {
                                 width={220}
                                 height={20}
                                 className={
-                                    'absolute top-[53px] left-[440px] z-20'
+                                    'absolute top-13.25 left-110 z-20'
                                 }
                             />
                             <p
                                 className={
-                                    'absolute top-[52px] left-[465px] text-[14px] text-black font-extrabold z-20'
+                                    'absolute top-13 left-116.25 text-[14px] text-black font-extrabold z-20'
                                 }
                             >
                                 {truncateByWidth(profile.userDetail!, 28)}
                             </p>
                             <div
                                 className={
-                                    'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'
+                                    'absolute top-20 left-106.25 w-35 h-7.5 text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'
                                 }
                             >
                                 <p className={'pl-1'}>
@@ -319,12 +318,12 @@ export default function B50Image() {
                                 width={110}
                                 height={30}
                                 className={
-                                    'absolute top-[79px] left-[570px] z-20'
+                                    'absolute top-19.75 left-142.5 z-20'
                                 }
                             />
                             <div
                                 className={
-                                    'absolute top-[83px] left-[617px] text-white tracking-widest z-20'
+                                    'absolute top-20.75 left-154.25 text-white tracking-widest z-20'
                                 }
                             >
                                 {rating}
@@ -335,7 +334,7 @@ export default function B50Image() {
                                 width={75}
                                 height={50}
                                 className={
-                                    'absolute top-[116px] left-[425px] z-20'
+                                    'absolute top-29 left-106.25 z-20'
                                 }
                             />
                             <Image
@@ -344,7 +343,7 @@ export default function B50Image() {
                                 width={60}
                                 height={50}
                                 className={
-                                    'absolute top-[114px] left-[505px] z-20'
+                                    'absolute top-28.5 left-126.25 z-20'
                                 }
                             />
                             <Image
@@ -353,12 +352,12 @@ export default function B50Image() {
                                 width={25}
                                 height={50}
                                 className={
-                                    'absolute top-[116px] left-[590px] z-20'
+                                    'absolute top-29 left-147.5 z-20'
                                 }
                             />
                             <p
                                 className={
-                                    'absolute top-[117px] left-[620px] text-gray-900/90 font-semibold z-20'
+                                    'absolute top-29.25 left-155 text-gray-900/90 font-semibold z-20'
                                 }
                             >
                                 {profile.userCollectionCount!.text!}
@@ -367,18 +366,18 @@ export default function B50Image() {
                     ) : null}
                     <div
                         className={
-                            'absolute w-[375px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'
+                            'absolute w-93.75 h-27.5 left-77.5 top-11.25 bg-white rounded-lg border-gray-500 border-2 z-10'
                         }
                     />
                     <div
                         className={
-                            'absolute w-[377px] h-[110px] left-[313px] top-[50px] bg-gray-500 rounded-lg z-0'
+                            'absolute w-94.25 h-27.5 left-78.25 top-12.5 bg-gray-500 rounded-lg z-0'
                         }
                     />
 
                     <div
                         className={
-                            'absolute top-[185px] grid grid-cols-5 gap-2 p-3'
+                            'absolute top-46.25 grid grid-cols-5 gap-2 p-3'
                         }
                     >
                         {oldSong.map((s) => (
@@ -387,7 +386,7 @@ export default function B50Image() {
 
                         <hr
                             className={
-                                'h-[50px] w-[1400px] bg-none border-none col-span-5'
+                                'h-12.5 w-350 bg-none border-none col-span-5'
                             }
                         />
 
@@ -405,7 +404,7 @@ export default function B50Image() {
                     />
                     <div
                         className={
-                            'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'
+                            'absolute bottom-0 bg-[#8aba45] w-full h-10'
                         }
                     />
                     <h3

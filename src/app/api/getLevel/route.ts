@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
         if (results.length === 0) {
             return NextResponse.json(
                 {
-                    error: "Either the page didn't return a redirect (get a new clal), or you don't have any results for this level",
+                    error: 'Either the page didn\'t return a redirect (get a new clal), or you don\'t have any results for this level',
                 },
                 { status: 500 }
             );
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
             { title: string; imageName: string; sheets: MoreInfo[] }
         >();
         for (const d of docs) {
-            if (d && d.title) docMap.set(d.title, d as any);
+            if (d && d.title) docMap.set(d.title, d as unknown as { title: string; imageName: string; sheets: MoreInfo[] });
         }
 
         for (const r of results) {

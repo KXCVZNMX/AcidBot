@@ -107,7 +107,7 @@ const determineStarCount = (dx: string) => {
                 src={FiveStar}
                 alt={'dx stars'}
                 width={52}
-                className={'absolute top-[86px] left-[202px]'}
+                className={'absolute top-21.5 left-50.5'}
             />
         );
     } else if (percentage >= 0.95) {
@@ -116,7 +116,7 @@ const determineStarCount = (dx: string) => {
                 src={FourStar}
                 alt={'dx stars'}
                 width={55}
-                className={'absolute top-[86px] left-[201px]'}
+                className={'absolute top-21.5 left-50.25'}
             />
         );
     } else if (percentage >= 0.93) {
@@ -125,7 +125,7 @@ const determineStarCount = (dx: string) => {
                 src={ThreeStar}
                 alt={'dx stars'}
                 width={60}
-                className={'absolute top-[85px] left-[198px]'}
+                className={'absolute top-21.25 left-49.5'}
             />
         );
     } else if (percentage >= 0.9) {
@@ -134,7 +134,7 @@ const determineStarCount = (dx: string) => {
                 src={TwoStar}
                 alt={'dx stars'}
                 width={65}
-                className={'absolute top-[85px] left-[196px]'}
+                className={'absolute top-21.25 left-49'}
             />
         );
     } else if (percentage >= 0.85) {
@@ -143,7 +143,7 @@ const determineStarCount = (dx: string) => {
                 src={OneStar}
                 alt={'dx stars'}
                 width={65}
-                className={'absolute top-[85px] left-[194px]'}
+                className={'absolute top-21.25 left-48.5'}
             />
         );
     } else {
@@ -181,10 +181,10 @@ export default function B50Card({ info }: { info: MSSB50 }) {
       1px 2px 2px rgba(0,0,0,0.5)
     `;
     return (
-        <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
+        <div className={'card bg-white w-66.25 h-27.5 rounded-xl pt-1'}>
             <div
                 className={
-                    'absolute mx-auto h-[75px] w-[255px] rounded-t-xl left-[5px]'
+                    'absolute mx-auto h-18.75 w-63.75 rounded-t-xl left-1.25'
                 }
                 style={{ backgroundColor, color: textColor }}
             >
@@ -194,12 +194,12 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                     width={75}
                     height={75}
                     className={
-                        'absolute left-3 top-3 border-4 border-b-0 border-[#fff] rounded-lg'
+                        'absolute left-3 top-3 border-4 border-b-0 border-white rounded-lg'
                     }
                 />
                 <h2
                     className={
-                        'absolute left-24 top-[2px] text-md font-semibold'
+                        'absolute left-24 top-0.5 text-md font-semibold'
                     }
                     style={{ color: textColor }}
                 >
@@ -207,25 +207,25 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                 </h2>
                 <hr
                     className={
-                        'absolute left-[87px] top-[24px] w-[168px] h-[2px] bg-white border-0'
+                        'absolute left-21.75 top-6 w-42 h-0.5 bg-white border-0'
                     }
                 />
                 <h1
                     className={
-                        'absolute left-[91px] top-[22px] text-[26px] font-[500] '
+                        'absolute left-22.75 top-5.5 text-[26px] font-medium '
                     }
                     style={{ color: textColor, textShadow }}
                 >
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
                 <p
-                    className={'absolute left-[95px] top-[56px] text-xs'}
+                    className={'absolute left-23.75 top-14 text-xs'}
                     style={{ color: textColor }}
                 >
                     {`${info.levelConst.toFixed(1)} → ${info.rating}`}
                 </p>
                 <p
-                    className={'absolute left-[171px] top-[56px] text-xs'}
+                    className={'absolute left-42.75 top-14 text-xs'}
                     style={{ color: textColor }}
                 >
                     {info.dx}
@@ -234,25 +234,25 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                     src={info.isDx === 'dx' ? MusicDX : MusicSTD}
                     alt={'music_dx_std'}
                     width={50}
-                    className={'absolute top-[88px] left-6 '}
+                    className={'absolute top-22 left-6 '}
                 />
                 <Image
                     src={determineRankImage(info.rank)}
                     alt={'rank'}
                     width={50}
-                    className={'absolute top-[79px] left-[90px]'}
+                    className={'absolute top-19.75 left-22.5'}
                 />
                 <Image
                     src={determineComboImage(info.combo)}
                     alt={'combo'}
                     width={28}
-                    className={'absolute top-[75px] left-[145px]'}
+                    className={'absolute top-18.75 left-36.25'}
                 />
                 <Image
                     src={determineSyncImage(info.sync)}
                     alt={'sync'}
                     width={28}
-                    className={'absolute top-[75px] left-[173px]'}
+                    className={'absolute top-18.75 left-43.25'}
                 />
                 {determineStarCount(info.dx)}
             </div>

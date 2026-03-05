@@ -27,22 +27,22 @@ export default function LvScoreImageRenderer({
     captureRef: React.RefObject<HTMLDivElement | null>;
 }) {
     return (
-        <div className={'absolute -left-[9999px] top-0'}>
+        <div className={'absolute -left-2499.75 top-0'}>
             <div
-                className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
+                className={`relative bg-[#6fbaee] w-350 h-400 shrink-0 ${mPlus.className}`}
                 ref={captureRef}
             >
                 <Image
                     src={Logo}
                     alt={'logo'}
                     height={100}
-                    className={'absolute top-[60px] left-[20px]'}
+                    className={'absolute top-15 left-5'}
                 />
                 <Image
                     src={nameplate}
                     alt={'nameplate'}
                     width={800}
-                    className={'absolute top-[35px] left-[300px] rounded-xl'}
+                    className={'absolute top-8.75 left-75 rounded-xl'}
                 />
                 {profile ? (
                     <>
@@ -51,25 +51,25 @@ export default function LvScoreImageRenderer({
                             alt={'pfp'}
                             width={100}
                             height={100}
-                            className={'absolute top-[50px] left-[317px] z-20'}
+                            className={'absolute top-12.5 left-79.25 z-20'}
                         />
                         <Image
                             src={Trophy}
                             alt={'trophy'}
                             width={220}
                             height={20}
-                            className={'absolute top-[53px] left-[440px] z-20'}
+                            className={'absolute top-13.25 left-110 z-20'}
                         />
                         <p
                             className={
-                                'absolute top-[52px] left-[465px] text-[14px] text-black font-extrabold z-20'
+                                'absolute top-13 left-116.25 text-[14px] text-black font-extrabold z-20'
                             }
                         >
                             {truncateByWidth(profile.userDetail!, 28)}
                         </p>
                         <div
                             className={
-                                'absolute top-[80px] left-[425px] w-[140px] h-[30px] text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'
+                                'absolute top-20 left-106.25 w-35 h-7.5 text-black bg-gray-100 border-gray-400 border-2 rounded-lg z-20'
                             }
                         >
                             <p className={'pl-1'}>
@@ -81,11 +81,11 @@ export default function LvScoreImageRenderer({
                             alt={'rating plate'}
                             width={110}
                             height={30}
-                            className={'absolute top-[79px] left-[570px] z-20'}
+                            className={'absolute top-19.75 left-142.5 z-20'}
                         />
                         <div
                             className={
-                                'absolute top-[83px] left-[617px] text-white tracking-widest z-20'
+                                'absolute top-20.75 left-154.25 text-white tracking-widest z-20'
                             }
                         >
                             {rating}
@@ -95,25 +95,25 @@ export default function LvScoreImageRenderer({
                             alt={'dan'}
                             width={72}
                             height={30}
-                            className={'absolute top-[116px] left-[425px] z-20'}
+                            className={'absolute top-29 left-106.25 z-20'}
                         />
                         <Image
                             src={profile.rank!}
                             alt={'rank'}
                             width={60}
                             height={35}
-                            className={'absolute top-[114px] left-[505px] z-20'}
+                            className={'absolute top-28.5 left-126.25 z-20'}
                         />
                         <Image
                             src={profile.userCollectionCount!.img!}
                             alt={'collection'}
                             width={25}
                             height={25}
-                            className={'absolute top-[118px] left-[590px] z-20'}
+                            className={'absolute top-29.5 left-147.5 z-20'}
                         />
                         <p
                             className={
-                                'absolute top-[117px] left-[620px] text-gray-900/90 font-semibold z-20'
+                                'absolute top-29.25 left-155 text-gray-900/90 font-semibold z-20'
                             }
                         >
                             {profile.userCollectionCount!.text!}
@@ -122,13 +122,13 @@ export default function LvScoreImageRenderer({
                 ) : null}
                 <div
                     className={
-                        'absolute w-[375px] h-[110px] left-[310px] top-[45px] bg-white rounded-lg border-gray-500 border-2 z-10'
+                        'absolute w-93.75 h-27.5 left-77.5 top-11.25 bg-white rounded-lg border-gray-500 border-2 z-10'
                     }
                 />
 
                 <div
                     className={
-                        'absolute top-[245px] grid grid-cols-5 gap-2 p-3 gap-y-[8px]'
+                        'absolute top-61.25 grid grid-cols-5 gap-2 p-3 gap-y-2'
                     }
                 >
                     {songs.slice(0, 50).map((song, idx) => (
@@ -147,7 +147,7 @@ export default function LvScoreImageRenderer({
                     className={'absolute bottom-10'}
                 />
                 <div
-                    className={'absolute bottom-0 bg-[#8aba45] w-full h-[40px]'}
+                    className={'absolute bottom-0 bg-[#8aba45] w-full h-10'}
                 />
                 <h3
                     className={
