@@ -182,7 +182,7 @@ export default function B50Image() {
         setNewSong([]);
 
         try {
-            const res = await fetch(`/api/fetchOldB50`, {
+            const res = await fetch('/api/fetchOldB50', {
                 method: 'GET',
             });
 

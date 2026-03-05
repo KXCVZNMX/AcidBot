@@ -23,7 +23,7 @@ export default async function fetchPage(
         const res = await fetchWithCookie(
             'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
                 'site_id=maimaidxex&' +
-                `redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&` +
+                'redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&' +
                 'back_url=https://maimai.sega.com/',
             {
                 method: 'GET',

@@ -183,7 +183,7 @@ export default function B50Card({ info }: { info: MSSB50 }) {
     return (
         <div className={'card bg-white w-[265px] h-[110px] rounded-xl pt-1'}>
             <div
-                className={`absolute mx-auto h-[75px] w-[255px] rounded-t-xl left-[5px]`}
+                className={'absolute mx-auto h-[75px] w-[255px] rounded-t-xl left-[5px]'}
                 style={{ backgroundColor, color: textColor }}
             >
                 <Image

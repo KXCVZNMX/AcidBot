@@ -27,7 +27,7 @@ export default function LvScoreImageRenderer({
     captureRef: React.RefObject<HTMLDivElement | null>;
 }) {
     return (
-        <div className="absolute -left-[9999px] top-0">
+        <div className={'absolute -left-[9999px] top-0'}>
             <div
                 className={`relative bg-[#6fbaee] w-[1400px] h-[1600px] shrink-0 ${mPlus.className}`}
                 ref={captureRef}

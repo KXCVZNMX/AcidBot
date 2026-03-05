@@ -121,7 +121,7 @@ export default function LvScoreImage() {
         }
 
         (async () => {
-            const res = await fetch(`/api/fetchOldB50`, {
+            const res = await fetch('/api/fetchOldB50', {
                 method: 'GET',
             });
 
@@ -301,7 +301,7 @@ export default function LvScoreImage() {
                             <a
                                 className={'btn btn-primary'}
                                 href={imageUrl}
-                                download={`level.png`}
+                                download={'level.png'}
                             >
                                 Download PNG
                             </a>

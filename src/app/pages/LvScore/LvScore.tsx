@@ -243,8 +243,8 @@ export default function LvScore() {
                             disabled={generating}
                         >
                             {generating ? (
-                                <span className="flex items-center gap-2">
-                                    <span className="loading loading-spinner loading-sm"></span>
+                                <span className={'flex items-center gap-2'}>
+                                    <span className={'loading loading-spinner loading-sm'}></span>
                                     Generating...
                                 </span>
                             ) : (
@@ -266,7 +266,7 @@ export default function LvScore() {
                     <div className={'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full place-items-center'}>
                         {sortedSongs.map((song, i) => (
                             <div key={`${song.name}-${song.diff}-${i}`} className={'relative'}>
-                                <div className="absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg">
+                                <div className={'absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg'}>
                                     {i + 1}
                                 </div>
                                 <B50Card info={song} />

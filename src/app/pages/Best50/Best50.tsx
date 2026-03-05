@@ -417,8 +417,8 @@ export default function Best50() {
                             disabled={generating}
                         >
                             {generating ? (
-                                <span className="flex items-center gap-2">
-                                    <span className="loading loading-spinner loading-sm"></span>
+                                <span className={'flex items-center gap-2'}>
+                                    <span className={'loading loading-spinner loading-sm'}></span>
                                     Generating...
                                 </span>
                             ) : (

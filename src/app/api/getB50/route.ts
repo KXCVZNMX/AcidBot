@@ -117,7 +117,7 @@ export async function GET(req: NextRequest) {
                 console.error(`Difficulty: ${r.diff}`);
                 console.error(`Length: ${r.name.length}`);
                 console.error(
-                    `Character codes:`,
+                    'Character codes:',
                     r.name
                         .split('')
                         .map((c) => `${c}(${c.charCodeAt(0)})`)
@@ -190,7 +190,7 @@ export async function GET(req: NextRequest) {
         if (slicedB15.length === 0 && b35.length === 0) {
             return NextResponse.json(
                 {
-                    error: `Both of your B15 or B35 was empty, get clal again. (or you just haven't played)`,
+                    error: 'Both of your B15 or B35 was empty, get clal again. (or you just haven\'t played)',
                 },
                 { status: 500 }
             );

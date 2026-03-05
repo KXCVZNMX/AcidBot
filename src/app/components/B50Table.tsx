@@ -10,16 +10,16 @@ export default function B50Table({
     return (
         <table className={'table min-w-[900px]'}>
             <colgroup>
-                <col className="w-[5%]" />
-                <col className="w-[20%]" />
-                <col className="w-[10%]" />
-                <col className="w-[10%]" />
-                <col className="w-[10%]" />
-                <col className="w-[10%]" />
-                <col className="w-[5%]" />
-                <col className="w-[10%]" />
-                <col className="w-[10%]" />
-                <col className="w-[10%]" />
+                <col className={'w-[5%]'} />
+                <col className={'w-[20%]'} />
+                <col className={'w-[10%]'} />
+                <col className={'w-[10%]'} />
+                <col className={'w-[10%]'} />
+                <col className={'w-[10%]'} />
+                <col className={'w-[5%]'} />
+                <col className={'w-[10%]'} />
+                <col className={'w-[10%]'} />
+                <col className={'w-[10%]'} />
             </colgroup>
 
             <thead>

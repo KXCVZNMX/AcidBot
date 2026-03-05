@@ -15,6 +15,15 @@ const eslintConfig = [
             'next-env.d.ts',
         ],
     },
+    {
+        rules: {
+            'react/jsx-curly-brace-presence': [
+                'error',
+                { props: 'always', children: 'ignore' },
+            ],
+            quotes: ['error', 'single'],
+        },
+    },
 ];
 
 export default eslintConfig;

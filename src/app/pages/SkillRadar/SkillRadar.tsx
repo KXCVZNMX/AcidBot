@@ -186,7 +186,7 @@ export default function SkillRadar() {
                 {showRadars && (
                     <>
                         <div ref={captureRef} className={'overflow-x-auto'}>
-                            <div className={`flex flex-nowrap gap-4 px-4`}>
+                            <div className={'flex flex-nowrap gap-4 px-4'}>
                                 <div className={'w-[400px] h-[400px] shrink-0'}>
                                     <PERadar
                                         tags={patternRadarValues}
