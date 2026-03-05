@@ -7,7 +7,8 @@
         "build": "next build --turbopack",
         "start": "next start",
         "lint": "eslint",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "refresh-baseline-browser-mapping": "pnpm i baseline-browser-mapping@latest -D"
     },
     "dependencies": {
         "@auth/mongodb-adapter": "^3.11.1",
