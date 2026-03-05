@@ -39,11 +39,11 @@ const determineRankImage = (rank: string | null) => {
         return SSSP;
     } else if (rank === 'SSS') {
         return SSS;
-    } else if (rank === 'SSP') {
+    } else if (rank === 'SS+') {
         return SSP;
     } else if (rank === 'SS') {
         return SS;
-    } else if (rank === 'SP') {
+    } else if (rank === 'S+') {
         return SP;
     } else if (rank === 'S') {
         return S;
