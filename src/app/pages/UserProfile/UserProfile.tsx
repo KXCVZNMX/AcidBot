@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
+import RatingChart from '@/app/components/RatingChart';
 
 type OldB50 = {
     createdAt: Date;
@@ -85,11 +86,11 @@ export default function UserProfile() {
             <div className={'flex items-center justify-center'}>
                 <div
                     className={
-                        'p-3 w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-2 gap-3'
+                        'p-3 w-full max-w-300 grid grid-cols-1 md:grid-cols-2 gap-3'
                     }
                 >
                     <div className={'col-span-1 md:col-span-2'}>
-                        <div className={'card bg-base-200 z-[-10]'}>
+                        <div className={'card bg-base-200 -z-10'}>
                             <div className={'card-body'}>
                                 <div
                                     className={
@@ -134,7 +135,7 @@ export default function UserProfile() {
 
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
-                            <div className={'card-body h-[540px]'}>
+                            <div className={'card-body h-135'}>
                                 <h3 className={'text-lg font-bold'}>Best 50</h3>
                                 <div
                                     className={
@@ -204,7 +205,7 @@ export default function UserProfile() {
 
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
-                            <div className={'card-body h-[540px]'}>
+                            <div className={'card-body h-135'}>
                                 <h3 className={'text-lg font-bold'}>
                                     Old Best 50
                                 </h3>
@@ -282,6 +283,21 @@ export default function UserProfile() {
                                             )}
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <div className={'mt-4 border-t border-base-300 pt-4'}>
+                                    <div className={'mb-2 flex items-center justify-between'}>
+                                        <h4 className={'text-sm font-semibold tracking-wide opacity-80'}>
+                                            Rating trend
+                                        </h4>
+                                        <span className={'text-xs opacity-60'}>
+                                            {oldB50s.length} records
+                                        </span>
+                                    </div>
+
+                                    <div className={'h-56 rounded-xl border border-base-300 bg-base-100/40 p-3'}>
+                                        <RatingChart oldB50={oldB50s} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
