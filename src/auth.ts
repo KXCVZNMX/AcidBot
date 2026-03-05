@@ -1,4 +1,5 @@
 import NextAuth, { Session, User } from 'next-auth';
+import type { Adapter } from 'next-auth/adapters';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
@@ -6,7 +7,8 @@ import { ObjectId } from 'mongodb';
 import client from './lib/db';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-    adapter: MongoDBAdapter(client),
+    // Cast through unknown to avoid cross-package Adapter nominal mismatch when lockfile still has mixed @auth/core versions.
+    adapter: MongoDBAdapter(client) as unknown as Adapter,
     providers: [GitHub, Google],
 
     session: {
