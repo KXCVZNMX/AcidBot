@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
-import { MaimaiFetchData, MSSB50 } from '@/lib/types';
+import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import Link from 'next/link';
 import B50Card from '@/app/components/B50Card';
+import ImageGenerationModal from '@/app/components/ImageGenerationModal';
+import LvScoreImageRenderer from '@/app/components/LvScoreImageRenderer';
+import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
+import { toBlob } from 'html-to-image';
 
 export default function LvScore() {
     const [level, setLevel] = useState('1');
@@ -15,6 +18,13 @@ export default function LvScore() {
     const [generating, setGenerating] = useState(false);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [generatingImage, setGeneratingImage] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [profile, setProfile] = useState<ParsedProfile>();
+    const [rating, setRating] = useState(0);
+
+    const captureRef = useRef<HTMLDivElement>(null);
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -37,6 +47,14 @@ export default function LvScore() {
 
         setClal(clalCookie);
     }, []);
+
+    useEffect(() => {
+        return () => {
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+        };
+    }, [imageUrl]);
 
     const fetchResultWithClal = async () => {
         if (!clal) {
@@ -87,9 +105,120 @@ export default function LvScore() {
         [songs]
     );
 
+    const fetchCurrentRating = async () => {
+        const res = await fetch('/api/fetchOldB50', {
+            method: 'GET',
+        });
+
+        if (!res.ok) {
+            return 0;
+        }
+
+        const b50: Best50Songs = await res.json();
+        return [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0);
+    };
+
+    const generateImage = async () => {
+        if (!clal) {
+            showError('Missing Clal, please fetch a new clal from the guide page');
+            return;
+        }
+
+        if (sortedSongs.length === 0) {
+            showError('No songs available. Generate LvScore before creating an image.');
+            return;
+        }
+
+        setShowImageModal(true);
+        setGeneratingImage(true);
+        setImageUrl((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return null;
+        });
+
+        try {
+            if (!profile) {
+                const profileRes = await fetch(`/api/fetchUserDetail?clal=${clal}`, {
+                    method: 'GET',
+                });
+
+                if (!profileRes.ok) {
+                    const { error } = await profileRes.json();
+                    throw new Error(error);
+                }
+
+                setProfile(await profileRes.json());
+            }
+
+            if (rating === 0) {
+                setRating(await fetchCurrentRating());
+            }
+
+            await new Promise<void>((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => resolve());
+                    });
+                });
+            });
+
+            await document.fonts?.ready;
+            await new Promise((r) => setTimeout(r, 100));
+
+            if (!captureRef.current) {
+                throw new Error('Image renderer not ready');
+            }
+
+            const blob = await toBlob(captureRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+            });
+
+            if (!blob) {
+                throw new Error('Failed to generate image blob');
+            }
+
+            const url = URL.createObjectURL(blob);
+            setImageUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return url;
+            });
+        } catch (error) {
+            showError((error as Error).message);
+            setShowImageModal(false);
+        } finally {
+            setGeneratingImage(false);
+        }
+    };
+
+    const closeImageModal = () => {
+        setShowImageModal(false);
+        if (imageUrl) {
+            URL.revokeObjectURL(imageUrl);
+            setImageUrl(null);
+        }
+    };
+
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
+            <ImageGenerationModal
+                show={showImageModal}
+                generating={generatingImage}
+                imageUrl={imageUrl}
+                onClose={closeImageModal}
+                label={'LvScore'}
+                downloadFileName={'lvscore.png'}
+            />
+
+            <LvScoreImageRenderer
+                songs={sortedSongs}
+                profile={profile}
+                nameplate={NP_salt_prism}
+                rating={rating}
+                captureRef={captureRef}
+            />
+
             <div className={'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'}>
                 <div className={'flex flex-col items-center gap-4'}>
                     <form className={'text-center p-3 shadow-lg rounded-box bg-base-100'}>
@@ -123,13 +252,13 @@ export default function LvScore() {
                             )}
                         </button>
 
-                        <Link
-                            href={'/pages/LvScoreImage'}
-                            className={`btn btn-accent min-w-35 ${sortedSongs.length === 0 ? 'pointer-events-none btn-disabled' : ''}`}
-                            aria-disabled={sortedSongs.length === 0}
+                        <button
+                            onClick={generateImage}
+                            className={'btn btn-accent min-w-35'}
+                            disabled={sortedSongs.length === 0 || generatingImage}
                         >
                             Get Image
-                        </Link>
+                        </button>
                     </div>
                 </div>
 

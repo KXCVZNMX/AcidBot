@@ -3,11 +3,15 @@ export default function ImageGenerationModal({
     generating,
     imageUrl,
     onClose,
+    label = 'B50',
+    downloadFileName = 'b50.png',
 }: {
     show: boolean;
     generating: boolean;
     imageUrl: string | null;
     onClose: () => void;
+    label?: string;
+    downloadFileName?: string;
 }) {
     return (
         <div className={`modal ${show ? 'modal-open' : ''}`}>
@@ -16,8 +20,8 @@ export default function ImageGenerationModal({
                 <div className="flex justify-between items-center mb-4">
                     <h3 className={'font-bold text-lg'}>
                         {generating
-                            ? 'Generating B50 Image...'
-                            : 'B50 Image Ready'}
+                            ? `Generating ${label} Image...`
+                            : `${label} Image Ready`}
                     </h3>
                     <button
                         className="btn btn-sm btn-circle btn-ghost"
@@ -34,7 +38,7 @@ export default function ImageGenerationModal({
                         <div className="flex flex-col items-center gap-4 py-12">
                             <span className="loading loading-spinner loading-lg text-primary"></span>
                             <p className="text-center">
-                                Generating your B50 image...
+                                {`Generating your ${label} image...`}
                                 <br />
                                 <span className="text-sm text-gray-500">
                                     This may take up to 15 seconds
@@ -46,7 +50,7 @@ export default function ImageGenerationModal({
                             <div className="w-full max-w-3xl">
                                 <img
                                     src={imageUrl}
-                                    alt={'Generated B50'}
+                                    alt={`Generated ${label}`}
                                     className="w-full h-auto rounded-lg shadow-lg"
                                 />
                             </div>
@@ -54,7 +58,7 @@ export default function ImageGenerationModal({
                                 <a
                                     className={'btn btn-primary'}
                                     href={imageUrl}
-                                    download={'b50.png'}
+                                    download={downloadFileName}
                                 >
                                     Download PNG
                                 </a>
