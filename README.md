@@ -32,7 +32,7 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 ### Frontend Framework 
 
 - Next.js was used to provide a full-stack development environment
-- Typescript was used to avoid type ambiguity and unsafe code
+- TypeScript was used to avoid type ambiguity and unsafe code
 
 ### Styling and UI
 
@@ -57,7 +57,7 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 
 - Node.js v24.3.0+
 - Next.js v16.0.10+
-- npm package manager
+- pnpm package manager
 - MongoDB cluster
 
 ### Installation
@@ -72,7 +72,7 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 2. Install dependencies
     
     ```zsh
-    npm install
+    pnpm install
     ```
    
 3. Setup Environment Variables
