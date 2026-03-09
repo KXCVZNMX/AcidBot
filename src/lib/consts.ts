@@ -366,4 +366,6 @@ export const CIRCLE_SONGS: Readonly<string[]> = [
     '恋の氷結おてんば湯けむりチルノ温泉',
     'イタ電はやめて！ ぼくらのスカーレット・コール',
     'むしみこうにゃーのハッピッピー',
+    '7 Wonders',
+    'Break The Speakers',
 ];
