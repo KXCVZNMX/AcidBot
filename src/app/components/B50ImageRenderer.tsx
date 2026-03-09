@@ -2,6 +2,7 @@ import Image, {StaticImageData} from 'next/image';
 import { M_PLUS_Rounded_1c } from 'next/font/google';
 import B50Card from './B50Card';
 import BGBase from '../../../public/b50/back_area.png';
+import B50BG from '../../../public/b50/b50bg.png'
 import Logo from '../../../public/b50/kv_logo_pc.png';
 import Trophy from '../../../public/b50/trophy_normal.png';
 import { MSSB50, ParsedProfile } from '@/lib/types';
@@ -32,13 +33,14 @@ export default function B50ImageRenderer({
     return (
         <div className={'absolute -left-2499.75 top-0'}>
             <div
-                className={`relative bg-[#6fbaee] w-350 h-400 shrink-0 ${mPlus.className}`}
+                className={`relative w-350 h-400 shrink-0 bg-cover bg-center bg-no-repeat ${mPlus.className}`}
+                style={{ backgroundImage: `url(${B50BG.src})` }}
                 ref={captureRef}
             >
                 <Image
                     src={Logo}
                     alt={'logo'}
-                    height={100}
+                    height={120}
                     className={'absolute top-15 left-5'}
                 />
                 <Image
@@ -136,7 +138,7 @@ export default function B50ImageRenderer({
 
                 <div
                     className={
-                        'absolute top-46.25 grid grid-cols-5 gap-2 p-3'
+                        'absolute top-57.5 grid grid-cols-5 gap-2 p-3'
                     }
                 >
                     {oldSong.map((s, idx) => (
@@ -145,7 +147,7 @@ export default function B50ImageRenderer({
 
                     <hr
                         className={
-                            'h-12.5 w-350 bg-none border-none col-span-5'
+                            'h-17.5 w-350 bg-none border-none col-span-5'
                         }
                     />
 
@@ -154,16 +156,16 @@ export default function B50ImageRenderer({
                     ))}
                 </div>
 
-                <Image
-                    src={BGBase}
-                    alt={'bg base'}
-                    height={107}
-                    width={1400}
-                    className={'absolute bottom-10'}
-                />
-                <div
-                    className={'absolute bottom-0 bg-[#8aba45] w-full h-10'}
-                />
+                {/*<Image*/}
+                {/*    src={BGBase}*/}
+                {/*    alt={'bg base'}*/}
+                {/*    height={107}*/}
+                {/*    width={1400}*/}
+                {/*    className={'absolute bottom-10'}*/}
+                {/*/>*/}
+                {/*<div*/}
+                {/*    className={'absolute bottom-0 bg-[#8aba45] w-full h-10'}*/}
+                {/*/>*/}
                 <h3
                     className={
                         'absolute bottom-3 w-full text-center text-white font-bold text-xl'
