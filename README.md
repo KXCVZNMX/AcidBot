@@ -6,9 +6,9 @@ A maimai DX (international ver.) bot.
 
 Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issues) page
 
-## ✨ Features
+## Features
 
-### 📊 Best 50 Chart
+### Best 50 Chart
 
 - Chart Constants
 - Achievement and rank
@@ -17,46 +17,32 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 - Sync Status (sync, sync+, etc.)
 - Play Status (fc, fc+, etc.)
 
-### 𖣠 Skill Radar Map
+### Skill Radar Map
 
 - Patterns (spins, swipes, high-break-counts, etc.)
 - Chart Types (slider chart, keyboard chart, etc.)
 
-### 🗃️Data Sources
+### ata Sources
 
 - Songs collected from [arcade-songs](https://arcade-songs.zetaraku.dev/)
 - Tags collected from [DXRating.net](https://dxrating.net)
 
-## 🛠️ Technical Stack
+## Technical Stack
 
-### Frontend Framework 
+- Next.js + Typescript frontend
+- Styled with Tailwind CSS and daisyUI
+- RESTful API built with Next.js
+- User and song data stored with MongoDB
+- OAuth provided by Auth.js
+- ESLint and Prettier for code quality and consistency
+- pnpm used for a high-speed, low-disk-space package management
 
-- Next.js was used to provide a full-stack development environment
-- TypeScript was used to avoid type ambiguity and unsafe code
-
-### Styling and UI
-
-- Tailwind CSS 4.1 was used for an easy-to-use utility CSS framework
-- daisyUI was used for semantic components in corporation with Tailwind CSS
-
-### Backend & Database
-
-- MongoDB was used to host all application data due to its simplicity and nice GUI
-- Serverless API endpoints was used and built with Next.js
-
-### Development Tools
-
-- Next.js + Turbopack was used to allow fast bundle and build for development servers
-- ESLint was used to provide typescript-specific styling and rules
-- Prettier was used to standardise styling across different development environment and platforms
-- npm was used as for package manager
-
-## 🚀 Local Installation
+## Local Installation
 
 ### Prerequisites
 
 - Node.js v24.3.0+
-- Next.js v16.0.10+
+- Next.js v16.1.6+
 - pnpm package manager
 - MongoDB cluster
 
@@ -101,5 +87,5 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 4. Start Development Server
 
     ```zsh
-    next dev # --turbopack (if you wish)
+    pnpm dev # --turbopack (if you wish)
     ```
