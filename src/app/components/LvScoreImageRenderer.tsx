@@ -146,9 +146,7 @@ export default function LvScoreImageRenderer({
                     width={1400}
                     className={'absolute bottom-10'}
                 />
-                <div
-                    className={'absolute bottom-0 bg-[#8aba45] w-full h-10'}
-                />
+                <div className={'absolute bottom-0 bg-[#8aba45] w-full h-10'} />
                 <h3
                     className={
                         'absolute bottom-3 w-full text-center text-white font-bold text-xl'

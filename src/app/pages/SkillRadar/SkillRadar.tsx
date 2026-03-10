@@ -215,8 +215,8 @@ export default function SkillRadar() {
                             'w-full max-w-180 px-4 py-10 border border-dashed rounded-lg text-center text-sm opacity-70'
                         }
                     >
-                        No radar image yet. Click &#34;Generate Radar&#34; to create
-                        one.
+                        No radar image yet. Click &#34;Generate Radar&#34; to
+                        create one.
                     </div>
                 )}
 

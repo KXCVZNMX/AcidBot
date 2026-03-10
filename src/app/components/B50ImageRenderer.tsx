@@ -1,8 +1,7 @@
-import Image, {StaticImageData} from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { M_PLUS_Rounded_1c } from 'next/font/google';
 import B50Card from './B50Card';
-import BGBase from '../../../public/b50/back_area.png';
-import B50BG from '../../../public/b50/b50bg.png'
+import B50BG from '../../../public/b50/b50bg.png';
 import Logo from '../../../public/b50/kv_logo_pc.png';
 import Trophy from '../../../public/b50/trophy_normal.png';
 import { MSSB50, ParsedProfile } from '@/lib/types';
@@ -136,11 +135,7 @@ export default function B50ImageRenderer({
                     }
                 />
 
-                <div
-                    className={
-                        'absolute top-57.5 grid grid-cols-5 gap-2 p-3'
-                    }
-                >
+                <div className={'absolute top-57.5 grid grid-cols-5 gap-2 p-3'}>
                     {oldSong.map((s, idx) => (
                         <B50Card info={s} key={`old-${idx}`} />
                     ))}

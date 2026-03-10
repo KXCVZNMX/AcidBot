@@ -198,9 +198,7 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                     }
                 />
                 <h2
-                    className={
-                        'absolute left-24 top-0.5 text-md font-semibold'
-                    }
+                    className={'absolute left-24 top-0.5 text-md font-semibold'}
                     style={{ color: textColor }}
                 >
                     {truncateByWidth(info.name, 20)}

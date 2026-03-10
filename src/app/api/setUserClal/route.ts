@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
         });
 
         return ret;
-    } catch (error) {
+    } catch {
         return NextResponse.redirect(new URL('/pages/ClalFetchFailure', url), {
             status: 302,
         });

@@ -87,7 +87,15 @@ export async function POST(req: NextRequest) {
             { title: string; imageName: string; sheets: MoreInfo[] }
         >();
         for (const d of docs) {
-            if (d && d.title) docMap.set(d.title, d as unknown as { title: string; imageName: string; sheets: MoreInfo[] });
+            if (d && d.title)
+                docMap.set(
+                    d.title,
+                    d as unknown as {
+                        title: string;
+                        imageName: string;
+                        sheets: MoreInfo[];
+                    }
+                );
         }
 
         for (const r of results) {

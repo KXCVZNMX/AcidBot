@@ -47,7 +47,11 @@ export default function RatingChart({ oldB50 }: { oldB50: OldB50[] }) {
 
     if (normalized.length < 2) {
         return (
-            <div className={'flex h-full items-center justify-center rounded-lg bg-base-200/40 text-sm opacity-70'}>
+            <div
+                className={
+                    'flex h-full items-center justify-center rounded-lg bg-base-200/40 text-sm opacity-70'
+                }
+            >
                 Need at least two history records to draw a trend line.
             </div>
         );

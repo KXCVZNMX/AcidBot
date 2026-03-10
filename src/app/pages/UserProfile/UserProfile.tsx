@@ -285,9 +285,21 @@ export default function UserProfile() {
                                     </table>
                                 </div>
 
-                                <div className={'mt-4 border-t border-base-300 pt-4'}>
-                                    <div className={'mb-2 flex items-center justify-between'}>
-                                        <h4 className={'text-sm font-semibold tracking-wide opacity-80'}>
+                                <div
+                                    className={
+                                        'mt-4 border-t border-base-300 pt-4'
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            'mb-2 flex items-center justify-between'
+                                        }
+                                    >
+                                        <h4
+                                            className={
+                                                'text-sm font-semibold tracking-wide opacity-80'
+                                            }
+                                        >
                                             Rating trend
                                         </h4>
                                         <span className={'text-xs opacity-60'}>
@@ -295,7 +307,11 @@ export default function UserProfile() {
                                         </span>
                                     </div>
 
-                                    <div className={'h-56 rounded-xl border border-base-300 bg-base-100/40 p-3'}>
+                                    <div
+                                        className={
+                                            'h-56 rounded-xl border border-base-300 bg-base-100/40 p-3'
+                                        }
+                                    >
                                         <RatingChart oldB50={oldB50s} />
                                     </div>
                                 </div>
