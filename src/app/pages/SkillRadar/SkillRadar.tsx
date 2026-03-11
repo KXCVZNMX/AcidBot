@@ -236,6 +236,7 @@ export default function SkillRadar() {
 
                 {imageUrl && (
                     <div className={'w-full max-w-180 px-4'}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src={imageUrl}
                             alt={'Generated radar'}

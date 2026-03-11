@@ -54,6 +54,7 @@ export default function ImageGenerationModal({
                     ) : imageUrl ? (
                         <>
                             <div className={'w-full max-w-3xl'}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={imageUrl}
                                     alt={`Generated ${label}`}
