@@ -377,15 +377,17 @@ export default function Best50() {
                 onClose={closeImageModal}
             />
 
-            {/* Hidden image renderer for capture */}
-            <B50ImageRenderer
-                oldSong={oldSong}
-                newSong={newSong}
-                profile={profile}
-                nameplate={nameplate}
-                rating={rating}
-                captureRef={captureRef}
-            />
+            {/* Mount capture renderer on demand to avoid eager font/image downloads. */}
+            {showImageModal ? (
+                <B50ImageRenderer
+                    oldSong={oldSong}
+                    newSong={newSong}
+                    profile={profile}
+                    nameplate={nameplate}
+                    rating={rating}
+                    captureRef={captureRef}
+                />
+            ) : null}
 
             <div
                 className={

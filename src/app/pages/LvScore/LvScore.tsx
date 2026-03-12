@@ -225,13 +225,15 @@ export default function LvScore() {
                 downloadFileName={'lvscore.png'}
             />
 
-            <LvScoreImageRenderer
-                songs={sortedSongs}
-                profile={profile}
-                nameplate={NP_salt_prism}
-                rating={rating}
-                captureRef={captureRef}
-            />
+            {showImageModal ? (
+                <LvScoreImageRenderer
+                    songs={sortedSongs}
+                    profile={profile}
+                    nameplate={NP_salt_prism}
+                    rating={rating}
+                    captureRef={captureRef}
+                />
+            ) : null}
 
             <div
                 className={

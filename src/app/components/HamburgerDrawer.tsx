@@ -115,6 +115,7 @@ export default function HamburgerDrawer() {
                                 <li>
                                     <Link
                                         href={'/'}
+                                        prefetch={false}
                                         className={
                                             'block px-3 py-2 rounded hover:bg-base-200'
                                         }
@@ -128,6 +129,7 @@ export default function HamburgerDrawer() {
                                         <li>
                                             <Link
                                                 href={'/pages/Guides'}
+                                                prefetch={false}
                                                 className={
                                                     'block px-3 py-2 rounded hover:bg-base-200'
                                                 }
@@ -139,6 +141,7 @@ export default function HamburgerDrawer() {
                                         <li>
                                             <Link
                                                 href={'/pages/LvScore'}
+                                                prefetch={false}
                                                 className={
                                                     'block px-3 py-2 rounded hover:bg-base-200'
                                                 }
@@ -150,6 +153,7 @@ export default function HamburgerDrawer() {
                                         <li>
                                             <Link
                                                 href={'/pages/Best50'}
+                                                prefetch={false}
                                                 className={
                                                     'block px-3 py-2 rounded hover:bg-base-200'
                                                 }
@@ -161,6 +165,7 @@ export default function HamburgerDrawer() {
                                         <li>
                                             <Link
                                                 href={'/pages/SkillRadar'}
+                                                prefetch={false}
                                                 className={
                                                     'block px-3 py-2 rounded hover:bg-base-200'
                                                 }
@@ -185,6 +190,7 @@ export default function HamburgerDrawer() {
                                         >
                                             <Link
                                                 href={'/pages/UserProfile'}
+                                                prefetch={false}
                                                 onClick={() => setOpen(false)}
                                             >
                                                 <Image
@@ -214,6 +220,7 @@ export default function HamburgerDrawer() {
                                             <li>
                                                 <Link
                                                     href={'/pages/UserProfile'}
+                                                    prefetch={false}
                                                     className={
                                                         'block px-3 py-2 rounded hover:bg-base-200'
                                                     }

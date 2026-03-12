@@ -12,6 +12,7 @@ const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
     display: 'swap',
     subsets: ['latin'],
+    preload: false,
 });
 
 export default function B50ImageRenderer({

@@ -45,6 +45,7 @@ export default function Navbar() {
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/Guides'}
+                                prefetch={false}
                             >
                                 Guides
                             </Link>
@@ -63,12 +64,14 @@ export default function Navbar() {
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/Guides'}
+                                prefetch={false}
                             >
                                 Guides
                             </Link>
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/LvScore'}
+                                prefetch={false}
                             >
                                 LvScore
                             </Link>
@@ -76,6 +79,7 @@ export default function Navbar() {
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/Best50'}
+                                prefetch={false}
                             >
                                 Best50
                             </Link>
@@ -83,6 +87,7 @@ export default function Navbar() {
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
                                 href={'/pages/SkillRadar'}
+                                prefetch={false}
                             >
                                 Skill Radar
                             </Link>
@@ -126,6 +131,7 @@ export default function Navbar() {
                                         <Link
                                             href={'/pages/UserProfile'}
                                             role={'menuitem'}
+                                            prefetch={false}
                                         >
                                             Profile
                                         </Link>
