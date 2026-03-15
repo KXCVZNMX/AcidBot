@@ -22,7 +22,7 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 - Patterns (spins, swipes, high-break-counts, etc.)
 - Chart Types (slider chart, keyboard chart, etc.)
 
-### ata Sources
+### Data Sources
 
 - Songs collected from [arcade-songs](https://arcade-songs.zetaraku.dev/)
 - Tags collected from [DXRating.net](https://dxrating.net)
