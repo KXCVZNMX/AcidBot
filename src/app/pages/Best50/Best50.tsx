@@ -16,9 +16,18 @@ import RatingRed from '../../../../public/rating_plates/rating_base_red.png';
 import RatingPurple from '../../../../public/rating_plates/rating_base_purple.png';
 import RatingBronze from '../../../../public/rating_plates/rating_base_bronze.png';
 import RatingSilver from '../../../../public/rating_plates/rating_base_silver.png';
-import RatingGold from '../../../../public/rating_plates/rating_base_gold.png';
-import RatingPlatinum from '../../../../public/rating_plates/rating_base_platinum.png';
-import RatingRainbow from '../../../../public/rating_plates/rating_base_rainbow.png';
+import RatingGold1 from '../../../../public/rating_plates/rating_base_gold*.png';
+import RatingGold2 from '../../../../public/rating_plates/rating_base_gold**.png';
+import RatingPlatinum1 from '../../../../public/rating_plates/rating_base_platinum*.png';
+import RatingPlatinum2 from '../../../../public/rating_plates/rating_base_platinum**.png';
+import RatingRainbow1 from '../../../../public/rating_plates/rating_base_rainbow*.png';
+import RatingRainbow2 from '../../../../public/rating_plates/rating_base_rainbow**.png';
+import RatingRainbow3 from '../../../../public/rating_plates/rating_base_rainbow***.png';
+import RatingRainbow4 from '../../../../public/rating_plates/rating_base_rainbow****.png';
+import RatingRainbowEx1 from '../../../../public/rating_plates/rating_base_rainbow_ex*.png';
+import RatingRainbowEx2 from '../../../../public/rating_plates/rating_base_rainbow_ex**.png';
+import RatingRainbowEx3 from '../../../../public/rating_plates/rating_base_rainbow_ex***.png';
+import RatingRainbowEx4 from '../../../../public/rating_plates/rating_base_rainbow_ex****.png';
 import NP_bhx from '../../../../public/b50/NP_bhx.webp';
 import NP_cf from '../../../../public/b50/NP_cf.webp';
 import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
@@ -121,14 +130,32 @@ export default function Best50() {
             return RatingBronze;
         } else if (rating < 14000 && rating >= 13000) {
             return RatingSilver;
-        } else if (rating < 14500 && rating >= 14000) {
-            return RatingGold;
-        } else if (rating < 15000 && rating >= 14500) {
-            return RatingPlatinum;
-        } else if (rating >= 15000) {
-            return RatingRainbow;
+        } else if (rating < 14250 && rating >= 14000) {
+            return RatingGold1;
+        } else if (rating < 14500 && rating >= 14250) {
+            return RatingGold2;
+        } else if (rating < 14750 && rating >= 14500) {
+            return RatingPlatinum1;
+        } else if (rating < 15000 && rating >= 14750) {
+            return RatingPlatinum2;
+        } else if (rating < 15250 && rating >= 15000) {
+            return RatingRainbow1;
+        } else if (rating < 15500 && rating >= 15250) {
+            return RatingRainbow2;
+        } else if (rating < 15750 && rating >= 15500) {
+            return RatingRainbow3;
+        } else if (rating < 16000 && rating >= 15750) {
+            return RatingRainbow4;
+        } else if (rating < 16250 && rating >= 16000) {
+            return RatingRainbowEx1;
+        } else if (rating < 16500 && rating >= 16250) {
+            return RatingRainbowEx2;
+        } else if (rating < 16750 && rating >= 16500) {
+            return RatingRainbowEx3;
+        } else if (rating >= 16750) {
+            return RatingRainbowEx4;
         } else {
-            return RatingRainbow;
+            return RatingRainbowEx4;
         }
     };
 
