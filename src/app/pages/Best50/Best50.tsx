@@ -433,7 +433,7 @@ export default function Best50() {
 
                         <div
                             className={
-                                'absolute inset-0 flex items-center justify-start pl-35 text-2xl tracking-[0.20em]'
+                                'absolute inset-0 flex items-center justify-start pl-36.5 text-[26px] tracking-[0.24em]'
                             }
                         >
                             {rating}
