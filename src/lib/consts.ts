@@ -146,22 +146,22 @@ export const PATTERN_TAG_NAMES_CN: string[] = [
 ];
 
 export const PATTERN_TAG_NAMES: string[] = [
-    'Spin',
-    'Break',
+    'Spinning',
+    'Break Section',
     'Swipe',
-    'Tech',
+    'Scatter',
     'Trill',
-    'Opposite Hands',
-    'Connected Slides',
+    'Cross-hand',
+    'Chained Slides',
     // 'Overrated',
     'Umiyuri',
-    'Swings',
+    'Swing',
     'Jack',
     'Burst',
-    'Mangled Slides',
+    'Deciphering',
     // 'Underrated',
-    'Anchor',
-    'Large Displacement',
+    'Steady Beat',
+    'Jump',
 ];
 
 export const PATTERN_TAG_NUMBERS: Readonly<number[]> = [
@@ -189,11 +189,11 @@ export const EVAL_TAG_NAMES_CN: string[] = [
 ];
 
 export const EVAL_TAG_NAMES: string[] = [
-    'Tap',
-    'Slide',
+    'Tap-heavy',
+    'Slide-heavy',
     'Stamina',
-    'Stamina (incl. Reading)',
-    'Note Spam',
+    'Foundation',
+    'Dense',
 ];
 
 export const EVAL_TAG_NUMBERS: Readonly<number[]> = [15, 14, 21, 16, 22];
