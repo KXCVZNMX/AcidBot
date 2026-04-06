@@ -16,7 +16,7 @@ export default function Navbar() {
 
     useEffect(() => {
         document.cookie = `status=${status}`;
-    });
+    }, [status]);
 
     return (
         <>

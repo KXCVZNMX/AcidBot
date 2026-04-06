@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import { getCookie, chooseNameplate } from '@/lib/util';
+import {getCookie, chooseNameplate, determineRatingPlate} from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50CardGrid, { B50_GRID_BASE_WIDTH } from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
@@ -55,12 +55,38 @@ import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Image from 'next/image';
 import { toBlob } from 'html-to-image';
 
+const NP = [
+    NP_bhx,
+    NP_cf,
+    NP_cf_prism,
+    NP_cf_festival,
+    NP_dlx,
+    NP_kuro,
+    NP_lime,
+    NP_lime_bud,
+    NP_milk,
+    NP_milk_cat,
+    NP_milk_prism,
+    NP_milk_splash,
+    NP_rasu,
+    NP_rasu_bud,
+    NP_rasu_festival,
+    NP_riz_prism,
+    NP_salt,
+    NP_salt_festival,
+    NP_salt_prism,
+    NP_sm,
+    NP_sm_splash,
+    NP_yj,
+    NP_yj_bud,
+    NP_yj_splash,
+];
+
 export default function Best50() {
     const [clal, setClal] = useState('0');
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
-    const [rating, setRating] = useState(0);
     const [generating, setGenerating] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -72,36 +98,11 @@ export default function Best50() {
     const [gridScale, setGridScale] = useState(1);
     const [scaledGridHeight, setScaledGridHeight] = useState(0);
 
+    const rating =  [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
+
     const captureRef = useRef<HTMLDivElement>(null);
     const gridShellRef = useRef<HTMLDivElement>(null);
     const gridStageRef = useRef<HTMLDivElement>(null);
-
-    const NP = [
-        NP_bhx,
-        NP_cf,
-        NP_cf_prism,
-        NP_cf_festival,
-        NP_dlx,
-        NP_kuro,
-        NP_lime,
-        NP_lime_bud,
-        NP_milk,
-        NP_milk_cat,
-        NP_milk_prism,
-        NP_milk_splash,
-        NP_rasu,
-        NP_rasu_bud,
-        NP_rasu_festival,
-        NP_riz_prism,
-        NP_salt,
-        NP_salt_festival,
-        NP_salt_prism,
-        NP_sm,
-        NP_sm_splash,
-        NP_yj,
-        NP_yj_bud,
-        NP_yj_splash,
-    ];
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -111,52 +112,6 @@ export default function Best50() {
             setShowErrorModal(false);
             setError('');
         }, 2000);
-    };
-
-    const chooseRatingPlate = () => {
-        if (rating < 1000) {
-            return RatingNormal;
-        } else if (rating < 2000 && rating >= 1000) {
-            return RatingBlue;
-        } else if (rating < 4000 && rating >= 2000) {
-            return RatingGreen;
-        } else if (rating < 7000 && rating >= 4000) {
-            return RatingYellow;
-        } else if (rating < 10000 && rating >= 7000) {
-            return RatingRed;
-        } else if (rating < 12000 && rating >= 10000) {
-            return RatingPurple;
-        } else if (rating < 13000 && rating >= 12000) {
-            return RatingBronze;
-        } else if (rating < 14000 && rating >= 13000) {
-            return RatingSilver;
-        } else if (rating < 14250 && rating >= 14000) {
-            return RatingGold1;
-        } else if (rating < 14500 && rating >= 14250) {
-            return RatingGold2;
-        } else if (rating < 14750 && rating >= 14500) {
-            return RatingPlatinum1;
-        } else if (rating < 15000 && rating >= 14750) {
-            return RatingPlatinum2;
-        } else if (rating < 15250 && rating >= 15000) {
-            return RatingRainbow1;
-        } else if (rating < 15500 && rating >= 15250) {
-            return RatingRainbow2;
-        } else if (rating < 15750 && rating >= 15500) {
-            return RatingRainbow3;
-        } else if (rating < 16000 && rating >= 15750) {
-            return RatingRainbow4;
-        } else if (rating < 16250 && rating >= 16000) {
-            return RatingRainbowEx1;
-        } else if (rating < 16500 && rating >= 16250) {
-            return RatingRainbowEx2;
-        } else if (rating < 16750 && rating >= 16500) {
-            return RatingRainbowEx3;
-        } else if (rating >= 16750) {
-            return RatingRainbowEx4;
-        } else {
-            return RatingRainbowEx4;
-        }
     };
 
     useEffect(() => {
@@ -189,12 +144,6 @@ export default function Best50() {
             }
         })();
     }, []);
-
-    useEffect(() => {
-        const calculateRating = () =>
-            [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
-        setRating(calculateRating());
-    }, [oldSong, newSong]);
 
     useEffect(() => {
         return () => {
@@ -425,7 +374,7 @@ export default function Best50() {
                 <div className={'flex flex-col items-center gap-4'}>
                     <div className={'relative w-75 h-12.5'}>
                         <Image
-                            src={chooseRatingPlate()}
+                            src={determineRatingPlate(rating)}
                             alt={'rating plate'}
                             fill
                             className={'object-contain'}
