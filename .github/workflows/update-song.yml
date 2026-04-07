@@ -18,6 +18,9 @@ jobs:
       - name: Clone maimai data repo
         run: git clone https://github.com/zvuc/otoge-db.git
 
+      - name: Set yarn to use Corepack
+        run: corepack enable
+
       - name: Install dependencies
         working-directory: otoge-db
         run: yarn install
