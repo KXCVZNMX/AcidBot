@@ -24,7 +24,7 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 
 ### Data Sources
 
-- Songs collected from [arcade-songs](https://arcade-songs.zetaraku.dev/)
+- Songs collected from [otoge-db](https://github.com/zvuc/otoge-db)
 - Tags collected from [DXRating.net](https://dxrating.net)
 
 ## Technical Stack
