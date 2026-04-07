@@ -1,0 +1,10 @@
+// tsconfig.scripts.json
+{
+    "extends": "./tsconfig.json",
+    "include": ["scripts/parseMaimaiConstants.ts"],
+    "compilerOptions": {
+        "types": ["node"],
+        "noEmit": false,
+        "module": "ESNext",
+    }
+}

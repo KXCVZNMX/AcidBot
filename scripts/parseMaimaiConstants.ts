@@ -52,13 +52,16 @@ interface SongData {
     date?: string;                      // isNew
 }
 
-dotenv.config({path: '../.env.local'});
+dotenv.config({path: './.env.local'});
 
 const fileContent = fs.readFileSync('./otoge-db/maimai/data/music-ex-intl.json', 'utf8');
 const songs: SongData[] = JSON.parse(fileContent);
 
 (async () => {
     const uri = process.env.MONGODB_URI || '';
+
+    console.log(uri)
+
     let client: MongoClient | undefined;
     
     try {

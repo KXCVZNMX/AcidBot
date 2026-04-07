@@ -11,9 +11,6 @@ importers:
       '@auth/mongodb-adapter':
         specifier: ^3.11.1
         version: 3.11.1(mongodb@6.21.0)
-      '@types/mongodb':
-        specifier: ^4.0.6
-        version: 4.0.7
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.2.1-canary.17(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
@@ -63,6 +60,12 @@ importers:
       '@types/cheerio':
         specifier: ^0.22.35
         version: 0.22.35
+      '@types/dotenv':
+        specifier: ^8.2.3
+        version: 8.2.3
+      '@types/mongodb':
+        specifier: ^4.0.6
+        version: 4.0.7
       '@types/node':
         specifier: ^20
         version: 20.19.39
@@ -624,6 +627,10 @@ packages:
 
   '@types/cheerio@0.22.35':
     resolution: {integrity: sha512-yD57BchKRvTV+JD53UZ6PD8KWY5g5rvvMLRnZR3EQBCZXiDT/HR+pKpMzFGlWNhFrXlo7VPZXtKvIEwZkAWOIA==}
+
+  '@types/dotenv@8.2.3':
+    resolution: {integrity: sha512-g2FXjlDX/cYuc5CiQvyU/6kkbP1JtmGzh0obW50zD7OKeILVL0NSpPWLXVfqoAGQjom2/SLLx9zHq0KXvD6mbw==}
+    deprecated: This is a stub types definition. dotenv provides its own type definitions, so you do not need this installed.
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -2778,6 +2785,10 @@ snapshots:
   '@types/cheerio@0.22.35':
     dependencies:
       '@types/node': 20.19.39
+
+  '@types/dotenv@8.2.3':
+    dependencies:
+      dotenv: 17.4.1
 
   '@types/estree@1.0.8': {}
 
