@@ -1,0 +1,18 @@
+jobs:
+  update-song:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout my repo
+        uses: actions/checkout@v4
+
+      - name: Clone maimai data repo
+        run: git clone https://github.com/zvuc/otoge-db.git
+
+      - name: Install dependencies
+        working-directory: otoge-db
+        run: yarn install
+
+      - name: Update International Sheet Data
+        working-directory: otoge-db
+        run: yarn fetch-intl
