@@ -29,16 +29,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Create venv
-        working-directory: otoge-db
-        run: python -m venv .venv
-
-      - name: Install Python dependencies
+      - name: Install Python deps and run update
         working-directory: otoge-db
         run: |
+          python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
-
-      - name: Update International Sheet Data
-        working-directory: otoge-db
-        run: yarn fetch-intl --maimai
+          yarn fetch-intl --maimai
