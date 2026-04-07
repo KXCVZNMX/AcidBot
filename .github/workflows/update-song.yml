@@ -1,3 +1,11 @@
+name: Update Song Data
+run-name: Update Internation Song Data
+
+on:
+  schedule:
+    # Run at 00:00 UTC every day
+    - cron: '0 0 * * *'
+
 jobs:
   update-song:
     runs-on: ubuntu-latest
