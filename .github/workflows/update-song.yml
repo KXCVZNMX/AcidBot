@@ -35,3 +35,11 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
+
+      - name: Get Data and Upload to DB
+        working-directory: ./
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          tsc ./scripts/parseMaimaiConstants.ts
+          node ./scripts/parseMaimaiConstants.js
