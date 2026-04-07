@@ -25,6 +25,20 @@ jobs:
         working-directory: otoge-db
         run: yarn install
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Create venv
+        working-directory: otoge-db
+        run: python -m venv .venv
+
+      - name: Install Python dependencies
+        working-directory: otoge-db
+        run: |
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
       - name: Update International Sheet Data
         working-directory: otoge-db
-        run: yarn fetch-intl
+        run: yarn fetch-intl --maimai
