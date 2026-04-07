@@ -368,4 +368,5 @@ export const CIRCLE_SONGS: Readonly<string[]> = [
     'むしみこうにゃーのハッピッピー',
     '7 Wonders',
     'Break The Speakers',
+    'Galaxy Blaster',
 ];
