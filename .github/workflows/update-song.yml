@@ -44,6 +44,7 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
+          yarn fetch-intl --maimai
 
       - name: Get Data and Upload to DB
         working-directory: ./
