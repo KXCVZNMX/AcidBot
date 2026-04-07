@@ -41,5 +41,5 @@ jobs:
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
-          tsc ./scripts/parseMaimaiConstants.ts
+          tsc --ignoreConfig ./scripts/parseMaimaiConstants.ts
           node ./scripts/parseMaimaiConstants.js
