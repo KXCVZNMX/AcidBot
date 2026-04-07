@@ -189,7 +189,7 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                 style={{ backgroundColor, color: textColor }}
             >
                 <Image
-                    src={`https://dp4p6x0xfi5o9.cloudfront.net/maimai/img/cover-m/${info.jacketURL}`}
+                    src={`/maimaiJackets/${info.jacketURL}`}
                     alt={'jacket'}
                     width={75}
                     height={75}
