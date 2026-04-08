@@ -16,6 +16,10 @@ const ALLOWED_HOSTNAMES = new Set([
     'lh3.googleusercontent.com',
 ]);
 
+const ALLOWED_PROTOCOLS = new Set(['http:', 'https:']);
+
+const CACHE_MAX_AGE = 86400; // 24 hours
+
 export async function GET(req: NextRequest) {
     const rawUrl = req.nextUrl.searchParams.get('url');
 
@@ -33,6 +37,13 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
     }
 
+    if (!ALLOWED_PROTOCOLS.has(parsed.protocol)) {
+        return NextResponse.json(
+            { error: 'URL protocol not allowed' },
+            { status: 403 }
+        );
+    }
+
     if (!ALLOWED_HOSTNAMES.has(parsed.hostname)) {
         return NextResponse.json(
             { error: 'URL hostname not allowed' },
@@ -40,7 +51,19 @@ export async function GET(req: NextRequest) {
         );
     }
 
-    const upstream = await fetch(rawUrl);
+    // Use the validated parsed URL string (not rawUrl) to prevent URL-smuggling attacks.
+    const safeUrl = parsed.toString();
+
+    let upstream: Response;
+    try {
+        upstream = await fetch(safeUrl);
+    } catch (err) {
+        console.error('[imageProxy] Failed to fetch upstream image:', err);
+        return NextResponse.json(
+            { error: 'Failed to connect to upstream image server' },
+            { status: 502 }
+        );
+    }
 
     if (!upstream.ok) {
         return NextResponse.json(
@@ -56,7 +79,7 @@ export async function GET(req: NextRequest) {
     return new NextResponse(buffer, {
         headers: {
             'Content-Type': contentType,
-            'Cache-Control': 'public, max-age=86400, immutable',
+            'Cache-Control': `public, max-age=${CACHE_MAX_AGE}, immutable`,
             'Access-Control-Allow-Origin': '*',
         },
     });

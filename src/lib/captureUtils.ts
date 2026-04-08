@@ -19,18 +19,32 @@ export async function captureElementToBlob(
     // Wait for every <img> inside the capture target to finish loading.
     const imgs = Array.from(element.querySelectorAll('img'));
     await Promise.all(
-        imgs.map((img) =>
-            img.complete
-                ? Promise.resolve()
-                : new Promise<void>((resolve) => {
-                      img.addEventListener('load', () => resolve(), {
-                          once: true,
-                      });
-                      img.addEventListener('error', () => resolve(), {
-                          once: true,
-                      });
-                  })
-        )
+        imgs.map((img) => {
+            // Already settled: either loaded successfully or failed.
+            if (img.complete) {
+                if (img.naturalWidth === 0) {
+                    console.warn(
+                        '[captureElementToBlob] Image already in error state:',
+                        img.src
+                    );
+                }
+                return Promise.resolve();
+            }
+            return new Promise<void>((resolve) => {
+                img.addEventListener('load', () => resolve(), { once: true });
+                img.addEventListener(
+                    'error',
+                    (e) => {
+                        console.warn(
+                            '[captureElementToBlob] Image failed to load:',
+                            (e.target as HTMLImageElement).src
+                        );
+                        resolve();
+                    },
+                    { once: true }
+                );
+            });
+        })
     );
 
     const captureOptions: Options = {
