@@ -1,4 +1,6 @@
-import { toBlob, Options } from 'html-to-image';
+import { toBlob } from 'html-to-image';
+
+type ToBlobOptions = NonNullable<Parameters<typeof toBlob>[1]>;
 
 /**
  * Captures a DOM element as a PNG Blob.
@@ -14,7 +16,7 @@ import { toBlob, Options } from 'html-to-image';
  */
 export async function captureElementToBlob(
     element: HTMLElement,
-    options: Options = {}
+    options: ToBlobOptions = {}
 ): Promise<Blob> {
     // Wait for every <img> inside the capture target to finish loading.
     const imgs = Array.from(element.querySelectorAll('img'));
@@ -47,7 +49,7 @@ export async function captureElementToBlob(
         })
     );
 
-    const captureOptions: Options = {
+    const captureOptions: ToBlobOptions = {
         cacheBust: true,
         includeQueryParams: true,
         pixelRatio: 2,
