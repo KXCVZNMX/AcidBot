@@ -33,10 +33,27 @@ export async function captureElementToBlob(
                 return Promise.resolve();
             }
             return new Promise<void>((resolve) => {
-                img.addEventListener('load', () => resolve(), { once: true });
+                // Safety-net: resolve after 15 s so a single stuck image
+                // cannot block the capture indefinitely.
+                const timeout = setTimeout(() => {
+                    console.warn(
+                        '[captureElementToBlob] Timed out waiting for image:',
+                        img.src
+                    );
+                    resolve();
+                }, 15000);
+                img.addEventListener(
+                    'load',
+                    () => {
+                        clearTimeout(timeout);
+                        resolve();
+                    },
+                    { once: true }
+                );
                 img.addEventListener(
                     'error',
                     (e) => {
+                        clearTimeout(timeout);
                         console.warn(
                             '[captureElementToBlob] Image failed to load:',
                             (e.target as HTMLImageElement).src
