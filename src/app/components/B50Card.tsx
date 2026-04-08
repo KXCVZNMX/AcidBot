@@ -96,11 +96,12 @@ const determineSyncImage = (sync: string | null) => {
     }
 };
 
-const determineStarCount = (dx: string) => {
+const determineStarCount = (dx: string, eager: boolean) => {
     const dxScore = dx.split('/');
     const achievedDx = parseInt(dxScore[0].replace(/,/g, ''));
     const maxDx = parseInt(dxScore[1].replace(/,/g, ''));
     const percentage = achievedDx / maxDx;
+    const loading = eager ? 'eager' : ('lazy' as const);
     if (percentage >= 0.97) {
         return (
             <Image
@@ -108,6 +109,7 @@ const determineStarCount = (dx: string) => {
                 alt={'dx stars'}
                 width={52}
                 className={'absolute top-21.5 left-50.5'}
+                loading={loading}
             />
         );
     } else if (percentage >= 0.95) {
@@ -117,6 +119,7 @@ const determineStarCount = (dx: string) => {
                 alt={'dx stars'}
                 width={55}
                 className={'absolute top-21.5 left-50.25'}
+                loading={loading}
             />
         );
     } else if (percentage >= 0.93) {
@@ -126,6 +129,7 @@ const determineStarCount = (dx: string) => {
                 alt={'dx stars'}
                 width={60}
                 className={'absolute top-21.25 left-49.5'}
+                loading={loading}
             />
         );
     } else if (percentage >= 0.9) {
@@ -135,6 +139,7 @@ const determineStarCount = (dx: string) => {
                 alt={'dx stars'}
                 width={65}
                 className={'absolute top-21.25 left-49'}
+                loading={loading}
             />
         );
     } else if (percentage >= 0.85) {
@@ -144,6 +149,7 @@ const determineStarCount = (dx: string) => {
                 alt={'dx stars'}
                 width={65}
                 className={'absolute top-21.25 left-48.5'}
+                loading={loading}
             />
         );
     } else {
@@ -167,7 +173,7 @@ const determineBackgroundColor = (diff: string) => {
     }
 };
 
-export default function B50Card({ info }: { info: MSSB50 }) {
+export default function B50Card({ info, eager = false }: { info: MSSB50; eager?: boolean }) {
     const backgroundColor = determineBackgroundColor(info.diff);
     const textColor = info.diff === 'remaster' ? '#9e45e2' : '#fff';
     const textShadow =
@@ -193,6 +199,7 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                     alt={'jacket'}
                     width={75}
                     height={75}
+                    loading={eager ? 'eager' : 'lazy'}
                     className={
                         'absolute left-3 top-3 border-4 border-b-0 border-white rounded-lg'
                     }
@@ -232,27 +239,31 @@ export default function B50Card({ info }: { info: MSSB50 }) {
                     src={info.isDx === 'dx' ? MusicDX : MusicSTD}
                     alt={'music_dx_std'}
                     width={50}
+                    loading={eager ? 'eager' : 'lazy'}
                     className={'absolute top-22 left-6 '}
                 />
                 <Image
                     src={determineRankImage(info.rank)}
                     alt={'rank'}
                     width={50}
+                    loading={eager ? 'eager' : 'lazy'}
                     className={'absolute top-19.75 left-22.5'}
                 />
                 <Image
                     src={determineComboImage(info.combo)}
                     alt={'combo'}
                     width={28}
+                    loading={eager ? 'eager' : 'lazy'}
                     className={'absolute top-18.75 left-36.25'}
                 />
                 <Image
                     src={determineSyncImage(info.sync)}
                     alt={'sync'}
                     width={28}
+                    loading={eager ? 'eager' : 'lazy'}
                     className={'absolute top-18.75 left-43.25'}
                 />
-                {determineStarCount(info.dx)}
+                {determineStarCount(info.dx, eager)}
             </div>
         </div>
     );

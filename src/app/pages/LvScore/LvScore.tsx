@@ -14,7 +14,7 @@ import B50Card from '@/app/components/B50Card';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
 import LvScoreImageRenderer from '@/app/components/LvScoreImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
-import { toBlob } from 'html-to-image';
+import { captureElementToBlob } from '@/lib/captureUtils';
 
 export default function LvScore() {
     const [level, setLevel] = useState('1');
@@ -183,15 +183,7 @@ export default function LvScore() {
                 throw new Error('Image renderer not ready');
             }
 
-            const blob = await toBlob(captureRef.current, {
-                cacheBust: true,
-                includeQueryParams: true,
-                pixelRatio: 2,
-            });
-
-            if (!blob) {
-                throw new Error('Failed to generate image blob');
-            }
+            const blob = await captureElementToBlob(captureRef.current);
 
             const url = URL.createObjectURL(blob);
             setImageUrl((prev) => {

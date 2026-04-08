@@ -41,12 +41,14 @@ export default function B50ImageRenderer({
                     src={Logo}
                     alt={'logo'}
                     height={120}
+                    loading={'eager'}
                     className={'absolute top-15 left-5'}
                 />
                 <Image
                     src={nameplate}
                     alt={'nameplate'}
                     width={800}
+                    loading={'eager'}
                     className={'absolute top-8.75 left-75 rounded-xl'}
                 />
                 {profile ? (
@@ -56,6 +58,8 @@ export default function B50ImageRenderer({
                             alt={'pfp'}
                             width={100}
                             height={100}
+                            unoptimized
+                            loading={'eager'}
                             className={'absolute top-12.5 left-79.25 z-20'}
                         />
                         <Image
@@ -63,6 +67,7 @@ export default function B50ImageRenderer({
                             alt={'trophy'}
                             width={220}
                             height={20}
+                            loading={'eager'}
                             className={'absolute top-13.25 left-110 z-20'}
                         />
                         <p
@@ -86,6 +91,7 @@ export default function B50ImageRenderer({
                             alt={'rating plate'}
                             width={110}
                             height={30}
+                            loading={'eager'}
                             className={'absolute top-19.75 left-142.5 z-20'}
                         />
                         <div
@@ -100,6 +106,8 @@ export default function B50ImageRenderer({
                             alt={'dan'}
                             width={72}
                             height={30}
+                            unoptimized
+                            loading={'eager'}
                             className={'absolute top-29 left-106.25 z-20'}
                         />
                         <Image
@@ -107,6 +115,8 @@ export default function B50ImageRenderer({
                             alt={'dan'}
                             width={60}
                             height={35}
+                            unoptimized
+                            loading={'eager'}
                             className={'absolute top-28.5 left-126.25 z-20'}
                         />
                         <Image
@@ -114,6 +124,8 @@ export default function B50ImageRenderer({
                             alt={'dan'}
                             width={25}
                             height={25}
+                            unoptimized
+                            loading={'eager'}
                             className={'absolute top-29.5 left-147.5 z-20'}
                         />
                         <p
@@ -138,7 +150,7 @@ export default function B50ImageRenderer({
 
                 <div className={'absolute top-57.5 grid grid-cols-5 gap-2 p-3'}>
                     {oldSong.map((s, idx) => (
-                        <B50Card info={s} key={`old-${idx}`} />
+                        <B50Card info={s} key={`old-${idx}`} eager />
                     ))}
 
                     <hr
@@ -148,7 +160,7 @@ export default function B50ImageRenderer({
                     />
 
                     {newSong.map((s, idx) => (
-                        <B50Card info={s} key={`new-${idx}`} />
+                        <B50Card info={s} key={`new-${idx}`} eager />
                     ))}
                 </div>
 

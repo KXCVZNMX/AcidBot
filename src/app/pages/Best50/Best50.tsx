@@ -33,7 +33,7 @@ import NP_yj from '../../../../public/b50/NP_yj.webp';
 import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import Image from 'next/image';
-import { toBlob } from 'html-to-image';
+import { captureElementToBlob } from '@/lib/captureUtils';
 
 const NP = [
     NP_bhx,
@@ -179,15 +179,7 @@ export default function Best50() {
                 throw new Error('Image renderer not ready');
             }
 
-            const blob = await toBlob(captureRef.current, {
-                cacheBust: true,
-                includeQueryParams: true,
-                pixelRatio: 2,
-            });
-
-            if (!blob) {
-                throw new Error('Failed to generate image blob');
-            }
+            const blob = await captureElementToBlob(captureRef.current);
 
             const url = URL.createObjectURL(blob);
             setImageUrl((prev) => {
