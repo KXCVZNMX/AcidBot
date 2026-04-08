@@ -5,18 +5,43 @@ import { auth } from '@/auth';
 import { unauthorized } from 'next/navigation';
 import fetchPage from '@/lib/fetchPage';
 
+/**
+ * Rewrite an external image URL to a same-origin proxy path.
+ * html-to-image captures the DOM via an SVG foreignObject drawn onto a
+ * canvas.  On Safari and mobile WebKit, cross-origin <img> elements
+ * silently fail to appear in the canvas output.  Routing all profile
+ * images through our own /api/imageProxy endpoint keeps every resource
+ * same-origin so the capture works correctly on all platforms.
+ */
+function toProxiedUrl(src: string): string {
+    if (!src) return src;
+    try {
+        const u = new URL(src);
+        // Only proxy http(s) URLs that are genuinely cross-origin.
+        if (u.protocol === 'http:' || u.protocol === 'https:') {
+            return `/api/imageProxy?url=${encodeURIComponent(src)}`;
+        }
+    } catch {
+        // relative URL or data: URI – leave as-is
+    }
+    return src;
+}
+
 export function parseProfileBlock(html: string): ParsedProfile | null {
     const $ = cheerio.load(html);
 
     const container = $('div.basic_block.p_10.f_0').first();
     if (container.length === 0) return null;
 
-    const profilePicture =
-        container.find('img.w_112.f_l').first().attr('src') ?? '';
-    const dan =
-        container.find('img.h_35.f_l:not(.p_l_10)').first().attr('src') ?? '';
-    const rank =
-        container.find('img.p_l_10.h_35.f_l').first().attr('src') ?? '';
+    const profilePicture = toProxiedUrl(
+        container.find('img.w_112.f_l').first().attr('src') ?? ''
+    );
+    const dan = toProxiedUrl(
+        container.find('img.h_35.f_l:not(.p_l_10)').first().attr('src') ?? ''
+    );
+    const rank = toProxiedUrl(
+        container.find('img.p_l_10.h_35.f_l').first().attr('src') ?? ''
+    );
     const userName = container
         .find('div.name_block.f_l.f_16')
         .first()
@@ -32,8 +57,9 @@ export function parseProfileBlock(html: string): ParsedProfile | null {
     let userCollectionCount: UserCollectionCount | null = null;
 
     if (collectionDiv.length > 0) {
-        const img =
-            collectionDiv.find('img.h_30.m_3.v_m').first().attr('src') ?? '';
+        const img = toProxiedUrl(
+            collectionDiv.find('img.h_30.m_3.v_m').first().attr('src') ?? ''
+        );
 
         const text = collectionDiv
             .clone()

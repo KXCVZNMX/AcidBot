@@ -56,6 +56,7 @@ export default function B50ImageRenderer({
                             alt={'pfp'}
                             width={100}
                             height={100}
+                            unoptimized
                             className={'absolute top-12.5 left-79.25 z-20'}
                         />
                         <Image
@@ -100,6 +101,7 @@ export default function B50ImageRenderer({
                             alt={'dan'}
                             width={72}
                             height={30}
+                            unoptimized
                             className={'absolute top-29 left-106.25 z-20'}
                         />
                         <Image
@@ -107,6 +109,7 @@ export default function B50ImageRenderer({
                             alt={'dan'}
                             width={60}
                             height={35}
+                            unoptimized
                             className={'absolute top-28.5 left-126.25 z-20'}
                         />
                         <Image
@@ -114,6 +117,7 @@ export default function B50ImageRenderer({
                             alt={'dan'}
                             width={25}
                             height={25}
+                            unoptimized
                             className={'absolute top-29.5 left-147.5 z-20'}
                         />
                         <p
