@@ -101,7 +101,7 @@ const determineStarCount = (dx: string, eager: boolean) => {
     const achievedDx = parseInt(dxScore[0].replace(/,/g, ''));
     const maxDx = parseInt(dxScore[1].replace(/,/g, ''));
     const percentage = achievedDx / maxDx;
-    const loading = eager ? ('eager' as const) : ('lazy' as const);
+    const loading = eager ? 'eager' : ('lazy' as const);
     if (percentage >= 0.97) {
         return (
             <Image

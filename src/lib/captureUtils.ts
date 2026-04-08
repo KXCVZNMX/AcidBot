@@ -2,6 +2,9 @@ import { toBlob } from 'html-to-image';
 
 type ToBlobOptions = NonNullable<Parameters<typeof toBlob>[1]>;
 
+/** How long to wait for a single image to load before giving up and proceeding with the capture. */
+const IMAGE_LOAD_TIMEOUT_MS = 15_000;
+
 /**
  * Captures a DOM element as a PNG Blob.
  *
@@ -41,7 +44,7 @@ export async function captureElementToBlob(
                         img.src
                     );
                     resolve();
-                }, 15000);
+                }, IMAGE_LOAD_TIMEOUT_MS);
                 img.addEventListener(
                     'load',
                     () => {
