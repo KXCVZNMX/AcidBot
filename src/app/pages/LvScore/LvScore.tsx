@@ -185,6 +185,7 @@ export default function LvScore() {
 
             const blob = await toBlob(captureRef.current, {
                 cacheBust: true,
+                includeQueryParams: true,
                 pixelRatio: 2,
             });
 

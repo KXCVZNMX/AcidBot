@@ -181,6 +181,7 @@ export default function Best50() {
 
             const blob = await toBlob(captureRef.current, {
                 cacheBust: true,
+                includeQueryParams: true,
                 pixelRatio: 2,
             });
 
