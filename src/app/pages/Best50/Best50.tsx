@@ -356,7 +356,7 @@ export default function Best50() {
                         <div
                             className={
                                 'absolute inset-0 flex items-center justify-start text-[26px] ' +
-                                `${rating < 14000 ?'tracking-[0.19em] pl-34' : 'tracking-[0.24em] pl-36.5'}`
+                                `${rating < 14000 ?'tracking-[0.19em] pl-34.25' : 'tracking-[0.18em] pl-37'}`
                             }
                         >
                             {rating}

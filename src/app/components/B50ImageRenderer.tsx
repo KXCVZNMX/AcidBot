@@ -89,14 +89,14 @@ export default function B50ImageRenderer({
                         <Image
                             src={determineRatingPlate(rating)}
                             alt={'rating plate'}
-                            width={110}
-                            height={30}
+                            height={32}
+                            width={163}
                             loading={'eager'}
                             className={'absolute top-19.75 left-142.5 z-20'}
                         />
                         <div
                             className={
-                                'absolute top-20.75 left-154.25 text-white tracking-widest z-20'
+                                'absolute top-20.75 left-162 text-white tracking-[0.1875em] z-20'
                             }
                         >
                             {rating}
@@ -126,11 +126,11 @@ export default function B50ImageRenderer({
                             height={25}
                             unoptimized
                             loading={'eager'}
-                            className={'absolute top-29.5 left-147.5 z-20'}
+                            className={'absolute top-29.5 left-143.5 z-20'}
                         />
                         <p
                             className={
-                                'absolute top-29.25 left-155 text-gray-900/90 font-semibold z-20'
+                                'absolute top-29.25 left-151 text-gray-900/90 font-semibold z-20'
                             }
                         >
                             {profile.userCollectionCount!.text!}
@@ -139,12 +139,12 @@ export default function B50ImageRenderer({
                 ) : null}
                 <div
                     className={
-                        'absolute w-93.75 h-27.5 left-77.5 top-11.25 bg-white rounded-lg border-gray-500 border-2 z-10'
+                        'absolute w-107.75 h-27.5 left-77.5 top-11.25 bg-white rounded-lg border-gray-500 border-2 z-10'
                     }
                 />
                 <div
                     className={
-                        'absolute w-94.25 h-27.5 left-78.25 top-12.5 bg-gray-500 rounded-lg z-0'
+                        'absolute w-108.25 h-27.5 left-78.25 top-12.5 bg-gray-500 rounded-lg z-0'
                     }
                 />
 
