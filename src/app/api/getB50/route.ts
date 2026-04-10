@@ -3,7 +3,7 @@ import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
-import { CIRCLE_SONGS, PRISM_PLUS_SONGS, RANK_DEFINITIONS } from '@/lib/consts';
+import { RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
@@ -29,8 +29,31 @@ function getRatingByAchievement(achievement: number, lvConstant: number) {
     }
 }
 
-function isNew(name: string) {
-    return PRISM_PLUS_SONGS.includes(name) || CIRCLE_SONGS.includes(name);
+function parseDate(input: string): Date {
+    if (!/^\d{8}$/.test(input)) {
+        throw new Error('Invalid format. Expected YYYYMMDD');
+    }
+
+    const year = Number(input.slice(0, 4));
+    const month = Number(input.slice(4, 6)) - 1; // JS months are 0-based
+    const day = Number(input.slice(6, 8));
+
+    const date = new Date(year, month, day);
+
+    // Validate to catch invalid dates like 20250230
+    if (
+        date.getFullYear() !== year ||
+        date.getMonth() !== month ||
+        date.getDate() !== day
+    ) {
+        throw new Error('Invalid date');
+    }
+
+    return date;
+}
+
+function isNewByDate(date: string) {
+    return parseDate(date) >= parseDate('20250724'); // Prism Plus Release Date
 }
 
 export async function GET(req: NextRequest) {
@@ -224,7 +247,7 @@ export async function GET(req: NextRequest) {
                 getRatingByAchievement(r.achievement, r.levelConst)
             );
 
-            if (isNew(r.name)) b15.push(r);
+            if (isNewByDate(r.dateIntlAdded)) b15.push(r);
             else b35.push(r);
         }
 
