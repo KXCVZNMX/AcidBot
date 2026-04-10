@@ -369,4 +369,5 @@ export const CIRCLE_SONGS: Readonly<string[]> = [
     '7 Wonders',
     'Break The Speakers',
     'Galaxy Blaster',
+    'Customized Justice',
 ];
