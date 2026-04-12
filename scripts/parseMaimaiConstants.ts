@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import * as dotenv from 'dotenv';
-import {MongoClient} from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 interface SongData {
     sort: string;
     title: string;
     artist: string;
-    catcode: string;                    // Category
-    version: string;                    // Version code
+    catcode: string; // Category
+    version: string; // Version code
     bpm: string;
     image_url: string;
     release: string;
@@ -46,24 +46,27 @@ interface SongData {
     dx_lev_mas_notes_break: string;
     dx_lev_mas_designer: string;
     wiki_url: string;
-    intl: string;                       // Internation Ver. Availability
+    intl: string; // Internation Ver. Availability
     date_added: string;
     date_intl_added: string;
-    date?: string;                      // isNew
+    date?: string; // isNew
 }
 
-dotenv.config({path: './.env.local'});
+dotenv.config({ path: './.env.local' });
 
-const fileContent = fs.readFileSync('./otoge-db/maimai/data/music-ex-intl.json', 'utf8');
+const fileContent = fs.readFileSync(
+    './otoge-db/maimai/data/music-ex-intl.json',
+    'utf8'
+);
 const songs: SongData[] = JSON.parse(fileContent);
 
 (async () => {
     const uri = process.env.MONGODB_URI || '';
 
-    console.log(uri)
+    console.log(uri);
 
     let client: MongoClient | undefined;
-    
+
     try {
         client = new MongoClient(uri);
         await client.connect();

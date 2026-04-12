@@ -2,54 +2,54 @@ name: Update Song Data
 run-name: Update Internation Song Data
 
 on:
-  schedule:
-    # Run at 00:00 UTC every day
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    schedule:
+        # Run at 00:00 UTC every day
+        - cron: '0 0 * * *'
+    workflow_dispatch:
 
 jobs:
-  update-song:
-    runs-on: ubuntu-latest
+    update-song:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout my repo
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout my repo
+              uses: actions/checkout@v4
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: '10.33.0'
-          run_install: true
+            - name: Set up pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: '10.33.0'
+                  run_install: true
 
-      - name: Install Dependencies
-        run: pnpm install
+            - name: Install Dependencies
+              run: pnpm install
 
-      - name: Clone maimai data repo
-        run: git clone https://github.com/zvuc/otoge-db.git
+            - name: Clone maimai data repo
+              run: git clone https://github.com/zvuc/otoge-db.git
 
-      - name: Set yarn to use Corepack
-        run: corepack enable
+            - name: Set yarn to use Corepack
+              run: corepack enable
 
-      - name: Install dependencies
-        working-directory: otoge-db
-        run: yarn install
+            - name: Install dependencies
+              working-directory: otoge-db
+              run: yarn install
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: '3.12'
 
-      - name: Install Python deps and run update
-        working-directory: otoge-db
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install -r requirements.txt
-          yarn fetch-intl --maimai
+            - name: Install Python deps and run update
+              working-directory: otoge-db
+              run: |
+                  python -m venv .venv
+                  source .venv/bin/activate
+                  pip install -r requirements.txt
+                  yarn fetch-intl --maimai
 
-      - name: Get Data and Upload to DB
-        working-directory: ./
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: |
-          tsc --project tsconfig.scripts.json
-          node ./scripts/parseMaimaiConstants.js
+            - name: Get Data and Upload to DB
+              working-directory: ./
+              env:
+                  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+              run: |
+                  tsc --project tsconfig.scripts.json
+                  node ./scripts/parseMaimaiConstants.js

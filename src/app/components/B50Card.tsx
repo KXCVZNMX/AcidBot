@@ -173,7 +173,13 @@ const determineBackgroundColor = (diff: string) => {
     }
 };
 
-export default function B50Card({ info, eager = false }: { info: MSSB50; eager?: boolean }) {
+export default function B50Card({
+    info,
+    eager = false,
+}: {
+    info: MSSB50;
+    eager?: boolean;
+}) {
     const backgroundColor = determineBackgroundColor(info.diff);
     const textColor = info.diff === 'remaster' ? '#9e45e2' : '#fff';
     const textShadow =

@@ -1,8 +1,8 @@
 'use client';
 
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import {getCookie, chooseNameplate, determineRatingPlate} from '@/lib/util';
+import { getCookie, chooseNameplate, determineRatingPlate } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50CardGrid, { B50_GRID_BASE_WIDTH } from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
@@ -78,7 +78,10 @@ export default function Best50() {
     const [gridScale, setGridScale] = useState(1);
     const [scaledGridHeight, setScaledGridHeight] = useState(0);
 
-    const rating =  [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
+    const rating = [...oldSong, ...newSong].reduce(
+        (sum, s) => sum + s.rating,
+        0
+    );
 
     const captureRef = useRef<HTMLDivElement>(null);
     const gridShellRef = useRef<HTMLDivElement>(null);
@@ -356,7 +359,7 @@ export default function Best50() {
                         <div
                             className={
                                 'absolute inset-0 flex items-center justify-start text-[26px] ' +
-                                `${rating < 14000 ?'tracking-[0.19em] pl-34.25' : 'tracking-[0.18em] pl-37'}`
+                                `${rating < 14000 ? 'tracking-[0.19em] pl-34.25' : 'tracking-[0.18em] pl-37'}`
                             }
                         >
                             {rating}

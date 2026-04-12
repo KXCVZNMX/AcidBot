@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         if (results.length === 0) {
             return NextResponse.json(
                 {
-                    error: 'Either the page didn\'t return a redirect (get a new clal), or you don\'t have any results for this level',
+                    error: "Either the page didn't return a redirect (get a new clal), or you don't have any results for this level",
                 },
                 { status: 500 }
             );
@@ -71,7 +71,8 @@ export async function POST(req: NextRequest) {
         const docs = await collection
             .find(
                 { title: { $in: titles } },
-                { projection: {
+                {
+                    projection: {
                         title: 1,
                         image_url: 1,
                         date_intl_added: 1,
@@ -85,7 +86,7 @@ export async function POST(req: NextRequest) {
                         dx_lev_exp_i: 1,
                         dx_lev_mas_i: 1,
                         dx_lev_remas_i: 1,
-                    }
+                    },
                 }
             )
             .toArray();
@@ -93,19 +94,19 @@ export async function POST(req: NextRequest) {
         const docMap = new Map<
             string,
             {
-                title: string,
-                image_url: string,
-                date_intl_added: string,
-                lev_bas_i: string,
-                lev_adv_i: string,
-                lev_exp_i: string,
-                lev_mas_i: string,
-                lev_remas_i: string,
-                dx_lev_bas_i: string,
-                dx_lev_adv_i: string,
-                dx_lev_exp_i: string,
-                dx_lev_mas_i: string,
-                dx_lev_remas_i: string,
+                title: string;
+                image_url: string;
+                date_intl_added: string;
+                lev_bas_i: string;
+                lev_adv_i: string;
+                lev_exp_i: string;
+                lev_mas_i: string;
+                lev_remas_i: string;
+                dx_lev_bas_i: string;
+                dx_lev_adv_i: string;
+                dx_lev_exp_i: string;
+                dx_lev_mas_i: string;
+                dx_lev_remas_i: string;
             }
         >();
         for (const d of docs) {
@@ -113,19 +114,19 @@ export async function POST(req: NextRequest) {
                 docMap.set(
                     d.title,
                     d as unknown as {
-                        title: string,
-                        image_url: string,
-                        date_intl_added: string,
-                        lev_bas_i: string,
-                        lev_adv_i: string,
-                        lev_exp_i: string,
-                        lev_mas_i: string,
-                        lev_remas_i: string,
-                        dx_lev_bas_i: string,
-                        dx_lev_adv_i: string,
-                        dx_lev_exp_i: string,
-                        dx_lev_mas_i: string,
-                        dx_lev_remas_i: string,
+                        title: string;
+                        image_url: string;
+                        date_intl_added: string;
+                        lev_bas_i: string;
+                        lev_adv_i: string;
+                        lev_exp_i: string;
+                        lev_mas_i: string;
+                        lev_remas_i: string;
+                        dx_lev_bas_i: string;
+                        dx_lev_adv_i: string;
+                        dx_lev_exp_i: string;
+                        dx_lev_mas_i: string;
+                        dx_lev_remas_i: string;
                     }
                 );
         }
@@ -143,19 +144,31 @@ export async function POST(req: NextRequest) {
             let levelConst: string = '0';
 
             if (r.isDx === 'dx') {
-                if (r.diff === 'basic' && qRes.dx_lev_bas_i) levelConst = qRes.dx_lev_bas_i;
-                else if (r.diff === 'advanced' && qRes.dx_lev_adv_i) levelConst = qRes.dx_lev_adv_i;
-                else if (r.diff === 'expert' && qRes.dx_lev_exp_i) levelConst = qRes.dx_lev_exp_i;
-                else if (r.diff === 'master' && qRes.dx_lev_mas_i) levelConst = qRes.dx_lev_mas_i;
-                else if (r.diff === 'remaster' && qRes.dx_lev_remas_i) levelConst = qRes.dx_lev_remas_i;
+                if (r.diff === 'basic' && qRes.dx_lev_bas_i)
+                    levelConst = qRes.dx_lev_bas_i;
+                else if (r.diff === 'advanced' && qRes.dx_lev_adv_i)
+                    levelConst = qRes.dx_lev_adv_i;
+                else if (r.diff === 'expert' && qRes.dx_lev_exp_i)
+                    levelConst = qRes.dx_lev_exp_i;
+                else if (r.diff === 'master' && qRes.dx_lev_mas_i)
+                    levelConst = qRes.dx_lev_mas_i;
+                else if (r.diff === 'remaster' && qRes.dx_lev_remas_i)
+                    levelConst = qRes.dx_lev_remas_i;
             } else if (r.isDx === 'std') {
-                if (r.diff === 'basic' && qRes.lev_bas_i) levelConst = qRes.lev_bas_i;
-                else if (r.diff === 'advanced' && qRes.lev_adv_i) levelConst = qRes.lev_adv_i;
-                else if (r.diff === 'expert' && qRes.lev_exp_i) levelConst = qRes.lev_exp_i;
-                else if (r.diff === 'master' && qRes.lev_mas_i) levelConst = qRes.lev_mas_i;
-                else if (r.diff === 'remaster' && qRes.lev_remas_i) levelConst = qRes.lev_remas_i;
+                if (r.diff === 'basic' && qRes.lev_bas_i)
+                    levelConst = qRes.lev_bas_i;
+                else if (r.diff === 'advanced' && qRes.lev_adv_i)
+                    levelConst = qRes.lev_adv_i;
+                else if (r.diff === 'expert' && qRes.lev_exp_i)
+                    levelConst = qRes.lev_exp_i;
+                else if (r.diff === 'master' && qRes.lev_mas_i)
+                    levelConst = qRes.lev_mas_i;
+                else if (r.diff === 'remaster' && qRes.lev_remas_i)
+                    levelConst = qRes.lev_remas_i;
             } else {
-                console.warn(`No sheet info for ${r.name} diff ${r.diff} - skipping`)
+                console.warn(
+                    `No sheet info for ${r.name} diff ${r.diff} - skipping`
+                );
                 levelConst = '0';
             }
 

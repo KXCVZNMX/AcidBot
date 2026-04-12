@@ -72,8 +72,7 @@ export async function GET(req: NextRequest) {
         );
     }
 
-    const contentType =
-        upstream.headers.get('content-type') ?? 'image/png';
+    const contentType = upstream.headers.get('content-type') ?? 'image/png';
     const buffer = await upstream.arrayBuffer();
 
     return new NextResponse(buffer, {
