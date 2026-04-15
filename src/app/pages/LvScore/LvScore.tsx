@@ -78,7 +78,7 @@ export default function LvScore() {
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
             };
 
-            const res = await fetch('/api/getLevel', {
+            const res = await fetch('/api/v1/getLevel', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default function LvScore() {
     );
 
     const fetchCurrentRating = async () => {
-        const res = await fetch('/api/fetchOldB50', {
+        const res = await fetch('/api/v1/fetchOldB50', {
             method: 'GET',
         });
 
@@ -150,7 +150,7 @@ export default function LvScore() {
         try {
             if (!profile) {
                 const profileRes = await fetch(
-                    `/api/fetchUserDetail?clal=${clal}`,
+                    `/api/v1/fetchUserDetail?clal=${clal}`,
                     {
                         method: 'GET',
                     }

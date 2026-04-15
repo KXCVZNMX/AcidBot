@@ -50,7 +50,7 @@ export default function UserProfile() {
             }
 
             try {
-                const res = await fetch('/api/fetchOldB50', {
+                const res = await fetch('/api/v1/fetchOldB50', {
                     method: 'GET',
                 });
 
@@ -63,7 +63,7 @@ export default function UserProfile() {
                 setNewSong(b50.b15);
 
                 const resOldB50 = await fetch(
-                    `/api/fetchOldB50Profile?id=${session?.user?.id ?? ''}`,
+                    `/api/v1/fetchOldB50Profile?id=${session?.user?.id ?? ''}`,
                     {
                         method: 'POST',
                     }

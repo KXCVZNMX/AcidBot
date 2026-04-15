@@ -24,8 +24,8 @@ export default function ClalGuide() {
     const bookmarklet =
         'javascript:' +
         '(function () {' +
-        "var s=document.createElement('script');" +
-        `s.src='${site_link}/api/getClal';` +
+        'var s=document.createElement(\'script\');' +
+        `s.src='${site_link}/api/v1/getClal';` +
         'document.body.appendChild(s);' +
         '})();void(0);';
 
