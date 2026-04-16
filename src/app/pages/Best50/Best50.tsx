@@ -245,7 +245,7 @@ export default function Best50() {
                 b15: newSong,
             };
 
-            const res = await fetch('/api/v1/SaveB50', {
+            const res = await fetch('/api/v1/saveB50', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
