@@ -30,6 +30,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/b50"
 
+        400:
+          $ref: "#/components/responses/MalformedRequest"
+
         401:
           $ref: "#/components/responses/InvalidClalToken"
 
@@ -64,6 +67,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+        400:
+          $ref: "#/components/responses/MalformedRequest"
+
         500:
           description: Database error
           content:
@@ -88,6 +94,9 @@ paths:
               schema:
                 type: string
                 format: binary
+
+        400:
+          $ref: "#/components/responses/MalformedRequest"
 
         401:
           $ref: "#/components/responses/InvalidClalToken"
@@ -118,11 +127,7 @@ paths:
           description: Successfully saved b50
 
         400:
-          description: Invalid request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/MalformedRequest"
           
         500:
           description: Database error
@@ -153,6 +158,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/b50"
+
+        400:
+          $ref: "#/components/responses/MalformedRequest"
 
         401:
           $ref: "#/components/responses/InvalidClalToken"
@@ -187,6 +195,9 @@ paths:
                 type: string
                 format: binary
 
+        400:
+          $ref: "#/components/responses/MalformedRequest"
+
         401:
           $ref: "#/components/responses/InvalidClalToken"
 
@@ -211,6 +222,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/b50WithTags"
+
+        400:
+          $ref: "#/components/responses/MalformedRequest"
 
         404:
           description: User not found or there is no previously fetched b50
@@ -243,6 +257,9 @@ paths:
                 type: string
                 format: binary
 
+        400:
+          $ref: "#/components/responses/MalformedRequest"
+
         404:
           description: User not found or there is no previously fetched b50
           content:
@@ -269,6 +286,9 @@ paths:
       responses:
         201:
           description: Successfully set clal token
+
+        400:
+          $ref: "#/components/responses/MalformedRequest"
 
         404:
           description: User not found or there is no previously fetched b50
@@ -315,6 +335,16 @@ components:
           example:
             error: Upstream service unavailable
             code: UPSTREAM_MAINTENANCE
+
+    MalformedRequest:
+      description: Malformed request values such as clal or user id
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Malformed request
+            code: MALFORMED_REQUEST
 
   parameters:
     UserId:
