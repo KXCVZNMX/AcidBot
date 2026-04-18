@@ -98,6 +98,39 @@ paths:
         503:
           $ref: "#/components/responses/UpstreamMaintenance"
 
+  /user/{id}/saveB50:
+    post:
+      tags: [b50]
+      summary: Save b50 to database
+      operationId: saveB50
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/splitB50"
+
+      responses:
+        201:
+          description: Successfully saved b50
+
+        400:
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          
+        500:
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /user/{id}/lvScore:
     get:
       tags: [Level Score]
@@ -166,9 +199,90 @@ paths:
   /user/{id}/b50Tags:
     get:
       tags: [Skill Radar]
-      summary: Get a B50 radar derived from the last fetched b50
+      summary: Get a b50 radar values derived from the last fetched b50
+      operationId: b50Tags
+      parameters:
+        - $ref: "#/components/parameters/UserId"
 
+      responses:
+        200:
+          description: Got user b50 with tags
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/b50WithTags"
 
+        404:
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        500:
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /user/{id}/skillRadar:
+    get:
+      tags: [Skill Radar]
+      summary: Get a b50 radar derived from the last fetched b50
+      operationId: skillRadar
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+
+      responses:
+        200:
+          description: Got user skill radar
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+        404:
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        500:
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /user/{id}/setClal:
+    put:
+      tags: [General]
+      summary: Set user clal for use in b50 and level list
+      operationId: setClal
+      parameters:
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/ClalToken"
+          
+      responses:
+        201:
+          description: Successfully set clal token
+
+        404:
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+        500:
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   responses:
@@ -283,3 +397,33 @@ components:
           example: "1ace9e4612c5e020.png"
           description: jackets fetched from https://acid.kvznmx.com/public/maimaiJackets/{jacketURL}
       required: [name, score, diff, dx, isDx, sync, combo, rank, levelConst, rating, dateIntlAdded, achievement, jacketURL]
+
+    splitB50:
+      type: object
+      description: A b50 split into the new 15 and old 35 songs
+      properties:
+        b15:
+          type: array
+          items:
+            $ref: "#/components/schemas/b50"
+        b35:
+          type: array
+          items:
+            $ref: "#/components/schemas/b50"
+      required: [b15, b35]
+
+    b50WithTags:
+      type: object
+      description: Special type used for the skill radar
+      properties:
+        achievement:
+          type: number
+          example: 337
+        levelConst:
+          type: number
+          example: 15.0
+        tags:
+          type: array
+          items:
+            type: number
+          example: [1, 2, 3, 4, 5]
