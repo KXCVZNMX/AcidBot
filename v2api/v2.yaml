@@ -1,0 +1,406 @@
+openapi: 3.1.0
+info:
+  title: AcidBot API v2
+  description: AcidBot API designed for external usage
+  version: 0.1.0
+servers:
+- url: https://acid.kxcvznmx.com/api/v2
+  description: Production server
+- url: http://localhost:3000/api/v2
+  description: Local development
+paths:
+  /user/{id}/b50:
+    get:
+      tags:
+      - b50
+      summary: Get a new user b50
+      operationId: b50
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      - $ref: "#/components/parameters/ClalToken"
+      responses:
+        "200":
+          description: Found user b50
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/b50"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/InvalidClalToken"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "503":
+          $ref: "#/components/responses/UpstreamMaintenance"
+  /user/{id}/oldB50:
+    get:
+      tags:
+      - b50
+      summary: Get the last fetched user b50
+      operationId: oldB50
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: Found old user information
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/b50"
+        "404":
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "500":
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{id}/b50Image:
+    get:
+      tags:
+      - b50
+      summary: Get a new b50 image
+      operationId: b50Img
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      - $ref: "#/components/parameters/ClalToken"
+      responses:
+        "200":
+          description: Generated user b50
+          content:
+            image/png:
+              schema:
+                format: binary
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/InvalidClalToken"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "503":
+          $ref: "#/components/responses/UpstreamMaintenance"
+  /user/{id}/saveB50:
+    post:
+      tags:
+      - b50
+      summary: Save b50 to database
+      operationId: saveB50
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/splitB50"
+        required: true
+      responses:
+        "201":
+          description: Successfully saved b50
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "500":
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{id}/lvScore:
+    get:
+      tags:
+      - Level Score
+      summary: Get a new user level list
+      operationId: levelScore
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      - $ref: "#/components/parameters/ClalToken"
+      - name: level
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          pattern: "^(?:[1-6]|7\\+?|8\\+?|9\\+?|10\\+?|11\\+?|12\\+?|13\\+?|14\\+?|15)$"
+      responses:
+        "200":
+          description: Found user level list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/b50"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/InvalidClalToken"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "503":
+          $ref: "#/components/responses/UpstreamMaintenance"
+  /user/{id}/lvScoreImage:
+    get:
+      tags:
+      - Level Score
+      summary: Get a new user level list image
+      operationId: levelScoreImage
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      - $ref: "#/components/parameters/ClalToken"
+      - name: level
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          pattern: "^(?:[1-6]|7\\+?|8\\+?|9\\+?|10\\+?|11\\+?|12\\+?|13\\+?|14\\+?|15)$"
+      responses:
+        "200":
+          description: Generated user level list
+          content:
+            image/png:
+              schema:
+                format: binary
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/InvalidClalToken"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "503":
+          $ref: "#/components/responses/UpstreamMaintenance"
+  /user/{id}/b50Tags:
+    get:
+      tags:
+      - Skill Radar
+      summary: Get a b50 radar values derived from the last fetched b50
+      operationId: b50Tags
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: Got user b50 with tags
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/b50WithTags"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{id}/skillRadar:
+    get:
+      tags:
+      - Skill Radar
+      summary: Get a b50 radar derived from the last fetched b50
+      operationId: skillRadar
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      responses:
+        "200":
+          description: Got user skill radar
+          content:
+            image/png:
+              schema:
+                format: binary
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{id}/setClal:
+    put:
+      tags:
+      - General
+      summary: Set user clal for use in b50 and level list
+      operationId: setClal
+      parameters:
+      - $ref: "#/components/parameters/UserId"
+      - $ref: "#/components/parameters/ClalToken"
+      responses:
+        "201":
+          description: Successfully set clal token
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          description: User not found or there is no previously fetched b50
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Database error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      required:
+      - code
+      - error
+      properties:
+        error:
+          example: error message
+        code:
+          example: ERROR_CODE
+      description: Error response
+    b50:
+      required:
+      - achievement
+      - combo
+      - dateIntlAdded
+      - diff
+      - dx
+      - isDx
+      - jacketURL
+      - levelConst
+      - name
+      - rank
+      - rating
+      - score
+      - sync
+      properties:
+        name:
+          example: 系ぎて
+        score:
+          example: 101.0000%
+        diff:
+          example: remaster
+        dx:
+          example: 4200 / 4200
+        isDx:
+          description: "It's either \"dx\" or \"std\", representing the type of the\
+            \ chart"
+          example: dx
+        sync:
+          example: FDX+
+          nullable: true
+        combo:
+          example: AP+
+          nullable: true
+        rank:
+          example: SSS+
+          nullable: true
+        levelConst:
+          example: 15.0
+        rating:
+          example: 16750
+        dateIntlAdded:
+          example: "20240229"
+        achievement:
+          example: 101.0
+        jacketURL:
+          description: "jackets fetched from https://acid.kvznmx.com/public/maimaiJackets/{jacketURL}"
+          example: 1ace9e4612c5e020.png
+    splitB50:
+      required:
+      - b15
+      - b35
+      properties:
+        b15:
+          items:
+            $ref: "#/components/schemas/b50"
+        b35:
+          items:
+            $ref: "#/components/schemas/b50"
+      description: A b50 split into the new 15 and old 35 songs
+    b50WithTags:
+      properties:
+        achievement:
+          example: 337
+        levelConst:
+          example: 15.0
+        tags:
+          example:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          items: {}
+      description: Special type used for the skill radar
+  responses:
+    InvalidClalToken:
+      description: "Malformed, invalid, or expired clal token"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Invalid clal token
+            code: INVALID_CLAL_TOKEN
+    UserNotFound:
+      description: Unknown user
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: User not found
+            code: USER_NOT_FOUND
+    UpstreamMaintenance:
+      description: maimaidx-net is temporarily unavailable (e.g. daily maintenance
+        window)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Upstream service unavailable
+            code: UPSTREAM_MAINTENANCE
+    MalformedRequest:
+      description: Malformed request values such as clal or user id
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Malformed request
+            code: MALFORMED_REQUEST
+  parameters:
+    UserId:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema: {}
+    ClalToken:
+      name: clal
+      in: query
+      description: clal token used to fetch data from maimaidx-net
+      required: true
+      style: form
+      explode: true
+      schema:
+        maxLength: 64
+        minLength: 64
+        pattern: "^[A-Za-z0-9]+$"
+        example: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz123456789012
