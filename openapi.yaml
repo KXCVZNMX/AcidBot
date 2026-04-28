@@ -339,7 +339,7 @@ components:
             code: UPSTREAM_MAINTENANCE
 
     MalformedRequest:
-      description: Malformed request values such as clal or user id
+      description: Malformed request values such as clal or user id (i.e. missing clal)
       content:
         application/json:
           schema:
