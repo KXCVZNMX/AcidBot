@@ -280,11 +280,11 @@ export async function GET(req: NextRequest) {
             { userId: id },
             {
                 $set: {
-                    userId: id,
                     b15: slicedB15,
                     b35: slicedB35,
                     updatedAt: new Date(),
                 },
+                $setOnInsert: { userId: id },
             },
             { upsert: true }
         );
