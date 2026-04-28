@@ -1,0 +1,13 @@
+export interface ErrorResponse {
+    error: string;
+    code: ErrorCode;
+}
+
+export enum ErrorCode {
+    USER_NOT_FOUND = 'USER_NOT_FOUND',
+    USER_NOT_FOUND_OR_NO_PREV = 'USER_NOT_FOUND_OR_NO_PREV',
+    INVALID_CLAL_TOKEN = 'INVALID_CLAL_TOKEN',
+    UPSTREAM_MAINTENANCE = 'UPSTREAM_MAINTENANCE',
+    MALFORMED_REQUEST = 'MALFORMED_REQUEST',
+    DATABASE_ERROR = 'DATABASE_ERROR',
+}
