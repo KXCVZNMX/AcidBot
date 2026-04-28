@@ -1,11 +1,11 @@
-'use server';
+'use client';
 
-import { signIn } from '@/auth';
+import { authClient } from '@/lib/auth-client';
 
 export const loginGithub = async () => {
-    await signIn('github');
+    await authClient.signIn.social({ provider: 'github', callbackURL: '/' });
 };
 
 export const loginGoogle = async () => {
-    await signIn('google');
+    await authClient.signIn.social({ provider: 'google', callbackURL: '/' });
 };

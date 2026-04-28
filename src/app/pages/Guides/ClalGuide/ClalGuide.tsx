@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { authClient } from '@/lib/auth-client';
 import React from 'react';
 import Link from 'next/link';
 import Step from '@/app/components/Step';
@@ -9,7 +9,7 @@ import BackButton from '../../../../../public/back-button-svgrepo.svg';
 import Image from 'next/image';
 
 export default function ClalGuide() {
-    const { data: session } = useSession();
+    const { data: session } = authClient.useSession();
 
     const site_link = process.env.SITE_LINK ?? 'https://acid.kvznmx.com';
 

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import HomePageIcon from '../../public/HomeGIF.gif';
 import React from 'react';
 import { auth } from '@/auth';
+import { headers } from 'next/headers';
 import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-    const session = await auth();
+    const session = await auth.api.getSession({ headers: await headers() });
 
     return (
         <>

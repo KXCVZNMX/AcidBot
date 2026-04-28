@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
-import { ObjectId } from 'mongodb';
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;
@@ -13,8 +12,8 @@ export async function GET(req: NextRequest) {
         }
 
         const db = client.db();
-        await db.collection('users').updateOne(
-            { _id: new ObjectId(id) },
+        await db.collection('user').updateOne(
+            { id: id },
             {
                 $set: {
                     clal: clal,

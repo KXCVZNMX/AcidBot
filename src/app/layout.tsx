@@ -3,7 +3,6 @@ import React from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import Navbar from '@/app/components/Navbar';
-import { SessionProvider } from 'next-auth/react';
 
 export default function RootLayout({
     children,
@@ -14,14 +13,9 @@ export default function RootLayout({
         <html lang={'en'} data-theme={'forest'}>
             <body>
                 <SpeedInsights />
-                <SessionProvider
-                    refetchOnWindowFocus={false}
-                    refetchInterval={0}
-                >
-                    <Navbar />
-                    <Analytics />
-                    <div className={'pt-20'}>{children}</div>
-                </SessionProvider>
+                <Navbar />
+                <Analytics />
+                <div className={'pt-20'}>{children}</div>
             </body>
         </html>
     );

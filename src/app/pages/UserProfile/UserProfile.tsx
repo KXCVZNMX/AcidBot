@@ -4,7 +4,7 @@ import Image from 'next/image';
 import DefaultUserIcon from '../../../../public/225-default-avatar.svg';
 import { Best50Songs, MSSB50 } from '@/lib/types';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { authClient } from '@/lib/auth-client';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import RatingChart from '@/app/components/RatingChart';
@@ -31,7 +31,7 @@ export default function UserProfile() {
         }, 2000);
     };
 
-    const { data: session, status } = useSession();
+    const { data: session, isPending } = authClient.useSession();
 
     useEffect(() => {
         if (!getCookie('clal')) {
@@ -42,9 +42,9 @@ export default function UserProfile() {
         }
 
         (async () => {
-            if (status === 'loading') return; // Wait for session to load
+            if (isPending) return; // Wait for session to load
 
-            if (status === 'unauthenticated') {
+            if (!session) {
                 showError('Please sign in to view your profile');
                 return;
             }
@@ -77,7 +77,7 @@ export default function UserProfile() {
                 console.error(error);
             }
         })();
-    }, [status, session]);
+    }, [isPending, session]);
 
     return (
         <>

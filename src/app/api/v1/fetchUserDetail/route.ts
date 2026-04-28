@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 import { ParsedProfile, UserCollectionCount } from '@/lib/types';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { unauthorized } from 'next/navigation';
 import fetchPage from '@/lib/fetchPage';
 
 /**
@@ -89,10 +88,10 @@ export function parseProfileBlock(html: string): ParsedProfile | null {
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;
     try {
-        const session = await auth();
+        const session = await auth.api.getSession({ headers: req.headers });
 
         if (!session) {
-            unauthorized();
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const clal = url.searchParams.get('clal');

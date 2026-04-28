@@ -5,9 +5,7 @@ import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import client from '@/lib/db';
 import { RANK_DEFINITIONS } from '@/lib/consts';
 import { auth } from '@/auth';
-import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
-import { unauthorized } from 'next/navigation';
 
 function getRatingByAchievement(achievement: number, lvConstant: number) {
     const rank = RANK_DEFINITIONS.find(
@@ -60,10 +58,10 @@ export async function GET(req: NextRequest) {
     const url = req.nextUrl;
 
     try {
-        const session = await auth();
+        const session = await auth.api.getSession({ headers: req.headers });
 
         if (!session) {
-            unauthorized();
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const id = session.user?.id ?? '';
@@ -279,10 +277,10 @@ export async function GET(req: NextRequest) {
         }
 
         await db.collection('userB50').updateOne(
-            { _id: new ObjectId(id) },
+            { userId: id },
             {
                 $set: {
-                    id: id,
+                    userId: id,
                     b15: slicedB15,
                     b35: slicedB35,
                     updatedAt: new Date(),

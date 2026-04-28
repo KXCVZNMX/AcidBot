@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
-import { signOut, useSession } from 'next-auth/react';
+import { authClient } from '@/lib/auth-client';
 import LoginModal from '@/app/components/LoginModal';
 
 function HamburgerIcon({ open }: { open: boolean }) {
@@ -37,7 +37,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
 export default function HamburgerDrawer() {
     const [open, setOpen] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const { data: session } = useSession();
+    const { data: session } = authClient.useSession();
 
     return (
         <>
@@ -235,8 +235,14 @@ export default function HamburgerDrawer() {
                                             <li>
                                                 <button
                                                     onClick={() =>
-                                                        signOut({
-                                                            redirectTo: '/',
+                                                        authClient.signOut({
+                                                            fetchOptions: {
+                                                                onSuccess:
+                                                                    () => {
+                                                                        window.location.href =
+                                                                            '/';
+                                                                    },
+                                                            },
                                                         })
                                                     }
                                                     aria-label={'Logout'}

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
-import { ObjectId } from 'mongodb';
 
 type OldB50 = {
     createdAt: Date;
@@ -13,7 +12,7 @@ export async function POST(req: NextRequest) {
     try {
         const db = client.db();
         const result = await db.collection('userOldB50').findOne(
-            { _id: new ObjectId(id) },
+            { userId: id },
             {
                 projection: {
                     _id: 0,

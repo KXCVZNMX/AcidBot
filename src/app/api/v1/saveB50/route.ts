@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Best50Songs, Best50SongsWithDateRating } from '@/lib/types';
 import { auth } from '@/auth';
-import { unauthorized } from 'next/navigation';
 import client from '@/lib/db';
-import { ObjectId } from 'mongodb';
 
 type DBData = {
     userId: string;
@@ -15,13 +13,13 @@ const calculateRating = (b50: Best50Songs) =>
 
 export async function POST(req: NextRequest) {
     try {
-        const session = await auth();
+        const session = await auth.api.getSession({ headers: req.headers });
 
         if (!session) {
-            unauthorized();
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const id = session.user?.id ?? '';
+        const id = session.user.id;
         const b50: Best50Songs = await req.json();
 
         const newEntry: Best50SongsWithDateRating = {
@@ -34,7 +32,7 @@ export async function POST(req: NextRequest) {
         await db
             .collection<DBData>('userOldB50')
             .updateOne(
-                { _id: new ObjectId(id) },
+                { userId: id },
                 { $push: { b50s: newEntry } },
                 { upsert: true }
             );

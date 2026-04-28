@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import { authClient } from '@/lib/auth-client';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Icon from '../favicon.ico';
 import Image from 'next/image';
@@ -10,13 +10,18 @@ import LoginModal from '@/app/components/LoginModal';
 import Link from 'next/link';
 
 export default function Navbar() {
-    const { data: session, status } = useSession();
+    const { data: session, isPending } = authClient.useSession();
 
     const [showLoginModal, setShowLoginModal] = useState(false);
 
     useEffect(() => {
+        const status = isPending
+            ? 'loading'
+            : session
+              ? 'authenticated'
+              : 'unauthenticated';
         document.cookie = `status=${status}`;
-    }, [status]);
+    }, [isPending, session]);
 
     return (
         <>
@@ -39,7 +44,7 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-                {status === 'unauthenticated' ? (
+                {!session ? (
                     <>
                         <div className={'flex-1 hidden md:flex'}>
                             <Link
@@ -139,7 +144,14 @@ export default function Navbar() {
                                     <li>
                                         <button
                                             onClick={() =>
-                                                signOut({ redirectTo: '/' })
+                                                authClient.signOut({
+                                                    fetchOptions: {
+                                                        onSuccess: () => {
+                                                            window.location.href =
+                                                                '/';
+                                                        },
+                                                    },
+                                                })
                                             }
                                             aria-label={'Logout'}
                                             title={'Logout'}
