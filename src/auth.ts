@@ -23,6 +23,20 @@ export const auth = betterAuth({
     database: mongodbAdapter(client.db()),
     user: {
         modelName: 'users',
+        additionalFields: {
+            username: {
+                type: 'string',
+                required: false,
+                input: false,
+                defaultValue: '',
+            },
+            clal: {
+                type: 'number',
+                required: false,
+                input: false,
+                defaultValue: 0,
+            },
+        },
     },
     session: {
         modelName: 'sessions',
@@ -39,6 +53,20 @@ export const auth = betterAuth({
         google: {
             clientId: googleClientId,
             clientSecret: googleClientSecret,
+        },
+    },
+    databaseHooks: {
+        user: {
+            create: {
+                before: async (user) => {
+                    return {
+                        data: {
+                            username: user.name,
+                            clal: 0,
+                        },
+                    };
+                },
+            },
         },
     },
 });
