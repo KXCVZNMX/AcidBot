@@ -1,3 +1,5 @@
+import {MSSB50, SongTags} from '@/lib/types';
+
 export interface ErrorResponse {
     error: string;
     code: ErrorCode;
@@ -11,3 +13,12 @@ export enum ErrorCode {
     MALFORMED_REQUEST = 'MALFORMED_REQUEST',
     DATABASE_ERROR = 'DATABASE_ERROR',
 }
+
+export type B50 = MSSB50[]
+
+export interface SplitB50 {
+    b15: MSSB50[]
+    b35: MSSB50[]
+}
+
+export type b50WithTags = SongTags[]

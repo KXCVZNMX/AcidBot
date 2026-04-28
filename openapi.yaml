@@ -221,7 +221,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/b50WithTags"
+                type: array
+                items:
+                  $ref: "#/components/schemas/b50WithTags"
 
         400:
           $ref: "#/components/responses/MalformedRequest"
