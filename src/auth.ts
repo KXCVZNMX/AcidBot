@@ -21,6 +21,16 @@ if (!googleClientId || !googleClientSecret) {
 
 export const auth = betterAuth({
     database: mongodbAdapter(client.db()),
+    user: {
+        modelName: 'users',
+    },
+    session: {
+        modelName: 'sessions',
+        expiresIn: 60 * 60 * 24 * 30, // 30 days
+    },
+    account: {
+        modelName: 'accounts',
+    },
     socialProviders: {
         github: {
             clientId: githubClientId,
@@ -30,8 +40,5 @@ export const auth = betterAuth({
             clientId: googleClientId,
             clientSecret: googleClientSecret,
         },
-    },
-    session: {
-        expiresIn: 60 * 60 * 24 * 30, // 30 days
     },
 });

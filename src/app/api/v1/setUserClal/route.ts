@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         }
 
         const db = client.db();
-        await db.collection('user').updateOne(
+        await db.collection('users').updateOne(
             { id: id },
             {
                 $set: {
