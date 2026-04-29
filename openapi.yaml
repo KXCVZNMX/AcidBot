@@ -26,8 +26,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                items:
-                                    $ref: '#/components/schemas/splitB50'
+                                $ref: '#/components/schemas/splitB50'
 
                 400:
                     $ref: '#/components/responses/MalformedRequest'
@@ -58,8 +57,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                items:
-                                    $ref: '#/components/schemas/splitB50'
+                                 $ref: '#/components/schemas/splitB50'
 
                 404:
                     description: User not found or there is no previously fetched b50
@@ -157,7 +155,9 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/b50'
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/b50'
 
                 400:
                     $ref: '#/components/responses/MalformedRequest'
