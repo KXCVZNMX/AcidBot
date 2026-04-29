@@ -49,7 +49,7 @@ export const B50WithTagsSchema = SongTagsSchema.array();
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),
-    clal: z.string().min(1),
+    clal: z.string().length(64).regex(/^[A-Za-z0-9]+$/),
 });
 
 export function parseUserClal(data: unknown): { id: string; clal: string } {
