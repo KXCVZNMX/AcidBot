@@ -7,7 +7,8 @@ import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
 import { unauthorized } from 'next/navigation';
-import {getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
+import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
+import {SongInfo} from '@/app/api/_shared/types';
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;
@@ -87,41 +88,13 @@ export async function GET(req: NextRequest) {
 
         const docMap = new Map<
             string,
-            {
-                title: string;
-                image_url: string;
-                date_intl_added: string;
-                lev_bas_i: string;
-                lev_adv_i: string;
-                lev_exp_i: string;
-                lev_mas_i: string;
-                lev_remas_i: string;
-                dx_lev_bas_i: string;
-                dx_lev_adv_i: string;
-                dx_lev_exp_i: string;
-                dx_lev_mas_i: string;
-                dx_lev_remas_i: string;
-            }
+            SongInfo
         >();
         for (const d of docs) {
             if (d && d.title)
                 docMap.set(
                     d.title,
-                    d as unknown as {
-                        title: string;
-                        image_url: string;
-                        date_intl_added: string;
-                        lev_bas_i: string;
-                        lev_adv_i: string;
-                        lev_exp_i: string;
-                        lev_mas_i: string;
-                        lev_remas_i: string;
-                        dx_lev_bas_i: string;
-                        dx_lev_adv_i: string;
-                        dx_lev_exp_i: string;
-                        dx_lev_mas_i: string;
-                        dx_lev_remas_i: string;
-                    }
+                    d as unknown as SongInfo
                 );
         }
 
@@ -151,36 +124,7 @@ export async function GET(req: NextRequest) {
                 throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
             }
 
-            let levelConst: string = '0';
-
-            if (r.isDx === 'dx') {
-                if (r.diff === 'basic' && qRes.dx_lev_bas_i)
-                    levelConst = qRes.dx_lev_bas_i;
-                else if (r.diff === 'advanced' && qRes.dx_lev_adv_i)
-                    levelConst = qRes.dx_lev_adv_i;
-                else if (r.diff === 'expert' && qRes.dx_lev_exp_i)
-                    levelConst = qRes.dx_lev_exp_i;
-                else if (r.diff === 'master' && qRes.dx_lev_mas_i)
-                    levelConst = qRes.dx_lev_mas_i;
-                else if (r.diff === 'remaster' && qRes.dx_lev_remas_i)
-                    levelConst = qRes.dx_lev_remas_i;
-            } else if (r.isDx === 'std') {
-                if (r.diff === 'basic' && qRes.lev_bas_i)
-                    levelConst = qRes.lev_bas_i;
-                else if (r.diff === 'advanced' && qRes.lev_adv_i)
-                    levelConst = qRes.lev_adv_i;
-                else if (r.diff === 'expert' && qRes.lev_exp_i)
-                    levelConst = qRes.lev_exp_i;
-                else if (r.diff === 'master' && qRes.lev_mas_i)
-                    levelConst = qRes.lev_mas_i;
-                else if (r.diff === 'remaster' && qRes.lev_remas_i)
-                    levelConst = qRes.lev_remas_i;
-            } else {
-                console.warn(
-                    `No sheet info for ${r.name} diff ${r.diff} - skipping`
-                );
-                levelConst = '0';
-            }
+            const levelConst: string = getLevelConst(r, qRes);
 
             if (!qRes.image_url) {
                 console.warn(`Failed to find jacket information for ${r.name}`);
