@@ -1,8 +1,11 @@
-import {RANK_DEFINITIONS} from '@/lib/consts';
-import {MaimaiSongScore} from '@/lib/types';
-import {SongInfo} from '@/app/api/_shared/types';
+import { RANK_DEFINITIONS } from '@/lib/consts';
+import { MaimaiSongScore } from '@/lib/types';
+import { SongInfo } from '@/app/api/_shared/types';
 
-export function getRatingByAchievement(achievement: number, lvConstant: number) {
+export function getRatingByAchievement(
+    achievement: number,
+    lvConstant: number
+) {
     const rank = RANK_DEFINITIONS.find(
         (r) => achievement >= r.minA && achievement <= (r.maxA ?? Infinity)
     );
@@ -51,8 +54,7 @@ export function isNewByDate(date: string) {
 
 export function getLevelConst(r: MaimaiSongScore, qRes: SongInfo): string {
     if (r.isDx === 'dx') {
-        if (r.diff === 'basic' && qRes.dx_lev_bas_i)
-            return qRes.dx_lev_bas_i;
+        if (r.diff === 'basic' && qRes.dx_lev_bas_i) return qRes.dx_lev_bas_i;
         else if (r.diff === 'advanced' && qRes.dx_lev_adv_i)
             return qRes.dx_lev_adv_i;
         else if (r.diff === 'expert' && qRes.dx_lev_exp_i)
@@ -61,23 +63,17 @@ export function getLevelConst(r: MaimaiSongScore, qRes: SongInfo): string {
             return qRes.dx_lev_mas_i;
         else if (r.diff === 'remaster' && qRes.dx_lev_remas_i)
             return qRes.dx_lev_remas_i;
-        else return '0'
+        else return '0';
     } else if (r.isDx === 'std') {
-        if (r.diff === 'basic' && qRes.lev_bas_i)
-            return qRes.lev_bas_i;
-        else if (r.diff === 'advanced' && qRes.lev_adv_i)
-            return qRes.lev_adv_i;
-        else if (r.diff === 'expert' && qRes.lev_exp_i)
-            return qRes.lev_exp_i;
-        else if (r.diff === 'master' && qRes.lev_mas_i)
-            return qRes.lev_mas_i;
+        if (r.diff === 'basic' && qRes.lev_bas_i) return qRes.lev_bas_i;
+        else if (r.diff === 'advanced' && qRes.lev_adv_i) return qRes.lev_adv_i;
+        else if (r.diff === 'expert' && qRes.lev_exp_i) return qRes.lev_exp_i;
+        else if (r.diff === 'master' && qRes.lev_mas_i) return qRes.lev_mas_i;
         else if (r.diff === 'remaster' && qRes.lev_remas_i)
             return qRes.lev_remas_i;
-        else return '0'
+        else return '0';
     } else {
-        console.warn(
-            `No sheet info for ${r.name} diff ${r.diff} - skipping`
-        );
+        console.warn(`No sheet info for ${r.name} diff ${r.diff} - skipping`);
         return '0';
     }
 }

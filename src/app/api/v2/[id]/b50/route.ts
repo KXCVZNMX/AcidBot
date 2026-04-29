@@ -1,14 +1,22 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {DatabaseError, InvalidClalToken, MalformedRequest} from '@/app/api/v2/_shared/types';
-import {UserClalSchema} from '@/app/api/v2/_shared/schemas';
-import {MaimaiSongScore, MSSB50} from '@/lib/types';
+import { NextRequest, NextResponse } from 'next/server';
+import {
+    DatabaseError,
+    InvalidClalToken,
+    MalformedRequest,
+} from '@/app/api/v2/_shared/types';
+import { UserClalSchema } from '@/app/api/v2/_shared/schemas';
+import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import fetchPage from '@/lib/fetchPage';
-import {extractScore} from '@/lib/util';
+import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';
 import client from '@/lib/db';
-import {SongInfo} from '@/app/api/_shared/types';
-import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
-import {ObjectId} from 'mongodb';
+import { SongInfo } from '@/app/api/_shared/types';
+import {
+    getLevelConst,
+    getRatingByAchievement,
+    isNewByDate,
+} from '@/app/api/_shared/util';
+import { ObjectId } from 'mongodb';
 
 export async function GET(
     req: NextRequest,
@@ -21,7 +29,7 @@ export async function GET(
     const parsed = UserClalSchema.safeParse({ u_id, u_clal });
 
     if (!parsed.success) {
-        return NextResponse.json(MalformedRequest, { status: 400 })
+        return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
     const { id, clal } = parsed.data;
@@ -80,22 +88,15 @@ export async function GET(
             )
             .toArray();
 
-        const docMap = new Map<
-            string,
-            SongInfo
-        >();
+        const docMap = new Map<string, SongInfo>();
         for (const d of docs) {
-            if (d && d.title)
-                docMap.set(
-                    d.title,
-                    d as unknown as SongInfo
-                );
+            if (d && d.title) docMap.set(d.title, d as unknown as SongInfo);
         }
 
         for (const r of res) {
             const qRes = docMap.get(r.name);
             if (!qRes) {
-                return NextResponse.json(DatabaseError, { status: 402})
+                return NextResponse.json(DatabaseError, { status: 402 });
             }
 
             const levelConst: string = getLevelConst(r, qRes);
@@ -144,23 +145,29 @@ export async function GET(
             return NextResponse.json(InvalidClalToken, { status: 500 });
         }
 
-        await client.db().collection('userB50').updateOne(
-            { _id: new ObjectId(id) },
-            {
-                $set: {
-                    id: id,
-                    b15: slicedB15,
-                    b35: slicedB35,
-                    updatedAt: new Date(),
+        await client
+            .db()
+            .collection('userB50')
+            .updateOne(
+                { _id: new ObjectId(id) },
+                {
+                    $set: {
+                        id: id,
+                        b15: slicedB15,
+                        b35: slicedB35,
+                        updatedAt: new Date(),
+                    },
                 },
-            },
-            { upsert: true }
-        );
+                { upsert: true }
+            );
 
-        return NextResponse.json({
-            b35: slicedB35,
-            b15: slicedB15,
-        }, { status: 200 });
+        return NextResponse.json(
+            {
+                b35: slicedB35,
+                b15: slicedB15,
+            },
+            { status: 200 }
+        );
     } catch (error) {
         console.error(error);
         return NextResponse.json(DatabaseError, { status: 500 });

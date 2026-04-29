@@ -7,8 +7,12 @@ import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
 import { unauthorized } from 'next/navigation';
-import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
-import {SongInfo} from '@/app/api/_shared/types';
+import {
+    getLevelConst,
+    getRatingByAchievement,
+    isNewByDate,
+} from '@/app/api/_shared/util';
+import { SongInfo } from '@/app/api/_shared/types';
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;
@@ -86,16 +90,9 @@ export async function GET(req: NextRequest) {
             )
             .toArray();
 
-        const docMap = new Map<
-            string,
-            SongInfo
-        >();
+        const docMap = new Map<string, SongInfo>();
         for (const d of docs) {
-            if (d && d.title)
-                docMap.set(
-                    d.title,
-                    d as unknown as SongInfo
-                );
+            if (d && d.title) docMap.set(d.title, d as unknown as SongInfo);
         }
 
         for (const r of res) {
@@ -169,7 +166,7 @@ export async function GET(req: NextRequest) {
         if (slicedB15.length === 0 && b35.length === 0) {
             return NextResponse.json(
                 {
-                    error: 'Both of your B15 or B35 was empty, get clal again. (or you just haven\'t played)',
+                    error: "Both of your B15 or B35 was empty, get clal again. (or you just haven't played)",
                 },
                 { status: 500 }
             );

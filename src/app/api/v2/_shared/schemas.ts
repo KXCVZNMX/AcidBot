@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import type { MSSB50, SongTags } from '@/lib/types';
 
-export type B50 = MSSB50[]
+export type B50 = MSSB50[];
 
 export interface SplitB50 {
-    b15: MSSB50[]
-    b35: MSSB50[]
+    b15: MSSB50[];
+    b35: MSSB50[];
 }
 
-export type b50WithTags = SongTags[]
+export type b50WithTags = SongTags[];
 
 export const MaimaiSongScoreSchema = z.object({
     name: z.string(),
@@ -19,7 +19,12 @@ export const MaimaiSongScoreSchema = z.object({
     sync: z.string().nullable(),
     combo: z.string().nullable(),
     rank: z.string().nullable(),
-}) satisfies z.ZodType<Omit<MSSB50, 'levelConst' | 'rating' | 'dateIntlAdded' | 'achievement' | 'jacketURL'>>;
+}) satisfies z.ZodType<
+    Omit<
+        MSSB50,
+        'levelConst' | 'rating' | 'dateIntlAdded' | 'achievement' | 'jacketURL'
+    >
+>;
 
 export const MSSB50Schema = MaimaiSongScoreSchema.extend({
     levelConst: z.number(),
@@ -47,7 +52,7 @@ export const UserClalSchema = z.object({
     clal: z.string().min(1),
 });
 
-export function parseUserClal(data: unknown): {id: string, clal: string} {
+export function parseUserClal(data: unknown): { id: string; clal: string } {
     return UserClalSchema.parse(data);
 }
 

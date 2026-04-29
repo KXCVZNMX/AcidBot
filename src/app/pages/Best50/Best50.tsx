@@ -151,9 +151,12 @@ export default function Best50() {
         try {
             // Fetch profile if not already loaded
             if (!profile) {
-                const res = await fetch(`/api/v1/fetchUserDetail?clal=${clal}`, {
-                    method: 'GET',
-                });
+                const res = await fetch(
+                    `/api/v1/fetchUserDetail?clal=${clal}`,
+                    {
+                        method: 'GET',
+                    }
+                );
 
                 if (!res.ok) {
                     const { error } = await res.json();
