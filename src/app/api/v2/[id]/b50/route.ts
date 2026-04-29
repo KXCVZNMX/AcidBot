@@ -4,7 +4,7 @@ import {UserClalSchema} from '@/app/api/v2/_shared/schemas';
 import {MaimaiSongScore, MSSB50} from '@/lib/types';
 import fetchPage from '@/lib/fetchPage';
 import {extractScore} from '@/lib/util';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import client from '@/lib/db';
 import {SongInfo} from '@/app/api/_shared/types';
 import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
