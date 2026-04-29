@@ -10,9 +10,12 @@ import {SongInfo} from '@/app/api/_shared/types';
 import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
 import {ObjectId} from 'mongodb';
 
-export async function GET(req: NextRequest, { params }: { params: {id: string} }) {
-    const u_id = params.id;
-    const url = req.nextUrl
+export async function GET(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    const { id: u_id } = await params;
+    const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
 
     const parsed = UserClalSchema.safeParse({ u_id, u_clal });
