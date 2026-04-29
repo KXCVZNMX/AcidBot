@@ -26,7 +26,7 @@ export async function GET(
     const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
 
-    const parsed = UserClalSchema.safeParse({ u_id, u_clal });
+    const parsed = UserClalSchema.safeParse({ id: u_id, clal: u_clal });
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, { status: 400 });
@@ -142,7 +142,7 @@ export async function GET(
         const slicedB15 = b15.slice(0, 15);
 
         if (slicedB15.length === 0 && b35.length === 0) {
-            return NextResponse.json(InvalidClalToken, { status: 500 });
+            return NextResponse.json(InvalidClalToken, { status: 401 });
         }
 
         await client

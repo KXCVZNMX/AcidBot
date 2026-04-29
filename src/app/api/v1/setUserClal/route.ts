@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
         }
 
         const db = client.db();
-        await db.collection('users').updateOne(
+        await db.collection('user').updateOne(
             { _id: new ObjectId(id) },
             {
                 $set: {
