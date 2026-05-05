@@ -57,7 +57,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                 $ref: '#/components/schemas/splitB50'
+                                $ref: '#/components/schemas/splitB50'
 
                 404:
                     description: User not found or there is no previously fetched b50
