@@ -14,6 +14,9 @@ export default function PWARegistration() {
 
         void navigator.serviceWorker
             .register('/sw.js')
+            .then(() => {
+                console.info('Service worker registered successfully.');
+            })
             .catch((error) => {
                 console.error(
                     'Service worker registration failed. Check browser support and ensure /sw.js is available:',

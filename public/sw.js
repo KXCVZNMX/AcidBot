@@ -51,11 +51,19 @@ self.addEventListener('fetch', (event) => {
                     }
 
                     const responseToCache = networkResponse.clone();
-                    void caches.open(CACHE_VERSION).then((cache) => {
-                        cache.put(event.request, responseToCache);
-                    }).catch((error) => {
-                        console.error('Service worker cache put failed:', error);
-                    });
+                    event.waitUntil(
+                        caches
+                            .open(CACHE_VERSION)
+                            .then((cache) =>
+                                cache.put(event.request, responseToCache)
+                            )
+                            .catch((error) => {
+                                console.error(
+                                    'Service worker cache put failed:',
+                                    error
+                                );
+                            })
+                    );
 
                     return networkResponse;
                 })
