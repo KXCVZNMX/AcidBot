@@ -61,7 +61,20 @@ self.addEventListener('fetch', (event) => {
                 })
                 .catch((error) => {
                     console.error('Service worker fetch failed:', error);
-                    return caches.match('/');
+                    return caches.match('/').then((fallback) => {
+                        if (fallback) {
+                            return fallback;
+                        }
+
+                        return new Response(
+                            'You appear to be offline and this content is not cached yet.',
+                            {
+                                status: 503,
+                                statusText: 'Service Unavailable',
+                                headers: { 'Content-Type': 'text/plain' },
+                            }
+                        );
+                    });
                 });
         })
     );
