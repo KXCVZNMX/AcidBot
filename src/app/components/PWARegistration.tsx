@@ -12,7 +12,11 @@ export default function PWARegistration() {
             return;
         }
 
-        void navigator.serviceWorker.register('/sw.js');
+        void navigator.serviceWorker
+            .register('/sw.js')
+            .catch((error) => {
+                console.error('Service worker registration failed:', error);
+            });
     }, []);
 
     return null;

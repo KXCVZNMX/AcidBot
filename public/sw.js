@@ -7,6 +7,10 @@ self.addEventListener('install', (event) => {
             .open(CACHE_VERSION)
             .then((cache) => cache.addAll(ASSETS_TO_CACHE))
             .then(() => self.skipWaiting())
+            .catch((error) => {
+                console.error('Service worker install caching failed:', error);
+                throw error;
+            })
     );
 });
 
@@ -48,7 +52,7 @@ self.addEventListener('fetch', (event) => {
 
                     const responseToCache = networkResponse.clone();
                     void caches.open(CACHE_VERSION).then((cache) => {
-                        return cache.put(event.request, responseToCache);
+                        cache.put(event.request, responseToCache);
                     }).catch((error) => {
                         console.error('Service worker cache put failed:', error);
                     });
