@@ -1,12 +1,8 @@
 import { z } from 'zod';
 import type { MSSB50, SongTags } from '@/lib/types';
+import {SplitB50} from '@/app/api/v2/_shared/types';
 
 export type B50 = MSSB50[];
-
-export interface SplitB50 {
-    b15: MSSB50[];
-    b35: MSSB50[];
-}
 
 export type b50WithTags = SongTags[];
 
