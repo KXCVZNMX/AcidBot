@@ -105,6 +105,36 @@ paths:
                 503:
                     $ref: '#/components/responses/UpstreamMaintenance'
 
+    /user/{id}/OldB50Image:
+        get:
+            tags: [ b50 ]
+            summary: Get the previous b50 image
+            operationId: oldB50Img
+            parameters:
+                - $ref: '#/components/parameters/UserId'
+                - $ref: '#/components/parameters/ClalToken'
+
+            responses:
+                200:
+                    description: Generated user b50
+                    content:
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+
+                400:
+                    $ref: '#/components/responses/MalformedRequest'
+
+                401:
+                    $ref: '#/components/responses/InvalidClalToken'
+
+                404:
+                    $ref: '#/components/responses/UserNotFound'
+
+                500:
+                    $ref: '#/components/responses/DatabaseError'
+
     /user/{id}/saveB50:
         post:
             tags: [b50]
@@ -308,6 +338,37 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
+    /user/{id}/profile:
+        get:
+            tags: [ b50 ]
+            summary: Get the user profile from dx-net
+            operationId: profile
+            parameters:
+                - $ref: '#/components/parameters/UserId'
+                - $ref: '#/components/parameters/ClalToken'
+
+            responses:
+                200:
+                    description: Got user profile
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParsedProfile'
+
+                400:
+                    $ref: '#/components/responses/MalformedRequest'
+
+                401:
+                    $ref: '#/components/responses/InvalidClalToken'
+
+                404:
+                    $ref: '#/components/responses/UserNotFound'
+
+                503:
+                    $ref: '#/components/responses/UpstreamMaintenance'
+
+
+
 components:
     responses:
         InvalidClalToken:
@@ -483,3 +544,54 @@ components:
                     items:
                         type: number
                     example: [1, 2, 3, 4, 5]
+
+        UserCollectionCount:
+            type: object
+            properties:
+                img:
+                    type:
+                        - string
+                        - "null"
+                text:
+                    type:
+                        - string
+                        - "null"
+            required:
+                - img
+                - text
+
+        ParsedProfile:
+            type: object
+            properties:
+                profilePicture:
+                    type: string
+                    nullable: true
+
+                dan:
+                    type: string
+                    nullable: true
+
+                rank:
+                    type: string
+                    nullable: true
+
+                userName:
+                    type: string
+                    nullable: true
+
+                userDetail:
+                    type: string
+                    nullable: true
+
+                userCollectionCount:
+                    oneOf:
+                        - $ref: "#/components/schemas/UserCollectionCount"
+                        - type: "null"
+
+            required:
+                - profilePicture
+                - dan
+                - rank
+                - userName
+                - userDetail
+                - userCollectionCount
