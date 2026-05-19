@@ -363,6 +363,9 @@ export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    const funcStartTime = Date.now();
+    console.log(`[b50Image] START: ${new Date().toISOString()}`);
+
     const {id: u_id} = await params;
     const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
@@ -374,6 +377,7 @@ export async function GET(
     }
 
     const {id, clal} = parsed.data;
+    console.log(`[b50Image] INPUT PARSED: ${Date.now() - funcStartTime}ms`);
 
     const SITE_LINK = process.env.SITE_LINK ?? 'http://localhost:3000';
 
@@ -454,9 +458,15 @@ export async function GET(
 
     const {mPlusMed, mPlusReg} = getFonts();
 
+    const upstreamFetchStart = Date.now();
+    console.log(`[b50Image] UPSTREAM FETCH START: ${upstreamFetchStart - funcStartTime}ms into execution`);
+
     const profileRes = await fetch(
         `${SITE_LINK}/api/v2/user/${id}/b50wProfile?clal=${clal}`
     );
+
+    const upstreamFetchEnd = Date.now();
+    console.log(`[b50Image] UPSTREAM FETCH COMPLETE: ${upstreamFetchEnd - upstreamFetchStart}ms (total: ${upstreamFetchEnd - funcStartTime}ms)`);
 
     if (!profileRes.ok) {
         return new NextResponse('Upstream fetch failed', { status: 502 });
@@ -477,7 +487,10 @@ export async function GET(
         0
     );
 
-    return new ImageResponse(
+    const imageRenderStart = Date.now();
+    console.log(`[b50Image] IMAGE RENDER START: ${imageRenderStart - funcStartTime}ms into execution`);
+
+    const imageResponse = new ImageResponse(
         (
             <div
                 style={{
@@ -734,8 +747,13 @@ export async function GET(
                     data: mPlusReg,
                     style: 'normal',
                     weight: 400,
-                },
+                 },
             ],
         }
-    )
+    );
+
+    const imageRenderEnd = Date.now();
+    console.log(`[b50Image] IMAGE RENDER COMPLETE: ${imageRenderEnd - imageRenderStart}ms (total: ${imageRenderEnd - funcStartTime}ms)`);
+
+    return imageResponse;
 }
