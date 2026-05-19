@@ -20,6 +20,22 @@ export default async function fetchPage(
         const userAgent =
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
 
+        // Adaptive delay variables: start conservative, then adapt based on server responses
+        let delay = 500; // initial delay in ms between sequential requests
+        const minDelay = 100; // don't go below this
+        const maxDelay = 2000; // cap
+        const jitter = 100; // random jitter to avoid perfectly regular intervals
+        const maxAttempts = 3; // retries per request on network/5xx/429
+
+        const makeTimeoutSignal = (ms: number) => {
+            const ctrl = new AbortController();
+            const id = setTimeout(() => ctrl.abort(), ms);
+            // clear timeout when request finishes
+            // caller can use ctrl.signal and clearTimeout if needed
+            // here we return both
+            return { signal: ctrl.signal, clear: () => clearTimeout(id) };
+        };
+
         const res = await fetchWithCookie(
             'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
                 'site_id=maimaidxex&' +
@@ -48,6 +64,7 @@ export default async function fetchPage(
             method: 'GET',
             headers: {
                 'User-Agent': userAgent,
+                Connection: 'keep-alive',
             },
         });
 
@@ -58,20 +75,64 @@ export default async function fetchPage(
                 method: 'GET',
                 headers: {
                     'User-Agent': userAgent,
+                    Connection: 'keep-alive',
                 },
             });
             result.push(await res.text());
         } else {
+            // Sequentially fetch each redirect URL, but use adaptive delays + retries
             for (const re of redirect) {
-                const res = await fetchWithCookie(re, {
-                    method: 'GET',
-                    headers: {
-                        'User-Agent': userAgent,
-                    },
-                });
-                result.push(await res.text());
+                let attempt = 0;
+                let text = '';
 
-                await sleep(500 + Math.random() * 500);
+                while (attempt < maxAttempts) {
+                    attempt++;
+                    const { signal, clear } = makeTimeoutSignal(15000); // 15s timeout
+                    try {
+                        const res = await fetchWithCookie(re, {
+                            method: 'GET',
+                            headers: {
+                                'User-Agent': userAgent,
+                                Accept:
+                                    'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                                Connection: 'keep-alive',
+                                Referer: next ?? undefined,
+                            },
+                            signal,
+                        });
+                        clear();
+
+                        // note status available as res.status if needed for logging
+
+                        // If we got a server busy / rate limit, retry with backoff
+                        if (res.status === 429 || res.status >= 500) {
+                            // increase delay to be more conservative
+                            delay = Math.min(maxDelay, delay * 1.8);
+                            // small wait before retry
+                            await sleep(delay + Math.random() * jitter);
+                            continue; // retry
+                        }
+
+                        // success path: read body and adapt delay down
+                        text = await res.text();
+                        // gently reduce delay when server responds well
+                        delay = Math.max(minDelay, Math.floor(delay * 0.85));
+                        break; // exit retry loop
+                    } catch (err) {
+                        // network or abort error - backoff and retry
+                        delay = Math.min(maxDelay, delay * 1.8);
+                        // if abort due to timeout, we still retry up to attempts
+                        await sleep(delay + Math.random() * jitter);
+                        if (attempt >= maxAttempts) throw err;
+                        // otherwise loop to retry
+                    }
+                }
+
+                // push the body we obtained (or empty string if failed but not thrown)
+                result.push(text);
+
+                // wait before the next sequential request (respect adaptive delay + jitter)
+                await sleep(delay + Math.random() * jitter);
             }
         }
 
