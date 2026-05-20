@@ -116,6 +116,11 @@ export default function UserProfile() {
                                             </h2>
                                         </div>
                                         <div className={'card-body'}>
+                                            <h3 className={'text-md text-gray-400'}>
+                                                <p>
+                                                    @{session?.user?.id}
+                                                </p>
+                                            </h3>
                                             <h3 className={'text-lg'}>
                                                 <p>
                                                     Created on:{' '}
