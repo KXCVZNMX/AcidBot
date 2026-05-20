@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
+import SuccessModal from '@/app/components/SuccessModal';
 import RatingChart from '@/app/components/RatingChart';
 
 type OldB50 = {
@@ -20,6 +21,8 @@ export default function UserProfile() {
     const [oldB50s, setOldB50s] = useState<OldB50[]>([]);
     const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     const showError = (errorMessage: string) => {
         setError(errorMessage);
@@ -31,7 +34,29 @@ export default function UserProfile() {
         }, 2000);
     };
 
+    const showSuccess = (message: string) => {
+        setSuccessMessage(message);
+        setShowSuccessModal(true);
+
+        setTimeout(() => {
+            setShowSuccessModal(false);
+        }, 1500);
+    };
+
     const { data: session, status } = useSession();
+
+    // Safely format createdAt for display (handles string or Date or missing)
+    const createdAtString = (() => {
+        const date = session?.user?.createdAt as unknown;
+        if (!date) return 'Unknown';
+        try {
+            const d = new Date(String(date));
+            if (isNaN(d.getTime())) return 'Unknown';
+            return d.toISOString().split('T')[0];
+        } catch {
+            return 'Unknown';
+        }
+    })();
 
     useEffect(() => {
         if (!getCookie('clal')) {
@@ -82,6 +107,10 @@ export default function UserProfile() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
+            <SuccessModal
+                message={successMessage}
+                show={showSuccessModal}
+            />
 
             <div className={'flex items-center justify-center'}>
                 <div
@@ -90,46 +119,46 @@ export default function UserProfile() {
                     }
                 >
                     <div className={'col-span-1 md:col-span-2'}>
-                        <div className={'card bg-base-200 -z-10'}>
-                            <div className={'card-body'}>
-                                <div
-                                    className={
-                                        'flex flex-col md:flex-row gap-5 items-center md:items-start'
-                                    }
-                                >
-                                    <Image
-                                        src={
-                                            session?.user?.image ??
-                                            DefaultUserIcon
-                                        }
-                                        alt={'user icon'}
-                                        width={130}
-                                        height={130}
-                                        className={'rounded-full'}
-                                    />
-                                    <div className={'flex flex-col'}>
-                                        <div className={'card-title pl-6'}>
-                                            <h2
-                                                className={'text-3xl font-bold'}
-                                            >
-                                                {session?.user?.name}
-                                            </h2>
+                        <div className={'card bg-linear-to-r from-base-200 to-base-300 shadow-lg z-10'}>
+                            <div className={'card-body p-6'}>
+                                <div className={'flex flex-col md:flex-row gap-5 items-center md:items-start'}>
+                                    <div className={'shrink-0'}>
+                                        <Image
+                                            src={session?.user?.image ?? DefaultUserIcon}
+                                            alt={'user icon'}
+                                            width={130}
+                                            height={130}
+                                            className={'rounded-full ring-4 ring-primary object-cover'}
+                                        />
+                                    </div>
+
+                                    <div className={'flex flex-col w-full'}>
+                                        <div className={'card-title pl-2'}>
+                                            <h2 className={'text-3xl font-bold'}>{session?.user?.name}</h2>
                                         </div>
-                                        <div className={'card-body'}>
-                                            <h3 className={'text-md text-gray-400'}>
-                                                <p>
-                                                    @{session?.user?.id}
-                                                </p>
-                                            </h3>
-                                            <h3 className={'text-lg'}>
-                                                <p>
-                                                    Created on:{' '}
-                                                    {
-                                                        session?.user?.createdAt
-                                                            .toString()
-                                                            .split('T')[0]
-                                                    }
-                                                </p>
+
+                                        <div className={'card-body p-0 pt-2'}>
+                                            <div className={'flex items-center gap-3'}>
+                                                <span className={'font-mono text-sm opacity-90'}>@{session?.user?.id}</span>
+                                                <button
+                                                    type={'button'}
+                                                    className={'btn btn-xs btn-ghost'}
+                                                    aria-label={'Copy user id'}
+                                                    onClick={async () => {
+                                                        try {
+                                                            await navigator.clipboard.writeText(session?.user?.id ?? 'undefined');
+                                                            showSuccess('User ID copied to clipboard!');
+                                                        } catch {
+                                                            showError('Failed to copy User ID');
+                                                        }
+                                                    }}
+                                                >
+                                                    📋
+                                                </button>
+                                            </div>
+
+                                            <h3 className={'text-lg mt-3'}>
+                                                <p className={'text-sm opacity-80'}>Created on: {createdAtString}</p>
                                             </h3>
                                         </div>
                                     </div>
