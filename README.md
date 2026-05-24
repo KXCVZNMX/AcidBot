@@ -8,24 +8,10 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 
 ## Features
 
-### Best 50 Chart
-
-- Chart Constants
-- Achievement and rank
-- DX Score
-- Derived Rating
-- Sync Status (sync, sync+, etc.)
-- Play Status (fc, fc+, etc.)
-
-### Skill Radar Map
-
-- Patterns (spins, swipes, high-break-counts, etc.)
-- Chart Types (slider chart, keyboard chart, etc.)
-
-### Data Sources
-
-- Songs collected from [otoge-db](https://github.com/zvuc/otoge-db)
-- Tags collected from [DXRating.net](https://dxrating.net)
+- Best 50 
+- Level Score (All songs for a specific level)
+- Skill Radar
+- More features in development and will mostly be developed in cooperation with the AcidBot discord bot)
 
 ## Technical Stack
 
@@ -89,3 +75,8 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
     ```zsh
     pnpm dev # --turbopack (if you wish)
     ```
+
+## Credits
+
+- Thanks to [zvuc](https://github.com/zvuc) [otoge-db](https://github.com/zvuc/otoge-db) for song data and constant collection
+- Thanks to [GalvinGao](https://github.com/GalvinGao) [DXRating.net](https://dxrating.net) for tags collection
