@@ -11,13 +11,13 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 - Best 50 
 - Level Score (All songs for a specific level)
 - Skill Radar
-- More features in development and will mostly be developed in cooperation with the AcidBot discord bot)
+- More features in development and will mostly be developed in cooperation with the AcidBot discord bot
 
 ## Technical Stack
 
 - Next.js + Typescript frontend
 - Styled with Tailwind CSS and daisyUI
-- RESTful API built with Next.js
+- REST API built with Next.js
 - User and song data stored with MongoDB
 - OAuth provided by Auth.js
 - ESLint and Prettier for code quality and consistency
