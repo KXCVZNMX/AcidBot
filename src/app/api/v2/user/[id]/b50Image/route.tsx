@@ -1,12 +1,10 @@
-import {truncateByWidth} from '@/lib/util';
-
 {/* eslint-disable @next/next/no-img-element */}
-
 import {NextRequest, NextResponse} from 'next/server';
 import {UserClalSchema} from '@/app/api/v2/_shared/schemas';
 import {MalformedRequest} from '@/app/api/v2/_shared/types';
-import {MSSB50, ParsedProfile} from '@/lib/types';
-import {ImageResponse} from 'next/og';
+import {MSSB50, ParsedProfile} from '@/lib/types'
+import {truncateByWidth} from '@/lib/util';
+import {ImageResponse} from 'takumi-js/response';
 import {readFileSync} from 'fs';
 import {join} from 'path';
 import React from 'react';

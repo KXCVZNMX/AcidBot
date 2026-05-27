@@ -49,6 +49,7 @@ export function parseDate(input: string): Date {
 }
 
 export function isNewByDate(date: string) {
+    if (date === '000000') return true;
     return parseDate(date) >= parseDate('20250724'); // Prism Plus Release Date
 }
 
