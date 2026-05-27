@@ -4,7 +4,7 @@ import {UserClalSchema} from '@/app/api/v2/_shared/schemas';
 import {MalformedRequest} from '@/app/api/v2/_shared/types';
 import {MSSB50, ParsedProfile} from '@/lib/types'
 import {truncateByWidth} from '@/lib/util';
-import {ImageResponse} from 'takumi-js/response';
+import {ImageResponse} from 'next/og';
 import {readFileSync} from 'fs';
 import {join} from 'path';
 import React from 'react';
