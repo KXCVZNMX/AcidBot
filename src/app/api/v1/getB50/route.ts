@@ -96,29 +96,20 @@ export async function GET(req: NextRequest) {
         }
 
         for (const r of res) {
-            const qRes = docMap.get(r.name);
+            let qRes = docMap.get(r.name);
 
             if (!qRes) {
-                console.error('\n=== LOOKUP FAILED ===');
-                console.error(`Looking for: "${r.name}"`);
-                console.error(`Difficulty: ${r.diff}`);
-                console.error(`Length: ${r.name.length}`);
-                console.error(
-                    'Character codes:',
-                    r.name
-                        .split('')
-                        .map((c) => `${c}(${c.charCodeAt(0)})`)
-                        .join(' ')
-                );
-                console.error('\nFirst 5 available titles in docMap:');
-                Array.from(docMap.keys())
-                    .slice(0, 5)
-                    .forEach((title, i) => {
-                        console.error(
-                            `  ${i + 1}. "${title}" (len: ${title.length})`
-                        );
-                    });
-                throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
+                console.error('Lookup failed, fetching information from JP db');
+
+                const fetched = (await db
+                    .collection('maimaiJpSongInfo')
+                    .findOne({ title: r.name })) as SongInfo | null;
+
+                qRes = fetched ?? undefined;
+
+                if (!qRes) {
+                    throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
+                }
             }
 
             const levelConst: string = getLevelConst(r, qRes);
