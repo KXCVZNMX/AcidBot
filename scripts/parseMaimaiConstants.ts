@@ -54,11 +54,18 @@ interface SongData {
 
 dotenv.config({ path: './.env.local' });
 
-const fileContent = fs.readFileSync(
+const intlMusic = fs.readFileSync(
     './otoge-db/maimai/data/music-ex-intl.json',
     'utf8'
 );
-const songs: SongData[] = JSON.parse(fileContent);
+
+const jpMusic = fs.readFileSync(
+    './otoge-db/maimai/data/music-ex.json',
+    'utf8'
+);
+
+const intlSongs: SongData[] = JSON.parse(intlMusic);
+const jpSongs: SongData[] = JSON.parse(jpMusic);
 
 (async () => {
     const uri = process.env.MONGODB_URI || '';
@@ -71,9 +78,12 @@ const songs: SongData[] = JSON.parse(fileContent);
         client = new MongoClient(uri);
         await client.connect();
         const db = client.db('test');
-        const collection = db.collection('maimaiIntlSongInfo');
-        await collection.drop().catch(() => {});
-        await collection.insertMany(songs);
+        const cIntl = db.collection('maimaiIntlSongInfo');
+        await cIntl.drop().catch(() => {});
+        await cIntl.insertMany(intlSongs);
+        const cJp = db.collection('maimaiJpSongInfo');
+        await cJp.drop().catch(() => {});
+        await cJp.insertMany(jpSongs)
     } catch (e) {
         console.error(e);
     } finally {
