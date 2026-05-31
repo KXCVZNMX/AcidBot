@@ -9,6 +9,8 @@ import client from '@/lib/db';
 import {SongInfo} from '@/app/api/_shared/types';
 import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
 import {ObjectId} from 'mongodb';
+import {SplitB50Schema} from '@/app/api/v2/_shared/schemas';
+import {z} from 'zod';
 
 function toProxiedUrl(src: string): string {
     if (!src) return src;
@@ -91,29 +93,71 @@ export async function GET(
     const {id: u_id} = await params;
     const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
+    const u_old = url.searchParams.get('old');
 
-    const parsed = UserClalSchema.safeParse({id: u_id, clal: u_clal});
+    const parsed = UserClalSchema.extend({
+        old: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
+    }).safeParse({id: u_id, clal: u_clal, old: u_old ?? undefined});
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, {status: 400});
     }
 
-    const {id, clal} = parsed.data;
+    const {id, clal, old} = parsed.data;
 
     try {
-        const redirects = [
+        const homeRedirect = 'https://maimaidx-eng.com/maimai-mobile/home/';
+        const redirects = old
+            ? [homeRedirect]
+            : [
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
             'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
-            'https://maimaidx-eng.com/maimai-mobile/home/'
+            homeRedirect,
         ];
 
         const res: MaimaiSongScore[] = [];
-        let htmls;
+        const htmls = await fetchPage(clal, redirects);
+
+        if (!Array.isArray(htmls)) {
+            return NextResponse.json(InvalidClalToken, { status: 401 });
+        }
+
+        const profile = parseProfileBlock(htmls[htmls.length - 1]);
+
+        if (old) {
+            const oldB50Res = await fetch(
+                `${url.origin}/api/v2/user/${id}/oldB50`
+            );
+
+            if (!oldB50Res.ok) {
+                const body = await oldB50Res.json().catch(() => DatabaseError);
+                return NextResponse.json(body, { status: oldB50Res.status });
+            }
+
+            const oldB50Data = SplitB50Schema.safeParse(await oldB50Res.json());
+
+            if (!oldB50Data.success) {
+                return NextResponse.json(DatabaseError, { status: 500 });
+            }
+
+            return NextResponse.json(
+                {
+                    b35: oldB50Data.data.b35,
+                    b15: oldB50Data.data.b15,
+                    profile,
+                },
+                { status: 200 }
+            );
+        }
+
         try {
-            htmls = await fetchPage(clal, redirects);
+            for (const html of htmls.slice(0, -1)) {
+                const $ = cheerio.load(html);
+                res.push(...extractScore($, 'getB50'));
+            }
         } catch (fetchError) {
             console.error(fetchError);
             return NextResponse.json(InvalidClalToken, { status: 401 });
@@ -121,12 +165,6 @@ export async function GET(
             // TODO: I don't know the error code for it right now. Once I find out i need to modify fetchPage to return those codes.
         }
 
-        for (const html of htmls.slice(0, -1)) {
-            const $ = cheerio.load(html);
-            res.push(...extractScore($, 'getB50'));
-        }
-
-        const profile = parseProfileBlock(htmls[5]);
 
         const collection = client.db().collection('maimaiIntlSongInfo');
 
