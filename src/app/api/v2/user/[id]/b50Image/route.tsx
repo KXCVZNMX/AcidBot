@@ -8,6 +8,7 @@ import {ImageResponse} from 'next/og';
 import {readFileSync} from 'fs';
 import {join} from 'path';
 import React from 'react';
+import {z} from 'zod';
 
 export const alt = 'B50'
 export const runtime = 'nodejs';
@@ -367,14 +368,17 @@ export async function GET(
     const {id: u_id} = await params;
     const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
+    const u_old = url.searchParams.get('old');
 
-    const parsed = UserClalSchema.safeParse({id: u_id, clal: u_clal});
+    const parsed = UserClalSchema.extend({
+        old: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
+    }).safeParse({id: u_id, clal: u_clal, old: u_old ?? undefined});
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, {status: 400});
     }
 
-    const {id, clal} = parsed.data;
+    const {id, clal, old} = parsed.data;
     console.log(`[b50Image] INPUT PARSED: ${Date.now() - funcStartTime}ms`);
 
     const SITE_LINK = process.env.SITE_LINK ?? 'http://localhost:3000';
@@ -460,7 +464,7 @@ export async function GET(
     console.log(`[b50Image] UPSTREAM FETCH START: ${upstreamFetchStart - funcStartTime}ms into execution`);
 
     const profileRes = await fetch(
-        `${SITE_LINK}/api/v2/user/${id}/b50wProfile?clal=${clal}`
+        `${SITE_LINK}/api/v2/user/${id}/b50wProfile?clal=${clal}${old ? '&old=true' : ''}`
     );
 
     const upstreamFetchEnd = Date.now();
