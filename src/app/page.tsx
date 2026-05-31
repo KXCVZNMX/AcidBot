@@ -7,6 +7,7 @@ import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
     title: 'AcidBot | Home',
+    description: 'An easy-to-use tool to fetch your scores for maimai でらっくす scores! Public v2 APIs are in development right now and would be open for discord / QQ bot usage!'
 };
 
 export default async function Home() {
