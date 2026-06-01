@@ -6,8 +6,9 @@ import { auth } from '@/auth';
 import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
-    title: 'AcidBot | Home',
-    description: 'An easy-to-use tool to fetch your scores for maimai でらっくす scores! Public v2 APIs are in development right now and would be open for discord / QQ bot usage!'
+    description:
+        'Track maimai DX International Ver. scores, view your Best 50, inspect Skill Radar charts, and read AcidBot guides.',
+    keywords: ['maimai', 'Acid Bot', 'AcidBot', 'home', 'best 50', 'score image', 'best50 image', 'image', 'visualise', 'maimai score', 'rating image', 'rating', 'score chart', 'skill radar', 'DX rating']
 };
 
 export default async function Home() {
@@ -26,9 +27,7 @@ export default async function Home() {
                 <h1 className={'text-4xl font-medium'}>AcidBot</h1>
 
                 <div
-                    className={
-                        'p-3 w-full max-w-[700px] grid grid-cols-2 gap-3'
-                    }
+                    className={'p-3 w-full max-w-175 grid grid-cols-2 gap-3'}
                 >
                     <div className={'col-span-2'}>
                         <Card

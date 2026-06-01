@@ -6,7 +6,10 @@ import Link from 'next/link';
 import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
-    title: 'AcidBot | Abouts',
+    title: 'About',
+    description:
+        'Learn what AcidBot does, who built it, and where to find the source code and usage guides.',
+    keywords: ['maimai', 'Acid Bot', 'AcidBot', 'abouts']
 };
 
 export default function Page() {
@@ -20,7 +23,7 @@ export default function Page() {
             />
             <h1 className={'text-3xl font-medium'}>AcidBot</h1>
 
-            <div className={'p-3 w-full max-w-[800px] grid grid-cols-2 gap-3'}>
+            <div className={'p-3 w-full max-w-200 grid grid-cols-2 gap-3'}>
                 <div className={'col-span-2'}>
                     <div
                         className={

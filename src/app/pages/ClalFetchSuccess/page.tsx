@@ -1,7 +1,12 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Success',
+    title: 'Fetch Success',
+    description: 'A temporary success page shown after a successful clal token fetch.',
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
 export default function Page() {

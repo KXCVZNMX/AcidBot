@@ -7,7 +7,9 @@ import Image from 'next/image';
 import BackButton from '../../../../../public/back-button-svgrepo.svg';
 
 export const metadata: Metadata = {
-    title: 'AcidBot | Clal Guide',
+    title: 'Usage Guide',
+    description:
+        'Learn how to log in, set your clal token, and use AcidBot to fetch Best 50, Level Score, and Skill Radar data.',
 };
 
 export default function UsageGuide() {
@@ -24,7 +26,7 @@ export default function UsageGuide() {
                     />
                 </Link>
                 <h1 className={'text-3xl font-bold text-center'}>
-                    Acid Usage Guide
+                    AcidBot Usage Guide
                 </h1>
                 <div aria-hidden />
             </div>
