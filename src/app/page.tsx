@@ -60,7 +60,7 @@ export default async function Home() {
             </section>
 
             <section className={'w-full max-w-5xl mt-12 px-4 flex flex-col items-center'}>
-                <h2 className={'text-3xl font-semibold mb-8 text-center'}>Level Up Your maimai DX Experience</h2>
+                <h2 className={'text-3xl font-semibold mb-8 text-center'}>Generate Images from your maimaidx-net</h2>
 
                 <div className={'grid grid-cols-1 md:grid-cols-3 gap-6 w-full'}>
                     <Card title={'Best 50 Generator'} href={'/pages/Best50'}>
