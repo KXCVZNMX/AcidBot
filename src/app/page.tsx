@@ -6,6 +6,7 @@ import { auth } from '@/auth';
 import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
+    title: 'AcidBot | maimai B50 tracker',
     description:
         'Track maimai DX International Ver. scores, view your Best 50, inspect Skill Radar charts, and read AcidBot guides.',
     keywords: ['maimai', 'Acid Bot', 'AcidBot', 'home', 'best 50', 'score image', 'best50 image', 'image', 'visualise', 'maimai score', 'rating image', 'rating', 'score chart', 'skill radar', 'DX rating']
