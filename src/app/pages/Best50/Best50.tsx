@@ -110,7 +110,7 @@ export default function Best50() {
 
         (async () => {
             try {
-                const res = await fetch('/api/v1/fetchOldB50', {
+                const res = await fetch('/api/v1/b50/history', {
                     method: 'GET',
                 });
 
@@ -152,7 +152,7 @@ export default function Best50() {
             // Fetch profile if not already loaded
             if (!profile) {
                 const res = await fetch(
-                    `/api/v1/fetchUserDetail?clal=${clal}`,
+                    `/api/v1/user?clal=${clal}`,
                     {
                         method: 'GET',
                     }
@@ -214,7 +214,7 @@ export default function Best50() {
         setNewSong([]);
 
         try {
-            const res = await fetch(`/api/v1/getB50?clal=${clal}`, {
+            const res = await fetch(`/api/v1/b50?clal=${clal}`, {
                 method: 'GET',
             });
 
@@ -248,7 +248,7 @@ export default function Best50() {
                 b15: newSong,
             };
 
-            const res = await fetch('/api/v1/saveB50', {
+            const res = await fetch('/api/v1/b50', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

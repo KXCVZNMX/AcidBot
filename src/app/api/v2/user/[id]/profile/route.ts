@@ -11,7 +11,7 @@ function toProxiedUrl(src: string): string {
         const u = new URL(src);
         // Only proxy http(s) URLs that are genuinely cross-origin.
         if (u.protocol === 'http:' || u.protocol === 'https:') {
-            return `/api/v1/imageProxy?url=${encodeURIComponent(src)}`;
+            return `/api/v1/images/proxy?url=${encodeURIComponent(src)}`;
         }
     } catch {
         // relative URL or data: URI – leave as-is

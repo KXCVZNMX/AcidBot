@@ -25,7 +25,7 @@ export default function ClalGuide() {
         'javascript:' +
         '(function () {' +
         'var s=document.createElement(\'script\');' +
-        `s.src='${site_link}/api/v1/getClal';` +
+        `s.src='${site_link}/api/v1/profile/clal';` +
         'document.body.appendChild(s);' +
         '})();void(0);';
 

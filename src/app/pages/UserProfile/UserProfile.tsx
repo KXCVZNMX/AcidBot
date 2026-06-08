@@ -75,7 +75,7 @@ export default function UserProfile() {
             }
 
             try {
-                const res = await fetch('/api/v1/fetchOldB50', {
+                const res = await fetch('/api/v1/b50/history', {
                     method: 'GET',
                 });
 
@@ -88,7 +88,7 @@ export default function UserProfile() {
                 setNewSong(b50.b15);
 
                 const resOldB50 = await fetch(
-                    `/api/v1/fetchOldB50Profile?id=${session?.user?.id ?? ''}`,
+                    `/api/v1/b50/history/profile?id=${session?.user?.id ?? ''}`,
                     {
                         method: 'POST',
                     }
@@ -125,7 +125,7 @@ export default function UserProfile() {
                                     <div className={'shrink-0'}>
                                         <Image
                                             src={session?.user?.image ?? DefaultUserIcon}
-                                            alt={'user icon'}
+                                            alt={'profile icon'}
                                             width={130}
                                             height={130}
                                             className={'rounded-full ring-4 ring-primary object-cover'}
@@ -143,7 +143,7 @@ export default function UserProfile() {
                                                 <button
                                                     type={'button'}
                                                     className={'btn btn-xs btn-ghost'}
-                                                    aria-label={'Copy user id'}
+                                                    aria-label={'Copy profile id'}
                                                     onClick={async () => {
                                                         try {
                                                             await navigator.clipboard.writeText(session?.user?.id ?? 'undefined');

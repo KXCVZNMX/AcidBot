@@ -31,7 +31,7 @@ export default function SkillRadar() {
 
     const fetchB50WithTags = async (): Promise<SongTags[]> => {
         try {
-            const res = await fetch('/api/v1/b50WithTags', {
+            const res = await fetch('/api/v1/b50/tags', {
                 method: 'GET',
             });
             return await res.json();

@@ -111,7 +111,7 @@ export default function Navbar() {
                                                 session?.user?.image ??
                                                 DefaultAvatar
                                             }
-                                            alt={'user profile picture'}
+                                            alt={'profile profile picture'}
                                             width={30}
                                             height={30}
                                             className={'rounded-full'}

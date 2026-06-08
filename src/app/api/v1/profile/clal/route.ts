@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 
-export async function GET(req: NextRequest) {
+export async function PUT(req: NextRequest) {
     const url = req.nextUrl;
 
     try {
