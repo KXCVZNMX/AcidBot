@@ -52,6 +52,58 @@ interface SongData {
     date?: string; // isNew
 }
 
+interface NoteCounts {
+    tap: number;
+    hold: number;
+    slide: number;
+    touch: number;
+    break: number;
+    total: number;
+}
+
+interface Regions {
+    jp: boolean;
+    intl: boolean;
+    usa: boolean;
+    cn: boolean;
+}
+
+interface MultiverInternalLevelValue {
+    [versionName: string]: number;
+}
+
+interface Sheet {
+    type: 'dx' | 'std' | string; // 'dx' in this example, but allows for standard if applicable
+    difficulty: 'basic' | 'advanced' | 'expert' | 'master' | 'remaster' | string;
+    level: string;
+    internalLevelValue: number;
+    noteDesigner: string;
+    noteCounts: NoteCounts;
+    regions: Regions;
+    isSpecial: boolean;
+    version: string;
+    internalId: number;
+    releaseDate: string; // ISO format string (YYYY-MM-DD)
+    multiverInternalLevelValue?: MultiverInternalLevelValue; // Optional since it's not on all difficulties
+}
+
+interface DXSongDataEntry {
+    songId: string;
+    category: string;
+    title: string;
+    artist: string;
+    bpm: number;
+    imageName: string;
+    isNew: boolean;
+    isLocked: boolean;
+    sheets: Sheet[];
+    searchAcronyms: string[];
+}
+
+interface DXSongData {
+    songs: DXSongDataEntry[];
+}
+
 dotenv.config({ path: './.env.local' });
 
 const intlMusic = fs.readFileSync(
@@ -64,8 +116,14 @@ const jpMusic = fs.readFileSync(
     'utf8'
 );
 
+const dxratingMusic = fs.readFileSync(
+    './dxrating/packages/dxdata/dxdata.json',
+    'utf8'
+)
+
 const intlSongs: SongData[] = JSON.parse(intlMusic);
 const jpSongs: SongData[] = JSON.parse(jpMusic);
+const dxratingSongs: DXSongData = JSON.parse(dxratingMusic)
 
 (async () => {
     const uri = process.env.MONGODB_URI || '';
@@ -84,6 +142,9 @@ const jpSongs: SongData[] = JSON.parse(jpMusic);
         const cJp = db.collection('maimaiJpSongInfo');
         await cJp.drop().catch(() => {});
         await cJp.insertMany(jpSongs)
+        const cDX = db.collection('maimaiSongs');
+        await cDX.drop().catch(() => {});
+        await cDX.insertMany(dxratingSongs.songs);
     } catch (e) {
         console.error(e);
     } finally {

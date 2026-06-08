@@ -24,8 +24,11 @@ jobs:
             - name: Install Dependencies
               run: pnpm install
 
-            - name: Clone maimai data repo
+            - name: Clone maimai data repo (zvuc)
               run: git clone https://github.com/zvuc/otoge-db.git
+
+            - name: Clone maimai data repo (dxrating)
+              run: git clone https://github.com/gekichumai/dxrating.git
 
             - name: Set yarn to use Corepack
               run: corepack enable
