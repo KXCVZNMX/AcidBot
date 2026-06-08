@@ -119,11 +119,11 @@ const jpMusic = fs.readFileSync(
 const dxratingMusic = fs.readFileSync(
     './dxrating/packages/dxdata/dxdata.json',
     'utf8'
-)
+);
 
 const intlSongs: SongData[] = JSON.parse(intlMusic);
 const jpSongs: SongData[] = JSON.parse(jpMusic);
-const dxratingSongs: DXSongData = JSON.parse(dxratingMusic)
+const dxratingSongs: DXSongData = JSON.parse(dxratingMusic);
 
 (async () => {
     const uri = process.env.MONGODB_URI || '';
