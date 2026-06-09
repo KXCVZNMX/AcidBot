@@ -17,7 +17,7 @@ Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issue
 
 - Next.js + Typescript frontend
 - Styled with Tailwind CSS and daisyUI
-- REST API built with Next.js
+- REST-ish API built with Next.js
 - User and song data stored with MongoDB
 - OAuth provided by Auth.js
 - ESLint and Prettier for code quality and consistency
