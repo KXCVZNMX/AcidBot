@@ -1,9 +1,17 @@
 import {NextRequest, NextResponse} from 'next/server';
-import {UserClalSchema} from '@/app/api/v2/_shared/schemas';
 import {MalformedRequest} from '@/app/api/v2/_shared/types';
 import fetchPage from '@/lib/fetchPage';
 import {ParsedProfile, UserCollectionCount} from '@/lib/types';
 import * as cheerio from 'cheerio';
+import {z} from 'zod';
+
+export const UserClalSchema = z.object({
+    id: z.string().min(1),
+    clal: z
+        .string()
+        .length(64)
+        .regex(/^[A-Za-z0-9]+$/),
+});
 
 function toProxiedUrl(src: string): string {
     if (!src) return src;

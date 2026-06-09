@@ -1,15 +1,22 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {UserClalSchema} from '@/app/api/v2/_shared/schemas';
-import {DatabaseError, InvalidClalToken, MalformedRequest} from '@/app/api/v2/_shared/types';
+import { NextRequest, NextResponse } from 'next/server';
+import {
+    DatabaseError,
+    InvalidClalToken,
+    MalformedRequest,
+    UserNotFoundOrNoPrev,
+} from '@/app/api/v2/_shared/types';
 import {MaimaiSongScore, MSSB50, ParsedProfile, UserCollectionCount} from '@/lib/types';
 import fetchPage from '@/lib/fetchPage';
+import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';
-import {extractScore} from '@/lib/util';
 import client from '@/lib/db';
-import {SongInfo} from '@/app/api/_shared/types';
-import {getLevelConst, getRatingByAchievement, isNewByDate} from '@/app/api/_shared/util';
-import {ObjectId} from 'mongodb';
-import {SplitB50Schema} from '@/app/api/v2/_shared/schemas';
+import { SongInfo } from '@/app/api/_shared/types';
+import {
+    getLevelConst,
+    getRatingByAchievement,
+    isNewByDate,
+} from '@/app/api/_shared/util';
+import { ObjectId } from 'mongodb';
 import {z} from 'zod';
 
 function toProxiedUrl(src: string): string {
@@ -86,68 +93,76 @@ export function parseProfileBlock(html: string): ParsedProfile | null {
     };
 }
 
+const UserB50Schema = z.object({
+    id: z.string().min(1),
+    clal: z
+        .string()
+        .length(64)
+        .regex(/^[A-Za-z0-9]+$/),
+    profile: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
+    old: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
+})
+
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const {id: u_id} = await params;
+    const { id: u_id } = await params;
     const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
-    const u_old = url.searchParams.get('old');
+    const u_includeProfile = url.searchParams.get('profile');
+    const u_oldB50 = url.searchParams.get('old');
 
-    const parsed = UserClalSchema.extend({
-        old: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
-    }).safeParse({id: u_id, clal: u_clal, old: u_old ?? undefined});
+    const parsed = UserB50Schema.safeParse({ id: u_id, clal: u_clal, profile: u_includeProfile ?? undefined, old: u_oldB50 ?? undefined });
 
     if (!parsed.success) {
-        return NextResponse.json(MalformedRequest, {status: 400});
+        return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const {id, clal, old} = parsed.data;
+    const { id, clal, profile, old } = parsed.data;
+
+    const homeRedirect = 'https://maimaidx-eng.com/maimai-mobile/home/';
 
     try {
-        const homeRedirect = 'https://maimaidx-eng.com/maimai-mobile/home/';
         const redirects = old
-            ? [homeRedirect]
+            ? (profile ? [homeRedirect] : [])
             : [
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
-            homeRedirect,
-        ];
+                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
+                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
+                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
+                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
+                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
+                ...(profile ? [homeRedirect] : []),
+            ];
 
         const res: MaimaiSongScore[] = [];
-        const htmls = await fetchPage(clal, redirects);
 
-        if (!Array.isArray(htmls)) {
+        let htmls;
+        try {
+            htmls = await fetchPage(clal, redirects);
+        } catch (fetchError) {
+            console.error(fetchError);
             return NextResponse.json(InvalidClalToken, { status: 401 });
+            // TODO: This is assuming invalid clal token right now (which is most of the case). But there are cases of upstream maintenance as well
+            // TODO: I don't know the error code for it right now. Once I find out i need to modify fetchPage to return those codes.
         }
 
-        const profile = parseProfileBlock(htmls[htmls.length - 1]);
+        const profileBlock = parseProfileBlock(htmls[htmls.length - 1]);
 
         if (old) {
-            const oldB50Res = await fetch(
-                `${url.origin}/api/v2/user/${id}/oldB50`
-            );
-
-            if (!oldB50Res.ok) {
-                const body = await oldB50Res.json().catch(() => DatabaseError);
-                return NextResponse.json(body, { status: oldB50Res.status });
-            }
-
-            const oldB50Data = SplitB50Schema.safeParse(await oldB50Res.json());
-
-            if (!oldB50Data.success) {
-                return NextResponse.json(DatabaseError, { status: 500 });
+            const db = client.db();
+            const doc = await db
+                .collection('userB50')
+                .findOne({ _id: new ObjectId(id) });
+            if (!doc) {
+                return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
             }
 
             return NextResponse.json(
                 {
-                    b35: oldB50Data.data.b35,
-                    b15: oldB50Data.data.b15,
-                    profile,
+                    b35: doc.b35,
+                    b15: doc.b15,
+                    profile: profileBlock,
                 },
                 { status: 200 }
             );
@@ -164,7 +179,6 @@ export async function GET(
             // TODO: This is assuming invalid clal token right now (which is most of the case). But there are cases of upstream maintenance as well
             // TODO: I don't know the error code for it right now. Once I find out i need to modify fetchPage to return those codes.
         }
-
 
         const collection = client.db().collection('maimaiIntlSongInfo');
 
@@ -203,7 +217,7 @@ export async function GET(
         for (const r of res) {
             const qRes = docMap.get(r.name);
             if (!qRes) {
-                return NextResponse.json(DatabaseError, { status: 402 });
+                return NextResponse.json(DatabaseError, { status: 500 });
             }
 
             const levelConst: string = getLevelConst(r, qRes);
@@ -248,7 +262,7 @@ export async function GET(
         const slicedB35 = b35.slice(0, 35);
         const slicedB15 = b15.slice(0, 15);
 
-        if (slicedB15.length === 0 && b35.length === 0) {
+        if (slicedB15.length === 0 && slicedB35.length === 0) {
             return NextResponse.json(InvalidClalToken, { status: 401 });
         }
 
@@ -272,7 +286,7 @@ export async function GET(
             {
                 b35: slicedB35,
                 b15: slicedB15,
-                profile: profile,
+                profile: profileBlock,
             },
             { status: 200 }
         );
