@@ -10,7 +10,10 @@ info:
     - Image proxy responses return the upstream image bytes with the upstream content type.
     - Date fields are serialized by Next.js/MongoDB to ISO strings in JSON responses.
 servers:
-  - url: /
+  - url: acid.kvznmx.com
+    description: Production server
+  - url: localhost:3000
+    description: Local development server
 
 tags:
   - name: profile
