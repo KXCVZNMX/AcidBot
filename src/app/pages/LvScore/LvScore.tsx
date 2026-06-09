@@ -149,12 +149,9 @@ export default function LvScore() {
 
         try {
             if (!profile) {
-                const profileRes = await fetch(
-                    `/api/v1/user?clal=${clal}`,
-                    {
-                        method: 'GET',
-                    }
-                );
+                const profileRes = await fetch(`/api/v1/user?clal=${clal}`, {
+                    method: 'GET',
+                });
 
                 if (!profileRes.ok) {
                     const { error } = await profileRes.json();

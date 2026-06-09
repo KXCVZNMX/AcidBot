@@ -1,380 +1,378 @@
 openapi: 3.0.3
 info:
-  title: AcidBot API v2
-  version: 2.0.0
-  description: |
-    OpenAPI specification for the routes implemented under `src/app/api/v2`.
+    title: AcidBot API v2
+    version: 2.0.0
+    description: |
+        OpenAPI specification for the routes implemented under `src/app/api/v2`.
 
-    Notes:
-    - The `b50` endpoint is exposed as `GET`, but it is not a pure read: it fetches upstream maimai pages and upserts a cached snapshot into MongoDB.
-    - Date fields are serialized by Next.js/MongoDB to JSON strings.
-    - Image URLs may be proxied through the application layer.
+        Notes:
+        - The `b50` endpoint is exposed as `GET`, but it is not a pure read: it fetches upstream maimai pages and upserts a cached snapshot into MongoDB.
+        - Date fields are serialized by Next.js/MongoDB to JSON strings.
+        - Image URLs may be proxied through the application layer.
 servers:
-  - url: acid.kvznmx.com
-    description: Production server
-  - url: localhost:3000
-    description: Local development server
+    - url: acid.kvznmx.com
+      description: Production server
+    - url: localhost:3000
+      description: Local development server
 
 tags:
-  - name: users
-  - name: profile
-  - name: b50
+    - name: users
+    - name: profile
+    - name: b50
 
 paths:
-  /api/v2/users/{id}/b50:
-    get:
-      tags: [users, b50]
-      summary: Fetch the current Best 50 snapshot
-      description: |
-        Fetches the maimai mobile record pages using the provided `clal` token,
-        extracts score rows, enriches them with local song metadata, computes the
-        B35/B15 split, and returns the current Best 50 payload.
+    /api/v2/users/{id}/b50:
+        get:
+            tags: [users, b50]
+            summary: Fetch the current Best 50 snapshot
+            description: |
+                Fetches the maimai mobile record pages using the provided `clal` token,
+                extracts score rows, enriches them with local song metadata, computes the
+                B35/B15 split, and returns the current Best 50 payload.
 
-        Although this operation is exposed as `GET`, it has side effects:
-        - it performs upstream HTTP fetches against maimai mobile
-        - it writes the computed snapshot to the `userB50` collection
-        - it refreshes the stored snapshot used by subsequent `old=true` reads
-      x-side-effects: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: MongoDB ObjectId string for the AcidBot user record.
-        - in: query
-          name: clal
-          required: true
-          schema:
-            type: string
-            minLength: 64
-            maxLength: 64
-            pattern: '^[A-Za-z0-9]+$'
-          description: The CLAL token used to fetch the maimai mobile record pages.
-        - in: query
-          name: profile
-          required: false
-          schema:
-            type: boolean
-          description: When true, include the parsed profile block from the home page redirect.
-        - in: query
-          name: old
-          required: false
-          schema:
-            type: boolean
-          description: When true, return the previously stored Best 50 snapshot instead of recomputing a fresh one.
-      responses:
-        '200':
-          description: Current Best 50 payload, split into B35 and B15, with an optional profile block
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/B50Response'
-        '400':
-          description: Malformed request or invalid query parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Invalid CLAL token or upstream fetch/parsing failure
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: No stored Best 50 snapshot exists for the requested user when `old=true`
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Database or server-side error while resolving the Best 50 payload
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                Although this operation is exposed as `GET`, it has side effects:
+                - it performs upstream HTTP fetches against maimai mobile
+                - it writes the computed snapshot to the `userB50` collection
+                - it refreshes the stored snapshot used by subsequent `old=true` reads
+            x-side-effects: true
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                  description: MongoDB ObjectId string for the AcidBot user record.
+                - in: query
+                  name: clal
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 64
+                      maxLength: 64
+                      pattern: '^[A-Za-z0-9]+$'
+                  description: The CLAL token used to fetch the maimai mobile record pages.
+                - in: query
+                  name: profile
+                  required: false
+                  schema:
+                      type: boolean
+                  description: When true, include the parsed profile block from the home page redirect.
+                - in: query
+                  name: old
+                  required: false
+                  schema:
+                      type: boolean
+                  description: When true, return the previously stored Best 50 snapshot instead of recomputing a fresh one.
+            responses:
+                '200':
+                    description: Current Best 50 payload, split into B35 and B15, with an optional profile block
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/B50Response'
+                '400':
+                    description: Malformed request or invalid query parameters
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Invalid CLAL token or upstream fetch/parsing failure
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: No stored Best 50 snapshot exists for the requested user when `old=true`
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Database or server-side error while resolving the Best 50 payload
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v2/users/{id}/b50/profile:
-    get:
-      tags: [users, profile]
-      summary: Fetch the current profile block
-      description: |
-        Fetches the maimai mobile home page using the provided `clal` token and
-        parses the profile block into a normalized JSON object.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: MongoDB ObjectId string for the AcidBot user record.
-        - in: query
-          name: clal
-          required: true
-          schema:
-            type: string
-            minLength: 64
-            maxLength: 64
-            pattern: '^[A-Za-z0-9]+$'
-          description: The CLAL token used to fetch the maimai mobile profile page.
-      responses:
-        '200':
-          description: Parsed profile information, or null when the profile block cannot be found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParsedProfile'
-        '400':
-          description: Malformed request or invalid query parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Server-side error while fetching or parsing the profile block
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+    /api/v2/users/{id}/b50/profile:
+        get:
+            tags: [users, profile]
+            summary: Fetch the current profile block
+            description: |
+                Fetches the maimai mobile home page using the provided `clal` token and
+                parses the profile block into a normalized JSON object.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                  description: MongoDB ObjectId string for the AcidBot user record.
+                - in: query
+                  name: clal
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 64
+                      maxLength: 64
+                      pattern: '^[A-Za-z0-9]+$'
+                  description: The CLAL token used to fetch the maimai mobile profile page.
+            responses:
+                '200':
+                    description: Parsed profile information, or null when the profile block cannot be found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ParsedProfile'
+                '400':
+                    description: Malformed request or invalid query parameters
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Server-side error while fetching or parsing the profile block
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v2/users/{id}/b50/image:
-    get:
-      tags: [users, b50]
-      summary: Render Best 50 image for a user
-      description: |
-        Generates a PNG image visualising the user's Best 50 (B35/B15) using
-        the provided `clal` token. This endpoint may trigger upstream maimai
-        fetches and will update the cached Best 50 snapshot when `old=false`.
-        The response is an image (image/png).
-      x-side-effects: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: MongoDB ObjectId string for the AcidBot user record.
-        - in: query
-          name: clal
-          required: true
-          schema:
-            type: string
-            minLength: 64
-            maxLength: 64
-            pattern: '^[A-Za-z0-9]+$'
-          description: The CLAL token used to fetch maimai mobile pages.
-        - in: query
-          name: old
-          required: false
-          schema:
-            type: boolean
-          description: When true, render using the previously stored Best 50 snapshot instead of recomputing.
-      responses:
-        '200':
-          description: PNG image rendering of the user's Best 50 (binary image/png)
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: Malformed request or invalid query parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Invalid CLAL token or upstream fetch/parsing failure
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '502':
-          description: Upstream fetch to the maimai mobile site failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Database or server-side error while rendering the image
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+    /api/v2/users/{id}/b50/image:
+        get:
+            tags: [users, b50]
+            summary: Render Best 50 image for a user
+            description: |
+                Generates a PNG image visualising the user's Best 50 (B35/B15) using
+                the provided `clal` token. This endpoint may trigger upstream maimai
+                fetches and will update the cached Best 50 snapshot when `old=false`.
+                The response is an image (image/png).
+            x-side-effects: true
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                  description: MongoDB ObjectId string for the AcidBot user record.
+                - in: query
+                  name: clal
+                  required: true
+                  schema:
+                      type: string
+                      minLength: 64
+                      maxLength: 64
+                      pattern: '^[A-Za-z0-9]+$'
+                  description: The CLAL token used to fetch maimai mobile pages.
+                - in: query
+                  name: old
+                  required: false
+                  schema:
+                      type: boolean
+                  description: When true, render using the previously stored Best 50 snapshot instead of recomputing.
+            responses:
+                '200':
+                    description: PNG image rendering of the user's Best 50 (binary image/png)
+                    content:
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+                '400':
+                    description: Malformed request or invalid query parameters
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Invalid CLAL token or upstream fetch/parsing failure
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '502':
+                    description: Upstream fetch to the maimai mobile site failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '500':
+                    description: Database or server-side error while rendering the image
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
 
 components:
-  schemas:
-    ErrorResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - error
-        - code
-      properties:
-        error:
-          type: string
-        code:
-          type: string
-          enum:
-            - USER_NOT_FOUND
-            - USER_NOT_FOUND_OR_NO_PREV
-            - INVALID_CLAL_TOKEN
-            - UPSTREAM_MAINTENANCE
-            - MALFORMED_REQUEST
-            - DATABASE_ERROR
+    schemas:
+        ErrorResponse:
+            type: object
+            additionalProperties: false
+            required:
+                - error
+                - code
+            properties:
+                error:
+                    type: string
+                code:
+                    type: string
+                    enum:
+                        - USER_NOT_FOUND
+                        - USER_NOT_FOUND_OR_NO_PREV
+                        - INVALID_CLAL_TOKEN
+                        - UPSTREAM_MAINTENANCE
+                        - MALFORMED_REQUEST
+                        - DATABASE_ERROR
 
-    UserCollectionCount:
-      type: object
-      additionalProperties: false
-      required:
-        - img
-        - text
-      properties:
-        img:
-          type: string
-          nullable: true
-          description: Proxied or relative image URL for the collection badge.
-        text:
-          type: string
-          nullable: true
-          description: Human-readable collection count text.
+        UserCollectionCount:
+            type: object
+            additionalProperties: false
+            required:
+                - img
+                - text
+            properties:
+                img:
+                    type: string
+                    nullable: true
+                    description: Proxied or relative image URL for the collection badge.
+                text:
+                    type: string
+                    nullable: true
+                    description: Human-readable collection count text.
 
-    ParsedProfile:
-      type: object
-      additionalProperties: false
-      nullable: true
-      required:
-        - profilePicture
-        - dan
-        - rank
-        - userName
-        - userDetail
-        - userCollectionCount
-      properties:
-        profilePicture:
-          type: string
-          nullable: true
-          description: Proxied profile image URL.
-        dan:
-          type: string
-          nullable: true
-          description: Proxied dan badge image URL.
-        rank:
-          type: string
-          nullable: true
-          description: Proxied rank image URL.
-        userName:
-          type: string
-          nullable: true
-          description: Parsed maimai username.
-        userDetail:
-          type: string
-          nullable: true
-          description: Parsed trophy/detail text.
-        userCollectionCount:
-          allOf:
-            - $ref: '#/components/schemas/UserCollectionCount'
-          nullable: true
+        ParsedProfile:
+            type: object
+            additionalProperties: false
+            nullable: true
+            required:
+                - profilePicture
+                - dan
+                - rank
+                - userName
+                - userDetail
+                - userCollectionCount
+            properties:
+                profilePicture:
+                    type: string
+                    nullable: true
+                    description: Proxied profile image URL.
+                dan:
+                    type: string
+                    nullable: true
+                    description: Proxied dan badge image URL.
+                rank:
+                    type: string
+                    nullable: true
+                    description: Proxied rank image URL.
+                userName:
+                    type: string
+                    nullable: true
+                    description: Parsed maimai username.
+                userDetail:
+                    type: string
+                    nullable: true
+                    description: Parsed trophy/detail text.
+                userCollectionCount:
+                    allOf:
+                        - $ref: '#/components/schemas/UserCollectionCount'
+                    nullable: true
 
-    MaimaiSongScore:
-      type: object
-      additionalProperties: false
-      required:
-        - name
-        - score
-        - diff
-        - dx
-        - isDx
-        - sync
-        - combo
-        - rank
-      properties:
-        name:
-          type: string
-        score:
-          type: string
-          description: Score string as scraped from maimai mobile.
-        diff:
-          type: string
-          description: Difficulty identifier scraped from maimai mobile.
-        dx:
-          type: string
-          description: DX/standard marker scraped from maimai mobile.
-        isDx:
-          type: string
-          description: String flag indicating whether the chart is DX.
-        sync:
-          type: string
-          nullable: true
-        combo:
-          type: string
-          nullable: true
-        rank:
-          type: string
-          nullable: true
+        MaimaiSongScore:
+            type: object
+            additionalProperties: false
+            required:
+                - name
+                - score
+                - diff
+                - dx
+                - isDx
+                - sync
+                - combo
+                - rank
+            properties:
+                name:
+                    type: string
+                score:
+                    type: string
+                    description: Score string as scraped from maimai mobile.
+                diff:
+                    type: string
+                    description: Difficulty identifier scraped from maimai mobile.
+                dx:
+                    type: string
+                    description: DX/standard marker scraped from maimai mobile.
+                isDx:
+                    type: string
+                    description: String flag indicating whether the chart is DX.
+                sync:
+                    type: string
+                    nullable: true
+                combo:
+                    type: string
+                    nullable: true
+                rank:
+                    type: string
+                    nullable: true
 
-    MSSB50:
-      allOf:
-        - $ref: '#/components/schemas/MaimaiSongScore'
-        - type: object
-          additionalProperties: false
-          required:
-            - levelConst
-            - rating
-            - dateIntlAdded
-            - achievement
-            - jacketURL
-          properties:
-            levelConst:
-              type: number
-              description: Level constant used for rating calculation.
-            rating:
-              type: number
-              description: Derived rating value for the score.
-            dateIntlAdded:
-              type: string
-              description: International release date for the song.
-            achievement:
-              type: number
-              description: Numeric achievement parsed from the score string.
-            jacketURL:
-              type: string
-              description: Song jacket image URL.
+        MSSB50:
+            allOf:
+                - $ref: '#/components/schemas/MaimaiSongScore'
+                - type: object
+                  additionalProperties: false
+                  required:
+                      - levelConst
+                      - rating
+                      - dateIntlAdded
+                      - achievement
+                      - jacketURL
+                  properties:
+                      levelConst:
+                          type: number
+                          description: Level constant used for rating calculation.
+                      rating:
+                          type: number
+                          description: Derived rating value for the score.
+                      dateIntlAdded:
+                          type: string
+                          description: International release date for the song.
+                      achievement:
+                          type: number
+                          description: Numeric achievement parsed from the score string.
+                      jacketURL:
+                          type: string
+                          description: Song jacket image URL.
 
-    Best50Songs:
-      type: object
-      additionalProperties: false
-      required:
-        - b35
-        - b15
-      properties:
-        b35:
-          type: array
-          items:
-            $ref: '#/components/schemas/MSSB50'
-        b15:
-          type: array
-          items:
-            $ref: '#/components/schemas/MSSB50'
+        Best50Songs:
+            type: object
+            additionalProperties: false
+            required:
+                - b35
+                - b15
+            properties:
+                b35:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MSSB50'
+                b15:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MSSB50'
 
-    B50Response:
-      type: object
-      additionalProperties: false
-      required:
-        - b35
-        - b15
-        - profile
-      properties:
-        b35:
-          type: array
-          items:
-            $ref: '#/components/schemas/MSSB50'
-        b15:
-          type: array
-          items:
-            $ref: '#/components/schemas/MSSB50'
-        profile:
-          $ref: '#/components/schemas/ParsedProfile'
-
-
+        B50Response:
+            type: object
+            additionalProperties: false
+            required:
+                - b35
+                - b15
+                - profile
+            properties:
+                b35:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MSSB50'
+                b15:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MSSB50'
+                profile:
+                    $ref: '#/components/schemas/ParsedProfile'

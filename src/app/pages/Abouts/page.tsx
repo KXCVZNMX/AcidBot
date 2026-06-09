@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'About',
     description:
         'Learn what AcidBot does, who built it, and where to find the source code and usage guides.',
-    keywords: ['maimai', 'Acid Bot', 'AcidBot', 'abouts']
+    keywords: ['maimai', 'Acid Bot', 'AcidBot', 'abouts'],
 };
 
 export default function Page() {

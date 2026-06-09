@@ -1,6 +1,9 @@
 import type { MetadataRoute } from 'next';
 
-const siteLink = (process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(/\/$/, '');
+const siteLink = (process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(
+    /\/$/,
+    ''
+);
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -12,5 +15,3 @@ export default function robots(): MetadataRoute.Robots {
         sitemap: `${siteLink}/sitemap.xml`,
     };
 }
-
-

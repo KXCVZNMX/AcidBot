@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: 'Guides',
     description:
         'Find step-by-step instructions for logging in, setting your clal token, and using AcidBot features.',
-    keywords: ['maimai', 'Acid Bot', 'AcidBot', 'guide']
+    keywords: ['maimai', 'Acid Bot', 'AcidBot', 'guide'],
 };
 
 export default function Guides() {

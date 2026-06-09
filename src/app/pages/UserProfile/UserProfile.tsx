@@ -107,10 +107,7 @@ export default function UserProfile() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
-            <SuccessModal
-                message={successMessage}
-                show={showSuccessModal}
-            />
+            <SuccessModal message={successMessage} show={showSuccessModal} />
 
             <div className={'flex items-center justify-center'}>
                 <div
@@ -119,37 +116,76 @@ export default function UserProfile() {
                     }
                 >
                     <div className={'col-span-1 md:col-span-2'}>
-                        <div className={'card bg-linear-to-r from-base-200 to-base-300 shadow-lg z-10'}>
+                        <div
+                            className={
+                                'card bg-linear-to-r from-base-200 to-base-300 shadow-lg z-10'
+                            }
+                        >
                             <div className={'card-body p-6'}>
-                                <div className={'flex flex-col md:flex-row gap-5 items-center md:items-start'}>
+                                <div
+                                    className={
+                                        'flex flex-col md:flex-row gap-5 items-center md:items-start'
+                                    }
+                                >
                                     <div className={'shrink-0'}>
                                         <Image
-                                            src={session?.user?.image ?? DefaultUserIcon}
+                                            src={
+                                                session?.user?.image ??
+                                                DefaultUserIcon
+                                            }
                                             alt={'profile icon'}
                                             width={130}
                                             height={130}
-                                            className={'rounded-full ring-4 ring-primary object-cover'}
+                                            className={
+                                                'rounded-full ring-4 ring-primary object-cover'
+                                            }
                                         />
                                     </div>
 
                                     <div className={'flex flex-col w-full'}>
                                         <div className={'card-title pl-2'}>
-                                            <h2 className={'text-3xl font-bold'}>{session?.user?.name}</h2>
+                                            <h2
+                                                className={'text-3xl font-bold'}
+                                            >
+                                                {session?.user?.name}
+                                            </h2>
                                         </div>
 
                                         <div className={'card-body p-0 pt-2'}>
-                                            <div className={'flex items-center gap-3'}>
-                                                <span className={'font-mono text-sm opacity-90'}>@{session?.user?.id}</span>
+                                            <div
+                                                className={
+                                                    'flex items-center gap-3'
+                                                }
+                                            >
+                                                <span
+                                                    className={
+                                                        'font-mono text-sm opacity-90'
+                                                    }
+                                                >
+                                                    @{session?.user?.id}
+                                                </span>
                                                 <button
                                                     type={'button'}
-                                                    className={'btn btn-xs btn-ghost'}
-                                                    aria-label={'Copy profile id'}
+                                                    className={
+                                                        'btn btn-xs btn-ghost'
+                                                    }
+                                                    aria-label={
+                                                        'Copy profile id'
+                                                    }
                                                     onClick={async () => {
                                                         try {
-                                                            await navigator.clipboard.writeText(session?.user?.id ?? 'undefined');
-                                                            showSuccess('User ID copied to clipboard!');
+                                                            await navigator.clipboard.writeText(
+                                                                session?.user
+                                                                    ?.id ??
+                                                                    'undefined'
+                                                            );
+                                                            showSuccess(
+                                                                'User ID copied to clipboard!'
+                                                            );
                                                         } catch {
-                                                            showError('Failed to copy User ID');
+                                                            showError(
+                                                                'Failed to copy User ID'
+                                                            );
                                                         }
                                                     }}
                                                 >
@@ -158,7 +194,14 @@ export default function UserProfile() {
                                             </div>
 
                                             <h3 className={'text-lg mt-3'}>
-                                                <p className={'text-sm opacity-80'}>Created on: {createdAtString}</p>
+                                                <p
+                                                    className={
+                                                        'text-sm opacity-80'
+                                                    }
+                                                >
+                                                    Created on:{' '}
+                                                    {createdAtString}
+                                                </p>
                                             </h3>
                                         </div>
                                     </div>

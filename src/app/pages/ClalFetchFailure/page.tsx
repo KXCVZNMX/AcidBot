@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Fetch Failed',
-    description: 'A temporary failure page shown when a clal token fetch does not succeed.',
+    description:
+        'A temporary failure page shown when a clal token fetch does not succeed.',
     robots: {
         index: false,
         follow: false,

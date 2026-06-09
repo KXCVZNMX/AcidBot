@@ -1,9 +1,9 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {MalformedRequest} from '@/app/api/v2/_shared/types';
+import { NextRequest, NextResponse } from 'next/server';
+import { MalformedRequest } from '@/app/api/v2/_shared/types';
 import fetchPage from '@/lib/fetchPage';
-import {ParsedProfile, UserCollectionCount} from '@/lib/types';
+import { ParsedProfile, UserCollectionCount } from '@/lib/types';
 import * as cheerio from 'cheerio';
-import {z} from 'zod';
+import { z } from 'zod';
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),
@@ -90,17 +90,17 @@ export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const {id: u_id} = await params;
+    const { id: u_id } = await params;
     const url = req.nextUrl;
     const u_clal = url.searchParams.get('clal');
 
-    const parsed = UserClalSchema.safeParse({id: u_id, clal: u_clal});
+    const parsed = UserClalSchema.safeParse({ id: u_id, clal: u_clal });
 
     if (!parsed.success) {
-        return NextResponse.json(MalformedRequest, {status: 400});
+        return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const {clal} = parsed.data;
+    const { clal } = parsed.data;
 
     try {
         let html;

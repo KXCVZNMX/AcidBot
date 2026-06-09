@@ -93,8 +93,7 @@ export default async function fetchPage(
                             method: 'GET',
                             headers: {
                                 'User-Agent': userAgent,
-                                Accept:
-                                    'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                                Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                                 Connection: 'keep-alive',
                                 Referer: next ?? undefined,
                             },

@@ -5,7 +5,12 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
-import {MaimaiSongScore, MSSB50, ParsedProfile, UserCollectionCount} from '@/lib/types';
+import {
+    MaimaiSongScore,
+    MSSB50,
+    ParsedProfile,
+    UserCollectionCount,
+} from '@/lib/types';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';
@@ -17,7 +22,7 @@ import {
     isNewByDate,
 } from '@/app/api/_shared/util';
 import { ObjectId } from 'mongodb';
-import {z} from 'zod';
+import { z } from 'zod';
 
 function toProxiedUrl(src: string): string {
     if (!src) return src;
@@ -99,9 +104,15 @@ const UserB50Schema = z.object({
         .string()
         .length(64)
         .regex(/^[A-Za-z0-9]+$/),
-    profile: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
-    old: z.enum(['true', 'false']).transform((value) => value === 'true').optional(),
-})
+    profile: z
+        .enum(['true', 'false'])
+        .transform((value) => value === 'true')
+        .optional(),
+    old: z
+        .enum(['true', 'false'])
+        .transform((value) => value === 'true')
+        .optional(),
+});
 
 export async function GET(
     req: NextRequest,
@@ -113,7 +124,12 @@ export async function GET(
     const u_includeProfile = url.searchParams.get('profile');
     const u_oldB50 = url.searchParams.get('old');
 
-    const parsed = UserB50Schema.safeParse({ id: u_id, clal: u_clal, profile: u_includeProfile ?? undefined, old: u_oldB50 ?? undefined });
+    const parsed = UserB50Schema.safeParse({
+        id: u_id,
+        clal: u_clal,
+        profile: u_includeProfile ?? undefined,
+        old: u_oldB50 ?? undefined,
+    });
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, { status: 400 });
@@ -125,15 +141,17 @@ export async function GET(
 
     try {
         const redirects = old
-            ? (profile ? [homeRedirect] : [])
+            ? profile
+                ? [homeRedirect]
+                : []
             : [
-                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
-                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
-                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
-                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
-                'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
-                ...(profile ? [homeRedirect] : []),
-            ];
+                  'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
+                  'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
+                  'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
+                  'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
+                  'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
+                  ...(profile ? [homeRedirect] : []),
+              ];
 
         const res: MaimaiSongScore[] = [];
 

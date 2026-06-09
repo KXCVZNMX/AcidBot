@@ -8,7 +8,7 @@ import type { Metadata } from 'next';
 import PWARegistration from '@/app/components/PWARegistration';
 
 const siteUrl = new URL(
-    (process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(/\/$/, ''),
+    (process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(/\/$/, '')
 );
 
 export const metadata: Metadata = {

@@ -59,10 +59,7 @@ const intlMusic = fs.readFileSync(
     'utf8'
 );
 
-const jpMusic = fs.readFileSync(
-    './otoge-db/maimai/data/music-ex.json',
-    'utf8'
-);
+const jpMusic = fs.readFileSync('./otoge-db/maimai/data/music-ex.json', 'utf8');
 
 const intlSongs: SongData[] = JSON.parse(intlMusic);
 const jpSongs: SongData[] = JSON.parse(jpMusic);
@@ -83,7 +80,7 @@ const jpSongs: SongData[] = JSON.parse(jpMusic);
         await cIntl.insertMany(intlSongs);
         const cJp = db.collection('maimaiJpSongInfo');
         await cJp.drop().catch(() => {});
-        await cJp.insertMany(jpSongs)
+        await cJp.insertMany(jpSongs);
     } catch (e) {
         console.error(e);
     } finally {
