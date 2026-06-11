@@ -2,20 +2,21 @@
 
 import {
     Chart as ChartJS,
-    CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
     Tooltip,
     Legend,
     Filler,
+    TimeScale,
     type ChartOptions,
 } from 'chart.js';
 
+import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
-    CategoryScale,
+    TimeScale,
     LinearScale,
     PointElement,
     LineElement,
@@ -28,13 +29,6 @@ type OldB50 = {
     createdAt: Date;
     rating: number;
 };
-
-function formatDateLabel(date: Date): string {
-    return new Intl.DateTimeFormat('en-US', {
-        month: 'short',
-        day: 'numeric',
-    }).format(date);
-}
 
 export default function RatingChart({ oldB50 }: { oldB50: OldB50[] }) {
     const normalized = oldB50
@@ -57,15 +51,25 @@ export default function RatingChart({ oldB50 }: { oldB50: OldB50[] }) {
         );
     }
 
-    const labels = normalized.map((entry) => formatDateLabel(entry.createdAt));
-    const ratings = normalized.map((entry) => entry.rating);
+    // Extend the line to today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const lastEntry = normalized[normalized.length - 1];
+    if (lastEntry.createdAt.getTime() < today.getTime()) {
+        normalized.push({
+            rating: lastEntry.rating,
+            createdAt: today,
+        });
+    }
 
     const data = {
-        labels,
         datasets: [
             {
                 label: 'Rating',
-                data: ratings,
+                data: normalized.map((entry) => ({
+                    x: entry.createdAt.getTime(),
+                    y: entry.rating,
+                })),
                 fill: true,
                 borderColor: 'rgba(59, 130, 246, 0.95)',
                 backgroundColor: 'rgba(59, 130, 246, 0.12)',
@@ -74,6 +78,7 @@ export default function RatingChart({ oldB50 }: { oldB50: OldB50[] }) {
                 pointHoverRadius: 4,
                 pointHitRadius: 14,
                 tension: 0,
+                stepped: 'before' as const,
             },
         ],
     };
@@ -107,9 +112,14 @@ export default function RatingChart({ oldB50 }: { oldB50: OldB50[] }) {
                 },
             },
             x: {
+                type: 'time',
+                time: {
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'MMM d',
+                    },
+                },
                 ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 7,
                     color: 'rgba(148, 163, 184, 0.95)',
                 },
                 grid: {
