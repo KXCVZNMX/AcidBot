@@ -84,6 +84,23 @@ paths:
                                 type: string
                             description: Redirect destination.
 
+    /api/v1/profile/clal-script:
+        get:
+            tags: [profile]
+            summary: The script needed to extract CLAL token from the browser
+            description: |
+                Returns the a plain text of a javascript function for the bookmarklet to execute. It would extract the 
+                CLAL token and call /api/v1/profile/clal
+            responses:
+                '200':
+                    description: Returns javascript function in plain text
+                    headers:
+                        text/plain:
+                            schema:
+                                type: string
+                            description: Javascript function
+
+
     /api/v1/images/proxy:
         get:
             tags: [images]
