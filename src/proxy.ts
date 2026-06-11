@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { auth } from '@/auth';
+import client from '@/lib/db';
+import {ObjectId} from 'mongodb';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -33,6 +35,33 @@ export async function proxy(request: NextRequest) {
 
     const session = await auth();
 
+    const targetPages = ['/', '/pages/Best50', '/pages/LvScore'];
+
+    if (targetPages.includes(request.nextUrl.pathname)) {
+        const response = NextResponse.next();
+
+        if (session) {
+            const hasClalCookie = request.cookies.has('clal');
+
+            if (!hasClalCookie) {
+                const doc = await client.db().collection('users').findOne(
+                    { _id: new ObjectId(session.user?.id ?? '') }
+                );
+
+                if (doc && doc.clal) {
+                    response.cookies.set('clal', doc.clal, {
+                        path: '/',
+                        httpOnly: false,
+                        secure: false,
+                        sameSite: 'lax',
+                        maxAge: 60 * 60 * 24 * 7,
+                    });
+                }
+            }
+        }
+        return response;
+    }
+
     if (!session) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -41,5 +70,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/pages/:path*', '/api/v2/:path*'],
+    matcher: [
+        '/((?!_next/static|_next/image|assets|b50|maimaiJackets|rating_plates|.*\\.(?:ico|png|svg|gif|js|json)$).*)'
+    ],
 };
