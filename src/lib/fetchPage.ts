@@ -1,10 +1,16 @@
-'use server';
-
 import fetchCookie from 'fetch-cookie';
 
+/**
+ * Fetches page data sequentially with adaptive delays and error retries.
+ * @param clal - Sega authentication token
+ * @param redirect - A single URL string or an array of URL strings to fetch
+ * @param onProgress - Optional callback function triggered after each successful URL fetch
+ * @returns Promise resolving to an array of HTML strings, or an error message string
+ */
 export default async function fetchPage(
     clal: string,
-    redirect: string | string[]
+    redirect: string | string[],
+    onProgress?: (current: number, total: number, url: string) => void
 ) {
     const sleep = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
@@ -30,17 +36,14 @@ export default async function fetchPage(
         const makeTimeoutSignal = (ms: number) => {
             const ctrl = new AbortController();
             const id = setTimeout(() => ctrl.abort(), ms);
-            // clear timeout when request finishes
-            // caller can use ctrl.signal and clearTimeout if needed
-            // here we return both
             return { signal: ctrl.signal, clear: () => clearTimeout(id) };
         };
 
         const res = await fetchWithCookie(
             'https://lng-tgk-aime-gw.am-all.net/common_auth/login?' +
-                'site_id=maimaidxex&' +
-                'redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&' +
-                'back_url=https://maimai.sega.com/',
+            'site_id=maimaidxex&' +
+            'redirect_url=https://maimaidx-eng.com/maimai-mobile/home/&' +
+            'back_url=https://maimai.sega.com/',
             {
                 method: 'GET',
                 redirect: 'manual',
@@ -70,67 +73,61 @@ export default async function fetchPage(
 
         const result: string[] = [];
 
-        if (typeof redirect === 'string') {
-            const res = await fetchWithCookie(redirect, {
-                method: 'GET',
-                headers: {
-                    'User-Agent': userAgent,
-                    Connection: 'keep-alive',
-                },
-            });
-            result.push(await res.text());
-        } else {
-            // Sequentially fetch each redirect URL, but use adaptive delays + retries
-            for (const re of redirect) {
-                let attempt = 0;
-                let text = '';
+        // Normalize string or string[] into a uniform array to avoid code duplication
+        const urls = typeof redirect === 'string' ? [redirect] : redirect;
+        const total = urls.length;
 
-                while (attempt < maxAttempts) {
-                    attempt++;
-                    const { signal, clear } = makeTimeoutSignal(15000); // 15s timeout
-                    try {
-                        const res = await fetchWithCookie(re, {
-                            method: 'GET',
-                            headers: {
-                                'User-Agent': userAgent,
-                                Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                                Connection: 'keep-alive',
-                                Referer: next ?? undefined,
-                            },
-                            signal,
-                        });
-                        clear();
+        // Sequentially fetch each redirect URL using adaptive delays + retries
+        for (let i = 0; i < total; i++) {
+            const re = urls[i];
+            let attempt = 0;
+            let text = '';
 
-                        // note status available as res.status if needed for logging
+            while (attempt < maxAttempts) {
+                attempt++;
+                const { signal, clear } = makeTimeoutSignal(15000); // 15s timeout
+                try {
+                    const res = await fetchWithCookie(re, {
+                        method: 'GET',
+                        headers: {
+                            'User-Agent': userAgent,
+                            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                            Connection: 'keep-alive',
+                            Referer: next ?? undefined,
+                        },
+                        signal,
+                    });
+                    clear();
 
-                        // If we got a server busy / rate limit, retry with backoff
-                        if (res.status === 429 || res.status >= 500) {
-                            // increase delay to be more conservative
-                            delay = Math.min(maxDelay, delay * 1.8);
-                            // small wait before retry
-                            await sleep(delay + Math.random() * jitter);
-                            continue; // retry
-                        }
-
-                        // success path: read body and adapt delay down
-                        text = await res.text();
-                        // gently reduce delay when server responds well
-                        delay = Math.max(minDelay, Math.floor(delay * 0.85));
-                        break; // exit retry loop
-                    } catch (err) {
-                        // network or abort error - backoff and retry
+                    // If we got a server busy / rate limit, retry with backoff
+                    if (res.status === 429 || res.status >= 500) {
                         delay = Math.min(maxDelay, delay * 1.8);
-                        // if abort due to timeout, we still retry up to attempts
                         await sleep(delay + Math.random() * jitter);
-                        if (attempt >= maxAttempts) throw err;
-                        // otherwise loop to retry
+                        continue; // retry
                     }
+
+                    // Success path: read body and adapt delay down
+                    text = await res.text();
+                    delay = Math.max(minDelay, Math.floor(delay * 0.85));
+                    break; // exit retry loop
+                } catch (err) {
+                    // Network or abort error - backoff and retry
+                    delay = Math.min(maxDelay, delay * 1.8);
+                    await sleep(delay + Math.random() * jitter);
+                    if (attempt >= maxAttempts) throw err;
                 }
+            }
 
-                // push the body we obtained (or empty string if failed but not thrown)
-                result.push(text);
+            // Push the body we obtained
+            result.push(text);
 
-                // wait before the next sequential request (respect adaptive delay + jitter)
+            // Safely pass status update back out if provided
+            if (onProgress) {
+                onProgress(i + 1, total, re);
+            }
+
+            // Wait before the next sequential request (skip sleeping on the final item)
+            if (i < total - 1) {
                 await sleep(delay + Math.random() * jitter);
             }
         }
