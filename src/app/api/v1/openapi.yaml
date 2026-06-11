@@ -55,12 +55,13 @@ paths:
                                 $ref: '#/components/schemas/ErrorResponse'
 
     /api/v1/profile/clal:
-        put:
+        get:
             tags: [profile]
             summary: Save a CLAL token for a user
             description: |
                 Updates the user record with the provided `clal` token and redirects to a
-                success or failure page.
+                success or failure page. This endpoint is only a GET because the bookmarklet
+                used is using a <script> tag, which cannot handle PUT.
             parameters:
                 - in: query
                   name: id
