@@ -79,7 +79,7 @@ export default function Best50() {
     const [gridScale, setGridScale] = useState(1);
     const [scaledGridHeight, setScaledGridHeight] = useState(0);
     const [statusText, setStatusText] = useState('');
-    const [progress, setProgress] = useState({ current: 0, total: 0 });
+    const [progress, setProgress] = useState({ current: 0, total: 0, level: 'easy' });
 
     const rating = [...oldSong, ...newSong].reduce(
         (sum, s) => sum + s.rating,
@@ -113,6 +113,8 @@ export default function Best50() {
 
         (async () => {
             try {
+                setGenerating(true)
+
                 const res = await fetch('/api/v1/b50/history', {
                     method: 'GET',
                 });
@@ -124,6 +126,8 @@ export default function Best50() {
                 const b50: Best50Songs = await res.json();
                 setOldSong(b50.b35);
                 setNewSong(b50.b15);
+
+                setGenerating(false);
             } catch (error) {
                 setError((error as Error).message);
                 console.error(error);
@@ -208,6 +212,20 @@ export default function Best50() {
         }
     };
 
+    const determineFetchingLevel = (url: string) => {
+        if (url.endsWith('diff=0')) {
+            return 'easy';
+        } else if (url.endsWith('diff=1')) {
+            return 'advanced';
+        } else if (url.endsWith('diff=2')) {
+            return 'expert';
+        } else if (url.endsWith('diff=3')) {
+            return 'master';
+        } else {
+            return 'remaster';
+        }
+    }
+
     const fetchB50WithClal = async () => {
         setGenerating(true);
         setOldSong([]);
@@ -255,7 +273,7 @@ export default function Best50() {
                     // Handle Real-Time Scraping Progress Updates
                     if (packet.type === 'progress') {
                         setStatusText('Downloading genre data...');
-                        setProgress({ current: packet.current, total: packet.total });
+                        setProgress({ current: packet.current, total: packet.total, level: determineFetchingLevel(packet.url) });
                     }
                     // Handle General Status Shifts (e.g., Parsing phase)
                     else if (packet.type === 'status') {
@@ -470,7 +488,7 @@ export default function Best50() {
                                 {progress.total > 0 && (
                                     <div>
                                         <div className={'flex justify-between text-xs text-base-content/70 mb-3'}>
-                                            <span className={'font-semibold'}>Fetching game data folders</span>
+                                            <span className={'font-semibold'}>Fetching {progress.level} charts</span>
                                             <span className={'font-bold text-primary'}>{progress.current} / {progress.total}</span>
                                         </div>
                                         <div className={'w-full bg-base-300 h-2.5 rounded-full overflow-hidden shadow-inner'}>
