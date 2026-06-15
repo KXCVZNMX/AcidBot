@@ -389,121 +389,142 @@ export default function Best50() {
                 />
             ) : null}
 
-            <div
-                className={
-                    'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'
-                }
-            >
-                {/* Rating Plate Section */}
-                <div className={'flex flex-col items-center gap-4'}>
-                    <div className={'relative w-75 h-12.5'}>
-                        <Image
-                            src={determineRatingPlate(rating)}
-                            alt={'rating plate'}
-                            fill
-                            className={'object-contain'}
-                        />
+            <div className={'min-h-screen bg-base-100 py-8 px-4'}>
+                <div className={'flex flex-col items-center gap-8 max-w-4xl mx-auto'}>
+                    {/* Rating and Status Side-by-Side Section */}
+                    <div className={'flex flex-col md:flex-row gap-6 w-full md:max-w-4xl'}>
+                        {/* Rating Plate Section */}
+                        <div className={'flex-1 flex justify-center'}>
+                            <div className={'w-full max-w-md relative bg-base-200 rounded-2xl p-8 flex flex-col items-center gap-6 shadow-lg'}>
+                                {/* Rating Plate Image */}
+                                <div className={'relative w-75 h-12.5 drop-shadow-lg'}>
+                                    <Image
+                                        src={determineRatingPlate(rating)}
+                                        alt={'rating plate'}
+                                        fill
+                                        className={'object-contain'}
+                                    />
 
-                        <div
-                            className={
-                                'absolute inset-0 flex items-center justify-start text-[26px] ' +
-                                `${rating < 14000 ? 'tracking-[0.19em] pl-34.25' : 'tracking-[0.18em] pl-37'}`
-                            }
-                        >
-                            {rating}
-                        </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className={'flex flex-wrap gap-3 justify-center'}>
-                        <button
-                            onClick={fetchB50WithClal}
-                            className={'btn btn-primary min-w-35'}
-                            disabled={generating}
-                        >
-                            {generating ? (
-                                <span className={'flex items-center gap-2'}>
-                                    <span
+                                    <div
                                         className={
-                                            'loading loading-spinner loading-sm'
+                                            'absolute inset-0 flex items-center justify-start text-[26px] font-medium ' +
+                                            `${rating < 14000 ? 'tracking-[0.17em] pl-34.25' : 'tracking-[0.17em] pl-36.75'}`
                                         }
-                                    ></span>
-                                    Generating...
-                                </span>
-                            ) : (
-                                'Generate B50'
-                            )}
-                        </button>
+                                    >
+                                        {rating}
+                                    </div>
+                                </div>
 
-                        <button
-                            onClick={saveB50}
-                            className={'btn btn-secondary min-w-35'}
-                        >
-                            Save B50
-                        </button>
+                                {/* Action Buttons */}
+                                <div className={'flex flex-wrap gap-3 justify-center w-full'}>
+                                    <button
+                                        onClick={fetchB50WithClal}
+                                        className={'btn btn-primary min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'}
+                                        disabled={generating}
+                                    >
+                                        {generating ? (
+                                            <span className={'flex items-center gap-2'}>
+                                                <span
+                                                    className={
+                                                        'loading loading-spinner loading-sm'
+                                                    }
+                                                ></span>
+                                                Generating...
+                                            </span>
+                                        ) : (
+                                            'Generate B50'
+                                        )}
+                                    </button>
 
-                        <button
-                            onClick={generateImage}
-                            className={'btn btn-accent min-w-35'}
-                            disabled={
-                                oldSong.length === 0 || newSong.length === 0
-                            }
-                        >
-                            Get Image
-                        </button>
-                    </div>
-                </div>
+                                    <button
+                                        onClick={saveB50}
+                                        className={'btn btn-secondary min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'}
+                                    >
+                                        Save B50
+                                    </button>
 
-                {/* Status Section */}
-                <div className={'mt-4'}>
-                    <span className={'text-sm font-semibold text-gray-500 block'}>Status:</span>
-                    <span className={'text-sm font-medium text-gray-800'}>{statusText}</span>
-                </div>
-
-                {/* Interactive Progress Tracking Interface */}
-                {progress.total > 0 && (
-                    <div className={'mt-4'}>
-                        <div className={'flex justify-between text-xs text-gray-600 mb-1'}>
-                            <span>Fetching game data folders</span>
-                            <span>{progress.current} / {progress.total}</span>
+                                    <button
+                                        onClick={generateImage}
+                                        className={'btn btn-accent min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'}
+                                        disabled={
+                                            oldSong.length === 0 || newSong.length === 0
+                                        }
+                                    >
+                                        Get Image
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div className={'w-full bg-gray-200 h-3 rounded-full overflow-hidden'}>
-                            <div
-                                className={'bg-green-500 h-full transition-all duration-300 ease-out'}
-                                style={{ width: `${(progress.current / progress.total) * 100}%` }}
-                            />
-                        </div>
-                    </div>
-                )}
 
-                {/* Cards Grid Section */}
-                {hasSongs ? (
-                    <div
-                        ref={gridShellRef}
-                        className={'relative w-full overflow-hidden'}
-                        style={{
-                            height:
-                                scaledGridHeight > 0
-                                    ? `${scaledGridHeight}px`
-                                    : undefined,
-                        }}
-                    >
-                        <div
-                            ref={gridStageRef}
-                            className={'absolute left-1/2 top-0 origin-top'}
-                            style={{
-                                width: `${B50_GRID_BASE_WIDTH}px`,
-                                transform: `translateX(-50%) scale(${gridScale})`,
-                            }}
-                        >
-                            <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                        {/* Status Section */}
+                        <div className={'flex-1 flex justify-center'}>
+                            <div className={'w-full max-w-md bg-base-200 rounded-2xl p-8 shadow-lg flex flex-col justify-center'}>
+                                {statusText && (
+                                    <div className={'mb-4'}>
+                                        <span className={'text-xs font-bold text-primary uppercase tracking-wider block mb-2'}>Status</span>
+                                        <span className={'text-sm font-medium text-base-content'}>{statusText}</span>
+                                    </div>
+                                )}
+
+                                {/* Interactive Progress Tracking Interface */}
+                                {progress.total > 0 && (
+                                    <div>
+                                        <div className={'flex justify-between text-xs text-base-content/70 mb-3'}>
+                                            <span className={'font-semibold'}>Fetching game data folders</span>
+                                            <span className={'font-bold text-primary'}>{progress.current} / {progress.total}</span>
+                                        </div>
+                                        <div className={'w-full bg-base-300 h-2.5 rounded-full overflow-hidden shadow-inner'}>
+                                            <div
+                                                className={'bg-primary h-full transition-all duration-300 ease-out shadow-lg'}
+                                                style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Empty state when no status or progress */}
+                                {!statusText && progress.total === 0 && (
+                                    <div className={'text-center text-base-content/50 text-sm'}>
+                                        <p>Ready to generate your best 50!</p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                ) : (
+
+                    {/* Cards Grid Section */}
                     <div className={'w-full'}>
-                        <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                        {hasSongs ? (
+                            <div className={'bg-base-200 rounded-2xl p-8 shadow-lg'}>
+                                <div
+                                    ref={gridShellRef}
+                                    className={'relative w-full overflow-hidden rounded-lg'}
+                                    style={{
+                                        height:
+                                            scaledGridHeight > 0
+                                                ? `${scaledGridHeight}px`
+                                                : undefined,
+                                    }}
+                                >
+                                    <div
+                                        ref={gridStageRef}
+                                        className={'absolute left-1/2 top-0 origin-top'}
+                                        style={{
+                                            width: `${B50_GRID_BASE_WIDTH}px`,
+                                            transform: `translateX(-50%) scale(${gridScale})`,
+                                        }}
+                                    >
+                                        <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className={'bg-base-200 rounded-2xl p-12 shadow-lg'}>
+                                <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
         </>
     );
