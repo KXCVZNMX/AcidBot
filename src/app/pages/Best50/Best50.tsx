@@ -70,6 +70,7 @@ export default function Best50() {
     const [generating, setGenerating] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [success, setSuccess] = useState('');
     const [showImageModal, setShowImageModal] = useState(false);
     const [generatingImage, setGeneratingImage] = useState(false);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -77,6 +78,8 @@ export default function Best50() {
     const [nameplate, setNameplate] = useState(NP_salt_prism);
     const [gridScale, setGridScale] = useState(1);
     const [scaledGridHeight, setScaledGridHeight] = useState(0);
+    const [statusText, setStatusText] = useState('');
+    const [progress, setProgress] = useState({ current: 0, total: 0 });
 
     const rating = [...oldSong, ...newSong].reduce(
         (sum, s) => sum + s.rating,
@@ -221,11 +224,55 @@ export default function Best50() {
                 return;
             }
 
-            const b50: Best50Songs = await res.json();
+            if (!res.body) {
+                throw new Error('ReadableStream not supported by browser or response missing body.');
+            }
 
-            setOldSong(b50.b35);
-            setNewSong(b50.b15);
-            setGenerating(false);
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let buffer = '';
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break; // Stream finished and completely closed
+
+                // Convert Uint8Array chunk to readable text and add it to our buffer
+                buffer += decoder.decode(value, { stream: true });
+
+                // Split the accumulated text buffer by our explicit newline delimiter
+                const lines = buffer.split('\n');
+
+                // Pop the last element out. If the line was cut off mid-transit by network packets,
+                // it goes back into the buffer to be completed by the NEXT network chunk.
+                buffer = lines.pop() || '';
+
+                // Iterate through every completed line chunk in this network burst
+                for (const line of lines) {
+                    if (!line.trim()) continue; // Ignore empty lines or ping marks
+
+                    const packet = JSON.parse(line);
+
+                    // Handle Real-Time Scraping Progress Updates
+                    if (packet.type === 'progress') {
+                        setStatusText('Downloading genre data...');
+                        setProgress({ current: packet.current, total: packet.total });
+                    }
+                    // Handle General Status Shifts (e.g., Parsing phase)
+                    else if (packet.type === 'status') {
+                        setStatusText(packet.message);
+                    }
+                    // Handle Errors streamed mid-execution
+                    else if (packet.type === 'error') {
+                        throw new Error(packet.message);
+                    }
+                    // Handle final successful data completion payload
+                    else if (packet.type === 'done') {
+                        setSuccess('Successfully calculated and saved Best 50 details!');
+                        setNewSong(packet.b15);
+                        setOldSong(packet.b35);
+                    }
+                }
+            }
         } catch (error) {
             setError((error as Error).message);
             console.error(error);
@@ -260,6 +307,7 @@ export default function Best50() {
             }
 
             setShowSuccess(true);
+            setSuccess('Successfully saved!');
             setTimeout(() => {
                 setShowSuccess(false);
             }, 2000);
@@ -321,7 +369,7 @@ export default function Best50() {
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
-            <SuccessModal message={'Successfully saved!'} show={showSuccess} />
+            <SuccessModal message={success} show={showSuccess} />
             <ImageGenerationModal
                 show={showImageModal}
                 generating={generatingImage}
@@ -405,6 +453,28 @@ export default function Best50() {
                         </button>
                     </div>
                 </div>
+
+                {/* Status Section */}
+                <div className={'mt-4'}>
+                    <span className={'text-sm font-semibold text-gray-500 block'}>Status:</span>
+                    <span className={'text-sm font-medium text-gray-800'}>{statusText}</span>
+                </div>
+
+                {/* Interactive Progress Tracking Interface */}
+                {progress.total > 0 && (
+                    <div className={'mt-4'}>
+                        <div className={'flex justify-between text-xs text-gray-600 mb-1'}>
+                            <span>Fetching game data folders</span>
+                            <span>{progress.current} / {progress.total}</span>
+                        </div>
+                        <div className={'w-full bg-gray-200 h-3 rounded-full overflow-hidden'}>
+                            <div
+                                className={'bg-green-500 h-full transition-all duration-300 ease-out'}
+                                style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                            />
+                        </div>
+                    </div>
+                )}
 
                 {/* Cards Grid Section */}
                 {hasSongs ? (
