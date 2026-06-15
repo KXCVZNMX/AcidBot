@@ -151,7 +151,7 @@ export default function Best50() {
         try {
             // Fetch profile if not already loaded
             if (!profile) {
-                const res = await fetch(`/api/v1/user?clal=${clal}`, {
+                const res = await fetch(`/api/v1/profile?clal=${clal}`, {
                     method: 'GET',
                 });
 
