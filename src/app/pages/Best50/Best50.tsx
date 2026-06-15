@@ -230,6 +230,8 @@ export default function Best50() {
         setGenerating(true);
         setOldSong([]);
         setNewSong([]);
+        setStatusText('Logging in...');
+        setProgress({ current: 0, total: 0, level: 'easy' });
 
         try {
             const res = await fetch(`/api/v1/b50?clal=${clal}`, {
@@ -288,6 +290,8 @@ export default function Best50() {
                         setSuccess('Successfully calculated and saved Best 50 details!');
                         setNewSong(packet.b15);
                         setOldSong(packet.b35);
+                        setStatusText('Done');
+                        setProgress({ current: 0, total: 0, level: 'easy' });
                     }
                 }
             }
