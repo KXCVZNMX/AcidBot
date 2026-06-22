@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import {NextResponse} from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import {DatabaseError, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v2/_shared/types';
 import client from '@/lib/db';
 import {ObjectId} from 'mongodb';
@@ -10,6 +10,7 @@ export const TagsSchema = z.object({
 });
 
 export async function GET(
+    req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id: u_id } = await params;
