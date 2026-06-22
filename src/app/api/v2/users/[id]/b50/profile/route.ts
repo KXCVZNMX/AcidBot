@@ -4,7 +4,7 @@ import fetchPage from '@/lib/fetchPage';
 import { ParsedProfile, UserCollectionCount } from '@/lib/types';
 import * as cheerio from 'cheerio';
 import { z } from 'zod';
-import {toProxiedUrl} from '@/app/api/_shared/util';
+import {parseProfileBlock, toProxiedUrl} from '@/app/api/_shared/util';
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),
@@ -13,65 +13,6 @@ export const UserClalSchema = z.object({
         .length(64)
         .regex(/^[A-Za-z0-9]+$/),
 });
-
-export function parseProfileBlock(html: string): ParsedProfile | null {
-    const $ = cheerio.load(html);
-
-    const container = $('div.basic_block.p_10.f_0').first();
-    if (container.length === 0) return null;
-
-    const profilePicture = toProxiedUrl(
-        container.find('img.w_112.f_l').first().attr('src') ?? ''
-    );
-    const dan = toProxiedUrl(
-        container.find('img.h_35.f_l:not(.p_l_10)').first().attr('src') ?? ''
-    );
-    const rank = toProxiedUrl(
-        container.find('img.p_l_10.h_35.f_l').first().attr('src') ?? ''
-    );
-    const userName = container
-        .find('div.name_block.f_l.f_16')
-        .first()
-        .text()
-        .trim();
-    const userDetail = container
-        .find('div.trophy_inner_block.f_13')
-        .first()
-        .text()
-        .trim();
-    const collectionDiv = container.find('div.p_l_10.f_l.f_14').first();
-
-    let userCollectionCount: UserCollectionCount | null = null;
-
-    if (collectionDiv.length > 0) {
-        const img = toProxiedUrl(
-            collectionDiv.find('img.h_30.m_3.v_m').first().attr('src') ?? ''
-        );
-
-        const text = collectionDiv
-            .clone()
-            .children('img')
-            .remove()
-            .end()
-            .text()
-            .replace(/\s+/g, ' ')
-            .trim();
-
-        userCollectionCount = {
-            img,
-            text,
-        };
-    }
-
-    return {
-        profilePicture,
-        dan,
-        rank,
-        userName,
-        userDetail,
-        userCollectionCount,
-    };
-}
 
 export async function GET(
     req: NextRequest,
