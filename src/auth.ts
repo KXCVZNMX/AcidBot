@@ -18,7 +18,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     events: {
         async createUser({ user }: { user: User }) {
             const db = client.db();
-            await db.collection('user').updateOne(
+            await db.collection('users').updateOne(
                 { _id: new ObjectId(user!.id) },
                 {
                     $set: {
