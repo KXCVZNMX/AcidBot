@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MalformedRequest } from '@/app/api/v2/_shared/types';
+import {DatabaseError, MalformedRequest} from '@/app/api/v2/_shared/types';
 import fetchPage from '@/lib/fetchPage';
 import { z } from 'zod';
 import { parseProfileBlock } from '@/app/api/_shared/util';
@@ -49,6 +49,6 @@ export async function GET(
         return NextResponse.json(res);
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: error }, { status: 500 });
+        return NextResponse.json(DatabaseError, { status: 500 });
     }
 }
