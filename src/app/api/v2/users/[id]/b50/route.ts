@@ -19,25 +19,10 @@ import { SongInfo } from '@/app/api/_shared/types';
 import {
     getLevelConst,
     getRatingByAchievement,
-    isNewByDate,
+    isNewByDate, toProxiedUrl,
 } from '@/app/api/_shared/util';
 import { ObjectId } from 'mongodb';
 import { z } from 'zod';
-
-function toProxiedUrl(src: string): string {
-    if (!src) return src;
-    const SITE_LINK = process.env.SITE_LINK ?? 'localhost:3000';
-    try {
-        const u = new URL(src);
-        // Only proxy http(s) URLs that are genuinely cross-origin.
-        if (u.protocol === 'http:' || u.protocol === 'https:') {
-            return `${SITE_LINK}/api/v1/images/proxy?url=${encodeURIComponent(src)}`;
-        }
-    } catch {
-        // relative URL or data: URI – leave as-is
-    }
-    return src;
-}
 
 export function parseProfileBlock(html: string): ParsedProfile | null {
     const $ = cheerio.load(html);

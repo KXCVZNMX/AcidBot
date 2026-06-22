@@ -4,28 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { unauthorized } from 'next/navigation';
 import fetchPage from '@/lib/fetchPage';
-
-/**
- * Rewrite an external image URL to a same-origin proxy path.
- * html-to-image captures the DOM via an SVG foreignObject drawn onto a
- * canvas.  On Safari and mobile WebKit, cross-origin <img> elements
- * silently fail to appear in the canvas output.  Routing all profile
- * images through our own /api/v1/imageProxy endpoint keeps every resource
- * same-origin so the capture works correctly on all platforms.
- */
-function toProxiedUrl(src: string): string {
-    if (!src) return src;
-    try {
-        const u = new URL(src);
-        // Only proxy http(s) URLs that are genuinely cross-origin.
-        if (u.protocol === 'http:' || u.protocol === 'https:') {
-            return `/api/v1/images/proxy?url=${encodeURIComponent(src)}`;
-        }
-    } catch {
-        // relative URL or data: URI – leave as-is
-    }
-    return src;
-}
+import {toProxiedUrl} from '@/app/api/_shared/util';
 
 export function parseProfileBlock(html: string): ParsedProfile | null {
     const $ = cheerio.load(html);

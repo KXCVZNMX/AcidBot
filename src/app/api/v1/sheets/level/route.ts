@@ -4,27 +4,7 @@ import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import client from '@/lib/db';
-import { RANK_DEFINITIONS } from '@/lib/consts';
-
-function getRatingByAchievement(achievement: number, lvConstant: number) {
-    const rank = RANK_DEFINITIONS.find(
-        (r) => achievement >= r.minA && achievement <= (r.maxA ?? Infinity)
-    );
-    if (typeof rank === 'undefined') {
-        console.error(`Achievement out of range: ${achievement}`);
-        return -1;
-    }
-
-    if (rank.maxA && achievement === rank.maxA) {
-        return achievement * (rank.maxFactor ?? -1) * lvConstant;
-    } else {
-        return (
-            (achievement > 100.5 ? 100.5 : achievement) *
-            rank.factor *
-            lvConstant
-        );
-    }
-}
+import {getRatingByAchievement} from '@/app/api/_shared/util';
 
 export async function POST(req: NextRequest) {
     try {

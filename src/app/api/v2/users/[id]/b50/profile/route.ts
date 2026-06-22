@@ -4,6 +4,7 @@ import fetchPage from '@/lib/fetchPage';
 import { ParsedProfile, UserCollectionCount } from '@/lib/types';
 import * as cheerio from 'cheerio';
 import { z } from 'zod';
+import {toProxiedUrl} from '@/app/api/_shared/util';
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),
@@ -12,20 +13,6 @@ export const UserClalSchema = z.object({
         .length(64)
         .regex(/^[A-Za-z0-9]+$/),
 });
-
-function toProxiedUrl(src: string): string {
-    if (!src) return src;
-    try {
-        const u = new URL(src);
-        // Only proxy http(s) URLs that are genuinely cross-origin.
-        if (u.protocol === 'http:' || u.protocol === 'https:') {
-            return `/api/v1/images/proxy?url=${encodeURIComponent(src)}`;
-        }
-    } catch {
-        // relative URL or data: URI – leave as-is
-    }
-    return src;
-}
 
 export function parseProfileBlock(html: string): ParsedProfile | null {
     const $ = cheerio.load(html);
