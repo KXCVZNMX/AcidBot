@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MaimaiSongScore, MSSB50 } from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';

@@ -4,7 +4,7 @@ import {
     MSSB50,
     ParsedProfile,
     UserCollectionCount,
-} from '@/lib/types';
+} from '@/app/api/_shared/types';
 import { SongInfo, SongInfoProjection } from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
 import { Db } from 'mongodb';

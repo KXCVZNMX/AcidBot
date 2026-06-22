@@ -9,7 +9,7 @@ import {
     splitB50,
     toB50Score,
 } from '@/app/api/_shared/util';
-import { MaimaiSongScore, MSSB50 } from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
 import { SongInfo } from '@/app/api/_shared/types';
 
 describe('parseDate', () => {

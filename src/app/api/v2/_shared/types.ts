@@ -1,4 +1,4 @@
-import { MSSB50, SongTags } from '@/lib/types';
+import { MSSB50, SongTags } from '@/app/api/_shared/types';
 
 export enum ErrorCode {
     USER_NOT_FOUND = 'USER_NOT_FOUND',

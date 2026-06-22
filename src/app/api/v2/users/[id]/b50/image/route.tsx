@@ -3,7 +3,7 @@
 }
 import { NextRequest, NextResponse } from 'next/server';
 import { MalformedRequest } from '@/app/api/v2/_shared/types';
-import { MSSB50, ParsedProfile } from '@/lib/types';
+import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
 import { truncateByWidth } from '@/lib/util';
 import { ImageResponse } from 'next/og';
 import { readFileSync } from 'fs';

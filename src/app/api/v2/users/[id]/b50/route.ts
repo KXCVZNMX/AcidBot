@@ -5,7 +5,7 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
-import { MaimaiSongScore, MSSB50 } from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';

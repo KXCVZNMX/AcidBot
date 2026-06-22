@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
-import { MaimaiSongScore, MSSB50 } from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
 import client from '@/lib/db';
 import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
@@ -9,7 +9,8 @@ import fetchPage from '@/lib/fetchPage';
 import { unauthorized } from 'next/navigation';
 import { getSongInfoMap, splitB50, toB50Score } from '@/app/api/_shared/util';
 import { SongInfo } from '@/app/api/_shared/types';
-import { Best50Songs, Best50SongsWithDateRating } from '@/lib/types';
+import { Best50Songs } from '@/app/api/_shared/types';
+import { Best50SongsWithDateRating } from '@/app/api/v1/_shared/types';
 
 type DBData = {
     userId: string;

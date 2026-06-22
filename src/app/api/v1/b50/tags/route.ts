@@ -1,4 +1,4 @@
-import { SongTags } from '@/lib/types';
+import { SongTags } from '@/app/api/_shared/types';
 import { NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { auth } from '@/auth';
