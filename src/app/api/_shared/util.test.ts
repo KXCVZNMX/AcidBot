@@ -6,8 +6,10 @@ import {
     getLevelConst,
     toProxiedUrl,
     parseProfileBlock,
+    splitB50,
+    toB50Score,
 } from '@/app/api/_shared/util';
-import { MaimaiSongScore } from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import { SongInfo } from '@/app/api/_shared/types';
 
 describe('parseDate', () => {
@@ -92,9 +94,9 @@ describe('getLevelConst', () => {
     };
 
     it('reads the DX master constant', () => {
-        expect(getLevelConst({ ...base, isDx: 'dx', diff: 'master' }, sheet)).toBe(
-            '14.8'
-        );
+        expect(
+            getLevelConst({ ...base, isDx: 'dx', diff: 'master' }, sheet)
+        ).toBe('14.8');
     });
 
     it('reads the standard expert constant', () => {
@@ -113,6 +115,59 @@ describe('getLevelConst', () => {
         expect(
             getLevelConst({ ...base, isDx: 'dx', diff: 'basic' }, sheet)
         ).toBe('0');
+    });
+});
+
+describe('toB50Score', () => {
+    it('builds a rated score row from a parsed score and song info', () => {
+        const score: MaimaiSongScore = {
+            name: 'Song',
+            score: '100.0000%',
+            dx: '1,000/1,000',
+            isDx: 'dx',
+            diff: 'master',
+            sync: 'FS',
+            combo: 'FC',
+            rank: 'SSS',
+        };
+
+        const songInfo = {
+            title: 'Song',
+            image_url: 'jacket.png',
+            date_intl_added: '20250724',
+            dx_lev_mas_i: '14.8',
+        } as unknown as SongInfo;
+
+        expect(toB50Score(score, songInfo)).toMatchObject({
+            levelConst: 14.8,
+            name: 'Song',
+            rating: Math.floor(getRatingByAchievement(100, 14.8)),
+            dateIntlAdded: '20250724',
+            achievement: 100,
+            jacketURL: 'jacket.png',
+        });
+    });
+});
+
+describe('splitB50', () => {
+    it('splits old and new songs by date, sorts by rating, and caps B35/B15', () => {
+        const oldSongs = Array.from({ length: 40 }, (_, i) => ({
+            rating: i,
+            dateIntlAdded: '20200101',
+        }));
+        const newSongs = Array.from({ length: 20 }, (_, i) => ({
+            rating: i,
+            dateIntlAdded: '20250724',
+        }));
+
+        const { b35, b15 } = splitB50([...oldSongs, ...newSongs] as MSSB50[]);
+
+        expect(b35).toHaveLength(35);
+        expect(b15).toHaveLength(15);
+        expect(b35[0].rating).toBe(39);
+        expect(b35.at(-1)?.rating).toBe(5);
+        expect(b15[0].rating).toBe(19);
+        expect(b15.at(-1)?.rating).toBe(5);
     });
 });
 

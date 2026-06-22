@@ -7,11 +7,7 @@ import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
 import { unauthorized } from 'next/navigation';
-import {
-    getLevelConst,
-    getRatingByAchievement,
-    isNewByDate,
-} from '@/app/api/_shared/util';
+import { getSongInfoMap, splitB50, toB50Score } from '@/app/api/_shared/util';
 import { SongInfo } from '@/app/api/_shared/types';
 import { Best50Songs, Best50SongsWithDateRating } from '@/lib/types';
 
@@ -53,27 +49,53 @@ export async function GET(req: NextRequest) {
                 let htmls;
 
                 try {
-                    htmls = await fetchPage(clal, redirects, (current, total, url) => {
-                        const progressPacket = JSON.stringify({
-                            type: 'progress',
-                            current,
-                            total,
-                            url
-                        }) + '\n';
-                        controller.enqueue(encoder.encode(progressPacket));
-                    });
+                    htmls = await fetchPage(
+                        clal,
+                        redirects,
+                        (current, total, url) => {
+                            const progressPacket =
+                                JSON.stringify({
+                                    type: 'progress',
+                                    current,
+                                    total,
+                                    url,
+                                }) + '\n';
+                            controller.enqueue(encoder.encode(progressPacket));
+                        }
+                    );
                 } catch (fetchError) {
                     console.error(fetchError);
                     const errorMsg = `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})`;
-                    controller.enqueue(encoder.encode(JSON.stringify({ type: 'error', message: errorMsg }) + '\n'));
+                    controller.enqueue(
+                        encoder.encode(
+                            JSON.stringify({
+                                type: 'error',
+                                message: errorMsg,
+                            }) + '\n'
+                        )
+                    );
                     controller.close();
                     return;
                 }
 
-                controller.enqueue(encoder.encode(JSON.stringify({ type: 'status', message: 'Parsing download structures...' }) + '\n'));
+                controller.enqueue(
+                    encoder.encode(
+                        JSON.stringify({
+                            type: 'status',
+                            message: 'Parsing download structures...',
+                        }) + '\n'
+                    )
+                );
 
                 if (!Array.isArray(htmls)) {
-                    controller.enqueue(encoder.encode(JSON.stringify({ type: 'error', message: htmls || 'Unknown fetching issue' }) + '\n'));
+                    controller.enqueue(
+                        encoder.encode(
+                            JSON.stringify({
+                                type: 'error',
+                                message: htmls || 'Unknown fetching issue',
+                            }) + '\n'
+                        )
+                    );
                     controller.close();
                     return;
                 }
@@ -85,44 +107,16 @@ export async function GET(req: NextRequest) {
 
                 const db = client.db();
 
-                const collection = db.collection('maimaiIntlSongInfo');
                 const finalRes: MSSB50[] = [];
-
-                const titles = Array.from(new Set(res.map((r) => r.name)));
-
-                const docs = await collection
-                    .find(
-                        { title: { $in: titles } },
-                        {
-                            projection: {
-                                title: 1,
-                                image_url: 1,
-                                date_intl_added: 1,
-                                lev_bas_i: 1,
-                                lev_adv_i: 1,
-                                lev_exp_i: 1,
-                                lev_mas_i: 1,
-                                lev_remas_i: 1,
-                                dx_lev_bas_i: 1,
-                                dx_lev_adv_i: 1,
-                                dx_lev_exp_i: 1,
-                                dx_lev_mas_i: 1,
-                                dx_lev_remas_i: 1,
-                            },
-                        }
-                    )
-                    .toArray();
-
-                const docMap = new Map<string, SongInfo>();
-                for (const d of docs) {
-                    if (d && d.title) docMap.set(d.title, d as unknown as SongInfo);
-                }
+                const docMap = await getSongInfoMap(db, res);
 
                 for (const r of res) {
                     let qRes = docMap.get(r.name);
 
                     if (!qRes) {
-                        console.error('Lookup failed, fetching information from JP db');
+                        console.error(
+                            'Lookup failed, fetching information from JP db'
+                        );
 
                         const fetched = (await db
                             .collection('maimaiJpSongInfo')
@@ -131,53 +125,25 @@ export async function GET(req: NextRequest) {
                         qRes = fetched ?? undefined;
 
                         if (!qRes) {
-                            throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
+                            throw new Error(
+                                `Couldn't find song ${r.name} (${r.diff})`
+                            );
                         }
                     }
 
-                    const levelConst: string = getLevelConst(r, qRes);
-
                     if (!qRes.image_url) {
-                        console.warn(`Failed to find jacket information for ${r.name}`);
+                        console.warn(
+                            `Failed to find jacket information for ${r.name}`
+                        );
                         continue;
                     }
 
-                    finalRes.push({
-                        levelConst: parseFloat(levelConst),
-                        name: r.name,
-                        score: r.score,
-                        diff: r.diff,
-                        dx: r.dx,
-                        isDx: r.isDx,
-                        sync: r.sync,
-                        combo: r.combo,
-                        rank: r.rank,
-                        rating: 0,
-                        dateIntlAdded: qRes.date_intl_added,
-                        achievement: Number(r.score.slice(0, -1)),
-                        jacketURL: qRes.image_url,
-                    });
+                    finalRes.push(toB50Score(r, qRes));
                 }
 
-                const b35: MSSB50[] = [];
-                const b15: MSSB50[] = [];
+                const { b35: slicedB35, b15: slicedB15 } = splitB50(finalRes);
 
-                for (const r of finalRes) {
-                    r.rating = Math.floor(
-                        getRatingByAchievement(r.achievement, r.levelConst)
-                    );
-
-                    if (isNewByDate(r.dateIntlAdded)) b15.push(r);
-                    else b35.push(r);
-                }
-
-                b35.sort((a, b) => b.rating - a.rating);
-                b15.sort((a, b) => b.rating - a.rating);
-
-                const slicedB35 = b35.slice(0, 35);
-                const slicedB15 = b15.slice(0, 15);
-
-                if (slicedB15.length === 0 && b35.length === 0) {
+                if (slicedB15.length === 0 && slicedB35.length === 0) {
                     return NextResponse.json(
                         {
                             error: 'Both of your B15 or B35 was empty, get clal again. (or you just haven\'t played)',
@@ -199,28 +165,34 @@ export async function GET(req: NextRequest) {
                     { upsert: true }
                 );
 
-                const finalDataPacket = JSON.stringify({
-                    type: 'done',
-                    b35: slicedB35,
-                    b15: slicedB15
-                }) + '\n';
+                const finalDataPacket =
+                    JSON.stringify({
+                        type: 'done',
+                        b35: slicedB35,
+                        b15: slicedB15,
+                    }) + '\n';
 
                 controller.enqueue(encoder.encode(finalDataPacket));
             } catch (error) {
                 console.error(error);
                 const catchMsg = (error as Error).message;
-                controller.enqueue(encoder.encode(JSON.stringify({ type: 'error', message: catchMsg }) + '\n'));
+                controller.enqueue(
+                    encoder.encode(
+                        JSON.stringify({ type: 'error', message: catchMsg }) +
+                            '\n'
+                    )
+                );
             } finally {
-                controller.close()
+                controller.close();
             }
-        }
+        },
     });
 
     return new Response(stream, {
         headers: {
             'Content-Type': 'text/event-stream; charset=utf-8',
             'Cache-Control': 'no-cache, no-transform',
-            'Connection': 'keep-alive',
+            Connection: 'keep-alive',
         },
     });
 }

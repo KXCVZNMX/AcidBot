@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MalformedRequest } from '@/app/api/v2/_shared/types';
 import fetchPage from '@/lib/fetchPage';
-import { ParsedProfile, UserCollectionCount } from '@/lib/types';
-import * as cheerio from 'cheerio';
 import { z } from 'zod';
-import {parseProfileBlock, toProxiedUrl} from '@/app/api/_shared/util';
+import { parseProfileBlock } from '@/app/api/_shared/util';
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),

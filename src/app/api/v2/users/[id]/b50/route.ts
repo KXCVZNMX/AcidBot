@@ -5,21 +5,16 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
-import {
-    MaimaiSongScore,
-    MSSB50,
-    ParsedProfile,
-    UserCollectionCount,
-} from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';
 import client from '@/lib/db';
-import { SongInfo } from '@/app/api/_shared/types';
 import {
-    getLevelConst,
-    getRatingByAchievement,
-    isNewByDate, parseProfileBlock,
+    getSongInfoMap,
+    parseProfileBlock,
+    splitB50,
+    toB50Score,
 } from '@/app/api/_shared/util';
 import { ObjectId } from 'mongodb';
 import { z } from 'zod';
@@ -124,39 +119,8 @@ export async function GET(
             // TODO: I don't know the error code for it right now. Once I find out i need to modify fetchPage to return those codes.
         }
 
-        const collection = client.db().collection('maimaiIntlSongInfo');
-
         const finalRes: MSSB50[] = [];
-
-        const titles = Array.from(new Set(res.map((r) => r.name)));
-
-        const docs = await collection
-            .find(
-                { title: { $in: titles } },
-                {
-                    projection: {
-                        title: 1,
-                        image_url: 1,
-                        date_intl_added: 1,
-                        lev_bas_i: 1,
-                        lev_adv_i: 1,
-                        lev_exp_i: 1,
-                        lev_mas_i: 1,
-                        lev_remas_i: 1,
-                        dx_lev_bas_i: 1,
-                        dx_lev_adv_i: 1,
-                        dx_lev_exp_i: 1,
-                        dx_lev_mas_i: 1,
-                        dx_lev_remas_i: 1,
-                    },
-                }
-            )
-            .toArray();
-
-        const docMap = new Map<string, SongInfo>();
-        for (const d of docs) {
-            if (d && d.title) docMap.set(d.title, d as unknown as SongInfo);
-        }
+        const docMap = await getSongInfoMap(client.db(), res);
 
         for (const r of res) {
             const qRes = docMap.get(r.name);
@@ -164,47 +128,15 @@ export async function GET(
                 return NextResponse.json(DatabaseError, { status: 500 });
             }
 
-            const levelConst: string = getLevelConst(r, qRes);
-
             if (!qRes.image_url) {
                 console.warn(`Failed to find jacket information for ${r.name}`);
                 continue;
             }
 
-            finalRes.push({
-                levelConst: parseFloat(levelConst),
-                name: r.name,
-                score: r.score,
-                diff: r.diff,
-                dx: r.dx,
-                isDx: r.isDx,
-                sync: r.sync,
-                combo: r.combo,
-                rank: r.rank,
-                rating: 0,
-                dateIntlAdded: qRes.date_intl_added,
-                achievement: Number(r.score.slice(0, -1)),
-                jacketURL: qRes.image_url,
-            });
+            finalRes.push(toB50Score(r, qRes));
         }
 
-        const b35: MSSB50[] = [];
-        const b15: MSSB50[] = [];
-
-        for (const r of finalRes) {
-            r.rating = Math.floor(
-                getRatingByAchievement(r.achievement, r.levelConst)
-            );
-
-            if (isNewByDate(r.dateIntlAdded)) b15.push(r);
-            else b35.push(r);
-        }
-
-        b35.sort((a, b) => b.rating - a.rating);
-        b15.sort((a, b) => b.rating - a.rating);
-
-        const slicedB35 = b35.slice(0, 35);
-        const slicedB15 = b15.slice(0, 15);
+        const { b35: slicedB35, b15: slicedB15 } = splitB50(finalRes);
 
         if (slicedB15.length === 0 && slicedB35.length === 0) {
             return NextResponse.json(InvalidClalToken, { status: 401 });

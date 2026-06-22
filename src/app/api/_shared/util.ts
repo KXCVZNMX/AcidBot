@@ -1,7 +1,29 @@
 import { RANK_DEFINITIONS } from '@/lib/consts';
-import {MaimaiSongScore, ParsedProfile, UserCollectionCount} from '@/lib/types';
-import { SongInfo } from '@/app/api/_shared/types';
+import {
+    MaimaiSongScore,
+    MSSB50,
+    ParsedProfile,
+    UserCollectionCount,
+} from '@/lib/types';
+import { SongInfo, SongInfoProjection } from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
+import { Db } from 'mongodb';
+
+export const songInfoProjection: SongInfoProjection = {
+    title: 1,
+    image_url: 1,
+    date_intl_added: 1,
+    lev_bas_i: 1,
+    lev_adv_i: 1,
+    lev_exp_i: 1,
+    lev_mas_i: 1,
+    lev_remas_i: 1,
+    dx_lev_bas_i: 1,
+    dx_lev_adv_i: 1,
+    dx_lev_exp_i: 1,
+    dx_lev_mas_i: 1,
+    dx_lev_remas_i: 1,
+};
 
 export function getRatingByAchievement(
     achievement: number,
@@ -78,6 +100,69 @@ export function getLevelConst(r: MaimaiSongScore, qRes: SongInfo): string {
         console.warn(`No sheet info for ${r.name} diff ${r.diff} - skipping`);
         return '0';
     }
+}
+
+export async function getSongInfoMap(
+    db: Db,
+    scores: MaimaiSongScore[],
+    collectionName = 'maimaiIntlSongInfo'
+): Promise<Map<string, SongInfo>> {
+    const titles = Array.from(new Set(scores.map((r) => r.name)));
+    const docs = await db
+        .collection<SongInfo>(collectionName)
+        .find(
+            { title: { $in: titles } },
+            {
+                projection: songInfoProjection,
+            }
+        )
+        .toArray();
+
+    const docMap = new Map<string, SongInfo>();
+    for (const d of docs) {
+        if (d?.title) docMap.set(d.title, d);
+    }
+
+    return docMap;
+}
+
+export function toB50Score(score: MaimaiSongScore, songInfo: SongInfo): MSSB50 {
+    const levelConst = parseFloat(getLevelConst(score, songInfo));
+    const achievement = Number(score.score.slice(0, -1));
+
+    return {
+        levelConst,
+        name: score.name,
+        score: score.score,
+        diff: score.diff,
+        dx: score.dx,
+        isDx: score.isDx,
+        sync: score.sync,
+        combo: score.combo,
+        rank: score.rank,
+        rating: Math.floor(getRatingByAchievement(achievement, levelConst)),
+        dateIntlAdded: songInfo.date_intl_added,
+        achievement,
+        jacketURL: songInfo.image_url,
+    };
+}
+
+export function splitB50(scores: MSSB50[]) {
+    const b35: MSSB50[] = [];
+    const b15: MSSB50[] = [];
+
+    for (const r of scores) {
+        if (isNewByDate(r.dateIntlAdded)) b15.push(r);
+        else b35.push(r);
+    }
+
+    b35.sort((a, b) => b.rating - a.rating);
+    b15.sort((a, b) => b.rating - a.rating);
+
+    return {
+        b35: b35.slice(0, 35),
+        b15: b15.slice(0, 15),
+    };
 }
 
 export function toProxiedUrl(src: string): string {

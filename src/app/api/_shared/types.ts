@@ -13,3 +13,5 @@ export interface SongInfo {
     dx_lev_mas_i: string;
     dx_lev_remas_i: string;
 }
+
+export type SongInfoProjection = Record<keyof SongInfo, 1>;
