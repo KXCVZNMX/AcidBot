@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { MalformedRequest } from '@/app/api/v2/_shared/types';
 import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
 import { truncateByWidth } from '@/lib/util';
-import { ImageResponse } from 'next/og';
+import { ImageResponse } from 'takumi-js/response';
 import { readFileSync } from 'fs';
 import { Buffer } from 'buffer';
 import { join } from 'path';
@@ -798,6 +798,7 @@ export async function GET(
         ),
         {
             ...size,
+            emoji: 'from-font',
             headers: {
                 'content-type': 'image/jpeg',
             },

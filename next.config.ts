@@ -36,6 +36,8 @@ const nextConfig: NextConfig = {
     experimental: {
         authInterrupts: true,
     },
+
+    serverExternalPackages: ['takumi-js', '@takumi-rs/core'],
 };
 
 export default nextConfig;
