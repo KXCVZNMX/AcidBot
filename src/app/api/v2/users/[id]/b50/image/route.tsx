@@ -7,6 +7,7 @@ import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
 import { truncateByWidth } from '@/lib/util';
 import { ImageResponse } from 'next/og';
 import { readFileSync } from 'fs';
+import { Buffer } from 'buffer';
 import { join } from 'path';
 import React from 'react';
 import { z } from 'zod';
@@ -55,6 +56,30 @@ function getFonts() {
         ),
     };
     return cachedFonts;
+}
+
+async function convertProxyUrlToBase64(proxyUrl: string): Promise<string> {
+    try {
+        // 1. Extract the encoded URL from the query parameter
+        const urlObj = new URL(proxyUrl, 'https://acid.kvznmx.com'); // Fallback base for relative paths
+        const targetUrl = urlObj.searchParams.get('url');
+
+        if (!targetUrl) return proxyUrl; // Fallback to original if parsing fails
+
+        // 2. Fetch directly from the external source on the server side
+        const res = await fetch(targetUrl);
+        if (!res.ok) throw new Error(`Failed to fetch upstream: ${res.status}`);
+
+        const contentType = res.headers.get('content-type') || 'image/png';
+        const arrayBuffer = await res.arrayBuffer();
+        const base64 = Buffer.from(arrayBuffer).toString('base64');
+
+        return `data:${contentType};base64,${base64}`;
+    } catch (error) {
+        console.error(`[Base64 Conversion Failed] for ${proxyUrl}:`, error);
+        // Fallback placeholder transparent pixel so Satori doesn't crash the whole image
+        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    }
 }
 
 const chooseNP = (nps: string[]) => {
@@ -514,6 +539,13 @@ export async function GET(
         profile: ParsedProfile;
     } = await profileRes.json();
 
+    const [profilePicB64, danB64, rankB64, starB64] = await Promise.all([
+        convertProxyUrlToBase64(profile.profilePicture!),
+        convertProxyUrlToBase64(profile.dan!),
+        convertProxyUrlToBase64(profile.rank!),
+        convertProxyUrlToBase64(profile.userCollectionCount!.img!),
+    ]);
+
     const rating = [...b35, ...b15].reduce((sum, s) => sum + s.rating, 0);
 
     const imageRenderStart = Date.now();
@@ -584,7 +616,7 @@ export async function GET(
                     }}
                 />
                 <img
-                    src={profile.profilePicture!}
+                    src={profilePicB64}
                     alt={'pfp'}
                     width={100}
                     height={100}
@@ -644,7 +676,7 @@ export async function GET(
                     {rating}
                 </div>
                 <img
-                    src={profile.dan!}
+                    src={danB64}
                     alt={'dan'}
                     style={{
                         width: 72,
@@ -655,7 +687,7 @@ export async function GET(
                     }}
                 />
                 <img
-                    src={profile.rank!}
+                    src={rankB64}
                     alt={'rank'}
                     style={{
                         width: 60,
@@ -666,7 +698,7 @@ export async function GET(
                     }}
                 />
                 <img
-                    src={profile.userCollectionCount!.img!}
+                    src={starB64}
                     alt={'collection img'}
                     style={{
                         width: 25,
