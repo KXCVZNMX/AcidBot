@@ -22,7 +22,7 @@ const UserClalSchema = z.object({
 
 export const alt = 'B50';
 export const runtime = 'nodejs';
-export const contentType = 'image/png';
+export const contentType = 'image/jpeg';
 export const size = {
     width: 1400,
     height: 1600,
@@ -798,6 +798,9 @@ export async function GET(
         ),
         {
             ...size,
+            headers: {
+                'content-type': 'image/jpeg',
+            },
             fonts: [
                 {
                     name: 'MPlusMed',
