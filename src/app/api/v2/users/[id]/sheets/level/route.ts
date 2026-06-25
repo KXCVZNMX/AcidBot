@@ -12,12 +12,10 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
+import {getClal} from '@/app/api/v2/_shared/util';
 
 const UserLevelSchema = z.object({
-    clal: z
-        .string()
-        .length(64)
-        .regex(/^[A-Za-z0-9]+$/),
+    id: z.string().min(1),
     level: z
         .string()
         .regex(/^(?:[1-9]|1\d|2[0-3])$/, 'Level must be between 1 and 23'),
@@ -27,14 +25,14 @@ const UserLevelSchema = z.object({
         .optional(),
 });
 
-export async function POST(req: NextRequest,) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id: u_id } = await params;
     const url = req.nextUrl;
-    const u_clal = url.searchParams.get('clal');
     const u_level = url.searchParams.get('level');
     const u_includeProfile = url.searchParams.get('profile');
 
     const parsed = UserLevelSchema.safeParse({
-        clal: u_clal,
+        id: u_id,
         level: u_level,
         profile: u_includeProfile ?? undefined,
     });
@@ -43,7 +41,13 @@ export async function POST(req: NextRequest,) {
         return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const { clal, profile, level } = parsed.data;
+    const { id, profile, level } = parsed.data;
+
+    const clal = await getClal(id);
+
+    if (!clal) {
+        return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
+    }
 
     try {
         const redirect = profile

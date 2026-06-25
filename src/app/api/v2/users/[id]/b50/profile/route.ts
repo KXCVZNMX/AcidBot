@@ -3,8 +3,7 @@ import {DatabaseError, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v
 import fetchPage from '@/lib/fetchPage';
 import { z } from 'zod';
 import { parseProfileBlock } from '@/app/api/_shared/util';
-import {ObjectId} from 'mongodb';
-import client from '@/lib/db';
+import {getClal} from '@/app/api/v2/_shared/util';
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),
@@ -22,18 +21,11 @@ export async function GET(
 
     const { id } = parsed.data;
 
-    const db = client.db();
-    const userInfo = await db
-        .collection('users')
-        .findOne(
-            { _id: new ObjectId(id) },
-            { projection: { clal: 1 } }
-        );
-    if (!userInfo) {
+    const clal = await getClal(id);
+
+    if (!clal) {
         return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
     }
-
-    const clal = userInfo.clal;
 
     try {
         let html;

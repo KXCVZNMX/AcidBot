@@ -18,6 +18,7 @@ import {
 } from '@/app/api/_shared/util';
 import { ObjectId } from 'mongodb';
 import { z } from 'zod';
+import {getClal} from '@/app/api/v2/_shared/util';
 
 const UserB50Schema = z.object({
     id: z.string().min(1),
@@ -57,17 +58,11 @@ export async function GET(
     const db = client.db();
 
     try {
-        const userInfo = await db
-            .collection('users')
-            .findOne(
-                { _id: new ObjectId(id) },
-                { projection: { clal: 1 } }
-            );
-        if (!userInfo) {
+        const clal = await getClal(id);
+
+        if (!clal) {
             return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
         }
-
-        const clal = userInfo.clal;
 
         const redirects = old
             ? profile
