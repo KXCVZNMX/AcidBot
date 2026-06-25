@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {DatabaseError, MalformedRequest} from '@/app/api/v2/_shared/types';
+import {DatabaseError, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v2/_shared/types';
 import fetchPage from '@/lib/fetchPage';
 import { z } from 'zod';
 import { parseProfileBlock } from '@/app/api/_shared/util';
+import {ObjectId} from 'mongodb';
+import client from '@/lib/db';
 
 export const UserClalSchema = z.object({
     id: z.string().min(1),
-    clal: z
-        .string()
-        .length(64)
-        .regex(/^[A-Za-z0-9]+$/),
 });
 
 export async function GET(
@@ -17,16 +15,25 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id: u_id } = await params;
-    const url = req.nextUrl;
-    const u_clal = url.searchParams.get('clal');
-
-    const parsed = UserClalSchema.safeParse({ id: u_id, clal: u_clal });
-
+    const parsed = UserClalSchema.safeParse({ id: u_id });
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const { clal } = parsed.data;
+    const { id } = parsed.data;
+
+    const db = client.db();
+    const userInfo = await db
+        .collection('users')
+        .findOne(
+            { _id: new ObjectId(id) },
+            { projection: { clal: 1 } }
+        );
+    if (!userInfo) {
+        return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
+    }
+
+    const clal = userInfo.clal;
 
     try {
         let html;

@@ -21,10 +21,6 @@ import { z } from 'zod';
 
 const UserB50Schema = z.object({
     id: z.string().min(1),
-    clal: z
-        .string()
-        .length(64)
-        .regex(/^[A-Za-z0-9]+$/),
     profile: z
         .enum(['true', 'false'])
         .transform((value) => value === 'true')
@@ -41,13 +37,11 @@ export async function GET(
 ) {
     const { id: u_id } = await params;
     const url = req.nextUrl;
-    const u_clal = url.searchParams.get('clal');
     const u_includeProfile = url.searchParams.get('profile');
     const u_oldB50 = url.searchParams.get('old');
 
     const parsed = UserB50Schema.safeParse({
         id: u_id,
-        clal: u_clal,
         profile: u_includeProfile ?? undefined,
         old: u_oldB50 ?? undefined,
     });
@@ -56,11 +50,25 @@ export async function GET(
         return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const { id, clal, profile, old } = parsed.data;
+    const { id, profile, old } = parsed.data;
 
     const homeRedirect = 'https://maimaidx-eng.com/maimai-mobile/home/';
 
+    const db = client.db();
+
     try {
+        const userInfo = await db
+            .collection('users')
+            .findOne(
+                { _id: new ObjectId(id) },
+                { projection: { clal: 1 } }
+            );
+        if (!userInfo) {
+            return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
+        }
+
+        const clal = userInfo.clal;
+
         const redirects = old
             ? profile
                 ? [homeRedirect]
@@ -86,10 +94,9 @@ export async function GET(
             // TODO: I don't know the error code for it right now. Once I find out i need to modify fetchPage to return those codes.
         }
 
-        const profileBlock = parseProfileBlock(htmls[htmls.length - 1]);
+        const profileBlock = profile ? parseProfileBlock(htmls[htmls.length - 1]) : null;
 
         if (old) {
-            const db = client.db();
             const doc = await db
                 .collection('userB50')
                 .findOne({ _id: new ObjectId(id) });
@@ -120,7 +127,7 @@ export async function GET(
         }
 
         const finalRes: MSSB50[] = [];
-        const docMap = await getSongInfoMap(client.db(), res);
+        const docMap = await getSongInfoMap(db, res);
 
         for (const r of res) {
             const qRes = docMap.get(r.name);
@@ -142,8 +149,7 @@ export async function GET(
             return NextResponse.json(InvalidClalToken, { status: 401 });
         }
 
-        await client
-            .db()
+        await db
             .collection('userB50')
             .updateOne(
                 { _id: new ObjectId(id) },

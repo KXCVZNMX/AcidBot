@@ -2,7 +2,7 @@
     /* eslint-disable @next/next/no-img-element */
 }
 import { NextRequest, NextResponse } from 'next/server';
-import { MalformedRequest } from '@/app/api/v2/_shared/types';
+import {MalformedRequest} from '@/app/api/v2/_shared/types';
 import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
 import { truncateByWidth } from '@/lib/util';
 import { ImageResponse } from 'takumi-js/response';
@@ -14,10 +14,10 @@ import { z } from 'zod';
 
 const UserClalSchema = z.object({
     id: z.string().min(1),
-    clal: z
-        .string()
-        .length(64)
-        .regex(/^[A-Za-z0-9]+$/),
+    old: z
+        .enum(['true', 'false'])
+        .transform((value) => value === 'true')
+        .optional(),
 });
 
 export const alt = 'B50';
@@ -415,21 +415,15 @@ export async function GET(
 
     const { id: u_id } = await params;
     const url = req.nextUrl;
-    const u_clal = url.searchParams.get('clal');
     const u_old = url.searchParams.get('old');
 
-    const parsed = UserClalSchema.extend({
-        old: z
-            .enum(['true', 'false'])
-            .transform((value) => value === 'true')
-            .optional(),
-    }).safeParse({ id: u_id, clal: u_clal, old: u_old ?? undefined });
+    const parsed = UserClalSchema.safeParse({ id: u_id, old: u_old ?? undefined });
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const { id, clal, old } = parsed.data;
+    const { id, old } = parsed.data;
     console.log(`[b50Image] INPUT PARSED: ${Date.now() - funcStartTime}ms`);
 
     const SITE_LINK = process.env.SITE_LINK ?? 'http://localhost:3000';
@@ -517,7 +511,7 @@ export async function GET(
     );
 
     const profileRes = await fetch(
-        `${SITE_LINK}/api/v2/users/${id}/b50?clal=${clal}&profile=true${old ? '&old=true' : ''}`
+        `${SITE_LINK}/api/v2/users/${id}/b50?&profile=true${old ? '&old=true' : ''}`
     );
 
     const upstreamFetchEnd = Date.now();
