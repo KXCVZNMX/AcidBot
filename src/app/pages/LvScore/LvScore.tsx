@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
 import {
     Best50Songs,
@@ -19,9 +19,7 @@ import { captureElementToBlob } from '@/lib/captureUtils';
 export default function LvScore() {
     const [level, setLevel] = useState('1');
     const [songs, setSongs] = useState<MSSB50[]>([]);
-    const [clal, setClal] = useState('');
     const [generating, setGenerating] = useState(false);
-    const [error, setError] = useState('');
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showImageModal, setShowImageModal] = useState(false);
     const [generatingImage, setGeneratingImage] = useState(false);
@@ -29,9 +27,13 @@ export default function LvScore() {
     const [profile, setProfile] = useState<ParsedProfile>();
     const [rating, setRating] = useState(0);
 
+    const [clal] = useState(() => getCookie('clal') || '');
+
     const captureRef = useRef<HTMLDivElement>(null);
 
-    const showError = (errorMessage: string) => {
+    const [error, setError] = useState(() => !clal ? 'Missing Clal, please go to the guide page to fetch a new clal' : '');
+
+    const showError = useCallback((errorMessage: string) => {
         setError(errorMessage);
         setShowErrorModal(true);
 
@@ -39,18 +41,6 @@ export default function LvScore() {
             setShowErrorModal(false);
             setError('');
         }, 2000);
-    };
-
-    useEffect(() => {
-        const clalCookie = getCookie('clal');
-        if (!clalCookie) {
-            showError(
-                'Missing Clal, please go to the guide page to fetch a new clal'
-            );
-            return;
-        }
-
-        setClal(clalCookie);
     }, []);
 
     useEffect(() => {

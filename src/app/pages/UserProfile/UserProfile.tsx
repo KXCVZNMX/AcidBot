@@ -59,14 +59,14 @@ export default function UserProfile() {
     })();
 
     useEffect(() => {
-        if (!getCookie('clal')) {
-            showError(
-                'Missing Clal, please go to the guide page to fetch a new clal'
-            );
-            return;
-        }
-
         (async () => {
+            if (!getCookie('clal')) {
+                showError(
+                    'Missing Clal, please go to the guide page to fetch a new clal'
+                );
+                return;
+            }
+
             if (status === 'loading') return; // Wait for session to load
 
             if (status === 'unauthenticated') {

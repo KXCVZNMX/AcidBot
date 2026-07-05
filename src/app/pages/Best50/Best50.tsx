@@ -101,17 +101,16 @@ export default function Best50() {
     };
 
     useEffect(() => {
-        const clalCookie = getCookie('clal');
-        if (!clalCookie) {
-            showError(
-                'Missing Clal, please go to the guide page to fetch a new clal'
-            );
-            return;
-        }
-
-        setClal(clalCookie);
-
         (async () => {
+            const clalCookie = getCookie('clal');
+            if (!clalCookie) {
+                showError(
+                    'Missing Clal, please go to the guide page to fetch a new clal'
+                );
+                return;
+            }
+
+            setClal(clalCookie);
             try {
                 setGenerating(true)
 
@@ -343,8 +342,11 @@ export default function Best50() {
 
     const updateScaledGrid = useCallback(() => {
         if (!hasSongs) {
-            setGridScale(1);
-            setScaledGridHeight(0);
+            // Schedule state updates out of the immediate render pipeline frame
+            requestAnimationFrame(() => {
+                setGridScale(1);
+                setScaledGridHeight(0);
+            });
             return;
         }
 
@@ -358,12 +360,15 @@ export default function Best50() {
         const availableWidth = Math.max(shellWidth - 16, 0);
         const nextScale = Math.min(1, availableWidth / B50_GRID_BASE_WIDTH);
 
-        setGridScale((prev) =>
-            Math.abs(prev - nextScale) > 0.001 ? nextScale : prev
-        );
-        setScaledGridHeight((prev) => {
-            const nextHeight = stageHeight * nextScale;
-            return Math.abs(prev - nextHeight) > 0.5 ? nextHeight : prev;
+        // Defer real-time DOM measurements so they execute cleanly right after layout completes
+        requestAnimationFrame(() => {
+            setGridScale((prev) =>
+                Math.abs(prev - nextScale) > 0.001 ? nextScale : prev
+            );
+            setScaledGridHeight((prev) => {
+                const nextHeight = stageHeight * nextScale;
+                return Math.abs(prev - nextHeight) > 0.5 ? nextHeight : prev;
+            });
         });
     }, [hasSongs]);
 
