@@ -19,6 +19,7 @@ import { captureElementToBlob } from '@/lib/captureUtils';
 export default function LvScore() {
     const [level, setLevel] = useState('1');
     const [songs, setSongs] = useState<MSSB50[]>([]);
+    const [clal, setClal] = useState('');
     const [generating, setGenerating] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showImageModal, setShowImageModal] = useState(false);
@@ -27,7 +28,10 @@ export default function LvScore() {
     const [profile, setProfile] = useState<ParsedProfile>();
     const [rating, setRating] = useState(0);
 
-    const [clal] = useState(() => getCookie('clal') || '');
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setClal(getCookie('clal') || '');
+    }, []);
 
     const captureRef = useRef<HTMLDivElement>(null);
 
