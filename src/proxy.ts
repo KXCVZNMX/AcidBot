@@ -10,6 +10,10 @@ const corsHeaders = {
 };
 
 export async function proxy(request: NextRequest) {
+    if (request.nextUrl.pathname === '/api/v1/profile/clal-script') {
+        return NextResponse.next();
+    }
+
     if (request.nextUrl.pathname.startsWith('/api/v2')) {
         if (request.method === 'OPTIONS') {
             return new NextResponse(null, {
