@@ -18,8 +18,22 @@ export async function GET() {
         .collection('userB50')
         .findOne({ _id: new ObjectId(id) });
     if (!doc) {
-        return NextResponse.json({ b15: [], b35: [] });
+        return NextResponse.json(
+            { b15: [], b35: [] },
+            {
+                headers: {
+                    'Cache-Control': 'no-store',
+                },
+            }
+        );
     }
 
-    return NextResponse.json({ b15: doc.b15, b35: doc.b35 });
+    return NextResponse.json(
+        { b15: doc.b15, b35: doc.b35 },
+        {
+            headers: {
+                'Cache-Control': 'no-store',
+            },
+        }
+    );
 }

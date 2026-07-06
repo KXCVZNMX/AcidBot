@@ -112,10 +112,11 @@ export default function Best50() {
 
             setClal(clalCookie);
             try {
-                setGenerating(true)
+                setGenerating(true);
 
                 const res = await fetch('/api/v1/b50/history', {
                     method: 'GET',
+                    cache: 'no-store',
                 });
 
                 if (!res.ok) {
@@ -125,11 +126,11 @@ export default function Best50() {
                 const b50: Best50Songs = await res.json();
                 setOldSong(b50.b35);
                 setNewSong(b50.b15);
-
-                setGenerating(false);
             } catch (error) {
                 setError((error as Error).message);
                 console.error(error);
+            } finally {
+                setGenerating(false);
             }
         })();
     }, []);
