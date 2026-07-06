@@ -27,7 +27,7 @@ export async function GET() {
 
     return new NextResponse(code, {
         headers: {
-            'Content-Type': 'text/plain; charset=utf-8',
+            'Content-Type': 'application/javascript; charset=utf-8',
         },
     });
 }
