@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
+import { unauthorized } from 'next/navigation';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -42,7 +43,18 @@ export async function proxy(request: NextRequest) {
 
     const session = await auth();
 
-    const targetPages = ['/', '/pages/Best50', '/pages/LvScore'];
+    const protectedPages = [
+        '/pages/Best50',
+        '/pages/LvScore',
+        '/pages/SkillRadar',
+        '/pages/UserProfile',
+    ];
+
+    if (!session && protectedPages.includes(request.nextUrl.pathname)) {
+        return unauthorized();
+    }
+
+    const targetPages = ['/', ...protectedPages];
 
     if (targetPages.includes(request.nextUrl.pathname)) {
         const response = NextResponse.next();
@@ -66,6 +78,12 @@ export async function proxy(request: NextRequest) {
                 }
             }
         }
+
+        if (!session) {
+            response.cookies.delete('clal');
+            response.headers.set('Cache-Control', 'no-store');
+        }
+
         return response;
     }
 

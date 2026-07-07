@@ -6,6 +6,7 @@ import { useState } from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import { signOut, useSession } from 'next-auth/react';
 import LoginModal from '@/app/components/LoginModal';
+import { useRouter } from 'next/navigation';
 
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
@@ -38,6 +39,16 @@ export default function HamburgerDrawer() {
     const [open, setOpen] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const { data: session } = useSession();
+    const router = useRouter();
+
+    const handleSignOut = async () => {
+        document.cookie =
+            'clal=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+        setOpen(false);
+        await signOut({ redirect: false });
+        router.replace('/');
+        router.refresh();
+    };
 
     return (
         <>
@@ -234,11 +245,7 @@ export default function HamburgerDrawer() {
 
                                             <li>
                                                 <button
-                                                    onClick={() =>
-                                                        signOut({
-                                                            redirectTo: '/',
-                                                        })
-                                                    }
+                                                    onClick={handleSignOut}
                                                     aria-label={'Logout'}
                                                     title={'Logout'}
                                                     role={'menuitem'}

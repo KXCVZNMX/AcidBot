@@ -1,5 +1,52 @@
-const CACHE_VERSION = 'acidbot-pwa-v1';
-const ASSETS_TO_CACHE = ['/', '/manifest.webmanifest', '/favicon.ico'];
+const CACHE_VERSION = 'acidbot-pwa-v2';
+const ASSETS_TO_CACHE = ['/manifest.webmanifest', '/favicon.ico'];
+
+const shouldBypassCache = (request) => {
+    const url = new URL(request.url);
+
+    return (
+        url.origin !== self.location.origin ||
+        url.pathname === '/' ||
+        url.pathname.startsWith('/api') ||
+        url.pathname.startsWith('/pages') ||
+        url.pathname.startsWith('/auth') ||
+        request.mode === 'navigate' ||
+        request.cache === 'no-store'
+    );
+};
+
+const isCacheableRequest = (request, response) => {
+    const url = new URL(request.url);
+
+    if (url.origin !== self.location.origin) {
+        return false;
+    }
+
+    if (
+        url.pathname === '/' ||
+        url.pathname.startsWith('/api') ||
+        url.pathname.startsWith('/pages') ||
+        url.pathname.startsWith('/auth')
+    ) {
+        return false;
+    }
+
+    if (
+        request.mode === 'navigate' ||
+        request.cache === 'no-store' ||
+        response.headers.get('Cache-Control')?.includes('no-store')
+    ) {
+        return false;
+    }
+
+    return (
+        response.status === 200 &&
+        response.type === 'basic' &&
+        ['style', 'script', 'image', 'font', 'manifest'].includes(
+            request.destination
+        )
+    );
+};
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -30,7 +77,7 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    if (event.request.method !== 'GET') {
+    if (event.request.method !== 'GET' || shouldBypassCache(event.request)) {
         return;
     }
 
@@ -44,8 +91,7 @@ self.addEventListener('fetch', (event) => {
                 .then((networkResponse) => {
                     if (
                         !networkResponse ||
-                        networkResponse.status !== 200 ||
-                        networkResponse.type !== 'basic'
+                        !isCacheableRequest(event.request, networkResponse)
                     ) {
                         return networkResponse;
                     }
@@ -69,20 +115,14 @@ self.addEventListener('fetch', (event) => {
                 })
                 .catch((error) => {
                     console.error('Service worker fetch failed:', error);
-                    return caches.match('/').then((fallback) => {
-                        if (fallback) {
-                            return fallback;
+                    return new Response(
+                        'You appear to be offline and this content is not cached yet.',
+                        {
+                            status: 503,
+                            statusText: 'Service Unavailable',
+                            headers: { 'Content-Type': 'text/plain' },
                         }
-
-                        return new Response(
-                            'You appear to be offline and this content is not cached yet.',
-                            {
-                                status: 503,
-                                statusText: 'Service Unavailable',
-                                headers: { 'Content-Type': 'text/plain' },
-                            }
-                        );
-                    });
+                    );
                 });
         })
     );

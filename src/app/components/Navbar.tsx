@@ -8,11 +8,21 @@ import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 import LoginModal from '@/app/components/LoginModal';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     const [showLoginModal, setShowLoginModal] = useState(false);
+
+    const handleSignOut = async () => {
+        document.cookie =
+            'clal=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+        await signOut({ redirect: false });
+        router.replace('/');
+        router.refresh();
+    };
 
     return (
         <>
@@ -134,9 +144,7 @@ export default function Navbar() {
                                     </li>
                                     <li>
                                         <button
-                                            onClick={() =>
-                                                signOut({ redirectTo: '/' })
-                                            }
+                                            onClick={handleSignOut}
                                             aria-label={'Logout'}
                                             title={'Logout'}
                                             role={'menuitem'}
