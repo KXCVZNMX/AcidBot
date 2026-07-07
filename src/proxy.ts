@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { auth } from '@/auth';
 import client from '@/lib/db';
-import {ObjectId} from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -10,7 +10,10 @@ const corsHeaders = {
 };
 
 export async function proxy(request: NextRequest) {
-    if (request.nextUrl.pathname === '/api/v1/profile/clal-script' || request.nextUrl.pathname.startsWith('/api/auth/callback')) {
+    if (
+        request.nextUrl.pathname === '/api/v1/profile/clal-script' ||
+        request.nextUrl.pathname.startsWith('/api/auth')
+    ) {
         return NextResponse.next();
     }
 
@@ -75,6 +78,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!_next/static|_next/image|favicon.ico|assets|b50|maimaiJackets|rating_plates|.*\\.[a-zA-Z0-9]+$).*)'
+        '/((?!_next/static|_next/image|favicon.ico|assets|b50|maimaiJackets|rating_plates|.*\\.[a-zA-Z0-9]+$).*)',
     ],
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Icon from '../favicon.ico';
@@ -13,10 +13,6 @@ export default function Navbar() {
     const { data: session, status } = useSession();
 
     const [showLoginModal, setShowLoginModal] = useState(false);
-
-    useEffect(() => {
-        document.cookie = `status=${status}`;
-    }, [status]);
 
     return (
         <>
