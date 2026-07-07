@@ -10,7 +10,7 @@ const corsHeaders = {
 };
 
 export async function proxy(request: NextRequest) {
-    if (request.nextUrl.pathname === '/api/v1/profile/clal-script') {
+    if (request.nextUrl.pathname === '/api/v1/profile/clal-script' || request.nextUrl.pathname.startsWith('/api/auth/callback')) {
         return NextResponse.next();
     }
 
