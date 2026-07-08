@@ -7,6 +7,7 @@ export enum ErrorCode {
     UPSTREAM_MAINTENANCE = 'UPSTREAM_MAINTENANCE',
     MALFORMED_REQUEST = 'MALFORMED_REQUEST',
     DATABASE_ERROR = 'DATABASE_ERROR',
+    FETCH_ERROR = 'FETCH_ERROR',
 }
 
 export interface ErrorResponse {
@@ -43,6 +44,11 @@ export const DatabaseError: ErrorResponse = {
     error: 'Database Error',
     code: ErrorCode.DATABASE_ERROR,
 };
+
+export const FetchError: ErrorResponse = {
+    error: 'Data fetched was incomplete or invalid, consider retying in a moment or fetching a new clal token',
+    code: ErrorCode.FETCH_ERROR,
+}
 
 export type B50 = MSSB50[];
 
