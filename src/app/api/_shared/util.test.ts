@@ -35,13 +35,13 @@ describe('isNewByDate', () => {
         expect(isNewByDate('000000')).toBe(true);
     });
 
-    it('marks charts added on/after the Prism Plus release as new', () => {
-        expect(isNewByDate('20250724')).toBe(true); // release day itself
-        expect(isNewByDate('20251231')).toBe(true);
+    it('marks charts added on/after the CiRCLE release as new', () => {
+        expect(isNewByDate('20260122')).toBe(true); // CiRCLE
+        expect(isNewByDate('20261231')).toBe(true);
     });
 
-    it('marks charts added before the Prism Plus release as old', () => {
-        expect(isNewByDate('20250723')).toBe(false);
+    it('marks charts added before the CiRCLE release as old', () => {
+        expect(isNewByDate('20260121')).toBe(false);
         expect(isNewByDate('20200101')).toBe(false);
     });
 });
@@ -157,7 +157,7 @@ describe('splitB50', () => {
         }));
         const newSongs = Array.from({ length: 20 }, (_, i) => ({
             rating: i,
-            dateIntlAdded: '20250724',
+            dateIntlAdded: '20260122',
         }));
 
         const { b35, b15 } = splitB50([...oldSongs, ...newSongs] as MSSB50[]);
