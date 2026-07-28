@@ -35,8 +35,8 @@ export async function proxy(request: NextRequest) {
     }
 
     if (
-        request.nextUrl.pathname.startsWith('/pages/Guides') ||
-        request.nextUrl.pathname.startsWith('/pages/Abouts')
+        request.nextUrl.pathname.startsWith('/pages/guides') ||
+        request.nextUrl.pathname.startsWith('/pages/about')
     ) {
         return NextResponse.next();
     }
@@ -44,10 +44,10 @@ export async function proxy(request: NextRequest) {
     const session = await auth();
 
     const protectedPages = [
-        '/pages/Best50',
-        '/pages/LvScore',
-        '/pages/SkillRadar',
-        '/pages/UserProfile',
+        '/pages/b50',
+        '/pages/lv-score',
+        '/pages/skill-radar',
+        '/pages/user-profile',
     ];
 
     if (!session && protectedPages.includes(request.nextUrl.pathname)) {

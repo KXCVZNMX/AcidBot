@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
         );
 
         const ret = NextResponse.redirect(
-            new URL('/pages/ClalFetchSuccess', url),
+            new URL('/pages/clal-fetch-success', url),
             { status: 302 }
         );
         ret.cookies.set('clal', encodeURIComponent(clal), {
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 
         return ret;
     } catch {
-        return NextResponse.redirect(new URL('/pages/ClalFetchFailure', url), {
+        return NextResponse.redirect(new URL('/pages/clal-fetch-failure', url), {
             status: 302,
         });
     }

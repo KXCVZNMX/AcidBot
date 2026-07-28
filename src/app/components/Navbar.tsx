@@ -50,7 +50,7 @@ export default function Navbar() {
                         <div className={'flex-1 hidden md:flex'}>
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/Guides'}
+                                href={'/pages/guides'}
                                 prefetch={false}
                             >
                                 Guides
@@ -69,14 +69,14 @@ export default function Navbar() {
                         <div className={'flex-1 hidden md:flex'}>
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/Guides'}
+                                href={'/pages/guides'}
                                 prefetch={false}
                             >
                                 Guides
                             </Link>
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/LvScore'}
+                                href={'/pages/lv-score'}
                                 prefetch={false}
                             >
                                 LvScore
@@ -84,7 +84,7 @@ export default function Navbar() {
 
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/Best50'}
+                                href={'/pages/b50'}
                                 prefetch={false}
                             >
                                 Best50
@@ -92,7 +92,7 @@ export default function Navbar() {
 
                             <Link
                                 className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/SkillRadar'}
+                                href={'/pages/skill-radar'}
                                 prefetch={false}
                             >
                                 Skill Radar
@@ -135,7 +135,7 @@ export default function Navbar() {
                                 >
                                     <li>
                                         <Link
-                                            href={'/pages/UserProfile'}
+                                            href={'/pages/user-profile'}
                                             role={'menuitem'}
                                             prefetch={false}
                                         >

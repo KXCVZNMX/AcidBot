@@ -14,15 +14,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: number;
     }> = [
         { route: '/', changeFrequency: 'daily', priority: 1 },
-        { route: '/pages/Abouts', changeFrequency: 'weekly', priority: 0.8 },
-        { route: '/pages/Guides', changeFrequency: 'weekly', priority: 0.8 },
+        { route: '/pages/about', changeFrequency: 'weekly', priority: 0.8 },
+        { route: '/pages/guides', changeFrequency: 'weekly', priority: 0.8 },
         {
-            route: '/pages/Guides/ClalGuide',
+            route: '/pages/guides/clal-guide',
             changeFrequency: 'monthly',
             priority: 0.7,
         },
         {
-            route: '/pages/Guides/UsageGuide',
+            route: '/pages/guides/usage-guide',
             changeFrequency: 'monthly',
             priority: 0.7,
         },

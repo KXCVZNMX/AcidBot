@@ -77,7 +77,7 @@ paths:
                   description: CLAL token to persist.
             responses:
                 '302':
-                    description: Redirect to either `/pages/ClalFetchSuccess` or `/pages/ClalFetchFailure`
+                    description: Redirect to either `/pages/clal-fetch-success` or `/pages/clal-fetch-failure`
                     headers:
                         Location:
                             schema:

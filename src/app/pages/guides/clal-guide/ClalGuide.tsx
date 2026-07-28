@@ -32,7 +32,7 @@ export default function ClalGuide() {
     return (
         <div className={'mx-auto max-w-3xl space-y-6 p-6'}>
             <div className={'grid grid-cols-[auto_1fr_auto] items-center'}>
-                <Link href={'/pages/Guides'} aria-label={'go back'}>
+                <Link href={'/pages/guides'} aria-label={'go back'}>
                     <Image
                         src={BackButton}
                         alt={'back button'}

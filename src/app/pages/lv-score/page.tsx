@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import LvScore from '@/app/pages/LvScore/LvScore';
+import LvScore from '@/app/pages/lv-score/LvScore';
 
 export const metadata: Metadata = {
     title: 'Level Score',
