@@ -58,7 +58,7 @@ export default async function Home() {
                     <Card
                         title={`${session ? `Welcome, ${session?.user?.name ?? 'user'}` : 'Please Login First'}`}
                         href={
-                            session ? '/pages/UserProfile' : '/api/auth/signin'
+                            session ? '/pages/user-profile' : '/api/auth/signin'
                         }
                     >
                         <></>
@@ -67,7 +67,7 @@ export default async function Home() {
 
                 <Card
                     title={'About AcidBot'}
-                    href={'/pages/Abouts'}
+                    href={'/pages/about'}
                     newPage={false}
                 >
                     <p>Information on AcidBot</p>
@@ -94,7 +94,7 @@ export default async function Home() {
                 </h2>
 
                 <div className={'grid grid-cols-1 md:grid-cols-3 gap-6 w-full'}>
-                    <Card title={'Best 50 Generator'} href={'/pages/Best50'}>
+                    <Card title={'Best 50 Generator'} href={'/pages/b50'}>
                         <p className={'text-sm text-base-content/80'}>
                             Fetch your Best 50 scores to calculate your DX
                             Rating. Instantly generate rating images to share
@@ -102,7 +102,7 @@ export default async function Home() {
                         </p>
                     </Card>
 
-                    <Card title={'Skill Radar'} href={'/pages/SkillRadar'}>
+                    <Card title={'Skill Radar'} href={'/pages/skill-radar'}>
                         <p className={'text-sm text-base-content/80'}>
                             Discover your playstyle. Analyzes your ability
                             across different patterns like spins, swipes, and
@@ -110,7 +110,7 @@ export default async function Home() {
                         </p>
                     </Card>
 
-                    <Card title={'Level Scores'} href={'/pages/LvScore'}>
+                    <Card title={'Level Scores'} href={'/pages/lv-score'}>
                         <p className={'text-sm text-base-content/80'}>
                             Break down your performance by difficulty level.
                             Easily track all your SSS+ grades for levels 1

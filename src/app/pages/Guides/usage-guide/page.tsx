@@ -16,7 +16,7 @@ export default function UsageGuide() {
     return (
         <div className={'mx-auto max-w-3xl space-y-6 p-6'}>
             <div className={'grid grid-cols-[auto_1fr_auto] items-center'}>
-                <Link href={'/pages/Guides'} aria-label={'go back'}>
+                <Link href={'/pages/guides'} aria-label={'go back'}>
                     <Image
                         src={BackButton}
                         alt={'back button'}
@@ -43,7 +43,7 @@ export default function UsageGuide() {
                 <p>
                     Your clal token is required to enable us to fetch your
                     scores. You can learn how to set it in the{' '}
-                    <CLink href={'/pages/Guides/ClalGuide'}>clal guides</CLink>{' '}
+                    <CLink href={'/pages/guides/clal-guide'}>clal guides</CLink>{' '}
                     page.
                 </p>
             </Step>
@@ -54,7 +54,7 @@ export default function UsageGuide() {
                         Fetch your Best 50 scores which makes up your DX Rating.
                         See each song&#39;s level constant, and your results on
                         those songs.{' '}
-                        <CLink href={'/pages/Best50'}>{'go to >>'}</CLink>
+                        <CLink href={'/pages/b50'}>{'go to >>'}</CLink>
                     </p>
                 </Step>
 
@@ -63,7 +63,7 @@ export default function UsageGuide() {
                         Fetch your scores for each level (1, 2, ... , 14+, 15),
                         and see your results for each song belonging to that
                         level category.{' '}
-                        <CLink href={'/pages/LvScore'}>{'go to >>'}</CLink>
+                        <CLink href={'/pages/lv-score'}>{'go to >>'}</CLink>
                     </p>
                 </Step>
 
@@ -73,7 +73,7 @@ export default function UsageGuide() {
                         by both patterns (spins, swipes, high-break-counts,
                         etc.), and chart types (mostly slider, heavy tap counts,
                         etc.).{' '}
-                        <CLink href={'/pages/SkillRadar'}>{'go to >>'}</CLink>
+                        <CLink href={'/pages/skill-radar'}>{'go to >>'}</CLink>
                     </p>
                 </Step>
             </Step>

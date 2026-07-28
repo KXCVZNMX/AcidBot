@@ -42,7 +42,7 @@ Shared rating/parsing helpers live in `src/app/api/_shared/util.ts` (`getLevelCo
 
 ## API surface (two versions coexist)
 
-- **`/api/v1/*`** — original endpoints, consumed by this site's own frontend (`src/app/pages/Best50`, `LvScore`, etc.). `v1/b50` **streams NDJSON** via `ReadableStream`: it emits `{type: 'status'|'progress'|'error'|'data'}` packets (newline-delimited) so the UI can show a live progress bar while the ~5 score pages download. The client reads this with `res.body.getReader()`.
+- **`/api/v1/*`** — original endpoints, consumed by this site's own frontend (`src/app/pages/b50`, `src/app/pages/lv-score`, etc.). `v1/b50` **streams NDJSON** via `ReadableStream`: it emits `{type: 'status'|'progress'|'error'|'data'}` packets (newline-delimited) so the UI can show a live progress bar while the ~5 score pages download. The client reads this with `res.body.getReader()`.
 - **`/api/v2/users/[id]/...`** — newer RESTful + public API (b50, sheets/level, b50/profile, b50/image). Validates query params with **Zod**, returns structured errors from `src/app/api/v2/_shared/types.ts` (`ErrorCode` enum + ready-made `ErrorResponse` objects like `InvalidClalToken`, `MalformedRequest`). `src/proxy.ts` adds permissive **CORS** only for `/api/v2`. v2 b50 results are persisted to the `userB50` collection (upsert by user `_id`); passing `old=true` returns that cached copy instead of re-scraping.
 
 OpenAPI specs: `src/app/api/v1/openapi.yaml`, `src/app/api/v2/openapi.yaml`.

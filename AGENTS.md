@@ -20,7 +20,7 @@ Use `pnpm` for dependency management; the repo pins `pnpm@10.33.0`.
 
 ## Coding Style & Naming Conventions
 
-Write TypeScript with `strict` mode expectations. Prefer the `@/*` path alias for imports from `src`. Use single quotes and keep JSX props wrapped in curly braces where required by ESLint. Follow the existing four-space indentation style. Name React components in PascalCase, such as `B50Table.tsx`, and keep route folders descriptive, such as `src/app/pages/Best50`.
+Write TypeScript with `strict` mode expectations. Prefer the `@/*` path alias for imports from `src`. Use single quotes and keep JSX props wrapped in curly braces where required by ESLint. Follow the existing four-space indentation style. Name React components in PascalCase, such as `B50Table.tsx`, and use lowercase kebab-case route folders, such as `src/app/pages/lv-score`.
 
 ## Testing Guidelines
 

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import SkillRadar from '@/app/pages/SkillRadar/SkillRadar';
+import SkillRadar from '@/app/pages/skill-radar/SkillRadar';
 
 export const metadata: Metadata = {
     title: 'Skill Radar',

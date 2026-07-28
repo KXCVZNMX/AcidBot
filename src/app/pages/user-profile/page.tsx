@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import UserProfile from '@/app/pages/UserProfile/UserProfile';
+import UserProfile from '@/app/pages/user-profile/UserProfile';
 
 export const metadata: Metadata = {
     title: 'Profile',
