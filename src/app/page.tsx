@@ -71,7 +71,7 @@ export default function Home() {
                 <Card
                     title={'nearcade'}
                     href={
-                        'https://nearca.de/?utm_source=acidbot&utm_medium=card&utm_campaign=homepage'
+                        'https://nearcade.cn/?utm_source=acidbot&utm_medium=card&utm_campaign=homepage'
                     }
                     newPage={true}
                 >
