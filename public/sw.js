@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'acidbot-pwa-v2';
+const CACHE_VERSION = 'acidbot-pwa-v3';
 const ASSETS_TO_CACHE = ['/manifest.webmanifest', '/favicon.ico'];
 
 const shouldBypassCache = (request) => {
@@ -42,9 +42,7 @@ const isCacheableRequest = (request, response) => {
     return (
         response.status === 200 &&
         response.type === 'basic' &&
-        ['style', 'script', 'image', 'font', 'manifest'].includes(
-            request.destination
-        )
+        ['image', 'manifest'].includes(request.destination)
     );
 };
 

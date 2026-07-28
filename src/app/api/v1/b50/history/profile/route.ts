@@ -1,16 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
+import { getAuthenticatedUserId } from '@/app/api/_shared/auth';
 
 type OldB50 = {
     createdAt: Date;
     rating: number;
 };
 
-export async function POST(req: NextRequest) {
-    const id = req.nextUrl.searchParams.get('id') ?? '';
-
+export async function POST() {
     try {
+        const id = await getAuthenticatedUserId();
+        if (!id) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const db = client.db();
         const result = await db.collection('userOldB50').findOne(
             { _id: new ObjectId(id) },

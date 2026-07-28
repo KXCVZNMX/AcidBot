@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import { getCookie, chooseNameplate, determineRatingPlate } from '@/lib/util';
+import { chooseNameplate, determineRatingPlate } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50CardGrid, { B50_GRID_BASE_WIDTH } from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
@@ -63,7 +63,6 @@ const NP = [
 ];
 
 export default function Best50() {
-    const [clal, setClal] = useState('0');
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
     const [newSong, setNewSong] = useState<MSSB50[]>([]);
     const [error, setError] = useState('');
@@ -102,15 +101,6 @@ export default function Best50() {
 
     useEffect(() => {
         (async () => {
-            const clalCookie = getCookie('clal');
-            if (!clalCookie) {
-                showError(
-                    'Missing Clal, please go to the guide page to fetch a new clal'
-                );
-                return;
-            }
-
-            setClal(clalCookie);
             try {
                 setGenerating(true)
 
@@ -143,13 +133,6 @@ export default function Best50() {
     }, [imageUrl]);
 
     const generateImage = async () => {
-        if (!clal) {
-            showError(
-                'Missing Clal, please go to the guide page to fetch a new clal'
-            );
-            return;
-        }
-
         setShowImageModal(true);
         setGeneratingImage(true);
         setImageUrl(null);
@@ -157,7 +140,7 @@ export default function Best50() {
         try {
             // Fetch profile if not already loaded
             if (!profile) {
-                const res = await fetch(`/api/v1/profile?clal=${clal}`, {
+                const res = await fetch('/api/v1/profile', {
                     method: 'GET',
                 });
 
@@ -233,7 +216,7 @@ export default function Best50() {
         setProgress({ current: 0, total: 0, level: 'easy' });
 
         try {
-            const res = await fetch(`/api/v1/b50?clal=${clal}`, {
+            const res = await fetch('/api/v1/b50', {
                 method: 'GET',
             });
 

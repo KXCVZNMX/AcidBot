@@ -5,7 +5,6 @@ import DefaultUserIcon from '../../../../public/225-default-avatar.svg';
 import { Best50Songs, MSSB50 } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import SuccessModal from '@/app/components/SuccessModal';
 import RatingChart from '@/app/components/RatingChart';
@@ -60,13 +59,6 @@ export default function UserProfile() {
 
     useEffect(() => {
         (async () => {
-            if (!getCookie('clal')) {
-                showError(
-                    'Missing Clal, please go to the guide page to fetch a new clal'
-                );
-                return;
-            }
-
             if (status === 'loading') return; // Wait for session to load
 
             if (status === 'unauthenticated') {
@@ -88,7 +80,7 @@ export default function UserProfile() {
                 setNewSong(b50.b15);
 
                 const resOldB50 = await fetch(
-                    `/api/v1/b50/history/profile?id=${session?.user?.id ?? ''}`,
+                    '/api/v1/b50/history/profile',
                     {
                         method: 'POST',
                     }

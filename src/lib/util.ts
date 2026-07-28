@@ -139,13 +139,6 @@ export const extractScore = (
     return results;
 };
 
-export const getCookie = (name: string): string | undefined => {
-    return document.cookie
-        .split('; ')
-        .find((c) => c.startsWith(name + '='))
-        ?.split('=')[1];
-};
-
 export const mapTagToPatternIndex = (tagNumber: number) => {
     if (tagNumber === 3) {
         return 0;

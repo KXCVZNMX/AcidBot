@@ -2,11 +2,10 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import HomePageIcon from '../../public/HomeGIF.gif';
 import React from 'react';
-import { auth } from '@/auth';
 import Card from '@/app/components/Card';
 
 export const metadata: Metadata = {
-    title: 'AcidBot | maimai B50 tracker',
+    title: 'maimai B50 Tracker',
     description:
         'Track maimai DX International Ver. scores, view your Best 50, inspect Skill Radar charts, and read AcidBot guides.',
     keywords: [
@@ -28,9 +27,7 @@ export const metadata: Metadata = {
     ],
 };
 
-export default async function Home() {
-    const session = await auth();
-
+export default function Home() {
     return (
         <main className={'flex flex-col items-center pb-12'}>
             <header
@@ -56,10 +53,8 @@ export default async function Home() {
             >
                 <div className={'col-span-2'}>
                     <Card
-                        title={`${session ? `Welcome, ${session?.user?.name ?? 'user'}` : 'Please Login First'}`}
-                        href={
-                            session ? '/pages/user-profile' : '/api/auth/signin'
-                        }
+                        title={'Sign in to get started'}
+                        href={'/api/auth/signin'}
                     >
                         <></>
                     </Card>
