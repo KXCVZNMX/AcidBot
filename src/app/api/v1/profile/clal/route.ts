@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
+import { getAuthenticatedUserId } from '@/app/api/_shared/auth';
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;
 
     try {
-        const id = url.searchParams.get('id');
         const clal = url.searchParams.get('clal');
+        const id = await getAuthenticatedUserId();
         if (!id || !clal) {
-            throw new Error('Missing either id or clal');
+            throw new Error('Missing clal or authenticated user');
         }
 
         const db = client.db();
@@ -22,19 +23,10 @@ export async function GET(req: NextRequest) {
             }
         );
 
-        const ret = NextResponse.redirect(
+        return NextResponse.redirect(
             new URL('/pages/clal-fetch-success', url),
             { status: 302 }
         );
-        ret.cookies.set('clal', encodeURIComponent(clal), {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 60 * 60 * 24 * 365,
-        });
-
-        return ret;
     } catch {
         return NextResponse.redirect(new URL('/pages/clal-fetch-failure', url), {
             status: 302,

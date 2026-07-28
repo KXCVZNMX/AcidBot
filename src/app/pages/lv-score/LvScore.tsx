@@ -8,7 +8,6 @@ import {
     MSSB50,
     ParsedProfile,
 } from '@/lib/types';
-import { getCookie } from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50Card from '@/app/components/B50Card';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
@@ -19,7 +18,6 @@ import { captureElementToBlob } from '@/lib/captureUtils';
 export default function LvScore() {
     const [level, setLevel] = useState('1');
     const [songs, setSongs] = useState<MSSB50[]>([]);
-    const [clal, setClal] = useState('');
     const [generating, setGenerating] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [showImageModal, setShowImageModal] = useState(false);
@@ -28,14 +26,9 @@ export default function LvScore() {
     const [profile, setProfile] = useState<ParsedProfile>();
     const [rating, setRating] = useState(0);
 
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setClal(getCookie('clal') || '');
-    }, []);
-
     const captureRef = useRef<HTMLDivElement>(null);
 
-    const [error, setError] = useState(() => !clal ? 'Missing Clal, please go to the guide page to fetch a new clal' : '');
+    const [error, setError] = useState('');
 
     const showError = useCallback((errorMessage: string) => {
         setError(errorMessage);
@@ -56,19 +49,11 @@ export default function LvScore() {
     }, [imageUrl]);
 
     const fetchResultWithClal = async () => {
-        if (!clal) {
-            showError(
-                'Missing Clal, please fetch a new clal from the guide page'
-            );
-            return;
-        }
-
         setGenerating(true);
         setSongs([]);
 
         try {
             const config: MaimaiFetchData = {
-                clal,
                 redirect: `https://maimaidx-eng.com/maimai-mobile/record/musicLevel/search/?level=${level}`,
             };
 
@@ -120,13 +105,6 @@ export default function LvScore() {
     };
 
     const generateImage = async () => {
-        if (!clal) {
-            showError(
-                'Missing Clal, please fetch a new clal from the guide page'
-            );
-            return;
-        }
-
         if (sortedSongs.length === 0) {
             showError(
                 'No songs available. Generate LvScore before creating an image.'
@@ -143,7 +121,7 @@ export default function LvScore() {
 
         try {
             if (!profile) {
-                const profileRes = await fetch(`/api/v1/profile?clal=${clal}`, {
+                const profileRes = await fetch('/api/v1/profile', {
                     method: 'GET',
                 });
 

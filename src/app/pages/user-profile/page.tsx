@@ -1,4 +1,6 @@
 import { Metadata } from 'next';
+import { unauthorized } from 'next/navigation';
+import { auth } from '@/auth';
 import UserProfile from '@/app/pages/user-profile/UserProfile';
 
 export const metadata: Metadata = {
@@ -15,8 +17,16 @@ export const metadata: Metadata = {
         'AcidBot',
         'Acid Bot',
     ],
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
-export default function Page() {
+export default async function Page() {
+    if (!(await auth())) {
+        unauthorized();
+    }
+
     return <UserProfile />;
 }

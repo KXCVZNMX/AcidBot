@@ -15,7 +15,7 @@ export async function GET() {
         '        if (code) {\n' +
         '            let cookie = d.cookie.match(/clal=([^;]*)/)?.[1];\n' +
         '            if (cookie.length !== 64) return alert("Error!\\nI can\\\'t fetch your session, try logging in again or switch browsers.");\n' +
-        `            let win = window.open(\`${site_link}/api/v1/profile/clal?id=$\{code}&clal=$\{cookie}\`, '_blank');
+        `            let win = window.open(\`${site_link}/api/v1/profile/clal?clal=$\{cookie}\`, '_blank');
 ` +
         '        } else if (code === null) {\n' +
         '            console.log("User cancelled");\n' +

@@ -1,39 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
 import { extractScore } from '@/lib/util';
 import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
 import client from '@/lib/db';
-import { auth } from '@/auth';
 import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
-import { unauthorized } from 'next/navigation';
 import { getSongInfoMap, splitB50, toB50Score } from '@/app/api/_shared/util';
 import { SongInfo } from '@/app/api/_shared/types';
 import { Best50Songs } from '@/app/api/_shared/types';
 import { Best50SongsWithDateRating } from '@/app/api/v1/_shared/types';
+import { getAuthenticatedClal, getAuthenticatedUserId } from '@/app/api/_shared/auth';
 
 type DBData = {
     userId: string;
     b50s: Best50SongsWithDateRating[];
 };
 
-export async function GET(req: NextRequest) {
-    const url = req.nextUrl;
+export async function GET() {
     const encoder = new TextEncoder();
 
-    const session = await auth();
-
-    if (!session) {
-        unauthorized();
+    const user = await getAuthenticatedClal();
+    if (!user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const id = session.user?.id ?? '';
-
-    const clal = url.searchParams.get('clal');
-
-    if (!clal) {
-        throw new Error('Missing clal');
+    if (!user.clal) {
+        return NextResponse.json(
+            { error: 'Missing clal. Set a new clal token from the guide.' },
+            { status: 400 }
+        );
     }
+    const clal = user.clal;
 
     const redirects = [
         'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
@@ -154,10 +150,10 @@ export async function GET(req: NextRequest) {
                 }
 
                 await db.collection('userB50').updateOne(
-                    { _id: new ObjectId(id) },
+                    { _id: new ObjectId(user.id) },
                     {
                         $set: {
-                            id: id,
+                            id: user.id,
                             b15: slicedB15,
                             b35: slicedB35,
                             updatedAt: new Date(),
@@ -201,15 +197,12 @@ export async function GET(req: NextRequest) {
 const calculateRating = (b50: Best50Songs) =>
     [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0);
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
     try {
-        const session = await auth();
-
-        if (!session) {
-            unauthorized();
+        const id = await getAuthenticatedUserId();
+        if (!id) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-
-        const id = session.user?.id ?? '';
         const b50: Best50Songs = await req.json();
 
         const newEntry: Best50SongsWithDateRating = {

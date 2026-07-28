@@ -17,8 +17,6 @@ export default function Navbar() {
     const [showLoginModal, setShowLoginModal] = useState(false);
 
     const handleSignOut = async () => {
-        document.cookie =
-            'clal=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
         await signOut({ redirect: false });
         router.replace('/');
         router.refresh();
@@ -54,6 +52,29 @@ export default function Navbar() {
                                 prefetch={false}
                             >
                                 Guides
+                            </Link>
+                            <Link
+                                className={'btn btn-ghost text-lg rounded-2xl'}
+                                href={'/pages/lv-score'}
+                                prefetch={false}
+                            >
+                                LvScore
+                            </Link>
+
+                            <Link
+                                className={'btn btn-ghost text-lg rounded-2xl'}
+                                href={'/pages/b50'}
+                                prefetch={false}
+                            >
+                                Best50
+                            </Link>
+
+                            <Link
+                                className={'btn btn-ghost text-lg rounded-2xl'}
+                                href={'/pages/skill-radar'}
+                                prefetch={false}
+                            >
+                                Skill Radar
                             </Link>
                         </div>
 

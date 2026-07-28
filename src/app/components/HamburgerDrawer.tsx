@@ -42,8 +42,6 @@ export default function HamburgerDrawer() {
     const router = useRouter();
 
     const handleSignOut = async () => {
-        document.cookie =
-            'clal=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
         setOpen(false);
         await signOut({ redirect: false });
         router.replace('/');
@@ -135,58 +133,54 @@ export default function HamburgerDrawer() {
                                         Home
                                     </Link>
                                 </li>
-                                {session ? (
-                                    <>
-                                        <li>
-                                            <Link
-                                                href={'/pages/guides'}
-                                                prefetch={false}
-                                                className={
-                                                    'block px-3 py-2 rounded hover:bg-base-200'
-                                                }
-                                                onClick={() => setOpen(false)}
-                                            >
-                                                Guide
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href={'/pages/lv-score'}
-                                                prefetch={false}
-                                                className={
-                                                    'block px-3 py-2 rounded hover:bg-base-200'
-                                                }
-                                                onClick={() => setOpen(false)}
-                                            >
-                                                LvScore
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href={'/pages/b50'}
-                                                prefetch={false}
-                                                className={
-                                                    'block px-3 py-2 rounded hover:bg-base-200'
-                                                }
-                                                onClick={() => setOpen(false)}
-                                            >
-                                                Best50
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link
-                                                href={'/pages/skill-radar'}
-                                                prefetch={false}
-                                                className={
-                                                    'block px-3 py-2 rounded hover:bg-base-200'
-                                                }
-                                                onClick={() => setOpen(false)}
-                                            >
-                                                Skill Radar
-                                            </Link>
-                                        </li>
-                                    </>
-                                ) : null}
+                                    <li>
+                                        <Link
+                                            href={'/pages/guides'}
+                                            prefetch={false}
+                                            className={
+                                                'block px-3 py-2 rounded hover:bg-base-200'
+                                            }
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Guide
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href={'/pages/lv-score'}
+                                            prefetch={false}
+                                            className={
+                                                'block px-3 py-2 rounded hover:bg-base-200'
+                                            }
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            LvScore
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href={'/pages/b50'}
+                                            prefetch={false}
+                                            className={
+                                                'block px-3 py-2 rounded hover:bg-base-200'
+                                            }
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Best50
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href={'/pages/skill-radar'}
+                                            prefetch={false}
+                                            className={
+                                                'block px-3 py-2 rounded hover:bg-base-200'
+                                            }
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Skill Radar
+                                        </Link>
+                                    </li>
                             </ul>
 
                             <div

@@ -14,6 +14,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: number;
     }> = [
         { route: '/', changeFrequency: 'daily', priority: 1 },
+        { route: '/pages/b50', changeFrequency: 'weekly', priority: 0.9 },
+        {
+            route: '/pages/lv-score',
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            route: '/pages/skill-radar',
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
         { route: '/pages/about', changeFrequency: 'weekly', priority: 0.8 },
         { route: '/pages/guides', changeFrequency: 'weekly', priority: 0.8 },
         {

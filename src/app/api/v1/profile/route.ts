@@ -1,28 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
-import { unauthorized } from 'next/navigation';
+import { NextResponse } from 'next/server';
 import fetchPage from '@/lib/fetchPage';
 import { parseProfileBlock } from '@/app/api/_shared/util';
+import { getAuthenticatedClal } from '@/app/api/_shared/auth';
 
-export async function GET(req: NextRequest) {
-    const url = req.nextUrl;
+export async function GET() {
     try {
-        const session = await auth();
-
-        if (!session) {
-            unauthorized();
+        const user = await getAuthenticatedClal();
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-
-        const clal = url.searchParams.get('clal');
-
-        if (!clal) {
-            throw new Error('Missing clal');
+        if (!user.clal) {
+            return NextResponse.json(
+                { error: 'Missing clal. Set a new clal token from the guide.' },
+                { status: 400 }
+            );
         }
 
         let html;
         try {
             html = await fetchPage(
-                clal,
+                user.clal,
                 'https://maimaidx-eng.com/maimai-mobile/home/'
             );
         } catch (fetchError) {

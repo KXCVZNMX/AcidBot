@@ -5,14 +5,26 @@ import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import client from '@/lib/db';
 import { getSongInfoMap, toB50Score } from '@/app/api/_shared/util';
+import { getAuthenticatedClal } from '@/app/api/_shared/auth';
 
 export async function POST(req: NextRequest) {
     try {
-        const { clal, redirect } = await req.json();
+        const user = await getAuthenticatedClal();
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+        if (!user.clal) {
+            return NextResponse.json(
+                { error: 'Missing clal. Set a new clal token from the guide.' },
+                { status: 400 }
+            );
+        }
+
+        const { redirect } = await req.json();
 
         let html;
         try {
-            html = await fetchPage(clal, redirect);
+            html = await fetchPage(user.clal, redirect);
         } catch (fetchError) {
             console.error(fetchError);
             return NextResponse.json(
