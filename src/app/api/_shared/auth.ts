@@ -19,10 +19,7 @@ export async function getAuthenticatedClal(): Promise<{
     const user = await client
         .db()
         .collection('users')
-        .findOne(
-            { _id: new ObjectId(id) },
-            { projection: { clal: 1 } }
-        );
+        .findOne({ _id: new ObjectId(id) }, { projection: { clal: 1 } });
 
     return {
         id,

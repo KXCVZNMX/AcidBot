@@ -28,8 +28,11 @@ export async function GET(req: NextRequest) {
             { status: 302 }
         );
     } catch {
-        return NextResponse.redirect(new URL('/pages/clal-fetch-failure', url), {
-            status: 302,
-        });
+        return NextResponse.redirect(
+            new URL('/pages/clal-fetch-failure', url),
+            {
+                status: 302,
+            }
+        );
     }
 }

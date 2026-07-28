@@ -20,7 +20,11 @@ export default function ToolAccess({
     if (status === 'unauthenticated') {
         return (
             <section className={'mx-auto mt-8 max-w-3xl px-4 pb-12'}>
-                <div className={'border border-base-300 bg-base-200 p-6 text-center shadow-md'}>
+                <div
+                    className={
+                        'border border-base-300 bg-base-200 p-6 text-center shadow-md'
+                    }
+                >
                     <h2 className={'text-2xl font-semibold'}>
                         Sign in to use {feature}
                     </h2>

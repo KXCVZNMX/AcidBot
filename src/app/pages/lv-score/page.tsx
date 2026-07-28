@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import LvScore from '@/app/pages/lv-score/LvScore';
 import ToolAccess from '@/app/components/ToolAccess';
-import {auth} from '@/auth';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
     title: 'Level Score',
@@ -22,14 +22,17 @@ export default async function Page() {
 
     return (
         <main>
-            {!session &&
+            {!session && (
                 <header className={'mx-auto max-w-3xl px-4 pt-10 text-center'}>
-                    <h1 className={'text-4xl font-bold'}>maimai DX Level Scores</h1>
+                    <h1 className={'text-4xl font-bold'}>
+                        maimai DX Level Scores
+                    </h1>
                     <p className={'mt-4 text-lg text-base-content/80'}>
-                        Generate a list or image of scores for one specific level
+                        Generate a list or image of scores for one specific
+                        level
                     </p>
                 </header>
-            }
+            )}
             <ToolAccess feature={'Level Scores'}>
                 <LvScore />
             </ToolAccess>

@@ -48,7 +48,7 @@ export const DatabaseError: ErrorResponse = {
 export const FetchError: ErrorResponse = {
     error: 'Data fetched was incomplete or invalid, consider retying in a moment or fetching a new clal token',
     code: ErrorCode.FETCH_ERROR,
-}
+};
 
 export type B50 = MSSB50[];
 

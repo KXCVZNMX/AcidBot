@@ -12,7 +12,10 @@ export async function POST() {
     try {
         const id = await getAuthenticatedUserId();
         if (!id) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
         }
 
         const db = client.db();

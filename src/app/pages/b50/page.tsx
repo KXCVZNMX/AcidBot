@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Best50 from '@/app/pages/b50/Best50';
 import ToolAccess from '@/app/components/ToolAccess';
-import {auth} from '@/auth';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
     title: 'Best 50',
@@ -27,17 +27,17 @@ export default async function Page() {
 
     return (
         <main>
-            {!session &&
+            {!session && (
                 <header className={'mx-auto max-w-3xl px-4 pt-10 text-center'}>
                     <h1 className={'text-4xl font-bold'}>
                         maimai DX Best 50 Generator
                     </h1>
                     <p className={'mt-4 text-lg text-base-content/80'}>
-                        Fetch your Best old and new song scores, and generate a B50 image
-                        based off it
+                        Fetch your Best old and new song scores, and generate a
+                        B50 image based off it
                     </p>
                 </header>
-            }
+            )}
             <ToolAccess feature={'the Best 50 tracker'}>
                 <Best50 />
             </ToolAccess>

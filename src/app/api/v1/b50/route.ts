@@ -9,7 +9,10 @@ import { getSongInfoMap, splitB50, toB50Score } from '@/app/api/_shared/util';
 import { SongInfo } from '@/app/api/_shared/types';
 import { Best50Songs } from '@/app/api/_shared/types';
 import { Best50SongsWithDateRating } from '@/app/api/v1/_shared/types';
-import { getAuthenticatedClal, getAuthenticatedUserId } from '@/app/api/_shared/auth';
+import {
+    getAuthenticatedClal,
+    getAuthenticatedUserId,
+} from '@/app/api/_shared/auth';
 
 type DBData = {
     userId: string;
@@ -201,7 +204,10 @@ export async function POST(req: Request) {
     try {
         const id = await getAuthenticatedUserId();
         if (!id) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
         }
         const b50: Best50Songs = await req.json();
 

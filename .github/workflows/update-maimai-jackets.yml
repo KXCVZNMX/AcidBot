@@ -1,44 +1,44 @@
 name: Update Maimai Jackets
 
 on:
-  schedule:
-    # Run at 00:00 UTC every day
-    - cron: "0 0 * * *"
-  workflow_dispatch:
+    schedule:
+        # Run at 00:00 UTC every day
+        - cron: '0 0 * * *'
+    workflow_dispatch:
 
 permissions:
-  contents: write
+    contents: write
 
 jobs:
-  update:
-    runs-on: ubuntu-latest
+    update:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout AcidBot
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout AcidBot
+              uses: actions/checkout@v4
 
-      - name: Checkout otoge-db
-        uses: actions/checkout@v4
-        with:
-          repository: zvuc/otoge-db
-          path: otoge-db
+            - name: Checkout otoge-db
+              uses: actions/checkout@v4
+              with:
+                  repository: zvuc/otoge-db
+                  path: otoge-db
 
-      - name: Sync jacket images
-        run: |
-          mkdir -p public/maimaiJackets
-          rsync -av --delete otoge-db/maimai/jacket/ public/maimaiJackets/
+            - name: Sync jacket images
+              run: |
+                  mkdir -p public/maimaiJackets
+                  rsync -av --delete otoge-db/maimai/jacket/ public/maimaiJackets/
 
-      - name: Commit and push changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            - name: Commit and push changes
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add public/maimaiJackets
+                  git add public/maimaiJackets
 
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
+                  if git diff --cached --quiet; then
+                    echo "No changes to commit."
+                    exit 0
+                  fi
 
-          git commit -m "chore: update maimai jacket images"
-          git push
+                  git commit -m "chore: update maimai jacket images"
+                  git push

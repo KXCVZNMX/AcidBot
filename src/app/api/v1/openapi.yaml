@@ -100,7 +100,6 @@ paths:
                                 type: string
                             description: Javascript function
 
-
     /api/v1/images/proxy:
         get:
             tags: [images]

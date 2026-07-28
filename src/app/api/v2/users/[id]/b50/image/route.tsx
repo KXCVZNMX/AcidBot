@@ -2,7 +2,7 @@
     /* eslint-disable @next/next/no-img-element */
 }
 import { NextRequest, NextResponse } from 'next/server';
-import {MalformedRequest} from '@/app/api/v2/_shared/types';
+import { MalformedRequest } from '@/app/api/v2/_shared/types';
 import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
 import { truncateByWidth } from '@/lib/util';
 import { ImageResponse } from 'takumi-js/response';
@@ -417,7 +417,10 @@ export async function GET(
     const url = req.nextUrl;
     const u_old = url.searchParams.get('old');
 
-    const parsed = UserClalSchema.safeParse({ id: u_id, old: u_old ?? undefined });
+    const parsed = UserClalSchema.safeParse({
+        id: u_id,
+        old: u_old ?? undefined,
+    });
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, { status: 400 });

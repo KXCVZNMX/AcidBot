@@ -78,7 +78,11 @@ export default function Best50() {
     const [gridScale, setGridScale] = useState(1);
     const [scaledGridHeight, setScaledGridHeight] = useState(0);
     const [statusText, setStatusText] = useState('');
-    const [progress, setProgress] = useState({ current: 0, total: 0, level: 'easy' });
+    const [progress, setProgress] = useState({
+        current: 0,
+        total: 0,
+        level: 'easy',
+    });
 
     const rating = [...oldSong, ...newSong].reduce(
         (sum, s) => sum + s.rating,
@@ -102,7 +106,7 @@ export default function Best50() {
     useEffect(() => {
         (async () => {
             try {
-                setGenerating(true)
+                setGenerating(true);
 
                 const res = await fetch('/api/v1/b50/history', {
                     method: 'GET',
@@ -206,7 +210,7 @@ export default function Best50() {
         } else {
             return 'remaster';
         }
-    }
+    };
 
     const fetchB50WithClal = async () => {
         setGenerating(true);
@@ -227,7 +231,9 @@ export default function Best50() {
             }
 
             if (!res.body) {
-                throw new Error('ReadableStream not supported by browser or response missing body.');
+                throw new Error(
+                    'ReadableStream not supported by browser or response missing body.'
+                );
             }
 
             const reader = res.body.getReader();
@@ -257,7 +263,11 @@ export default function Best50() {
                     // Handle Real-Time Scraping Progress Updates
                     if (packet.type === 'progress') {
                         setStatusText('Downloading genre data...');
-                        setProgress({ current: packet.current, total: packet.total, level: determineFetchingLevel(packet.url) });
+                        setProgress({
+                            current: packet.current,
+                            total: packet.total,
+                            level: determineFetchingLevel(packet.url),
+                        });
                     }
                     // Handle General Status Shifts (e.g., Parsing phase)
                     else if (packet.type === 'status') {
@@ -269,7 +279,9 @@ export default function Best50() {
                     }
                     // Handle final successful data completion payload
                     else if (packet.type === 'done') {
-                        setSuccess('Successfully calculated and saved Best 50 details!');
+                        setSuccess(
+                            'Successfully calculated and saved Best 50 details!'
+                        );
                         setNewSong(packet.b15);
                         setOldSong(packet.b35);
                         setStatusText('Done');
@@ -400,14 +412,30 @@ export default function Best50() {
             ) : null}
 
             <div className={'min-h-screen bg-base-100 py-8 px-4'}>
-                <div className={'flex flex-col items-center gap-8 max-w-4xl mx-auto'}>
+                <div
+                    className={
+                        'flex flex-col items-center gap-8 max-w-4xl mx-auto'
+                    }
+                >
                     {/* Rating and Status Side-by-Side Section */}
-                    <div className={'flex flex-col md:flex-row gap-6 w-full md:max-w-4xl'}>
+                    <div
+                        className={
+                            'flex flex-col md:flex-row gap-6 w-full md:max-w-4xl'
+                        }
+                    >
                         {/* Rating Plate Section */}
                         <div className={'flex-1 flex justify-center'}>
-                            <div className={'w-full max-w-md relative bg-base-200 rounded-2xl p-8 flex flex-col items-center gap-6 shadow-lg'}>
+                            <div
+                                className={
+                                    'w-full max-w-md relative bg-base-200 rounded-2xl p-8 flex flex-col items-center gap-6 shadow-lg'
+                                }
+                            >
                                 {/* Rating Plate Image */}
-                                <div className={'relative w-75 h-12.5 drop-shadow-lg'}>
+                                <div
+                                    className={
+                                        'relative w-75 h-12.5 drop-shadow-lg'
+                                    }
+                                >
                                     <Image
                                         src={determineRatingPlate(rating)}
                                         alt={'rating plate'}
@@ -426,14 +454,24 @@ export default function Best50() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div className={'flex flex-wrap gap-3 justify-center w-full'}>
+                                <div
+                                    className={
+                                        'flex flex-wrap gap-3 justify-center w-full'
+                                    }
+                                >
                                     <button
                                         onClick={fetchB50WithClal}
-                                        className={'btn btn-primary min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'}
+                                        className={
+                                            'btn btn-primary min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'
+                                        }
                                         disabled={generating}
                                     >
                                         {generating ? (
-                                            <span className={'flex items-center gap-2'}>
+                                            <span
+                                                className={
+                                                    'flex items-center gap-2'
+                                                }
+                                            >
                                                 <span
                                                     className={
                                                         'loading loading-spinner loading-sm'
@@ -448,16 +486,21 @@ export default function Best50() {
 
                                     <button
                                         onClick={saveB50}
-                                        className={'btn btn-secondary min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'}
+                                        className={
+                                            'btn btn-secondary min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'
+                                        }
                                     >
                                         Save B50
                                     </button>
 
                                     <button
                                         onClick={generateImage}
-                                        className={'btn btn-accent min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'}
+                                        className={
+                                            'btn btn-accent min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'
+                                        }
                                         disabled={
-                                            oldSong.length === 0 || newSong.length === 0
+                                            oldSong.length === 0 ||
+                                            newSong.length === 0
                                         }
                                     >
                                         Get Image
@@ -468,25 +511,62 @@ export default function Best50() {
 
                         {/* Status Section */}
                         <div className={'flex-1 flex justify-center'}>
-                            <div className={'w-full max-w-md bg-base-200 rounded-2xl p-8 shadow-lg flex flex-col justify-center'}>
+                            <div
+                                className={
+                                    'w-full max-w-md bg-base-200 rounded-2xl p-8 shadow-lg flex flex-col justify-center'
+                                }
+                            >
                                 {statusText && (
                                     <div className={'mb-4'}>
-                                        <span className={'text-xs font-bold text-primary uppercase tracking-wider block mb-2'}>Status</span>
-                                        <span className={'text-sm font-medium text-base-content'}>{statusText}</span>
+                                        <span
+                                            className={
+                                                'text-xs font-bold text-primary uppercase tracking-wider block mb-2'
+                                            }
+                                        >
+                                            Status
+                                        </span>
+                                        <span
+                                            className={
+                                                'text-sm font-medium text-base-content'
+                                            }
+                                        >
+                                            {statusText}
+                                        </span>
                                     </div>
                                 )}
 
                                 {/* Interactive Progress Tracking Interface */}
                                 {progress.total > 0 && (
                                     <div>
-                                        <div className={'flex justify-between text-xs text-base-content/70 mb-3'}>
-                                            <span className={'font-semibold'}>Fetching {progress.level} charts</span>
-                                            <span className={'font-bold text-primary'}>{progress.current} / {progress.total}</span>
+                                        <div
+                                            className={
+                                                'flex justify-between text-xs text-base-content/70 mb-3'
+                                            }
+                                        >
+                                            <span className={'font-semibold'}>
+                                                Fetching {progress.level} charts
+                                            </span>
+                                            <span
+                                                className={
+                                                    'font-bold text-primary'
+                                                }
+                                            >
+                                                {progress.current} /{' '}
+                                                {progress.total}
+                                            </span>
                                         </div>
-                                        <div className={'w-full bg-base-300 h-2.5 rounded-full overflow-hidden shadow-inner'}>
+                                        <div
+                                            className={
+                                                'w-full bg-base-300 h-2.5 rounded-full overflow-hidden shadow-inner'
+                                            }
+                                        >
                                             <div
-                                                className={'bg-primary h-full transition-all duration-300 ease-out shadow-lg'}
-                                                style={{ width: `${(progress.current / progress.total) * 100}%` }}
+                                                className={
+                                                    'bg-primary h-full transition-all duration-300 ease-out shadow-lg'
+                                                }
+                                                style={{
+                                                    width: `${(progress.current / progress.total) * 100}%`,
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -494,7 +574,11 @@ export default function Best50() {
 
                                 {/* Empty state when no status or progress */}
                                 {!statusText && progress.total === 0 && (
-                                    <div className={'text-center text-base-content/50 text-sm'}>
+                                    <div
+                                        className={
+                                            'text-center text-base-content/50 text-sm'
+                                        }
+                                    >
                                         <p>Ready to generate your best 50!</p>
                                     </div>
                                 )}
@@ -505,10 +589,16 @@ export default function Best50() {
                     {/* Cards Grid Section */}
                     <div className={'w-full'}>
                         {hasSongs ? (
-                            <div className={'bg-base-200 rounded-2xl p-8 shadow-lg'}>
+                            <div
+                                className={
+                                    'bg-base-200 rounded-2xl p-8 shadow-lg'
+                                }
+                            >
                                 <div
                                     ref={gridShellRef}
-                                    className={'relative w-full overflow-hidden rounded-lg'}
+                                    className={
+                                        'relative w-full overflow-hidden rounded-lg'
+                                    }
                                     style={{
                                         height:
                                             scaledGridHeight > 0
@@ -518,19 +608,31 @@ export default function Best50() {
                                 >
                                     <div
                                         ref={gridStageRef}
-                                        className={'absolute left-1/2 top-0 origin-top'}
+                                        className={
+                                            'absolute left-1/2 top-0 origin-top'
+                                        }
                                         style={{
                                             width: `${B50_GRID_BASE_WIDTH}px`,
                                             transform: `translateX(-50%) scale(${gridScale})`,
                                         }}
                                     >
-                                        <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                                        <B50CardGrid
+                                            oldSong={oldSong}
+                                            newSong={newSong}
+                                        />
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className={'bg-base-200 rounded-2xl p-12 shadow-lg'}>
-                                <B50CardGrid oldSong={oldSong} newSong={newSong} />
+                            <div
+                                className={
+                                    'bg-base-200 rounded-2xl p-12 shadow-lg'
+                                }
+                            >
+                                <B50CardGrid
+                                    oldSong={oldSong}
+                                    newSong={newSong}
+                                />
                             </div>
                         )}
                     </div>

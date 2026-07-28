@@ -7,7 +7,10 @@ export async function GET() {
     try {
         const user = await getAuthenticatedClal();
         if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
         }
         if (!user.clal) {
             return NextResponse.json(

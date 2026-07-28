@@ -6,7 +6,7 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
-import {MaimaiSongScore, MSSB50, SongInfo} from '@/app/api/_shared/types';
+import { MaimaiSongScore, MSSB50, SongInfo } from '@/app/api/_shared/types';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';
@@ -19,7 +19,7 @@ import {
 } from '@/app/api/_shared/util';
 import { ObjectId } from 'mongodb';
 import { z } from 'zod';
-import {getClal} from '@/app/api/v2/_shared/util';
+import { getClal } from '@/app/api/v2/_shared/util';
 
 const UserB50Schema = z.object({
     id: z.string().min(1),
@@ -37,7 +37,7 @@ export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const {id: u_id} = await params;
+    const { id: u_id } = await params;
     const url = req.nextUrl;
     const u_includeProfile = url.searchParams.get('profile');
     const u_oldB50 = url.searchParams.get('old');
@@ -49,15 +49,15 @@ export async function GET(
     });
 
     if (!parsed.success) {
-        return NextResponse.json(MalformedRequest, {status: 400});
+        return NextResponse.json(MalformedRequest, { status: 400 });
     }
 
-    const {id, profile, old} = parsed.data;
+    const { id, profile, old } = parsed.data;
 
     const clal = await getClal(id);
 
     if (!clal) {
-        return NextResponse.json(InvalidClalToken, {status: 401});
+        return NextResponse.json(InvalidClalToken, { status: 401 });
     }
 
     const homeRedirect = 'https://maimaidx-eng.com/maimai-mobile/home/';
@@ -67,13 +67,13 @@ export async function GET(
             ? [homeRedirect]
             : []
         : [
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
-            'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
-            ...(profile ? [homeRedirect] : []),
-        ];
+              'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0',
+              'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=1',
+              'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=2',
+              'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=3',
+              'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
+              ...(profile ? [homeRedirect] : []),
+          ];
 
     console.log(redirects);
 
@@ -82,9 +82,9 @@ export async function GET(
     if (old) {
         const doc = await db
             .collection('userB50')
-            .findOne({_id: new ObjectId(id)});
+            .findOne({ _id: new ObjectId(id) });
         if (!doc) {
-            return NextResponse.json(DatabaseError, {status: 500});
+            return NextResponse.json(DatabaseError, { status: 500 });
         }
         const b15 = doc.b15;
         const b35 = doc.b35;
@@ -94,7 +94,7 @@ export async function GET(
             return NextResponse.json(FetchError, { status: 400 });
         }
 
-        return NextResponse.json({b15, b35, profileBlock}, {status: 200});
+        return NextResponse.json({ b15, b35, profileBlock }, { status: 200 });
     }
 
     const encoder = new TextEncoder();
@@ -178,7 +178,7 @@ export async function GET(
 
                         const fetched = (await db
                             .collection('maimaiJpSongInfo')
-                            .findOne({title: r.name})) as SongInfo | null;
+                            .findOne({ title: r.name })) as SongInfo | null;
 
                         qRes = fetched ?? undefined;
 
@@ -199,7 +199,7 @@ export async function GET(
                     finalRes.push(toB50Score(r, qRes));
                 }
 
-                const {b35: slicedB35, b15: slicedB15} = splitB50(finalRes);
+                const { b35: slicedB35, b15: slicedB15 } = splitB50(finalRes);
 
                 if (slicedB15.length === 0 && slicedB35.length === 0) {
                     controller.enqueue(
@@ -217,7 +217,7 @@ export async function GET(
                 }
 
                 await db.collection('userB50').updateOne(
-                    {_id: new ObjectId(id)},
+                    { _id: new ObjectId(id) },
                     {
                         $set: {
                             id: id,
@@ -226,7 +226,7 @@ export async function GET(
                             updatedAt: new Date(),
                         },
                     },
-                    {upsert: true}
+                    { upsert: true }
                 );
 
                 const finalDataPacket =
@@ -243,15 +243,18 @@ export async function GET(
                 const catchMsg = (error as Error).message;
                 controller.enqueue(
                     encoder.encode(
-                        JSON.stringify({type: 'error', code: 'UNKNOWN', message: catchMsg}) +
-                        '\n'
+                        JSON.stringify({
+                            type: 'error',
+                            code: 'UNKNOWN',
+                            message: catchMsg,
+                        }) + '\n'
                     )
                 );
             } finally {
                 controller.close();
             }
-        }
-    })
+        },
+    });
 
     return new Response(stream, {
         headers: {

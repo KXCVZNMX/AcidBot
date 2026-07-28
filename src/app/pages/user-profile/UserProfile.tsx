@@ -79,12 +79,9 @@ export default function UserProfile() {
                 setOldSong(b50.b35);
                 setNewSong(b50.b15);
 
-                const resOldB50 = await fetch(
-                    '/api/v1/b50/history/profile',
-                    {
-                        method: 'POST',
-                    }
-                );
+                const resOldB50 = await fetch('/api/v1/b50/history/profile', {
+                    method: 'POST',
+                });
 
                 const oldB50s: OldB50[] = await resOldB50.json();
 
