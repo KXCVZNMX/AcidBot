@@ -108,12 +108,9 @@ export default async function fetchPage(
 
                     // Success path: read body and adapt delay down
                     text = await res.text();
-                    delay = Math.max(minDelay, Math.floor(delay * 0.85));
                     break; // exit retry loop
                 } catch (err) {
                     // Network or abort error - backoff and retry
-                    delay = Math.min(maxDelay, delay * 1.8);
-                    await sleep(delay + Math.random() * jitter);
                     if (attempt >= maxAttempts) throw err;
                 }
             }
@@ -124,11 +121,6 @@ export default async function fetchPage(
             // Safely pass status update back out if provided
             if (onProgress) {
                 onProgress(i + 1, total, re);
-            }
-
-            // Wait before the next sequential request (skip sleeping on the final item)
-            if (i < total - 1) {
-                await sleep(delay + Math.random() * jitter);
             }
         }
 
