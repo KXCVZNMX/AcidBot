@@ -2,7 +2,7 @@
 
 import ErrorModal from '@/app/components/ErrorModal';
 import {useState} from 'react';
-import {MaimaiLevelMap} from "@/lib/consts";
+import {MaimaiLevelMap} from '@/lib/consts';
 
 export default function LvScore2() {
     const [error, setError] = useState('')
@@ -52,7 +52,7 @@ export default function LvScore2() {
                                     Get Image
                                 </button>
 
-                                <div className={'text-center p-3 shadow-lg rounded-box bg-base-100 w-48'}>
+                                <div className={'text-center p-3 shadow-lg rounded-box bg-base-100 min-w-35'}>
                                     <div className={'max-h-135 overflow-y-auto flex flex-col gap-1'}>
                                         {Array.from({ length: 23 }, (_, i) => {
                                             const value = i + 1;
