@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import LvScore from '@/app/pages/lv-score/LvScore';
 import ToolAccess from '@/app/components/ToolAccess';
 import { auth } from '@/auth';
+import LvScore2 from '@/app/pages/lv-score/LvScore2';
 
 export const metadata: Metadata = {
     title: 'Level Score',
@@ -34,7 +35,7 @@ export default async function Page() {
                 </header>
             )}
             <ToolAccess feature={'Level Scores'}>
-                <LvScore />
+                <LvScore2 />
             </ToolAccess>
         </main>
     );
