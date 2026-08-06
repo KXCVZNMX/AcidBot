@@ -44,6 +44,7 @@ const PREVIEW_CARD_WIDTH = `${(16.5625 * PREVIEW_CARD_SCALE) / 100}rem`;
 const PREVIEW_CARD_HEIGHT = `${(6.875 * PREVIEW_CARD_SCALE) / 100}rem`;
 const PREVIEW_BASE_WIDTH = 672;
 const PREVIEW_BASE_HEIGHT = 768;
+const SONGS_PER_PAGE = 55;
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
@@ -88,6 +89,7 @@ export default function LvScore2() {
     const [generating, setGenerating] = useState<boolean>(false);
     const [level, setLevel] = useState('1');
     const [songs, setSongs] = useState<MSSB50[]>([]);
+    const [currentPage, setCurrentPage] = useState(0);
     const [nameplate] = useState(chooseNameplate(NP))
     const [profile, setProfile] = useState<ParsedProfile | null>(null);
     const [rating, setRating] = useState(0);
@@ -150,6 +152,7 @@ export default function LvScore2() {
     const fetchResultWithClal = async () => {
         setGenerating(true);
         setSongs([]);
+        setCurrentPage(0);
 
         try {
             const config: MaimaiFetchData = {
@@ -213,6 +216,15 @@ export default function LvScore2() {
             ),
         [songs]
     );
+    const pageCount = Math.max(
+        1,
+        Math.ceil(sortedSongs.length / SONGS_PER_PAGE)
+    );
+    const pageIndex = Math.min(currentPage, pageCount - 1);
+    const paginatedSongs = useMemo(() => {
+        const pageStart = pageIndex * SONGS_PER_PAGE;
+        return sortedSongs.slice(pageStart, pageStart + SONGS_PER_PAGE);
+    }, [pageIndex, sortedSongs]);
 
     const generateImage = async () => {
         if (sortedSongs.length === 0) {
@@ -394,9 +406,9 @@ export default function LvScore2() {
                                 )}
 
                                 <div className={'relative top-20 z-10 grid grid-cols-5 gap-1.5'}>
-                                    {sortedSongs.slice(0, 55).map((song, i) => (
+                                    {paginatedSongs.map((song, i) => (
                                         <div
-                                            key={`${song.name}-${song.diff}-${i}`}
+                                            key={`${song.name}-${song.diff}-${pageIndex * SONGS_PER_PAGE + i}`}
                                             className={'relative'}
                                             style={{
                                                 width: PREVIEW_CARD_WIDTH,
@@ -478,6 +490,38 @@ export default function LvScore2() {
                                             );
                                         })}
                                     </div>
+                                </div>
+
+                                <div className={'flex shrink-0 items-center justify-center gap-2'}>
+                                    <button
+                                        type={'button'}
+                                        className={'btn btn-square btn-sm'}
+                                        onClick={() =>
+                                            setCurrentPage((page) => Math.max(0, page - 1))
+                                        }
+                                        disabled={pageIndex === 0}
+                                        aria-label={'Previous page'}
+                                        title={'Previous page'}
+                                    >
+                                        &larr;
+                                    </button>
+                                    <span className={'min-w-16 text-center text-sm tabular-nums'}>
+                                        {pageIndex + 1} / {pageCount}
+                                    </span>
+                                    <button
+                                        type={'button'}
+                                        className={'btn btn-square btn-sm'}
+                                        onClick={() =>
+                                            setCurrentPage((page) =>
+                                                Math.min(pageCount - 1, page + 1)
+                                            )
+                                        }
+                                        disabled={pageIndex === pageCount - 1}
+                                        aria-label={'Next page'}
+                                        title={'Next page'}
+                                    >
+                                        &rarr;
+                                    </button>
                                 </div>
                             </div>
                         </div>
