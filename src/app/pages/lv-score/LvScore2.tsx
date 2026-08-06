@@ -35,6 +35,8 @@ import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import {chooseNameplate, determineRatingPlate, truncateByWidth} from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
+import ImageGenerationModal from '@/app/components/ImageGenerationModal';
+import {captureElementToBlob} from '@/lib/captureUtils';
 
 const PREVIEW_CARD_SCALE = 44;
 const PREVIEW_CARD_PERCENTAGE = (PREVIEW_CARD_SCALE / 100);
@@ -80,6 +82,9 @@ const NP = [
 export default function LvScore2() {
     const [error, setError] = useState('')
     const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [generatingImage, setGeneratingImage] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [generating, setGenerating] = useState<boolean>(false);
     const [level, setLevel] = useState('1');
     const [songs, setSongs] = useState<MSSB50[]>([]);
@@ -123,6 +128,14 @@ export default function LvScore2() {
 
         return () => observer.disconnect();
     }, [updatePreviewScale]);
+
+    useEffect(() => {
+        return () => {
+            if (imageUrl) {
+                URL.revokeObjectURL(imageUrl);
+            }
+        };
+    }, [imageUrl]);
 
     const showError = useCallback((errorMessage: string) => {
         setError(errorMessage);
@@ -201,9 +214,79 @@ export default function LvScore2() {
         [songs]
     );
 
+    const generateImage = async () => {
+        if (sortedSongs.length === 0) {
+            showError(
+                'No songs available. Generate LvScore before creating an image.'
+            );
+            return;
+        }
+
+        setShowImageModal(true);
+        setGeneratingImage(true);
+        setImageUrl((currentUrl) => {
+            if (currentUrl) {
+                URL.revokeObjectURL(currentUrl);
+            }
+            return null;
+        });
+
+        try {
+            updatePreviewScale();
+
+            await new Promise<void>((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => resolve());
+                    });
+                });
+            });
+
+            await document.fonts?.ready;
+            await new Promise((resolve) => setTimeout(resolve, 100));
+
+            if (!previewRef.current) {
+                throw new Error('LvScore preview is not ready');
+            }
+
+            const blob = await captureElementToBlob(previewRef.current);
+            const url = URL.createObjectURL(blob);
+
+            setImageUrl((currentUrl) => {
+                if (currentUrl) {
+                    URL.revokeObjectURL(currentUrl);
+                }
+                return url;
+            });
+        } catch (error) {
+            showError((error as Error).message);
+            setShowImageModal(false);
+        } finally {
+            setGeneratingImage(false);
+        }
+    };
+
+    const closeImageModal = () => {
+        setShowImageModal(false);
+        setImageUrl((currentUrl) => {
+            if (currentUrl) {
+                URL.revokeObjectURL(currentUrl);
+            }
+            return null;
+        });
+    };
+
     return (
         <>
             <ErrorModal error={error} show={showErrorModal} />
+            <ImageGenerationModal
+                show={showImageModal}
+                generating={generatingImage}
+                imageUrl={imageUrl}
+                onClose={closeImageModal}
+                label={'LvScore'}
+                downloadFileName={'lvscore.png'}
+            />
 
             <div className={'min-h-[calc(100vh-5rem)] flex items-center justify-center'}>
                 <div className={'card bg-base-300 h-[80vh] w-[100vh] shadow-2xl'}>
@@ -361,10 +444,10 @@ export default function LvScore2() {
                                 </button>
 
                                 <button
-                                    // onClick={generateImage}
+                                    onClick={generateImage}
                                     className={'btn btn-accent min-w-35 shrink-0'}
                                     disabled={
-                                        sortedSongs.length === 0
+                                        sortedSongs.length === 0 || generatingImage
                                     }
                                 >
                                     Get Image
