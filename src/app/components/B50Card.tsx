@@ -176,9 +176,11 @@ const determineBackgroundColor = (diff: string) => {
 export default function B50Card({
     info,
     eager = false,
+    sizePercent = 100,
 }: {
     info: MSSB50;
     eager?: boolean;
+    sizePercent?: number;
 }) {
     const backgroundColor = determineBackgroundColor(info.diff);
     const textColor = info.diff === 'remaster' ? '#9e45e2' : '#fff';
@@ -193,7 +195,10 @@ export default function B50Card({
       1px 2px 2px rgba(0,0,0,0.5)
     `;
     return (
-        <div className={'card bg-white w-66.25 h-27.5 rounded-xl pt-1'}>
+        <div
+            className={'card bg-white w-66.25 h-27.5 rounded-xl pt-1 origin-top-left'}
+            style={{ transform: `scale(${sizePercent / 100})` }}
+        >
             <div
                 className={
                     'absolute mx-auto h-18.75 w-63.75 rounded-t-xl left-1.25'
