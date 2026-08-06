@@ -45,6 +45,8 @@ const PREVIEW_CARD_HEIGHT = `${(6.875 * PREVIEW_CARD_SCALE) / 100}rem`;
 const PREVIEW_BASE_WIDTH = 672;
 const PREVIEW_BASE_HEIGHT = 768;
 const SONGS_PER_PAGE = 55;
+const IMAGE_CAPTURE_PIXEL_RATIO = 3;
+const IMAGE_CAPTURE_BORDER_RADIUS = 12;
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
@@ -257,11 +259,21 @@ export default function LvScore2() {
             await document.fonts?.ready;
             await new Promise((resolve) => setTimeout(resolve, 100));
 
-            if (!previewRef.current) {
+            const preview = previewRef.current;
+
+            if (!preview) {
                 throw new Error('LvScore preview is not ready');
             }
 
-            const blob = await captureElementToBlob(previewRef.current);
+            const captureRadius = `${IMAGE_CAPTURE_BORDER_RADIUS}px`;
+            const blob = await captureElementToBlob(preview, {
+                pixelRatio: IMAGE_CAPTURE_PIXEL_RATIO,
+                style: {
+                    borderRadius: captureRadius,
+                    clipPath: `inset(0 round ${captureRadius})`,
+                    overflow: 'hidden',
+                },
+            });
             const url = URL.createObjectURL(blob);
 
             setImageUrl((currentUrl) => {
