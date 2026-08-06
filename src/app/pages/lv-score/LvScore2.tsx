@@ -46,7 +46,6 @@ const PREVIEW_BASE_WIDTH = 672;
 const PREVIEW_BASE_HEIGHT = 768;
 const SONGS_PER_PAGE = 55;
 const IMAGE_CAPTURE_PIXEL_RATIO = 3;
-const IMAGE_CAPTURE_BORDER_RADIUS = 12;
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],
@@ -96,6 +95,7 @@ export default function LvScore2() {
     const [profile, setProfile] = useState<ParsedProfile | null>(null);
     const [rating, setRating] = useState(0);
     const previewRef = useRef<HTMLDivElement>(null);
+    const captureRef = useRef<HTMLDivElement>(null);
     const [previewScale, setPreviewScale] = useState(1);
 
     const updatePreviewScale = useCallback(() => {
@@ -259,19 +259,16 @@ export default function LvScore2() {
             await document.fonts?.ready;
             await new Promise((resolve) => setTimeout(resolve, 100));
 
-            const preview = previewRef.current;
+            const captureSurface = captureRef.current;
 
-            if (!preview) {
-                throw new Error('LvScore preview is not ready');
+            if (!captureSurface) {
+                throw new Error('LvScore capture surface is not ready');
             }
 
-            const captureRadius = `${IMAGE_CAPTURE_BORDER_RADIUS}px`;
-            const blob = await captureElementToBlob(preview, {
+            const blob = await captureElementToBlob(captureSurface, {
                 pixelRatio: IMAGE_CAPTURE_PIXEL_RATIO,
                 style: {
-                    borderRadius: captureRadius,
-                    clipPath: `inset(0 round ${captureRadius})`,
-                    overflow: 'hidden',
+                    transform: 'none',
                 },
             });
             const url = URL.createObjectURL(blob);
@@ -320,6 +317,7 @@ export default function LvScore2() {
                             className={`relative w-5/7 h-full bg-base-200 rounded-l-xl overflow-hidden ${mPlus.className}`}
                         >
                             <div
+                                ref={captureRef}
                                 className={'absolute top-0 left-0 p-8 origin-top-left'}
                                 style={{
                                     width: `${PREVIEW_BASE_WIDTH}px`,
@@ -341,6 +339,7 @@ export default function LvScore2() {
                                     height={120 * PREVIEW_CARD_PERCENTAGE}
                                     loading={'eager'}
                                     className={'absolute top-5 left-5'}
+                                    unoptimized
                                 />
 
                                 <Image
@@ -353,12 +352,12 @@ export default function LvScore2() {
 
                                 <div
                                     className={
-                                        'absolute w-47.75 h-11.5 left-41 top-4.5 bg-white rounded-sm border-gray-500 border z-10'
+                                        'absolute w-47.75 h-12.25 left-41 top-4.5 bg-white rounded-sm border-gray-500 border z-10'
                                     }
                                 />
                                 <div
                                     className={
-                                        'absolute w-47.25 h-11.25 left-42 top-5.25 bg-gray-500 rounded-sm z-0'
+                                        'absolute w-47.25 h-11.75 left-42 top-5.25 bg-gray-500 rounded-sm z-0'
                                     }
                                 />
 
@@ -371,7 +370,7 @@ export default function LvScore2() {
                                             height={42}
                                             unoptimized
                                             loading={'eager'}
-                                            className={'absolute top-5 left-41.75 z-20'}
+                                            className={'absolute top-5.25 left-42 z-20'}
                                         />
 
                                         <Image
@@ -385,7 +384,7 @@ export default function LvScore2() {
 
                                         <p
                                             className={
-                                                'absolute top-5.25 left-57.5 text-[6.5px] text-black font-medium'
+                                                'absolute top-3.25 left-54 flex w-27.5 h-6.25 items-center justify-center text-center text-[6.5px] text-black font-medium z-20'
                                             }
                                         >
                                             {truncateByWidth(profile.userDetail!, 28)}
@@ -414,6 +413,49 @@ export default function LvScore2() {
                                             }}
                                             unoptimized
                                         />
+
+                                        <div
+                                            className={
+                                                'absolute top-9 left-78.25 text-white tracking-[0.1325em] text-[7.5px] z-20'
+                                            }
+                                        >
+                                            {rating}
+                                        </div>
+
+                                        <Image
+                                            src={profile.dan!}
+                                            alt={'dan'}
+                                            width={72 * 0.4}
+                                            height={0}
+                                            unoptimized
+                                            loading={'eager'}
+                                            className={'absolute top-12.75 left-53.5 z-20'}
+                                        />
+                                        <Image
+                                            src={profile.rank!}
+                                            alt={'dan'}
+                                            width={60 * 0.45}
+                                            height={0}
+                                            unoptimized
+                                            loading={'eager'}
+                                            className={'absolute top-12.25 left-61.75 z-20'}
+                                        />
+                                        <Image
+                                            src={profile.userCollectionCount!.img!}
+                                            alt={'dan'}
+                                            width={25 * 0.45}
+                                            height={0}
+                                            unoptimized
+                                            loading={'eager'}
+                                            className={'absolute top-12.5 left-70.5 z-20'}
+                                        />
+                                        <p
+                                            className={
+                                                'absolute top-12.5 left-74 text-gray-900/90 font-semibold z-20 text-[8px]'
+                                            }
+                                        >
+                                            {profile.userCollectionCount!.text!}
+                                        </p>
                                     </>
                                 )}
 
@@ -433,16 +475,16 @@ export default function LvScore2() {
                                             />
                                         </div>
                                     ))}
-
-                                    <h3
-                                        className={
-                                            `relative top-3 w-full text-center text-white col-span-5 text-[10px] ${mPlus.className} ` +
-                                            `${sortedSongs.length === 0 ? 'hidden' : ''}`
-                                        }
-                                    >
-                                        Designed by KVZ. Generated by AcidBot
-                                    </h3>
                                 </div>
+
+                                <h3
+                                    className={
+                                        `absolute bottom-3 left-0 z-10 w-full text-center text-white text-[10px] ${mPlus.className} ` +
+                                        `${sortedSongs.length === 0 ? 'hidden' : ''}`
+                                    }
+                                >
+                                    Designed by KVZ. Generated by AcidBot
+                                </h3>
                             </div>
                         </div>
 
