@@ -416,7 +416,7 @@ export default function LvScore2() {
 
                                         <div
                                             className={
-                                                'absolute top-9 left-78.25 text-white tracking-[0.1325em] text-[7.5px] z-20'
+                                                'absolute top-9 left-78.5 text-white tracking-[0.15em] text-[7.5px] z-20'
                                             }
                                         >
                                             {rating}
