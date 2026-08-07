@@ -513,7 +513,7 @@ export default function LvScore2() {
                                     onClick={generateImage}
                                     className={'btn btn-accent min-w-35 shrink-0'}
                                     disabled={
-                                        sortedSongs.length === 0 || generatingImage
+                                        sortedSongs.length === 0 || generatingImage || generating
                                     }
                                 >
                                     Get Image
