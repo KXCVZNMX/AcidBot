@@ -21,13 +21,6 @@ export default function B50CardGrid({
                     <div className={'grid grid-cols-5 gap-4 w-max mx-auto'}>
                         {oldSong.map((song, i) => (
                             <div key={i} className={'relative'}>
-                                <div
-                                    className={
-                                        'absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg'
-                                    }
-                                >
-                                    {i + 1}
-                                </div>
                                 <B50Card info={song} />
                             </div>
                         ))}
@@ -44,13 +37,6 @@ export default function B50CardGrid({
                     <div className={'grid grid-cols-5 gap-4 w-max mx-auto'}>
                         {newSong.map((song, i) => (
                             <div key={i} className={'relative'}>
-                                <div
-                                    className={
-                                        'absolute -top-2 -left-2 bg-secondary text-secondary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg'
-                                    }
-                                >
-                                    {i + 1}
-                                </div>
                                 <B50Card info={song} />
                             </div>
                         ))}
