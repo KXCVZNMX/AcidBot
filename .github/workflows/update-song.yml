@@ -44,6 +44,7 @@ jobs:
                   python -m venv .venv
                   source .venv/bin/activate
                   pip install -r requirements.txt
+                  sed -i 's/CURRENT_INTL_VER = "CiRCLE"/CURRENT_INTL_VER = "CiRCLE PLUS"/' scripts/maimai/game.py
                   yarn fetch-intl --maimai
 
             - name: Get Data and Upload to DB
