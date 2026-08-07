@@ -8,7 +8,7 @@ import {
 import { SongInfo, SongInfoProjection } from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
 import { Db } from 'mongodb';
-import songs from '../_shared/temp_updates.json'
+// import songs from '../_shared/temp_updates.json'
 
 export const songInfoProjection: SongInfoProjection = {
     title: 1,
@@ -119,16 +119,16 @@ export async function getSongInfoMap(
         )
         .toArray();
 
-    const tempUpdatedSongs = songs as unknown as SongInfo[];
+    // const tempUpdatedSongs = songs as unknown as SongInfo[];
 
     const docMap = new Map<string, SongInfo>();
     for (const d of docs) {
         if (d?.title) docMap.set(d.title, d);
     }
-
-    for (const s of tempUpdatedSongs) {
-        docMap.set(s.title, s);
-    }
+    //
+    // for (const s of tempUpdatedSongs) {
+    //     docMap.set(s.title, s);
+    // }
 
     return docMap;
 }
