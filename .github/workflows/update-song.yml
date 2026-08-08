@@ -45,7 +45,7 @@ jobs:
                   source .venv/bin/activate
                   pip install -r requirements.txt
                   sed -i 's/CURRENT_INTL_VER = "CiRCLE"/CURRENT_INTL_VER = "CiRCLE PLUS"/' scripts/maimai/game.py
-                  sed -i "s/var game_version_display_intl = 'CiRCLE'/var game_version_display_intl = 'CiRCLE PLUS'" maimai/src/pug/_maimai_meta.pug
+                  sed -i "s/var game_version_display_intl = 'CiRCLE'/var game_version_display_intl = 'CiRCLE PLUS'/" maimai/src/pug/_maimai_meta.pug
                   yarn clear-const --maimai --intl
                   yarn fetch-intl --maimai
                   rg -n "CURRENT_JP_VER|CURRENT_INTL_VER" scripts/maimai/game.py
