@@ -3,7 +3,7 @@ import Image from 'next/image';
 import HomePageIcon from '../../public/HomeGIF.gif';
 import React from 'react';
 import Card from '@/app/components/Card';
-import {auth} from '@/auth';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
     title: 'maimai B50 Tracker',
@@ -53,11 +53,16 @@ export default async function Home() {
             <section
                 className={'p-3 w-full max-w-175 grid grid-cols-2 gap-3 mt-8'}
             >
-                {session ?
+                {session ? (
                     <div className={'col-span-2'}>
-                        <Card title={'I wanna play maimai'} href={'/pages/user-profile'}><></></Card>
+                        <Card
+                            title={'I wanna play maimai'}
+                            href={'/pages/user-profile'}
+                        >
+                            <></>
+                        </Card>
                     </div>
-                    :
+                ) : (
                     <div className={'col-span-2'}>
                         <Card
                             title={'Sign in to get started'}
@@ -66,7 +71,7 @@ export default async function Home() {
                             <></>
                         </Card>
                     </div>
-                }
+                )}
 
                 <Card
                     title={'About AcidBot'}

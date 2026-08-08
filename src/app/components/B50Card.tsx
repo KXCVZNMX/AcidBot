@@ -196,7 +196,9 @@ export default function B50Card({
     `;
     return (
         <div
-            className={'card bg-white w-66.25 h-27.5 rounded-xl pt-1 origin-top-left'}
+            className={
+                'card bg-white w-66.25 h-27.5 rounded-xl pt-1 origin-top-left'
+            }
             style={{ transform: `scale(${sizePercent / 100})` }}
         >
             <div
