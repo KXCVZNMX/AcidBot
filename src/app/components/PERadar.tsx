@@ -12,15 +12,7 @@ import {
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 
-ChartJS.register(
-    RadialLinearScale,
-    RadarController,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
+ChartJS.register(RadialLinearScale, RadarController, PointElement, LineElement, Filler, Tooltip, Legend);
 
 export default function PERadar({
     tags,

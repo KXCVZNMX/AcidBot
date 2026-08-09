@@ -16,9 +16,7 @@ export async function GET() {
         const id = session.user?.id ?? '';
 
         const db = client.db();
-        const doc = await db
-            .collection('userB50')
-            .findOne({ _id: new ObjectId(id) });
+        const doc = await db.collection('userB50').findOne({ _id: new ObjectId(id) });
         if (!doc) {
             return NextResponse.json({
                 error: 'Error while fetching old B50, likely because you are not logged in, or you do not have a prior record',
@@ -34,9 +32,7 @@ export async function GET() {
             });
 
             if (!doc) {
-                console.warn(
-                    `Failed to fetch song tags for ${song.name} (${song.diff}) -- skipped`
-                );
+                console.warn(`Failed to fetch song tags for ${song.name} (${song.diff}) -- skipped`);
                 continue;
             }
 
@@ -50,9 +46,6 @@ export async function GET() {
         return NextResponse.json(res);
     } catch (error) {
         console.error(error);
-        return NextResponse.json(
-            { error: (error as Error).message },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
 }

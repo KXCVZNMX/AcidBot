@@ -15,9 +15,7 @@ export default function LoginModal({
                     <h3 className={'text-lg font-bold text-center'}>Login</h3>
 
                     <button
-                        className={
-                            'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'
-                        }
+                        className={'btn btn-sm absolute right-0 top-1/2 -translate-y-1/2 m-0'}
                         onClick={() => setShowLoginModal(false)}
                     >
                         Close

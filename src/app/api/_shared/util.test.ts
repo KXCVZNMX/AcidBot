@@ -49,25 +49,16 @@ describe('isNewByDate', () => {
 describe('getRatingByAchievement', () => {
     it('caps achievement at 100.5 for SSS+ and uses its factor', () => {
         // achievement above 100.5 is clamped to 100.5 before applying 0.224
-        expect(getRatingByAchievement(100.6, 15)).toBeCloseTo(
-            100.5 * 0.224 * 15,
-            6
-        );
+        expect(getRatingByAchievement(100.6, 15)).toBeCloseTo(100.5 * 0.224 * 15, 6);
     });
 
     it('uses the standard factor for an S score', () => {
-        expect(getRatingByAchievement(97.0, 10)).toBeCloseTo(
-            97.0 * 0.2 * 10,
-            6
-        );
+        expect(getRatingByAchievement(97.0, 10)).toBeCloseTo(97.0 * 0.2 * 10, 6);
     });
 
     it('applies maxFactor when achievement equals a band ceiling', () => {
         // SSS band: maxA 100.4999, maxFactor 0.222
-        expect(getRatingByAchievement(100.4999, 12)).toBeCloseTo(
-            100.4999 * 0.222 * 12,
-            6
-        );
+        expect(getRatingByAchievement(100.4999, 12)).toBeCloseTo(100.4999 * 0.222 * 12, 6);
     });
 
     it('returns -1 when achievement is below every band', () => {
@@ -94,27 +85,19 @@ describe('getLevelConst', () => {
     };
 
     it('reads the DX master constant', () => {
-        expect(
-            getLevelConst({ ...base, isDx: 'dx', diff: 'master' }, sheet)
-        ).toBe('14.8');
+        expect(getLevelConst({ ...base, isDx: 'dx', diff: 'master' }, sheet)).toBe('14.8');
     });
 
     it('reads the standard expert constant', () => {
-        expect(
-            getLevelConst({ ...base, isDx: 'std', diff: 'expert' }, sheet)
-        ).toBe('12.5');
+        expect(getLevelConst({ ...base, isDx: 'std', diff: 'expert' }, sheet)).toBe('12.5');
     });
 
     it('falls back to "0" when the chart type is unknown', () => {
-        expect(
-            getLevelConst({ ...base, isDx: 'unknown', diff: 'master' }, sheet)
-        ).toBe('0');
+        expect(getLevelConst({ ...base, isDx: 'unknown', diff: 'master' }, sheet)).toBe('0');
     });
 
     it('falls back to "0" when the requested constant is missing', () => {
-        expect(
-            getLevelConst({ ...base, isDx: 'dx', diff: 'basic' }, sheet)
-        ).toBe('0');
+        expect(getLevelConst({ ...base, isDx: 'dx', diff: 'basic' }, sheet)).toBe('0');
     });
 });
 
@@ -174,9 +157,7 @@ describe('splitB50', () => {
 describe('toProxiedUrl', () => {
     it('routes absolute http(s) URLs through the image proxy', () => {
         const src = 'https://maimaidx-eng.com/img/jacket.png';
-        expect(toProxiedUrl(src)).toBe(
-            `/api/v1/images/proxy?url=${encodeURIComponent(src)}`
-        );
+        expect(toProxiedUrl(src)).toBe(`/api/v1/images/proxy?url=${encodeURIComponent(src)}`);
     });
 
     it('leaves relative URLs untouched', () => {
@@ -214,9 +195,7 @@ describe('parseProfileBlock', () => {
         expect(profile!.userDetail).toBe('Trophy Text');
         expect(profile!.profilePicture).toContain('/api/v1/images/proxy');
         expect(profile!.userCollectionCount?.text).toBe('42');
-        expect(profile!.userCollectionCount?.img).toContain(
-            '/api/v1/images/proxy'
-        );
+        expect(profile!.userCollectionCount?.img).toContain('/api/v1/images/proxy');
     });
 
     it('returns null when the profile container is absent', () => {

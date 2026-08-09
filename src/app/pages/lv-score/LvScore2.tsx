@@ -1,20 +1,9 @@
 'use client';
 
 import ErrorModal from '@/app/components/ErrorModal';
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
-import {
-    Best50Songs,
-    MaimaiFetchData,
-    MSSB50,
-    ParsedProfile,
-} from '@/lib/types';
+import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
 import Image from 'next/image';
 import B50BG from '../../../../public/b50/b50bg.png';
 import B50Card from '@/app/components/B50Card';
@@ -44,11 +33,7 @@ import NP_sm_splash from '../../../../public/b50/NP_sm_splash.webp';
 import NP_yj from '../../../../public/b50/NP_yj.webp';
 import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
 import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
-import {
-    chooseNameplate,
-    determineRatingPlate,
-    truncateByWidth,
-} from '@/lib/util';
+import { chooseNameplate, determineRatingPlate, truncateByWidth } from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
 import { captureElementToBlob } from '@/lib/captureUtils';
@@ -125,11 +110,7 @@ export default function LvScore2() {
             preview.clientHeight / PREVIEW_BASE_HEIGHT
         );
 
-        setPreviewScale((currentScale) =>
-            Math.abs(currentScale - nextScale) > 0.001
-                ? nextScale
-                : currentScale
-        );
+        setPreviewScale((currentScale) => (Math.abs(currentScale - nextScale) > 0.001 ? nextScale : currentScale));
     }, []);
 
     useEffect(() => {
@@ -137,8 +118,7 @@ export default function LvScore2() {
 
         if (typeof ResizeObserver === 'undefined') {
             window.addEventListener('resize', updatePreviewScale);
-            return () =>
-                window.removeEventListener('resize', updatePreviewScale);
+            return () => window.removeEventListener('resize', updatePreviewScale);
         }
 
         const observer = new ResizeObserver(updatePreviewScale);
@@ -218,9 +198,7 @@ export default function LvScore2() {
             }
 
             const b50: Best50Songs = await historyRes.json();
-            setRating(
-                [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0)
-            );
+            setRating([...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0));
         } catch (error) {
             showError((error as Error).message);
             console.error(error);
@@ -230,18 +208,10 @@ export default function LvScore2() {
     };
 
     const sortedSongs = useMemo(
-        () =>
-            [...songs].sort(
-                (a, b) =>
-                    parseFloat(b.score.replace('%', '')) -
-                    parseFloat(a.score.replace('%', ''))
-            ),
+        () => [...songs].sort((a, b) => parseFloat(b.score.replace('%', '')) - parseFloat(a.score.replace('%', ''))),
         [songs]
     );
-    const pageCount = Math.max(
-        1,
-        Math.ceil(sortedSongs.length / SONGS_PER_PAGE)
-    );
+    const pageCount = Math.max(1, Math.ceil(sortedSongs.length / SONGS_PER_PAGE));
     const pageIndex = Math.min(currentPage, pageCount - 1);
     const paginatedSongs = useMemo(() => {
         const pageStart = pageIndex * SONGS_PER_PAGE;
@@ -250,9 +220,7 @@ export default function LvScore2() {
 
     const generateImage = async () => {
         if (sortedSongs.length === 0) {
-            showError(
-                'No songs available. Generate LvScore before creating an image.'
-            );
+            showError('No songs available. Generate LvScore before creating an image.');
             return;
         }
 
@@ -329,14 +297,8 @@ export default function LvScore2() {
                 downloadFileName={'lvscore.png'}
             />
 
-            <div
-                className={
-                    'min-h-[calc(100vh-5rem)] flex items-center justify-center'
-                }
-            >
-                <div
-                    className={'card bg-base-300 h-[80vh] w-[100vh] shadow-2xl'}
-                >
+            <div className={'min-h-[calc(100vh-5rem)] flex items-center justify-center'}>
+                <div className={'card bg-base-300 h-[80vh] w-[100vh] shadow-2xl'}>
                     <div className={'card-body h-full flex-row p-0 rounded-xl'}>
                         <div
                             ref={previewRef}
@@ -344,9 +306,7 @@ export default function LvScore2() {
                         >
                             <div
                                 ref={captureRef}
-                                className={
-                                    'absolute top-0 left-0 p-8 origin-top-left'
-                                }
+                                className={'absolute top-0 left-0 p-8 origin-top-left'}
                                 style={{
                                     width: `${PREVIEW_BASE_WIDTH}px`,
                                     height: `${PREVIEW_BASE_HEIGHT}px`,
@@ -375,9 +335,7 @@ export default function LvScore2() {
                                     alt={'nameplate'}
                                     width={800 * PREVIEW_CARD_PERCENTAGE}
                                     loading={'eager'}
-                                    className={
-                                        'absolute top-3.75 left-40 rounded-sm'
-                                    }
+                                    className={'absolute top-3.75 left-40 rounded-sm'}
                                 />
 
                                 <div
@@ -386,9 +344,7 @@ export default function LvScore2() {
                                     }
                                 />
                                 <div
-                                    className={
-                                        'absolute w-47.25 h-11.75 left-42 top-5.25 bg-gray-500 rounded-sm z-0'
-                                    }
+                                    className={'absolute w-47.25 h-11.75 left-42 top-5.25 bg-gray-500 rounded-sm z-0'}
                                 />
 
                                 {profile !== null && (
@@ -400,9 +356,7 @@ export default function LvScore2() {
                                             height={42}
                                             unoptimized
                                             loading={'eager'}
-                                            className={
-                                                'absolute top-5.25 left-42 z-20'
-                                            }
+                                            className={'absolute top-5.25 left-42 z-20'}
                                         />
 
                                         <Image
@@ -411,9 +365,7 @@ export default function LvScore2() {
                                             width={110}
                                             height={25}
                                             loading={'eager'}
-                                            className={
-                                                'absolute top-5 left-54 z-20'
-                                            }
+                                            className={'absolute top-5 left-54 z-20'}
                                         />
 
                                         <p
@@ -421,10 +373,7 @@ export default function LvScore2() {
                                                 'absolute top-3.25 left-54 flex w-27.5 h-6.25 items-center justify-center text-center text-[6.5px] text-black font-medium z-20'
                                             }
                                         >
-                                            {truncateByWidth(
-                                                profile.userDetail!,
-                                                28
-                                            )}
+                                            {truncateByWidth(profile.userDetail!, 28)}
                                         </p>
 
                                         <div
@@ -432,15 +381,8 @@ export default function LvScore2() {
                                                 'absolute top-8.5 left-53.25 w-15.75 h-3.5 text-black bg-gray-100 border-gray-400 border rounded-xs z-20'
                                             }
                                         >
-                                            <p
-                                                className={
-                                                    'pl-px text-[7.5px] tracking-[0.15em]'
-                                                }
-                                            >
-                                                {truncateByWidth(
-                                                    profile.userName!,
-                                                    12
-                                                )}
+                                            <p className={'pl-px text-[7.5px] tracking-[0.15em]'}>
+                                                {truncateByWidth(profile.userName!, 12)}
                                             </p>
                                         </div>
 
@@ -450,9 +392,7 @@ export default function LvScore2() {
                                             height={0}
                                             width={0}
                                             loading={'eager'}
-                                            className={
-                                                'absolute top-8.5 left-70 z-20'
-                                            }
+                                            className={'absolute top-8.5 left-70 z-20'}
                                             style={{
                                                 width: '70px',
                                                 height: 'auto',
@@ -475,9 +415,7 @@ export default function LvScore2() {
                                             height={0}
                                             unoptimized
                                             loading={'eager'}
-                                            className={
-                                                'absolute top-12.75 left-53.5 z-20'
-                                            }
+                                            className={'absolute top-12.75 left-53.5 z-20'}
                                         />
                                         <Image
                                             src={profile.rank!}
@@ -486,23 +424,16 @@ export default function LvScore2() {
                                             height={0}
                                             unoptimized
                                             loading={'eager'}
-                                            className={
-                                                'absolute top-12.25 left-61.75 z-20'
-                                            }
+                                            className={'absolute top-12.25 left-61.75 z-20'}
                                         />
                                         <Image
-                                            src={
-                                                profile.userCollectionCount!
-                                                    .img!
-                                            }
+                                            src={profile.userCollectionCount!.img!}
                                             alt={'dan'}
                                             width={25 * 0.45}
                                             height={0}
                                             unoptimized
                                             loading={'eager'}
-                                            className={
-                                                'absolute top-12.5 left-70.5 z-20'
-                                            }
+                                            className={'absolute top-12.5 left-70.5 z-20'}
                                         />
                                         <p
                                             className={
@@ -514,11 +445,7 @@ export default function LvScore2() {
                                     </>
                                 )}
 
-                                <div
-                                    className={
-                                        'relative top-20 z-10 grid grid-cols-5 gap-1.5'
-                                    }
-                                >
+                                <div className={'relative top-20 z-10 grid grid-cols-5 gap-1.5'}>
                                     {paginatedSongs.map((song, i) => (
                                         <div
                                             key={`${song.name}-${song.diff}-${pageIndex * SONGS_PER_PAGE + i}`}
@@ -528,10 +455,7 @@ export default function LvScore2() {
                                                 height: PREVIEW_CARD_HEIGHT,
                                             }}
                                         >
-                                            <B50Card
-                                                info={song}
-                                                sizePercent={PREVIEW_CARD_SCALE}
-                                            />
+                                            <B50Card info={song} sizePercent={PREVIEW_CARD_SCALE} />
                                         </div>
                                     ))}
                                 </div>
@@ -547,32 +471,16 @@ export default function LvScore2() {
                             </div>
                         </div>
 
-                        <div
-                            className={
-                                'flex-1 min-w-0 h-full bg-base-300 p-6 rounded-r-xl overflow-hidden'
-                            }
-                        >
-                            <div
-                                className={'flex h-full min-h-0 flex-col gap-3'}
-                            >
+                        <div className={'flex-1 min-w-0 h-full bg-base-300 p-6 rounded-r-xl overflow-hidden'}>
+                            <div className={'flex h-full min-h-0 flex-col gap-3'}>
                                 <button
                                     onClick={fetchResultWithClal}
-                                    className={
-                                        'btn btn-primary min-w-35 shrink-0'
-                                    }
+                                    className={'btn btn-primary min-w-35 shrink-0'}
                                     disabled={generating}
                                 >
                                     {generating ? (
-                                        <span
-                                            className={
-                                                'flex items-center gap-2'
-                                            }
-                                        >
-                                            <span
-                                                className={
-                                                    'loading loading-spinner loading-sm'
-                                                }
-                                            ></span>
+                                        <span className={'flex items-center gap-2'}>
+                                            <span className={'loading loading-spinner loading-sm'}></span>
                                             Generating...
                                         </span>
                                     ) : (
@@ -582,14 +490,8 @@ export default function LvScore2() {
 
                                 <button
                                     onClick={generateImage}
-                                    className={
-                                        'btn btn-accent min-w-35 shrink-0'
-                                    }
-                                    disabled={
-                                        sortedSongs.length === 0 ||
-                                        generatingImage ||
-                                        generating
-                                    }
+                                    className={'btn btn-accent min-w-35 shrink-0'}
+                                    disabled={sortedSongs.length === 0 || generatingImage || generating}
                                 >
                                     Get Image
                                 </button>
@@ -599,11 +501,7 @@ export default function LvScore2() {
                                         'min-h-0 flex-1 overflow-hidden text-center p-3 shadow-lg rounded-box bg-base-100 min-w-35'
                                     }
                                 >
-                                    <div
-                                        className={
-                                            'h-full min-h-0 overflow-y-auto flex flex-col gap-1'
-                                        }
-                                    >
+                                    <div className={'h-full min-h-0 overflow-y-auto flex flex-col gap-1'}>
                                         {Array.from({ length: 23 }, (_, i) => {
                                             const value = i + 1;
 
@@ -611,25 +509,11 @@ export default function LvScore2() {
                                                 <button
                                                     key={value}
                                                     type={'button'}
-                                                    onClick={() =>
-                                                        setLevel(
-                                                            value.toString()
-                                                        )
-                                                    }
-                                                    className={`btn btn-sm ${
-                                                        level ===
-                                                        value.toString()
-                                                            ? 'btn-primary'
-                                                            : 'btn-ghost'
-                                                    }`}
+                                                    onClick={() => setLevel(value.toString())}
+                                                    className={`btn btn-sm ${level === value.toString() ? 'btn-primary' : 'btn-ghost'}`}
                                                 >
-                                                    <span
-                                                        className={
-                                                            'w-full text-center'
-                                                        }
-                                                    >
-                                                        LEVEL{' '}
-                                                        {MaimaiLevelMap[value]}
+                                                    <span className={'w-full text-center'}>
+                                                        LEVEL {MaimaiLevelMap[value]}
                                                     </span>
                                                 </button>
                                             );
@@ -637,43 +521,24 @@ export default function LvScore2() {
                                     </div>
                                 </div>
 
-                                <div
-                                    className={
-                                        'flex shrink-0 items-center justify-center gap-2'
-                                    }
-                                >
+                                <div className={'flex shrink-0 items-center justify-center gap-2'}>
                                     <button
                                         type={'button'}
                                         className={'btn btn-square btn-sm'}
-                                        onClick={() =>
-                                            setCurrentPage((page) =>
-                                                Math.max(0, page - 1)
-                                            )
-                                        }
+                                        onClick={() => setCurrentPage((page) => Math.max(0, page - 1))}
                                         disabled={pageIndex === 0}
                                         aria-label={'Previous page'}
                                         title={'Previous page'}
                                     >
                                         &larr;
                                     </button>
-                                    <span
-                                        className={
-                                            'min-w-16 text-center text-sm tabular-nums'
-                                        }
-                                    >
+                                    <span className={'min-w-16 text-center text-sm tabular-nums'}>
                                         {pageIndex + 1} / {pageCount}
                                     </span>
                                     <button
                                         type={'button'}
                                         className={'btn btn-square btn-sm'}
-                                        onClick={() =>
-                                            setCurrentPage((page) =>
-                                                Math.min(
-                                                    pageCount - 1,
-                                                    page + 1
-                                                )
-                                            )
-                                        }
+                                        onClick={() => setCurrentPage((page) => Math.min(pageCount - 1, page + 1))}
                                         disabled={pageIndex === pageCount - 1}
                                         aria-label={'Next page'}
                                         title={'Next page'}

@@ -12,8 +12,7 @@ export default async function fetchPage(
     redirect: string | string[],
     onProgress?: (current: number, total: number, url: string) => void
 ) {
-    const sleep = (ms: number) =>
-        new Promise((resolve) => setTimeout(resolve, ms));
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     try {
         const jar = new fetchCookie.toughCookie.CookieJar();

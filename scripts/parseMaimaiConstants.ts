@@ -54,10 +54,7 @@ interface SongData {
 
 dotenv.config({ path: './.env.local' });
 
-const intlMusic = fs.readFileSync(
-    './otoge-db/maimai/data/music-ex-intl.json',
-    'utf8'
-);
+const intlMusic = fs.readFileSync('./otoge-db/maimai/data/music-ex-intl.json', 'utf8');
 
 const jpMusic = fs.readFileSync('./otoge-db/maimai/data/music-ex.json', 'utf8');
 

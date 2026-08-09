@@ -84,10 +84,7 @@ export default function Best50() {
         level: 'easy',
     });
 
-    const rating = [...oldSong, ...newSong].reduce(
-        (sum, s) => sum + s.rating,
-        0
-    );
+    const rating = [...oldSong, ...newSong].reduce((sum, s) => sum + s.rating, 0);
 
     const captureRef = useRef<HTMLDivElement>(null);
     const gridShellRef = useRef<HTMLDivElement>(null);
@@ -231,9 +228,7 @@ export default function Best50() {
             }
 
             if (!res.body) {
-                throw new Error(
-                    'ReadableStream not supported by browser or response missing body.'
-                );
+                throw new Error('ReadableStream not supported by browser or response missing body.');
             }
 
             const reader = res.body.getReader();
@@ -279,9 +274,7 @@ export default function Best50() {
                     }
                     // Handle final successful data completion payload
                     else if (packet.type === 'done') {
-                        setSuccess(
-                            'Successfully calculated and saved Best 50 details!'
-                        );
+                        setSuccess('Successfully calculated and saved Best 50 details!');
                         setNewSong(packet.b15);
                         setOldSong(packet.b35);
                         setStatusText('Done');
@@ -357,9 +350,7 @@ export default function Best50() {
 
         // Defer real-time DOM measurements so they execute cleanly right after layout completes
         requestAnimationFrame(() => {
-            setGridScale((prev) =>
-                Math.abs(prev - nextScale) > 0.001 ? nextScale : prev
-            );
+            setGridScale((prev) => (Math.abs(prev - nextScale) > 0.001 ? nextScale : prev));
             setScaledGridHeight((prev) => {
                 const nextHeight = stageHeight * nextScale;
                 return Math.abs(prev - nextHeight) > 0.5 ? nextHeight : prev;
@@ -412,17 +403,9 @@ export default function Best50() {
             ) : null}
 
             <div className={'min-h-screen bg-base-100 py-8 px-4'}>
-                <div
-                    className={
-                        'flex flex-col items-center gap-8 max-w-4xl mx-auto'
-                    }
-                >
+                <div className={'flex flex-col items-center gap-8 max-w-4xl mx-auto'}>
                     {/* Rating and Status Side-by-Side Section */}
-                    <div
-                        className={
-                            'flex flex-col md:flex-row gap-6 w-full md:max-w-4xl'
-                        }
-                    >
+                    <div className={'flex flex-col md:flex-row gap-6 w-full md:max-w-4xl'}>
                         {/* Rating Plate Section */}
                         <div className={'flex-1 flex justify-center'}>
                             <div
@@ -431,11 +414,7 @@ export default function Best50() {
                                 }
                             >
                                 {/* Rating Plate Image */}
-                                <div
-                                    className={
-                                        'relative w-75 h-12.5 drop-shadow-lg'
-                                    }
-                                >
+                                <div className={'relative w-75 h-12.5 drop-shadow-lg'}>
                                     <Image
                                         src={determineRatingPlate(rating)}
                                         alt={'rating plate'}
@@ -454,11 +433,7 @@ export default function Best50() {
                                 </div>
 
                                 {/* Action Buttons */}
-                                <div
-                                    className={
-                                        'flex flex-wrap gap-3 justify-center w-full'
-                                    }
-                                >
+                                <div className={'flex flex-wrap gap-3 justify-center w-full'}>
                                     <button
                                         onClick={fetchB50WithClal}
                                         className={
@@ -467,16 +442,8 @@ export default function Best50() {
                                         disabled={generating}
                                     >
                                         {generating ? (
-                                            <span
-                                                className={
-                                                    'flex items-center gap-2'
-                                                }
-                                            >
-                                                <span
-                                                    className={
-                                                        'loading loading-spinner loading-sm'
-                                                    }
-                                                ></span>
+                                            <span className={'flex items-center gap-2'}>
+                                                <span className={'loading loading-spinner loading-sm'}></span>
                                                 Generating...
                                             </span>
                                         ) : (
@@ -498,10 +465,7 @@ export default function Best50() {
                                         className={
                                             'btn btn-accent min-w-32 flex-1 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200'
                                         }
-                                        disabled={
-                                            oldSong.length === 0 ||
-                                            newSong.length === 0
-                                        }
+                                        disabled={oldSong.length === 0 || newSong.length === 0}
                                     >
                                         Get Image
                                     </button>
@@ -525,34 +489,17 @@ export default function Best50() {
                                         >
                                             Status
                                         </span>
-                                        <span
-                                            className={
-                                                'text-sm font-medium text-base-content'
-                                            }
-                                        >
-                                            {statusText}
-                                        </span>
+                                        <span className={'text-sm font-medium text-base-content'}>{statusText}</span>
                                     </div>
                                 )}
 
                                 {/* Interactive Progress Tracking Interface */}
                                 {progress.total > 0 && (
                                     <div>
-                                        <div
-                                            className={
-                                                'flex justify-between text-xs text-base-content/70 mb-3'
-                                            }
-                                        >
-                                            <span className={'font-semibold'}>
-                                                Fetching {progress.level} charts
-                                            </span>
-                                            <span
-                                                className={
-                                                    'font-bold text-primary'
-                                                }
-                                            >
-                                                {progress.current} /{' '}
-                                                {progress.total}
+                                        <div className={'flex justify-between text-xs text-base-content/70 mb-3'}>
+                                            <span className={'font-semibold'}>Fetching {progress.level} charts</span>
+                                            <span className={'font-bold text-primary'}>
+                                                {progress.current} / {progress.total}
                                             </span>
                                         </div>
                                         <div
@@ -574,11 +521,7 @@ export default function Best50() {
 
                                 {/* Empty state when no status or progress */}
                                 {!statusText && progress.total === 0 && (
-                                    <div
-                                        className={
-                                            'text-center text-base-content/50 text-sm'
-                                        }
-                                    >
+                                    <div className={'text-center text-base-content/50 text-sm'}>
                                         <p>Ready to generate your best 50!</p>
                                     </div>
                                 )}
@@ -589,50 +532,29 @@ export default function Best50() {
                     {/* Cards Grid Section */}
                     <div className={'w-full'}>
                         {hasSongs ? (
-                            <div
-                                className={
-                                    'bg-base-200 rounded-2xl p-8 shadow-lg'
-                                }
-                            >
+                            <div className={'bg-base-200 rounded-2xl p-8 shadow-lg'}>
                                 <div
                                     ref={gridShellRef}
-                                    className={
-                                        'relative w-full overflow-hidden rounded-lg'
-                                    }
+                                    className={'relative w-full overflow-hidden rounded-lg'}
                                     style={{
-                                        height:
-                                            scaledGridHeight > 0
-                                                ? `${scaledGridHeight}px`
-                                                : undefined,
+                                        height: scaledGridHeight > 0 ? `${scaledGridHeight}px` : undefined,
                                     }}
                                 >
                                     <div
                                         ref={gridStageRef}
-                                        className={
-                                            'absolute left-1/2 top-0 origin-top'
-                                        }
+                                        className={'absolute left-1/2 top-0 origin-top'}
                                         style={{
                                             width: `${B50_GRID_BASE_WIDTH}px`,
                                             transform: `translateX(-50%) scale(${gridScale})`,
                                         }}
                                     >
-                                        <B50CardGrid
-                                            oldSong={oldSong}
-                                            newSong={newSong}
-                                        />
+                                        <B50CardGrid oldSong={oldSong} newSong={newSong} />
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div
-                                className={
-                                    'bg-base-200 rounded-2xl p-12 shadow-lg'
-                                }
-                            >
-                                <B50CardGrid
-                                    oldSong={oldSong}
-                                    newSong={newSong}
-                                />
+                            <div className={'bg-base-200 rounded-2xl p-12 shadow-lg'}>
+                                <B50CardGrid oldSong={oldSong} newSong={newSong} />
                             </div>
                         )}
                     </div>

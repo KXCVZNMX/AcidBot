@@ -15,15 +15,7 @@ import {
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2';
 
-ChartJS.register(
-    TimeScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Tooltip,
-    Legend,
-    Filler
-);
+ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
 
 type OldB50 = {
     createdAt: Date;
@@ -41,11 +33,7 @@ export default function RatingChart({ oldB50 }: { oldB50: OldB50[] }) {
 
     if (normalized.length < 2) {
         return (
-            <div
-                className={
-                    'flex h-full items-center justify-center rounded-lg bg-base-200/40 text-sm opacity-70'
-                }
-            >
+            <div className={'flex h-full items-center justify-center rounded-lg bg-base-200/40 text-sm opacity-70'}>
                 Need at least two history records to draw a trend line.
             </div>
         );

@@ -4,35 +4,21 @@ import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import client from '@/lib/db';
-import {
-    getSongInfoMap,
-    parseProfileBlock,
-    toB50Score,
-} from '@/app/api/_shared/util';
+import { getSongInfoMap, parseProfileBlock, toB50Score } from '@/app/api/_shared/util';
 import { z } from 'zod';
-import {
-    DatabaseError,
-    InvalidClalToken,
-    MalformedRequest,
-    UserNotFoundOrNoPrev,
-} from '@/app/api/v2/_shared/types';
+import { DatabaseError, InvalidClalToken, MalformedRequest, UserNotFoundOrNoPrev } from '@/app/api/v2/_shared/types';
 import { getClal } from '@/app/api/v2/_shared/util';
 
 const UserLevelSchema = z.object({
     id: z.string().min(1),
-    level: z
-        .string()
-        .regex(/^(?:[1-9]|1\d|2[0-3])$/, 'Level must be between 1 and 23'),
+    level: z.string().regex(/^(?:[1-9]|1\d|2[0-3])$/, 'Level must be between 1 and 23'),
     profile: z
         .enum(['true', 'false'])
         .transform((value) => value === 'true')
         .optional(),
 });
 
-export async function POST(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id: u_id } = await params;
     const url = req.nextUrl;
     const u_level = url.searchParams.get('level');

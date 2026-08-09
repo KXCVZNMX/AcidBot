@@ -196,15 +196,11 @@ export default function B50Card({
     `;
     return (
         <div
-            className={
-                'card bg-white w-66.25 h-27.5 rounded-xl pt-1 origin-top-left'
-            }
+            className={'card bg-white w-66.25 h-27.5 rounded-xl pt-1 origin-top-left'}
             style={{ transform: `scale(${sizePercent / 100})` }}
         >
             <div
-                className={
-                    'absolute mx-auto h-18.75 w-63.75 rounded-t-xl left-1.25'
-                }
+                className={'absolute mx-auto h-18.75 w-63.75 rounded-t-xl left-1.25'}
                 style={{ backgroundColor, color: textColor }}
             >
                 <Image
@@ -213,39 +209,22 @@ export default function B50Card({
                     width={75}
                     height={75}
                     loading={eager ? 'eager' : 'lazy'}
-                    className={
-                        'absolute left-3 top-3 border-4 border-b-0 border-white rounded-lg'
-                    }
+                    className={'absolute left-3 top-3 border-4 border-b-0 border-white rounded-lg'}
                 />
-                <h2
-                    className={'absolute left-24 top-0.5 text-md font-semibold'}
-                    style={{ color: textColor }}
-                >
+                <h2 className={'absolute left-24 top-0.5 text-md font-semibold'} style={{ color: textColor }}>
                     {truncateByWidth(info.name, 20)}
                 </h2>
-                <hr
-                    className={
-                        'absolute left-21.75 top-6 w-42 h-0.5 bg-white border-0'
-                    }
-                />
+                <hr className={'absolute left-21.75 top-6 w-42 h-0.5 bg-white border-0'} />
                 <h1
-                    className={
-                        'absolute left-22.75 top-5.5 text-[26px] font-medium '
-                    }
+                    className={'absolute left-22.75 top-5.5 text-[26px] font-medium '}
                     style={{ color: textColor, textShadow }}
                 >
                     {`${info.achievement.toFixed(4)}%`}
                 </h1>
-                <p
-                    className={'absolute left-23.75 top-14 text-xs'}
-                    style={{ color: textColor }}
-                >
+                <p className={'absolute left-23.75 top-14 text-xs'} style={{ color: textColor }}>
                     {`${info.levelConst.toFixed(1)} → ${info.rating}`}
                 </p>
-                <p
-                    className={'absolute left-42.75 top-14 text-xs'}
-                    style={{ color: textColor }}
-                >
+                <p className={'absolute left-42.75 top-14 text-xs'} style={{ color: textColor }}>
                     {info.dx}
                 </p>
                 <Image

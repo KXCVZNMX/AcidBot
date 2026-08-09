@@ -2,12 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MaimaiLevelMap } from '@/lib/consts';
-import {
-    Best50Songs,
-    MaimaiFetchData,
-    MSSB50,
-    ParsedProfile,
-} from '@/lib/types';
+import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
 import ErrorModal from '@/app/components/ErrorModal';
 import B50Card from '@/app/components/B50Card';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
@@ -82,12 +77,7 @@ export default function LvScore() {
     };
 
     const sortedSongs = useMemo(
-        () =>
-            [...songs].sort(
-                (a, b) =>
-                    parseFloat(b.score.replace('%', '')) -
-                    parseFloat(a.score.replace('%', ''))
-            ),
+        () => [...songs].sort((a, b) => parseFloat(b.score.replace('%', '')) - parseFloat(a.score.replace('%', ''))),
         [songs]
     );
 
@@ -106,9 +96,7 @@ export default function LvScore() {
 
     const generateImage = async () => {
         if (sortedSongs.length === 0) {
-            showError(
-                'No songs available. Generate LvScore before creating an image.'
-            );
+            showError('No songs available. Generate LvScore before creating an image.');
             return;
         }
 
@@ -197,22 +185,12 @@ export default function LvScore() {
                 />
             ) : null}
 
-            <div
-                className={
-                    'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'
-                }
-            >
+            <div className={'flex flex-col items-center gap-6 p-6 max-w-450 mx-auto'}>
                 <div className={'flex flex-col items-center gap-4'}>
-                    <form
-                        className={
-                            'text-center p-3 shadow-lg rounded-box bg-base-100'
-                        }
-                    >
+                    <form className={'text-center p-3 shadow-lg rounded-box bg-base-100'}>
                         <select
                             name={'level'}
-                            className={
-                                'select select-bordered w-48 text-center'
-                            }
+                            className={'select select-bordered w-48 text-center'}
                             value={level}
                             onChange={(e) => setLevel(e.target.value)}
                         >
@@ -232,11 +210,7 @@ export default function LvScore() {
                         >
                             {generating ? (
                                 <span className={'flex items-center gap-2'}>
-                                    <span
-                                        className={
-                                            'loading loading-spinner loading-sm'
-                                        }
-                                    ></span>
+                                    <span className={'loading loading-spinner loading-sm'}></span>
                                     Generating...
                                 </span>
                             ) : (
@@ -247,9 +221,7 @@ export default function LvScore() {
                         <button
                             onClick={generateImage}
                             className={'btn btn-accent min-w-35'}
-                            disabled={
-                                sortedSongs.length === 0 || generatingImage
-                            }
+                            disabled={sortedSongs.length === 0 || generatingImage}
                         >
                             Get Image
                         </button>
@@ -263,10 +235,7 @@ export default function LvScore() {
                         }
                     >
                         {sortedSongs.map((song, i) => (
-                            <div
-                                key={`${song.name}-${song.diff}-${i}`}
-                                className={'relative'}
-                            >
+                            <div key={`${song.name}-${song.diff}-${i}`} className={'relative'}>
                                 <div
                                     className={
                                         'absolute -top-2 -left-2 bg-primary text-primary-content rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm z-10 shadow-lg'
@@ -280,9 +249,7 @@ export default function LvScore() {
                     </div>
                 ) : (
                     <div className={'text-center py-12 text-gray-500'}>
-                        <p className={'text-lg'}>
-                            No songs available. Generate LvScore to see results.
-                        </p>
+                        <p className={'text-lg'}>No songs available. Generate LvScore to see results.</p>
                     </div>
                 )}
             </div>

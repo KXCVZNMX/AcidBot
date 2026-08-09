@@ -24,22 +24,11 @@ export default function Navbar() {
 
     return (
         <>
-            <LoginModal
-                showLoginModal={showLoginModal}
-                setShowLoginModal={setShowLoginModal}
-            />
-            <nav
-                className={'navbar backdrop-blur-sm shadow-lg fixed top-0 z-50'}
-            >
+            <LoginModal showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
+            <nav className={'navbar backdrop-blur-sm shadow-lg fixed top-0 z-50'}>
                 <div className={'p-3'}>
                     <Link href={'/'}>
-                        <Image
-                            src={Icon}
-                            alt={'logo'}
-                            width={40}
-                            height={40}
-                            priority
-                        />
+                        <Image src={Icon} alt={'logo'} width={40} height={40} priority />
                     </Link>
                 </div>
 
@@ -61,11 +50,7 @@ export default function Navbar() {
                                 LvScore
                             </Link>
 
-                            <Link
-                                className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/b50'}
-                                prefetch={false}
-                            >
+                            <Link className={'btn btn-ghost text-lg rounded-2xl'} href={'/pages/b50'} prefetch={false}>
                                 Best50
                             </Link>
 
@@ -78,10 +63,7 @@ export default function Navbar() {
                             </Link>
                         </div>
 
-                        <div
-                            className={'btn hidden md:flex rounded-2xl'}
-                            onClick={() => setShowLoginModal(true)}
-                        >
+                        <div className={'btn hidden md:flex rounded-2xl'} onClick={() => setShowLoginModal(true)}>
                             Login
                         </div>
                     </>
@@ -103,11 +85,7 @@ export default function Navbar() {
                                 LvScore
                             </Link>
 
-                            <Link
-                                className={'btn btn-ghost text-lg rounded-2xl'}
-                                href={'/pages/b50'}
-                                prefetch={false}
-                            >
+                            <Link className={'btn btn-ghost text-lg rounded-2xl'} href={'/pages/b50'} prefetch={false}>
                                 Best50
                             </Link>
 
@@ -122,22 +100,10 @@ export default function Navbar() {
 
                         <div className={'hidden md:flex items-center gap-2'}>
                             <div className={'dropdown dropdown-end'}>
-                                <label
-                                    tabIndex={0}
-                                    className={
-                                        'btn btn-ghost btn-circle avatar p-0'
-                                    }
-                                >
-                                    <div
-                                        className={
-                                            'w-8 h-8 rounded-full overflow-hidden'
-                                        }
-                                    >
+                                <label tabIndex={0} className={'btn btn-ghost btn-circle avatar p-0'}>
+                                    <div className={'w-8 h-8 rounded-full overflow-hidden'}>
                                         <Image
-                                            src={
-                                                session?.user?.image ??
-                                                DefaultAvatar
-                                            }
+                                            src={session?.user?.image ?? DefaultAvatar}
                                             alt={'profile profile picture'}
                                             width={30}
                                             height={30}
@@ -148,18 +114,12 @@ export default function Navbar() {
 
                                 <ul
                                     tabIndex={0}
-                                    className={
-                                        'dropdown-content menu p-2 shadow bg-base-300 rounded-box w-48'
-                                    }
+                                    className={'dropdown-content menu p-2 shadow bg-base-300 rounded-box w-48'}
                                     role={'menu'}
                                     aria-label={'User menu'}
                                 >
                                     <li>
-                                        <Link
-                                            href={'/pages/user-profile'}
-                                            role={'menuitem'}
-                                            prefetch={false}
-                                        >
+                                        <Link href={'/pages/user-profile'} role={'menuitem'} prefetch={false}>
                                             Profile
                                         </Link>
                                     </li>
@@ -177,9 +137,7 @@ export default function Navbar() {
                                 </ul>
                             </div>
 
-                            <h3 className={'text-md font-semibold pr-3'}>
-                                {session?.user?.name}
-                            </h3>
+                            <h3 className={'text-md font-semibold pr-3'}>{session?.user?.name}</h3>
                         </div>
                     </>
                 )}

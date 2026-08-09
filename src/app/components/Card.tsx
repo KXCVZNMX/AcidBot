@@ -25,16 +25,8 @@ export default function Card({
                 className={className}
             >
                 <div className={'card-body gap-3'}>
-                    <h2
-                        className={
-                            'card-title text-xl text-center justify-center'
-                        }
-                    >
-                        {title}
-                    </h2>
-                    <div className={'text-base-content/80 text-center'}>
-                        {children}
-                    </div>
+                    <h2 className={'card-title text-xl text-center justify-center'}>{title}</h2>
+                    <div className={'text-base-content/80 text-center'}>{children}</div>
                 </div>
             </Link>
         );
@@ -43,12 +35,8 @@ export default function Card({
     return (
         <div className={className}>
             <div className={'card-body gap-3'}>
-                <h2 className={'card-title text-xl text-center justify-center'}>
-                    {title}
-                </h2>
-                <div className={'text-base-content/80 text-center'}>
-                    {children}
-                </div>
+                <h2 className={'card-title text-xl text-center justify-center'}>{title}</h2>
+                <div className={'text-base-content/80 text-center'}>{children}</div>
             </div>
         </div>
     );

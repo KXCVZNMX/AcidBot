@@ -5,8 +5,7 @@ import { auth } from '@/auth';
 
 export const metadata: Metadata = {
     title: 'Best 50',
-    description:
-        'Fetch your maimai DX Best 50 scores and review the songs that make up your DX Rating.',
+    description: 'Fetch your maimai DX Best 50 scores and review the songs that make up your DX Rating.',
     keywords: [
         'maimai',
         'Acid Bot',
@@ -29,12 +28,9 @@ export default async function Page() {
         <main>
             {!session && (
                 <header className={'mx-auto max-w-3xl px-4 pt-10 text-center'}>
-                    <h1 className={'text-4xl font-bold'}>
-                        maimai DX Best 50 Generator
-                    </h1>
+                    <h1 className={'text-4xl font-bold'}>maimai DX Best 50 Generator</h1>
                     <p className={'mt-4 text-lg text-base-content/80'}>
-                        Fetch your Best old and new song scores, and generate a
-                        B50 image based off it
+                        Fetch your Best old and new song scores, and generate a B50 image based off it
                     </p>
                 </header>
             )}

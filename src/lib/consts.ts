@@ -180,21 +180,9 @@ export const EVAL_TAG: Readonly<Record<number, string>> = {
     22: '高物量',
 };
 
-export const EVAL_TAG_NAMES_CN: string[] = [
-    '键盘谱',
-    '星星谱',
-    '体力谱',
-    '底力谱',
-    '高物量',
-];
+export const EVAL_TAG_NAMES_CN: string[] = ['键盘谱', '星星谱', '体力谱', '底力谱', '高物量'];
 
-export const EVAL_TAG_NAMES: string[] = [
-    'Tap-heavy',
-    'Slide-heavy',
-    'Stamina',
-    'Foundation',
-    'Dense',
-];
+export const EVAL_TAG_NAMES: string[] = ['Tap-heavy', 'Slide-heavy', 'Stamina', 'Foundation', 'Dense'];
 
 export const EVAL_TAG_NUMBERS: Readonly<number[]> = [15, 14, 21, 16, 22];
 

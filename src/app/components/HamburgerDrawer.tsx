@@ -10,10 +10,7 @@ import { useRouter } from 'next/navigation';
 
 function HamburgerIcon({ open }: { open: boolean }) {
     return (
-        <button
-            className={'btn btn-square bg-base-200 shadow-2xl'}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-        >
+        <button className={'btn btn-square bg-base-200 shadow-2xl'} aria-label={open ? 'Close menu' : 'Open menu'}>
             <svg className={'w-6 h-6'} viewBox={'0 0 24 24'} fill={'none'}>
                 {open ? (
                     <path
@@ -50,10 +47,7 @@ export default function HamburgerDrawer() {
 
     return (
         <>
-            <LoginModal
-                showLoginModal={showLoginModal}
-                setShowLoginModal={setShowLoginModal}
-            />
+            <LoginModal showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
 
             <div className={''}>
                 <div
@@ -62,8 +56,7 @@ export default function HamburgerDrawer() {
                     aria-label={open ? 'Close menu' : 'Open menu'}
                     onClick={() => setOpen((v) => !v)}
                     onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ')
-                            setOpen((v) => !v);
+                        if (e.key === 'Enter' || e.key === ' ') setOpen((v) => !v);
                     }}
                     tabIndex={0}
                 >
@@ -92,22 +85,11 @@ export default function HamburgerDrawer() {
             >
                 <div className={''}>
                     <div className={'p-4'}>
-                        <div
-                            className={'flex items-center justify-between mb-4'}
-                        >
+                        <div className={'flex items-center justify-between mb-4'}>
                             <h3 className={'text-lg font-semibold'}>Menu</h3>
 
-                            <button
-                                className={''}
-                                onClick={() => setOpen(false)}
-                                aria-label={'Close menu'}
-                            >
-                                <svg
-                                    className={'w-6 h-6'}
-                                    viewBox={'0 0 24 24'}
-                                    fill={'none'}
-                                    aria-hidden
-                                >
+                            <button className={''} onClick={() => setOpen(false)} aria-label={'Close menu'}>
+                                <svg className={'w-6 h-6'} viewBox={'0 0 24 24'} fill={'none'} aria-hidden>
                                     <path
                                         d={'M6 6L18 18M6 18L18 6'}
                                         stroke={'currentColor'}
@@ -125,9 +107,7 @@ export default function HamburgerDrawer() {
                                     <Link
                                         href={'/'}
                                         prefetch={false}
-                                        className={
-                                            'block px-3 py-2 rounded hover:bg-base-200'
-                                        }
+                                        className={'block px-3 py-2 rounded hover:bg-base-200'}
                                         onClick={() => setOpen(false)}
                                     >
                                         Home
@@ -137,9 +117,7 @@ export default function HamburgerDrawer() {
                                     <Link
                                         href={'/pages/guides'}
                                         prefetch={false}
-                                        className={
-                                            'block px-3 py-2 rounded hover:bg-base-200'
-                                        }
+                                        className={'block px-3 py-2 rounded hover:bg-base-200'}
                                         onClick={() => setOpen(false)}
                                     >
                                         Guide
@@ -149,9 +127,7 @@ export default function HamburgerDrawer() {
                                     <Link
                                         href={'/pages/lv-score'}
                                         prefetch={false}
-                                        className={
-                                            'block px-3 py-2 rounded hover:bg-base-200'
-                                        }
+                                        className={'block px-3 py-2 rounded hover:bg-base-200'}
                                         onClick={() => setOpen(false)}
                                     >
                                         LvScore
@@ -161,9 +137,7 @@ export default function HamburgerDrawer() {
                                     <Link
                                         href={'/pages/b50'}
                                         prefetch={false}
-                                        className={
-                                            'block px-3 py-2 rounded hover:bg-base-200'
-                                        }
+                                        className={'block px-3 py-2 rounded hover:bg-base-200'}
                                         onClick={() => setOpen(false)}
                                     >
                                         Best50
@@ -173,9 +147,7 @@ export default function HamburgerDrawer() {
                                     <Link
                                         href={'/pages/skill-radar'}
                                         prefetch={false}
-                                        className={
-                                            'block px-3 py-2 rounded hover:bg-base-200'
-                                        }
+                                        className={'block px-3 py-2 rounded hover:bg-base-200'}
                                         onClick={() => setOpen(false)}
                                     >
                                         Skill Radar
@@ -183,26 +155,17 @@ export default function HamburgerDrawer() {
                                 </li>
                             </ul>
 
-                            <div
-                                className={'border-t border-base-200 mt-4 pt-4'}
-                            >
+                            <div className={'border-t border-base-200 mt-4 pt-4'}>
                                 {session ? (
                                     <div className={'flex flex-col gap-3 px-3'}>
-                                        <div
-                                            className={
-                                                'flex items-center gap-3'
-                                            }
-                                        >
+                                        <div className={'flex items-center gap-3'}>
                                             <Link
                                                 href={'/pages/user-profile'}
                                                 prefetch={false}
                                                 onClick={() => setOpen(false)}
                                             >
                                                 <Image
-                                                    src={
-                                                        session.user?.image ??
-                                                        DefaultAvatar
-                                                    }
+                                                    src={session.user?.image ?? DefaultAvatar}
                                                     alt={'avatar'}
                                                     width={40}
                                                     height={40}
@@ -210,13 +173,8 @@ export default function HamburgerDrawer() {
                                                 />
                                             </Link>
                                             <div>
-                                                <div
-                                                    className={
-                                                        'text-sm font-medium'
-                                                    }
-                                                >
-                                                    {session.user?.name ||
-                                                        'User'}
+                                                <div className={'text-sm font-medium'}>
+                                                    {session.user?.name || 'User'}
                                                 </div>
                                             </div>
                                         </div>
@@ -226,12 +184,8 @@ export default function HamburgerDrawer() {
                                                 <Link
                                                     href={'/pages/user-profile'}
                                                     prefetch={false}
-                                                    className={
-                                                        'block px-3 py-2 rounded hover:bg-base-200'
-                                                    }
-                                                    onClick={() =>
-                                                        setOpen(false)
-                                                    }
+                                                    className={'block px-3 py-2 rounded hover:bg-base-200'}
+                                                    onClick={() => setOpen(false)}
                                                 >
                                                     Profile
                                                 </Link>
@@ -255,12 +209,8 @@ export default function HamburgerDrawer() {
                                 ) : (
                                     <div className={'px-3'}>
                                         <div
-                                            className={
-                                                'inline-block px-3 py-2 btn btn-primary w-full text-center'
-                                            }
-                                            onClick={() =>
-                                                setShowLoginModal(true)
-                                            }
+                                            className={'inline-block px-3 py-2 btn btn-primary w-full text-center'}
+                                            onClick={() => setShowLoginModal(true)}
                                         >
                                             Login
                                         </div>

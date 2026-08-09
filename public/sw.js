@@ -39,11 +39,7 @@ const isCacheableRequest = (request, response) => {
         return false;
     }
 
-    return (
-        response.status === 200 &&
-        response.type === 'basic' &&
-        ['image', 'manifest'].includes(request.destination)
-    );
+    return response.status === 200 && response.type === 'basic' && ['image', 'manifest'].includes(request.destination);
 };
 
 self.addEventListener('install', (event) => {
@@ -63,13 +59,7 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches
             .keys()
-            .then((keys) =>
-                Promise.all(
-                    keys
-                        .filter((key) => key !== CACHE_VERSION)
-                        .map((key) => caches.delete(key))
-                )
-            )
+            .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_VERSION).map((key) => caches.delete(key))))
             .then(() => self.clients.claim())
     );
 });
@@ -87,10 +77,7 @@ self.addEventListener('fetch', (event) => {
 
             return fetch(event.request)
                 .then((networkResponse) => {
-                    if (
-                        !networkResponse ||
-                        !isCacheableRequest(event.request, networkResponse)
-                    ) {
+                    if (!networkResponse || !isCacheableRequest(event.request, networkResponse)) {
                         return networkResponse;
                     }
 
@@ -98,14 +85,9 @@ self.addEventListener('fetch', (event) => {
                     event.waitUntil(
                         caches
                             .open(CACHE_VERSION)
-                            .then((cache) =>
-                                cache.put(event.request, responseToCache)
-                            )
+                            .then((cache) => cache.put(event.request, responseToCache))
                             .catch((error) => {
-                                console.error(
-                                    'Service worker cache put failed:',
-                                    error
-                                );
+                                console.error('Service worker cache put failed:', error);
                             })
                     );
 
@@ -113,14 +95,11 @@ self.addEventListener('fetch', (event) => {
                 })
                 .catch((error) => {
                     console.error('Service worker fetch failed:', error);
-                    return new Response(
-                        'You appear to be offline and this content is not cached yet.',
-                        {
-                            status: 503,
-                            statusText: 'Service Unavailable',
-                            headers: { 'Content-Type': 'text/plain' },
-                        }
-                    );
+                    return new Response('You appear to be offline and this content is not cached yet.', {
+                        status: 503,
+                        statusText: 'Service Unavailable',
+                        headers: { 'Content-Type': 'text/plain' },
+                    });
                 });
         })
     );

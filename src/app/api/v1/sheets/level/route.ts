@@ -11,16 +11,10 @@ export async function POST(req: NextRequest) {
     try {
         const user = await getAuthenticatedClal();
         if (!user) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 }
-            );
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
         if (!user.clal) {
-            return NextResponse.json(
-                { error: 'Missing clal. Set a new clal token from the guide.' },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: 'Missing clal. Set a new clal token from the guide.' }, { status: 400 });
         }
 
         const { redirect } = await req.json();
@@ -39,9 +33,7 @@ export async function POST(req: NextRequest) {
         }
 
         if (html.includes('ERROR')) {
-            throw new Error(
-                'This page either returned a 100001 or 200002 or 200004 error'
-            );
+            throw new Error('This page either returned a 100001 or 200002 or 200004 error');
         }
 
         const $ = cheerio.load(html[0]);
@@ -82,9 +74,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(finalRes);
     } catch (error) {
         console.error(error);
-        return NextResponse.json(
-            { error: (error as Error).message },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
 }

@@ -11,12 +11,7 @@ import fetchPage from '@/lib/fetchPage';
 import { extractScore } from '@/lib/util';
 import * as cheerio from 'cheerio';
 import client from '@/lib/db';
-import {
-    getSongInfoMap,
-    parseProfileBlock,
-    splitB50,
-    toB50Score,
-} from '@/app/api/_shared/util';
+import { getSongInfoMap, parseProfileBlock, splitB50, toB50Score } from '@/app/api/_shared/util';
 import { ObjectId } from 'mongodb';
 import { z } from 'zod';
 import { getClal } from '@/app/api/v2/_shared/util';
@@ -33,10 +28,7 @@ const UserB50Schema = z.object({
         .optional(),
 });
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id: u_id } = await params;
     const url = req.nextUrl;
     const u_includeProfile = url.searchParams.get('profile');
@@ -80,9 +72,7 @@ export async function GET(
     const db = client.db();
 
     if (old) {
-        const doc = await db
-            .collection('userB50')
-            .findOne({ _id: new ObjectId(id) });
+        const doc = await db.collection('userB50').findOne({ _id: new ObjectId(id) });
         if (!doc) {
             return NextResponse.json(DatabaseError, { status: 500 });
         }
@@ -106,20 +96,16 @@ export async function GET(
                 let htmls;
 
                 try {
-                    htmls = await fetchPage(
-                        clal,
-                        redirects,
-                        (current, total, url) => {
-                            const progressPacket =
-                                JSON.stringify({
-                                    type: 'progress',
-                                    current,
-                                    total,
-                                    url,
-                                }) + '\n';
-                            controller.enqueue(encoder.encode(progressPacket));
-                        }
-                    );
+                    htmls = await fetchPage(clal, redirects, (current, total, url) => {
+                        const progressPacket =
+                            JSON.stringify({
+                                type: 'progress',
+                                current,
+                                total,
+                                url,
+                            }) + '\n';
+                        controller.enqueue(encoder.encode(progressPacket));
+                    });
                 } catch (fetchError) {
                     console.error(fetchError);
                     controller.enqueue(
@@ -172,9 +158,7 @@ export async function GET(
                     let qRes = docMap.get(r.name);
 
                     if (!qRes) {
-                        console.error(
-                            'Lookup failed, fetching information from JP db'
-                        );
+                        console.error('Lookup failed, fetching information from JP db');
 
                         const fetched = (await db
                             .collection('maimaiJpSongInfo')
@@ -183,16 +167,12 @@ export async function GET(
                         qRes = fetched ?? undefined;
 
                         if (!qRes) {
-                            throw new Error(
-                                `Couldn't find song ${r.name} (${r.diff})`
-                            );
+                            throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
                         }
                     }
 
                     if (!qRes.image_url) {
-                        console.warn(
-                            `Failed to find jacket information for ${r.name}`
-                        );
+                        console.warn(`Failed to find jacket information for ${r.name}`);
                         continue;
                     }
 

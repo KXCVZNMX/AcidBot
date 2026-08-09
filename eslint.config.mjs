@@ -7,20 +7,11 @@ const eslintConfig = [
     ...nextTypescript,
     prettier,
     {
-        ignores: [
-            'node_modules/**',
-            '.next/**',
-            'out/**',
-            'build/**',
-            'next-env.d.ts',
-        ],
+        ignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
     },
     {
         rules: {
-            'react/jsx-curly-brace-presence': [
-                'error',
-                { props: 'always', children: 'ignore' },
-            ],
+            'react/jsx-curly-brace-presence': ['error', { props: 'always', children: 'ignore' }],
             quotes: ['error', 'single'],
         },
     },

@@ -3,8 +3,7 @@ import ClalGuide from '@/app/pages/guides/clal-guide/ClalGuide';
 
 export const metadata: Metadata = {
     title: 'Clal Guide',
-    description:
-        'Learn how to extract and set your clal token so AcidBot can fetch your maimai DX scores.',
+    description: 'Learn how to extract and set your clal token so AcidBot can fetch your maimai DX scores.',
     keywords: ['maimai', 'Acid Bot', 'AcidBot', 'guide', 'clal'],
 };
 

@@ -3,8 +3,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'Guides',
-    description:
-        'Find step-by-step instructions for logging in, setting your clal token, and using AcidBot features.',
+    description: 'Find step-by-step instructions for logging in, setting your clal token, and using AcidBot features.',
     keywords: ['maimai', 'Acid Bot', 'AcidBot', 'guide'],
 };
 
@@ -19,8 +18,7 @@ export default function Guides() {
                 </Card>
 
                 <Card title={'Clal Guide'} href={'/pages/guides/clal-guide'}>
-                    See how to extract your clal token, used to fetch for your
-                    scores.
+                    See how to extract your clal token, used to fetch for your scores.
                 </Card>
             </div>
         </div>

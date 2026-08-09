@@ -1,10 +1,6 @@
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
-import {
-    DatabaseError,
-    MalformedRequest,
-    UserNotFoundOrNoPrev,
-} from '@/app/api/v2/_shared/types';
+import { DatabaseError, MalformedRequest, UserNotFoundOrNoPrev } from '@/app/api/v2/_shared/types';
 import client from '@/lib/db';
 import { ObjectId } from 'mongodb';
 import { SongTags } from '@/app/api/_shared/types';
@@ -13,10 +9,7 @@ export const TagsSchema = z.object({
     id: z.string().min(1),
 });
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id: u_id } = await params;
     const parsed = TagsSchema.safeParse({ id: u_id });
     if (!parsed.success) {
@@ -27,9 +20,7 @@ export async function GET(
 
     try {
         const db = client.db();
-        const doc = await db
-            .collection('userB50')
-            .findOne({ _id: new ObjectId(id) });
+        const doc = await db.collection('userB50').findOne({ _id: new ObjectId(id) });
         if (!doc) {
             return NextResponse.json(UserNotFoundOrNoPrev, { status: 404 });
         }
@@ -43,9 +34,7 @@ export async function GET(
             });
 
             if (!doc) {
-                console.warn(
-                    `Failed to fetch song tags for ${song.name} (${song.diff}) -- skipped`
-                );
+                console.warn(`Failed to fetch song tags for ${song.name} (${song.diff}) -- skipped`);
                 continue;
             }
 

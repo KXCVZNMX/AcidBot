@@ -9,10 +9,7 @@ import { getSongInfoMap, splitB50, toB50Score } from '@/app/api/_shared/util';
 import { SongInfo } from '@/app/api/_shared/types';
 import { Best50Songs } from '@/app/api/_shared/types';
 import { Best50SongsWithDateRating } from '@/app/api/v1/_shared/types';
-import {
-    getAuthenticatedClal,
-    getAuthenticatedUserId,
-} from '@/app/api/_shared/auth';
+import { getAuthenticatedClal, getAuthenticatedUserId } from '@/app/api/_shared/auth';
 
 type DBData = {
     userId: string;
@@ -27,10 +24,7 @@ export async function GET() {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     if (!user.clal) {
-        return NextResponse.json(
-            { error: 'Missing clal. Set a new clal token from the guide.' },
-            { status: 400 }
-        );
+        return NextResponse.json({ error: 'Missing clal. Set a new clal token from the guide.' }, { status: 400 });
     }
     const clal = user.clal;
 
@@ -49,20 +43,16 @@ export async function GET() {
                 let htmls;
 
                 try {
-                    htmls = await fetchPage(
-                        clal,
-                        redirects,
-                        (current, total, url) => {
-                            const progressPacket =
-                                JSON.stringify({
-                                    type: 'progress',
-                                    current,
-                                    total,
-                                    url,
-                                }) + '\n';
-                            controller.enqueue(encoder.encode(progressPacket));
-                        }
-                    );
+                    htmls = await fetchPage(clal, redirects, (current, total, url) => {
+                        const progressPacket =
+                            JSON.stringify({
+                                type: 'progress',
+                                current,
+                                total,
+                                url,
+                            }) + '\n';
+                        controller.enqueue(encoder.encode(progressPacket));
+                    });
                 } catch (fetchError) {
                     console.error(fetchError);
                     const errorMsg = `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})`;
@@ -114,9 +104,7 @@ export async function GET() {
                     let qRes = docMap.get(r.name);
 
                     if (!qRes) {
-                        console.error(
-                            'Lookup failed, fetching information from JP db'
-                        );
+                        console.error('Lookup failed, fetching information from JP db');
 
                         const fetched = (await db
                             .collection('maimaiJpSongInfo')
@@ -125,16 +113,12 @@ export async function GET() {
                         qRes = fetched ?? undefined;
 
                         if (!qRes) {
-                            throw new Error(
-                                `Couldn't find song ${r.name} (${r.diff})`
-                            );
+                            throw new Error(`Couldn't find song ${r.name} (${r.diff})`);
                         }
                     }
 
                     if (!qRes.image_url) {
-                        console.warn(
-                            `Failed to find jacket information for ${r.name}`
-                        );
+                        console.warn(`Failed to find jacket information for ${r.name}`);
                         continue;
                     }
 
@@ -176,12 +160,7 @@ export async function GET() {
             } catch (error) {
                 console.error(error);
                 const catchMsg = (error as Error).message;
-                controller.enqueue(
-                    encoder.encode(
-                        JSON.stringify({ type: 'error', message: catchMsg }) +
-                            '\n'
-                    )
-                );
+                controller.enqueue(encoder.encode(JSON.stringify({ type: 'error', message: catchMsg }) + '\n'));
             } finally {
                 controller.close();
             }
@@ -197,17 +176,13 @@ export async function GET() {
     });
 }
 
-const calculateRating = (b50: Best50Songs) =>
-    [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0);
+const calculateRating = (b50: Best50Songs) => [...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0);
 
 export async function POST(req: Request) {
     try {
         const id = await getAuthenticatedUserId();
         if (!id) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 }
-            );
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
         const b50: Best50Songs = await req.json();
 
@@ -220,11 +195,7 @@ export async function POST(req: Request) {
         const db = client.db();
         await db
             .collection<DBData>('userOldB50')
-            .updateOne(
-                { _id: new ObjectId(id) },
-                { $push: { b50s: newEntry } },
-                { upsert: true }
-            );
+            .updateOne({ _id: new ObjectId(id) }, { $push: { b50s: newEntry } }, { upsert: true });
 
         return NextResponse.json({});
     } catch (error) {

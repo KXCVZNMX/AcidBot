@@ -38,12 +38,8 @@ function getFonts() {
 
     // Read font files from the public directory
     const publicDir = join(process.cwd(), 'public', 'assets');
-    const mPlusMedBuffer = readFileSync(
-        join(publicDir, 'MPLUSRounded1c-Medium.ttf')
-    );
-    const mPlusRegBuffer = readFileSync(
-        join(publicDir, 'MPLUSRounded1c-Regular.ttf')
-    );
+    const mPlusMedBuffer = readFileSync(join(publicDir, 'MPLUSRounded1c-Medium.ttf'));
+    const mPlusRegBuffer = readFileSync(join(publicDir, 'MPLUSRounded1c-Regular.ttf'));
 
     cachedFonts = {
         mPlusMed: mPlusMedBuffer.buffer.slice(
@@ -357,11 +353,7 @@ function B50Card({ info }: { info: MSSB50 }) {
                     {info.dx}
                 </p>
                 <img
-                    src={
-                        info.isDx === 'dx'
-                            ? `${SITE_LINK}/b50/music_dx.png`
-                            : `${SITE_LINK}/b50/music_standard.png`
-                    }
+                    src={info.isDx === 'dx' ? `${SITE_LINK}/b50/music_dx.png` : `${SITE_LINK}/b50/music_standard.png`}
                     alt={'music_dx_std'}
                     width={50}
                     style={{
@@ -406,10 +398,7 @@ function B50Card({ info }: { info: MSSB50 }) {
     );
 }
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const funcStartTime = Date.now();
     console.log(`[b50Image] START: ${new Date().toISOString()}`);
 
@@ -509,13 +498,9 @@ export async function GET(
     const { mPlusMed, mPlusReg } = getFonts();
 
     const upstreamFetchStart = Date.now();
-    console.log(
-        `[b50Image] UPSTREAM FETCH START: ${upstreamFetchStart - funcStartTime}ms into execution`
-    );
+    console.log(`[b50Image] UPSTREAM FETCH START: ${upstreamFetchStart - funcStartTime}ms into execution`);
 
-    const profileRes = await fetch(
-        `${SITE_LINK}/api/v2/users/${id}/b50?&profile=true${old ? '&old=true' : ''}`
-    );
+    const profileRes = await fetch(`${SITE_LINK}/api/v2/users/${id}/b50?&profile=true${old ? '&old=true' : ''}`);
 
     const upstreamFetchEnd = Date.now();
     console.log(
@@ -546,9 +531,7 @@ export async function GET(
     const rating = [...b35, ...b15].reduce((sum, s) => sum + s.rating, 0);
 
     const imageRenderStart = Date.now();
-    console.log(
-        `[b50Image] IMAGE RENDER START: ${imageRenderStart - funcStartTime}ms into execution`
-    );
+    console.log(`[b50Image] IMAGE RENDER START: ${imageRenderStart - funcStartTime}ms into execution`);
 
     const imageResponse = new ImageResponse(
         (

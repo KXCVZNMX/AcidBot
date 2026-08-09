@@ -7,9 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import PWARegistration from '@/app/components/PWARegistration';
 
-const siteUrl = new URL(
-    (process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(/\/$/, '')
-);
+const siteUrl = new URL((process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(/\/$/, ''));
 
 export const metadata: Metadata = {
     metadataBase: siteUrl,
@@ -84,10 +82,7 @@ export default function RootLayout({
         <html lang={'en'} data-theme={'forest'}>
             <body>
                 <SpeedInsights />
-                <SessionProvider
-                    refetchOnWindowFocus={false}
-                    refetchInterval={0}
-                >
+                <SessionProvider refetchOnWindowFocus={false} refetchInterval={0}>
                     <PWARegistration />
                     <Navbar />
                     <Analytics />

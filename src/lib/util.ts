@@ -22,10 +22,7 @@ import RatingRainbowEx2 from '../../public/rating_plates/rating_base_rainbow_exs
 import RatingRainbowEx3 from '../../public/rating_plates/rating_base_rainbow_exsss.png';
 import RatingRainbowEx4 from '../../public/rating_plates/rating_base_rainbow_exssss.png';
 
-export const matchRule = (
-    src: string,
-    rules: [string, string][]
-): string | null => {
+export const matchRule = (src: string, rules: [string, string][]): string | null => {
     for (const [needle, value] of rules) {
         if (src.includes(needle)) return value;
     }
@@ -65,10 +62,7 @@ export const determineRank = (achievement: string) => {
     }
 };
 
-export const extractScore = (
-    $: cheerio.Root,
-    source: 'getB50' | 'getLevel' = 'getB50'
-) => {
+export const extractScore = ($: cheerio.Root, source: 'getB50' | 'getLevel' = 'getB50') => {
     const results: MaimaiSongScore[] = [];
 
     $('div[class*=\'music_\'][class*=\'_score_back\']').each((_, el) => {
@@ -81,15 +75,11 @@ export const extractScore = (
         let dxVal =
             source === 'getLevel'
                 ? root.find('img.music_kind_icon')
-                : wrapper.find(
-                      'img[src*=\'music_dx\'], img[src*=\'music_standard\']'
-                  );
+                : wrapper.find('img[src*=\'music_dx\'], img[src*=\'music_standard\']');
 
         // Fallback for mixed/changed layouts.
         if (dxVal.length === 0) {
-            dxVal = root.find(
-                'img.music_kind_icon, img[src*=\'music_dx\'], img[src*=\'music_standard\']'
-            );
+            dxVal = root.find('img.music_kind_icon, img[src*=\'music_dx\'], img[src*=\'music_standard\']');
         }
 
         const lvVal = root.find('img[src*=\'diff_\']');
@@ -185,11 +175,7 @@ export const mapTagToEvalIndex = (tagNumber: number) => {
     }
 };
 
-export function truncateByWidth(
-    input: string,
-    maxWidth: number,
-    ellipsis = '...'
-): string {
+export function truncateByWidth(input: string, maxWidth: number, ellipsis = '...'): string {
     let width = 0;
     let result = '';
 

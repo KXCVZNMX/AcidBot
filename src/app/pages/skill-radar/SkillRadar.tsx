@@ -2,11 +2,7 @@
 
 import { SongTags } from '@/lib/types';
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import {
-    EVAL_TAG_NAMES,
-    PATTERN_TAG_NAMES,
-    PATTERN_TAG_NUMBERS,
-} from '@/lib/consts';
+import { EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS } from '@/lib/consts';
 import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
 import { toBlob } from 'html-to-image';
@@ -95,9 +91,7 @@ export default function SkillRadar() {
         let cancelled = false;
 
         const runCapture = async () => {
-            await new Promise<void>((resolve) =>
-                requestAnimationFrame(() => resolve())
-            );
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
             await document.fonts?.ready;
             if (!cancelled) {
                 await generateImageFromRef();
@@ -113,10 +107,7 @@ export default function SkillRadar() {
     }, [showRadars, generateImageFromRef]);
 
     const maxEval = useMemo(() => maxValue(evalRadarValues), [evalRadarValues]);
-    const maxPattern = useMemo(
-        () => maxValue(patternRadarValues),
-        [patternRadarValues]
-    );
+    const maxPattern = useMemo(() => maxValue(patternRadarValues), [patternRadarValues]);
 
     const buttonAction = async () => {
         setError('');
@@ -139,8 +130,7 @@ export default function SkillRadar() {
         const eRadarVal: number[] = Array(5).fill(0);
         const pRadarVal: number[] = Array(14).fill(0);
 
-        const meanLevelConst =
-            data.reduce((sum, s) => sum + s.levelConst, 0) / data.length;
+        const meanLevelConst = data.reduce((sum, s) => sum + s.levelConst, 0) / data.length;
 
         for (const song of data) {
             const songWeight = calculateWeight(song.levelConst, meanLevelConst);
@@ -163,25 +153,15 @@ export default function SkillRadar() {
     return (
         <>
             <div className={'flex justify-center p-5'}>
-                <button
-                    className={'btn btn-primary'}
-                    onClick={async () => await buttonAction()}
-                    disabled={generating}
-                >
+                <button className={'btn btn-primary'} onClick={async () => await buttonAction()} disabled={generating}>
                     {generating ? 'Generating...' : 'Generate Radar'}
                 </button>
             </div>
 
             <div className={'flex items-center flex-col'}>
-                {generating && (
-                    <div className={'mb-4 text-sm opacity-80'}>
-                        Rendering radar image, please wait...
-                    </div>
-                )}
+                {generating && <div className={'mb-4 text-sm opacity-80'}>Rendering radar image, please wait...</div>}
 
-                {error && (
-                    <div className={'mb-4 text-sm text-error'}>{error}</div>
-                )}
+                {error && <div className={'mb-4 text-sm text-error'}>{error}</div>}
 
                 {showRadars && (
                     <>
@@ -215,19 +195,14 @@ export default function SkillRadar() {
                             'w-full max-w-180 px-4 py-10 border border-dashed rounded-lg text-center text-sm opacity-70'
                         }
                     >
-                        No radar image yet. Click &#34;Generate Radar&#34; to
-                        create one.
+                        No radar image yet. Click &#34;Generate Radar&#34; to create one.
                     </div>
                 )}
 
                 <div className={'flex gap-2 items-center mt-4 mb-6'}>
                     {imageUrl && (
                         <>
-                            <a
-                                className={'btn btn-primary'}
-                                href={imageUrl}
-                                download={'radar.png'}
-                            >
+                            <a className={'btn btn-primary'} href={imageUrl} download={'radar.png'}>
                                 Download PNG
                             </a>
                         </>

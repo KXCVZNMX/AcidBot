@@ -24,10 +24,7 @@ export async function GET(req: NextRequest) {
     const rawUrl = req.nextUrl.searchParams.get('url');
 
     if (!rawUrl) {
-        return NextResponse.json(
-            { error: 'Missing url parameter' },
-            { status: 400 }
-        );
+        return NextResponse.json({ error: 'Missing url parameter' }, { status: 400 });
     }
 
     let parsed: URL;
@@ -38,17 +35,11 @@ export async function GET(req: NextRequest) {
     }
 
     if (!ALLOWED_PROTOCOLS.has(parsed.protocol)) {
-        return NextResponse.json(
-            { error: 'URL protocol not allowed' },
-            { status: 403 }
-        );
+        return NextResponse.json({ error: 'URL protocol not allowed' }, { status: 403 });
     }
 
     if (!ALLOWED_HOSTNAMES.has(parsed.hostname)) {
-        return NextResponse.json(
-            { error: 'URL hostname not allowed' },
-            { status: 403 }
-        );
+        return NextResponse.json({ error: 'URL hostname not allowed' }, { status: 403 });
     }
 
     // Use the validated parsed URL string (not rawUrl) to prevent URL-smuggling attacks.
@@ -59,17 +50,11 @@ export async function GET(req: NextRequest) {
         upstream = await fetch(safeUrl);
     } catch (err) {
         console.error('[imageProxy] Failed to fetch upstream image:', err);
-        return NextResponse.json(
-            { error: 'Failed to connect to upstream image server' },
-            { status: 502 }
-        );
+        return NextResponse.json({ error: 'Failed to connect to upstream image server' }, { status: 502 });
     }
 
     if (!upstream.ok) {
-        return NextResponse.json(
-            { error: 'Failed to fetch upstream image' },
-            { status: upstream.status }
-        );
+        return NextResponse.json({ error: 'Failed to fetch upstream image' }, { status: upstream.status });
     }
 
     const contentType = upstream.headers.get('content-type') ?? 'image/png';

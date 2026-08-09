@@ -4,8 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
     return {
         name: 'AcidBot',
         short_name: 'AcidBot',
-        description:
-            'A tool to fetch your results for maimai でらっくす International Ver.',
+        description: 'A tool to fetch your results for maimai でらっくす International Ver.',
         id: '/',
         start_url: '/',
         scope: '/',

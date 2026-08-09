@@ -17,10 +17,7 @@ const IMAGE_LOAD_TIMEOUT_MS = 15_000;
  *    two calls because the internal resource-fetch cache is cold.
  *    Subsequent calls hit the warm cache and produce a complete image.
  */
-export async function captureElementToBlob(
-    element: HTMLElement,
-    options: ToBlobOptions = {}
-): Promise<Blob> {
+export async function captureElementToBlob(element: HTMLElement, options: ToBlobOptions = {}): Promise<Blob> {
     // Wait for every <img> inside the capture target to finish loading.
     const imgs = Array.from(element.querySelectorAll('img'));
     await Promise.all(
@@ -28,10 +25,7 @@ export async function captureElementToBlob(
             // Already settled: either loaded successfully or failed.
             if (img.complete) {
                 if (img.naturalWidth === 0) {
-                    console.warn(
-                        '[captureElementToBlob] Image already in error state:',
-                        img.src
-                    );
+                    console.warn('[captureElementToBlob] Image already in error state:', img.src);
                 }
                 return Promise.resolve();
             }
@@ -39,10 +33,7 @@ export async function captureElementToBlob(
                 // Safety-net: resolve after 15 s so a single stuck image
                 // cannot block the capture indefinitely.
                 const timeout = setTimeout(() => {
-                    console.warn(
-                        '[captureElementToBlob] Timed out waiting for image:',
-                        img.src
-                    );
+                    console.warn('[captureElementToBlob] Timed out waiting for image:', img.src);
                     resolve();
                 }, IMAGE_LOAD_TIMEOUT_MS);
                 img.addEventListener(

@@ -14,9 +14,7 @@ export async function GET() {
     const id = session.user?.id ?? '';
 
     const db = client.db();
-    const doc = await db
-        .collection('userB50')
-        .findOne({ _id: new ObjectId(id) });
+    const doc = await db.collection('userB50').findOne({ _id: new ObjectId(id) });
     if (!doc) {
         return NextResponse.json({ b15: [], b35: [] });
     }

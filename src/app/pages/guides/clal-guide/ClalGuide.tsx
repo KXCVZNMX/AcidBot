@@ -33,42 +33,26 @@ export default function ClalGuide() {
         <div className={'mx-auto max-w-3xl space-y-6 p-6'}>
             <div className={'grid grid-cols-[auto_1fr_auto] items-center'}>
                 <Link href={'/pages/guides'} aria-label={'go back'}>
-                    <Image
-                        src={BackButton}
-                        alt={'back button'}
-                        width={24}
-                        height={24}
-                        className={'h-6 w-6'}
-                    />
+                    <Image src={BackButton} alt={'back button'} width={24} height={24} className={'h-6 w-6'} />
                 </Link>
-                <h1 className={'text-3xl font-bold text-center'}>
-                    CLAL Extraction Guide
-                </h1>
+                <h1 className={'text-3xl font-bold text-center'}>CLAL Extraction Guide</h1>
                 <div aria-hidden />
             </div>
 
             <Step title={'Step 1 — Login to SEGA'}>
                 <p>
-                    Log in using this{' '}
-                    <CLink href={segaLoginLink}>
-                        {'SEGA authentication page'}
-                    </CLink>
-                    .
+                    Log in using this <CLink href={segaLoginLink}>{'SEGA authentication page'}</CLink>.
                 </p>
             </Step>
 
             <Step title={'Step 2 — Open your profile'}>
                 <p>
-                    Navigate to{' '}
-                    <CLink href={segaNotFoundLink}>{'this page'}</CLink>.
+                    Navigate to <CLink href={segaNotFoundLink}>{'this page'}</CLink>.
                 </p>
             </Step>
 
             <Step title={'Step 3 — Install the bookmarklet'}>
-                <p>
-                    Click this button to copy the bookmarklet and paste it into
-                    a bookmark&#39;s URL field.
-                </p>
+                <p>Click this button to copy the bookmarklet and paste it into a bookmark&#39;s URL field.</p>
 
                 <div className={'pt-2'}>
                     <Link
@@ -86,9 +70,8 @@ export default function ClalGuide() {
 
             <Step title={'Step 4 — Run the bookmarklet'}>
                 <p>
-                    Return to the{' '}
-                    <CLink href={segaNotFoundLink}>{'profile page'}</CLink> and
-                    click the bookmarklet you just added.
+                    Return to the <CLink href={segaNotFoundLink}>{'profile page'}</CLink> and click the bookmarklet you
+                    just added.
                 </p>
             </Step>
         </div>

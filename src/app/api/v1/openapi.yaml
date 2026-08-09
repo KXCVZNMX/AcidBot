@@ -438,24 +438,7 @@ components:
                 rank:
                     type: string
                     nullable: true
-                    enum:
-                        [
-                            D,
-                            C,
-                            B,
-                            BB,
-                            BBB,
-                            A,
-                            AA,
-                            AAA,
-                            S,
-                            S+,
-                            SS,
-                            SS+,
-                            SSS,
-                            SSS+,
-                            null,
-                        ]
+                    enum: [D, C, B, BB, BBB, A, AA, AAA, S, S+, SS, SS+, SSS, SSS+, null]
 
         MSSB50:
             allOf:

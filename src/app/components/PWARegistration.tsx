@@ -4,11 +4,7 @@ import { useEffect } from 'react';
 
 export default function PWARegistration() {
     useEffect(() => {
-        if (
-            typeof window === 'undefined' ||
-            !('serviceWorker' in navigator) ||
-            process.env.NODE_ENV !== 'production'
-        ) {
+        if (typeof window === 'undefined' || !('serviceWorker' in navigator) || process.env.NODE_ENV !== 'production') {
             return;
         }
 

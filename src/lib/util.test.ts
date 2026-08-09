@@ -1,11 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as cheerio from 'cheerio';
-import {
-    matchRule,
-    determineRank,
-    truncateByWidth,
-    extractScore,
-} from '@/lib/util';
+import { matchRule, determineRank, truncateByWidth, extractScore } from '@/lib/util';
 import { SYNC_RULES, COMBO_RULES } from '@/lib/consts';
 
 describe('matchRule', () => {
