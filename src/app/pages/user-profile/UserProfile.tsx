@@ -100,6 +100,7 @@ export default function UserProfile() {
 
             <div className={'flex items-center justify-center'}>
                 <div className={'p-3 w-full max-w-300 grid grid-cols-1 md:grid-cols-2 gap-3'}>
+                    {/* Profile Block */}
                     <div className={'col-span-1 md:col-span-2'}>
                         <div className={'card bg-linear-to-r from-base-200 to-base-300 shadow-lg z-10'}>
                             <div className={'card-body p-6'}>
@@ -153,6 +154,7 @@ export default function UserProfile() {
                         </div>
                     </div>
 
+                    {/* Best50 List */}
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
                             <div className={'card-body h-135'}>
@@ -202,6 +204,7 @@ export default function UserProfile() {
                         </div>
                     </div>
 
+                    {/* Best 50 Record List & Graph*/}
                     <div className={'col-span-1'}>
                         <div className={'card bg-base-200'}>
                             <div className={'card-body h-135'}>
@@ -225,6 +228,7 @@ export default function UserProfile() {
                                                         <tr
                                                             key={index}
                                                             className={'hover:bg-base-content/10 transition-colors'}
+
                                                         >
                                                             <th className={'text-center'}>{index + 1}</th>
                                                             <td className={'font-medium text-lg'}>
