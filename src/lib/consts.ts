@@ -1,4 +1,28 @@
 import { Rank } from '@/lib/types';
+import NP_bhx from "../../public/b50/NP_bhx.webp";
+import NP_cf from "../../public/b50/NP_cf.webp";
+import NP_cf_prism from "../../public/b50/NP_cf_prism.webp";
+import NP_cf_festival from "../../public/b50/NP_cf_festival.webp";
+import NP_dlx from "../../public/b50/NP_dlx.webp";
+import NP_kuro from "../../public/b50/NP_kuro.webp";
+import NP_lime from "../../public/b50/NP_lime.webp";
+import NP_lime_bud from "../../public/b50/NP_lime_bud.webp";
+import NP_milk from "../../public/b50/NP_milk.webp";
+import NP_milk_cat from "../../public/b50/NP_milk_cat.webp";
+import NP_milk_prism from "../../public/b50/NP_milk_prism.webp";
+import NP_milk_splash from "../../public/b50/NP_milk_splash.webp";
+import NP_rasu from "../../public/b50/NP_rasu.webp";
+import NP_rasu_bud from "../../public/b50/NP_rasu_bud.webp";
+import NP_rasu_festival from "../../public/b50/NP_rasu_festival.webp";
+import NP_riz_prism from "../../public/b50/NP_riz_prism.webp";
+import NP_salt from "../../public/b50/NP_salt.webp";
+import NP_salt_festival from "../../public/b50/NP_salt_festival.webp";
+import NP_salt_prism from "../../public/b50/NP_salt_prism.webp";
+import NP_sm from "../../public/b50/NP_sm.webp";
+import NP_sm_splash from "../../public/b50/NP_sm_splash.webp";
+import NP_yj from "../../public/b50/NP_yj.webp";
+import NP_yj_bud from "../../public/b50/NP_yj_bud.webp";
+import NP_yj_splash from "../../public/b50/NP_yj_splash.webp";
 
 export const MaimaiLevelMap: Readonly<Record<number, string>> = {
     1: '1',
@@ -358,4 +382,31 @@ export const CIRCLE_SONGS: Readonly<string[]> = [
     'Break The Speakers',
     'Galaxy Blaster',
     'Customized Justice',
+];
+
+export const NP = [
+    NP_bhx,
+    NP_cf,
+    NP_cf_prism,
+    NP_cf_festival,
+    NP_dlx,
+    NP_kuro,
+    NP_lime,
+    NP_lime_bud,
+    NP_milk,
+    NP_milk_cat,
+    NP_milk_prism,
+    NP_milk_splash,
+    NP_rasu,
+    NP_rasu_bud,
+    NP_rasu_festival,
+    NP_riz_prism,
+    NP_salt,
+    NP_salt_festival,
+    NP_salt_prism,
+    NP_sm,
+    NP_sm_splash,
+    NP_yj,
+    NP_yj_bud,
+    NP_yj_splash,
 ];

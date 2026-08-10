@@ -2,37 +2,13 @@
 
 import ErrorModal from '@/app/components/ErrorModal';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MaimaiLevelMap } from '@/lib/consts';
+import {MaimaiLevelMap, NP} from '@/lib/consts';
 import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
 import Image from 'next/image';
 import B50BG from '../../../../public/b50/b50bg.png';
 import B50Card from '@/app/components/B50Card';
 import { M_PLUS_Rounded_1c } from 'next/font/google';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
-import NP_bhx from '../../../../public/b50/NP_bhx.webp';
-import NP_cf from '../../../../public/b50/NP_cf.webp';
-import NP_cf_prism from '../../../../public/b50/NP_cf_prism.webp';
-import NP_cf_festival from '../../../../public/b50/NP_cf_festival.webp';
-import NP_dlx from '../../../../public/b50/NP_dlx.webp';
-import NP_kuro from '../../../../public/b50/NP_kuro.webp';
-import NP_lime from '../../../../public/b50/NP_lime.webp';
-import NP_lime_bud from '../../../../public/b50/NP_lime_bud.webp';
-import NP_milk from '../../../../public/b50/NP_milk.webp';
-import NP_milk_cat from '../../../../public/b50/NP_milk_cat.webp';
-import NP_milk_prism from '../../../../public/b50/NP_milk_prism.webp';
-import NP_milk_splash from '../../../../public/b50/NP_milk_splash.webp';
-import NP_rasu from '../../../../public/b50/NP_rasu.webp';
-import NP_rasu_bud from '../../../../public/b50/NP_rasu_bud.webp';
-import NP_rasu_festival from '../../../../public/b50/NP_rasu_festival.webp';
-import NP_riz_prism from '../../../../public/b50/NP_riz_prism.webp';
-import NP_salt from '../../../../public/b50/NP_salt.webp';
-import NP_salt_festival from '../../../../public/b50/NP_salt_festival.webp';
-import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
-import NP_sm from '../../../../public/b50/NP_sm.webp';
-import NP_sm_splash from '../../../../public/b50/NP_sm_splash.webp';
-import NP_yj from '../../../../public/b50/NP_yj.webp';
-import NP_yj_bud from '../../../../public/b50/NP_yj_bud.webp';
-import NP_yj_splash from '../../../../public/b50/NP_yj_splash.webp';
 import { chooseNameplate, determineRatingPlate, truncateByWidth } from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
@@ -53,33 +29,6 @@ const mPlus = M_PLUS_Rounded_1c({
     subsets: ['latin'],
     preload: false,
 });
-
-const NP = [
-    NP_bhx,
-    NP_cf,
-    NP_cf_prism,
-    NP_cf_festival,
-    NP_dlx,
-    NP_kuro,
-    NP_lime,
-    NP_lime_bud,
-    NP_milk,
-    NP_milk_cat,
-    NP_milk_prism,
-    NP_milk_splash,
-    NP_rasu,
-    NP_rasu_bud,
-    NP_rasu_festival,
-    NP_riz_prism,
-    NP_salt,
-    NP_salt_festival,
-    NP_salt_prism,
-    NP_sm,
-    NP_sm_splash,
-    NP_yj,
-    NP_yj_bud,
-    NP_yj_splash,
-];
 
 export default function LvScore2() {
     const [error, setError] = useState('');
