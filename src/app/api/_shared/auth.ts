@@ -1,6 +1,6 @@
-import { auth } from '@/auth';
+import {auth} from '@/auth';
 import client from '@/lib/db';
-import { ObjectId } from 'mongodb';
+import {ObjectId} from 'mongodb';
 
 export async function getAuthenticatedUserId(): Promise<string | null> {
     const session = await auth();

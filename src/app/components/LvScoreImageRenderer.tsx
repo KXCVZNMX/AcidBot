@@ -1,11 +1,11 @@
-import Image, { StaticImageData } from 'next/image';
-import { M_PLUS_Rounded_1c } from 'next/font/google';
+import Image, {StaticImageData} from 'next/image';
+import {M_PLUS_Rounded_1c} from 'next/font/google';
 import B50Card from './B50Card';
 import BGBase from '../../../public/b50/back_area.png';
 import Logo from '../../../public/b50/kv_logo_pc.png';
 import Trophy from '../../../public/b50/trophy_normal.png';
-import { MSSB50, ParsedProfile } from '@/lib/types';
-import { determineRatingPlate, truncateByWidth } from '@/lib/util';
+import {MSSB50, ParsedProfile} from '@/lib/types';
+import {determineRatingPlate, truncateByWidth} from '@/lib/util';
 
 const mPlus = M_PLUS_Rounded_1c({
     weight: ['400', '500'],

@@ -1,7 +1,7 @@
 import React from 'react';
 import Step from '@/app/components/Step';
 import CLink from '@/app/components/CLink';
-import { Metadata } from 'next';
+import {Metadata} from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import BackButton from '../../../../../public/back-button-svgrepo.svg';

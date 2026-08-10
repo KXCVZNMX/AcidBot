@@ -1,7 +1,6 @@
-import { Metadata } from 'next';
-import LvScore from '@/app/pages/lv-score/LvScore';
+import {Metadata} from 'next';
 import ToolAccess from '@/app/components/ToolAccess';
-import { auth } from '@/auth';
+import {auth} from '@/auth';
 import LvScore2 from '@/app/pages/lv-score/LvScore2';
 
 export const metadata: Metadata = {

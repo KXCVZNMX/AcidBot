@@ -1,18 +1,18 @@
 'use client';
 
 import ErrorModal from '@/app/components/ErrorModal';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {MaimaiLevelMap, NP} from '@/lib/consts';
-import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
+import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from '@/lib/types';
 import Image from 'next/image';
 import B50BG from '../../../../public/b50/b50bg.png';
 import B50Card from '@/app/components/B50Card';
-import { M_PLUS_Rounded_1c } from 'next/font/google';
+import {M_PLUS_Rounded_1c} from 'next/font/google';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
-import { chooseNameplate, determineRatingPlate, truncateByWidth } from '@/lib/util';
+import {chooseNameplate, determineRatingPlate, truncateByWidth} from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
-import { captureElementToBlob } from '@/lib/captureUtils';
+import {captureElementToBlob} from '@/lib/captureUtils';
 
 const PREVIEW_CARD_SCALE = 44;
 const PREVIEW_CARD_PERCENTAGE = PREVIEW_CARD_SCALE / 100;

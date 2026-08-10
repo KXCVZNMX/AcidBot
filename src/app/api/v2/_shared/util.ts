@@ -1,5 +1,5 @@
 import client from '@/lib/db';
-import { ObjectId } from 'mongodb';
+import {ObjectId} from 'mongodb';
 
 export async function getClal(id: string): Promise<string | null> {
     const db = client.db();

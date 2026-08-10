@@ -1,8 +1,14 @@
-import { RANK_DEFINITIONS } from '@/lib/consts';
-import { MaimaiSongScore, MSSB50, ParsedProfile, UserCollectionCount } from '@/app/api/_shared/types';
-import { SongInfo, SongInfoProjection } from '@/app/api/_shared/types';
+import {RANK_DEFINITIONS} from '@/lib/consts';
+import {
+    MaimaiSongScore,
+    MSSB50,
+    ParsedProfile,
+    SongInfo,
+    SongInfoProjection,
+    UserCollectionCount
+} from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
-import { Db } from 'mongodb';
+import {Db} from 'mongodb';
 // import songs from '../_shared/temp_updates.json'
 
 export const songInfoProjection: SongInfoProjection = {

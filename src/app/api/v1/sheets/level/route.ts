@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
+import {NextRequest, NextResponse} from 'next/server';
+import {MaimaiSongScore, MSSB50} from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
-import { extractScore } from '@/lib/util';
+import {extractScore} from '@/lib/util';
 import client from '@/lib/db';
-import { getSongInfoMap, toB50Score } from '@/app/api/_shared/util';
-import { getAuthenticatedClal } from '@/app/api/_shared/auth';
+import {getSongInfoMap, toB50Score} from '@/app/api/_shared/util';
+import {getAuthenticatedClal} from '@/app/api/_shared/auth';
 
 export async function POST(req: NextRequest) {
     try {

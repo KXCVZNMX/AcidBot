@@ -1,7 +1,7 @@
-import { Metadata } from 'next';
+import {Metadata} from 'next';
 import SkillRadar from '@/app/pages/skill-radar/SkillRadar';
 import ToolAccess from '@/app/components/ToolAccess';
-import { auth } from '@/auth';
+import {auth} from '@/auth';
 
 export const metadata: Metadata = {
     title: 'Skill Radar',

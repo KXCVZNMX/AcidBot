@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type {Metadata} from 'next';
 import Image from 'next/image';
 import HomePageIcon from '../../../../public/HomeGIF.gif';
 import React from 'react';

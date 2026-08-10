@@ -1,4 +1,4 @@
-import { MSSB50 } from '@/lib/types';
+import {MSSB50} from '@/lib/types';
 import B50Card from './B50Card';
 
 export const B50_GRID_BASE_WIDTH = 1389;

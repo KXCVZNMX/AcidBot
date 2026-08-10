@@ -1,11 +1,11 @@
 'use client';
 
-import { SongTags } from '@/lib/types';
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS } from '@/lib/consts';
-import { mapTagToEvalIndex, mapTagToPatternIndex } from '@/lib/util';
+import {SongTags} from '@/lib/types';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {EVAL_TAG_NAMES, PATTERN_TAG_NAMES, PATTERN_TAG_NUMBERS} from '@/lib/consts';
+import {mapTagToEvalIndex, mapTagToPatternIndex} from '@/lib/util';
 import PERadar from '@/app/components/PERadar';
-import { toBlob } from 'html-to-image';
+import {toBlob} from 'html-to-image';
 
 export default function SkillRadar() {
     const [evalRadarValues, setEvalRadarValues] = useState<number[]>([]);

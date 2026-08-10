@@ -1,16 +1,16 @@
 {
     /* eslint-disable @next/next/no-img-element */
 }
-import { NextRequest, NextResponse } from 'next/server';
-import { MalformedRequest } from '@/app/api/v2/_shared/types';
-import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
-import { truncateByWidth } from '@/lib/util';
-import { ImageResponse } from 'takumi-js/response';
-import { readFileSync } from 'fs';
-import { Buffer } from 'buffer';
-import { join } from 'path';
+import {NextRequest, NextResponse} from 'next/server';
+import {MalformedRequest} from '@/app/api/v2/_shared/types';
+import {MSSB50, ParsedProfile} from '@/app/api/_shared/types';
+import {truncateByWidth} from '@/lib/util';
+import {ImageResponse} from 'takumi-js/response';
+import {readFileSync} from 'fs';
+import {Buffer} from 'buffer';
+import {join} from 'path';
 import React from 'react';
-import { z } from 'zod';
+import {z} from 'zod';
 
 const UserClalSchema = z.object({
     id: z.string().min(1),

@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import {NextResponse} from 'next/server';
 import fetchPage from '@/lib/fetchPage';
-import { parseProfileBlock } from '@/app/api/_shared/util';
-import { getAuthenticatedClal } from '@/app/api/_shared/auth';
+import {parseProfileBlock} from '@/app/api/_shared/util';
+import {getAuthenticatedClal} from '@/app/api/_shared/auth';
 
 export async function GET() {
     try {

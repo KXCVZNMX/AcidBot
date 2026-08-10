@@ -1,6 +1,6 @@
-import { Metadata } from 'next';
-import { unauthorized } from 'next/navigation';
-import { auth } from '@/auth';
+import {Metadata} from 'next';
+import {unauthorized} from 'next/navigation';
+import {auth} from '@/auth';
 import UserProfile from '@/app/pages/user-profile/UserProfile';
 
 export const metadata: Metadata = {

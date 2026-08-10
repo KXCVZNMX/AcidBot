@@ -1,17 +1,17 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
-import { chooseNameplate, determineRatingPlate } from '@/lib/util';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {Best50Songs, MSSB50, ParsedProfile} from '@/lib/types';
+import {chooseNameplate, determineRatingPlate} from '@/lib/util';
 import ErrorModal from '@/app/components/ErrorModal';
-import B50CardGrid, { B50_GRID_BASE_WIDTH } from '@/app/components/B50CardGrid';
+import B50CardGrid, {B50_GRID_BASE_WIDTH} from '@/app/components/B50CardGrid';
 import SuccessModal from '@/app/components/SuccessModal';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
 import B50ImageRenderer from '@/app/components/B50ImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
 import Image from 'next/image';
-import { captureElementToBlob } from '@/lib/captureUtils';
-import { NP } from '@/lib/consts'
+import {captureElementToBlob} from '@/lib/captureUtils';
+import {NP} from '@/lib/consts'
 
 export default function Best50() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);

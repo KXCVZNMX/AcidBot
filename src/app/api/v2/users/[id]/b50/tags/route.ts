@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { NextRequest, NextResponse } from 'next/server';
-import { DatabaseError, MalformedRequest, UserNotFoundOrNoPrev } from '@/app/api/v2/_shared/types';
+import {z} from 'zod';
+import {NextRequest, NextResponse} from 'next/server';
+import {DatabaseError, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v2/_shared/types';
 import client from '@/lib/db';
-import { ObjectId } from 'mongodb';
-import { SongTags } from '@/app/api/_shared/types';
+import {ObjectId} from 'mongodb';
+import {SongTags} from '@/app/api/_shared/types';
 
 export const TagsSchema = z.object({
     id: z.string().min(1),

@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import {useState} from 'react';
+import {signOut, useSession} from 'next-auth/react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import Icon from '../favicon.ico';
 import Image from 'next/image';
 import HamburgerDrawer from '@/app/components/HamburgerDrawer';
 import LoginModal from '@/app/components/LoginModal';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 export default function Navbar() {
     const { data: session, status } = useSession();

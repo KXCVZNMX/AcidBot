@@ -1,5 +1,5 @@
-import { LoginGithub, LoginGoogle } from '@/app/components/Login';
-import { Dispatch, SetStateAction } from 'react';
+import {LoginGithub, LoginGoogle} from '@/app/components/Login';
+import {Dispatch, SetStateAction} from 'react';
 
 export default function LoginModal({
     showLoginModal,

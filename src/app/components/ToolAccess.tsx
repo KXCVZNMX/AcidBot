@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import type { ReactNode } from 'react';
+import {useSession} from 'next-auth/react';
+import type {ReactNode} from 'react';
 
 export default function ToolAccess({ feature, children }: { feature: string; children: ReactNode }) {
     const { status } = useSession();

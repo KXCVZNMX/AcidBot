@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import {NextResponse} from 'next/server';
 
 // Only returns the script to extract the clal token.
 export async function GET() {

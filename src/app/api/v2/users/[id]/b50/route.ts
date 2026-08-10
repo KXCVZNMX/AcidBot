@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import {NextRequest, NextResponse} from 'next/server';
 import {
     DatabaseError,
     FetchError,
@@ -6,15 +6,15 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
-import { MaimaiSongScore, MSSB50, SongInfo } from '@/app/api/_shared/types';
+import {MaimaiSongScore, MSSB50, SongInfo} from '@/app/api/_shared/types';
 import fetchPage from '@/lib/fetchPage';
-import { extractScore } from '@/lib/util';
+import {extractScore} from '@/lib/util';
 import * as cheerio from 'cheerio';
 import client from '@/lib/db';
-import { getSongInfoMap, parseProfileBlock, splitB50, toB50Score } from '@/app/api/_shared/util';
-import { ObjectId } from 'mongodb';
-import { z } from 'zod';
-import { getClal } from '@/app/api/v2/_shared/util';
+import {getSongInfoMap, parseProfileBlock, splitB50, toB50Score} from '@/app/api/_shared/util';
+import {ObjectId} from 'mongodb';
+import {z} from 'zod';
+import {getClal} from '@/app/api/v2/_shared/util';
 
 const UserB50Schema = z.object({
     id: z.string().min(1),

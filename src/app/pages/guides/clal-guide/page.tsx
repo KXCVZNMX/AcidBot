@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import {Metadata} from 'next';
 import ClalGuide from '@/app/pages/guides/clal-guide/ClalGuide';
 
 export const metadata: Metadata = {

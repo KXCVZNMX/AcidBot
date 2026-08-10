@@ -1,9 +1,9 @@
-import { Metadata } from 'next';
+import {Metadata} from 'next';
 import Image from 'next/image';
 import HomePageIcon from '../../public/HomeGIF.gif';
 import React from 'react';
 import Card from '@/app/components/Card';
-import { auth } from '@/auth';
+import {auth} from '@/auth';
 
 export const metadata: Metadata = {
     title: 'maimai B50 Tracker',

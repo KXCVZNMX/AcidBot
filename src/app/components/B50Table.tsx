@@ -1,4 +1,4 @@
-import { MSSB50 } from '@/lib/types';
+import {MSSB50} from '@/lib/types';
 
 export default function B50Table({ oldSong, newSong }: { oldSong: MSSB50[]; newSong: MSSB50[] }) {
     return (
