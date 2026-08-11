@@ -6,7 +6,7 @@ import {
     MalformedRequest,
     UserNotFoundOrNoPrev,
 } from '@/app/api/v2/_shared/types';
-import {MaimaiSongScore, MSSB50, SongInfo} from '@/app/api/_shared/types';
+import {MaimaiSongScore, MSSB50, ParsedProfile, SongInfo} from '@/app/api/_shared/types';
 import fetchPage from '@/lib/fetchPage';
 import {extractScore} from '@/lib/util';
 import * as cheerio from 'cheerio';
@@ -66,8 +66,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
               'https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=4',
               ...(profile ? [homeRedirect] : []),
           ];
-
-    console.log(redirects);
 
     const db = client.db();
 
