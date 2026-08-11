@@ -1,23 +1,20 @@
 {
     /* eslint-disable @next/next/no-img-element */
 }
-import {NextRequest, NextResponse} from 'next/server';
-import {MalformedRequest} from '@/app/api/v2/_shared/types';
-import {MSSB50, ParsedProfile} from '@/app/api/_shared/types';
-import {truncateByWidth} from '@/lib/util';
-import {ImageResponse} from 'takumi-js/response';
-import {readFileSync} from 'fs';
-import {Buffer} from 'buffer';
-import {join} from 'path';
+import { NextRequest, NextResponse } from 'next/server';
+import { MalformedRequest } from '@/app/api/v2/_shared/types';
+import { MSSB50, ParsedProfile } from '@/app/api/_shared/types';
+import {getClal} from '@/app/api/v2/_shared/util';
+import { truncateByWidth } from '@/lib/util';
+import { ImageResponse } from 'next/og';
+import { readFileSync } from 'fs';
+import { Buffer } from 'buffer';
+import { join } from 'path';
 import React from 'react';
-import {z} from 'zod';
+import { z } from 'zod';
 
 const UserClalSchema = z.object({
     id: z.string().min(1),
-    old: z
-        .enum(['true', 'false'])
-        .transform((value) => value === 'true')
-        .optional(),
 });
 
 export const alt = 'B50';
@@ -38,8 +35,12 @@ function getFonts() {
 
     // Read font files from the public directory
     const publicDir = join(process.cwd(), 'public', 'assets');
-    const mPlusMedBuffer = readFileSync(join(publicDir, 'MPLUSRounded1c-Medium.ttf'));
-    const mPlusRegBuffer = readFileSync(join(publicDir, 'MPLUSRounded1c-Regular.ttf'));
+    const mPlusMedBuffer = readFileSync(
+        join(publicDir, 'MPLUSRounded1c-Medium.ttf')
+    );
+    const mPlusRegBuffer = readFileSync(
+        join(publicDir, 'MPLUSRounded1c-Regular.ttf')
+    );
 
     cachedFonts = {
         mPlusMed: mPlusMedBuffer.buffer.slice(
@@ -353,7 +354,11 @@ function B50Card({ info }: { info: MSSB50 }) {
                     {info.dx}
                 </p>
                 <img
-                    src={info.isDx === 'dx' ? `${SITE_LINK}/b50/music_dx.png` : `${SITE_LINK}/b50/music_standard.png`}
+                    src={
+                        info.isDx === 'dx'
+                            ? `${SITE_LINK}/b50/music_dx.png`
+                            : `${SITE_LINK}/b50/music_standard.png`
+                    }
                     alt={'music_dx_std'}
                     width={50}
                     style={{
@@ -398,18 +403,24 @@ function B50Card({ info }: { info: MSSB50 }) {
     );
 }
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
     const funcStartTime = Date.now();
     console.log(`[b50Image] START: ${new Date().toISOString()}`);
 
     const { id: u_id } = await params;
     const url = req.nextUrl;
+    const u_clal = url.searchParams.get('clal');
     const u_old = url.searchParams.get('old');
 
-    const parsed = UserClalSchema.safeParse({
-        id: u_id,
-        old: u_old ?? undefined,
-    });
+    const parsed = UserClalSchema.extend({
+        old: z
+            .enum(['true', 'false'])
+            .transform((value) => value === 'true')
+            .optional(),
+    }).safeParse({ id: u_id, clal: u_clal, old: u_old ?? undefined });
 
     if (!parsed.success) {
         return NextResponse.json(MalformedRequest, { status: 400 });
@@ -417,6 +428,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const { id, old } = parsed.data;
     console.log(`[b50Image] INPUT PARSED: ${Date.now() - funcStartTime}ms`);
+    const clal = await getClal(id);
 
     const SITE_LINK = process.env.SITE_LINK ?? 'http://localhost:3000';
 
@@ -498,9 +510,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const { mPlusMed, mPlusReg } = getFonts();
 
     const upstreamFetchStart = Date.now();
-    console.log(`[b50Image] UPSTREAM FETCH START: ${upstreamFetchStart - funcStartTime}ms into execution`);
+    console.log(
+        `[b50Image] UPSTREAM FETCH START: ${upstreamFetchStart - funcStartTime}ms into execution`
+    );
 
-    const profileRes = await fetch(`${SITE_LINK}/api/v2/users/${id}/b50?&profile=true${old ? '&old=true' : ''}`);
+    const profileRes = await fetch(
+        `${SITE_LINK}/api/v2/users/${id}/b50?clal=${clal}&profile=true${old ? '&old=true' : ''}`
+    );
 
     const upstreamFetchEnd = Date.now();
     console.log(
@@ -531,7 +547,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const rating = [...b35, ...b15].reduce((sum, s) => sum + s.rating, 0);
 
     const imageRenderStart = Date.now();
-    console.log(`[b50Image] IMAGE RENDER START: ${imageRenderStart - funcStartTime}ms into execution`);
+    console.log(
+        `[b50Image] IMAGE RENDER START: ${imageRenderStart - funcStartTime}ms into execution`
+    );
 
     const imageResponse = new ImageResponse(
         (
@@ -778,7 +796,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         ),
         {
             ...size,
-            emoji: 'from-font',
             headers: {
                 'content-type': 'image/jpeg',
             },
