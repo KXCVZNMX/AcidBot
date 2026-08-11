@@ -27,17 +27,10 @@ paths:
             tags: [profile]
             summary: Fetch the current maimai profile block
             description: |
-                Fetches the maimai mobile profile page using the provided `clal` token,
+                Fetches the maimai mobile profile page using the authenticated user's stored CLAL token,
                 then parses the profile block into a normalized JSON object.
 
                 This endpoint requires an authenticated session.
-            parameters:
-                - in: query
-                  name: clal
-                  required: true
-                  schema:
-                      type: string
-                  description: The CLAL token used to fetch the maimai profile page.
             responses:
                 '200':
                     description: Parsed profile information
@@ -46,9 +39,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ParsedProfile'
                 '401':
-                    description: Unauthenticated
+                    description: Unauthenticated, or the stored CLAL token is invalid.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '400':
+                    description: The user has no stored CLAL token.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '502':
+                    description: maimai DX returned an invalid response or could not be reached.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '503':
+                    description: maimai DX remained unavailable after retries.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
                 '500':
-                    description: Failed to fetch or parse the profile block
+                    description: Failed to process the profile block.
                     content:
                         application/json:
                             schema:
@@ -188,8 +203,38 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/MSSB50'
+                '400':
+                    description: The user has no stored CLAL token or the request body is invalid.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthenticated, or the stored CLAL token is invalid.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: No scores were found for the requested level.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '502':
+                    description: maimai DX returned an invalid response or could not be reached.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '503':
+                    description: maimai DX remained unavailable after retries.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
                 '500':
-                    description: The page could not be fetched, or no valid results were found
+                    description: Score or song metadata could not be processed.
                     content:
                         application/json:
                             schema:
@@ -201,27 +246,37 @@ paths:
             summary: Fetch and store the current Best 50
             description: |
                 Fetches the current B35/B15 results, enriches them with song metadata,
-                persists the snapshot, and returns the computed Best 50 payload.
+                persists the snapshot, and streams newline-delimited progress, status,
+                error, and result packets.
 
                 This endpoint requires an authenticated session.
-            parameters:
-                - in: query
-                  name: clal
-                  required: true
-                  schema:
-                      type: string
-                  description: The CLAL token used to fetch the maimai record pages.
             responses:
                 '200':
-                    description: Current Best 50 split into B35 and B15
+                    description: |
+                        Newline-delimited JSON packet stream. Fetch failures are returned as
+                        `type: error` packets because the response has already started.
+                    content:
+                        text/event-stream:
+                            schema:
+                                type: string
+                            example: |
+                                {"type":"progress","current":1,"total":5,"url":"https://maimaidx-eng.com/maimai-mobile/record/musicGenre/search/?genre=99&diff=0"}
+                                {"type":"status","message":"Parsing download structures..."}
+                                {"type":"done","b35":[],"b15":[]}
+                '400':
+                    description: The user has no stored CLAL token.
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Best50Songs'
+                                $ref: '#/components/schemas/ErrorResponse'
                 '401':
-                    description: Unauthenticated
+                    description: Unauthenticated.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
                 '500':
-                    description: Failed to fetch, resolve, or persist the Best 50 payload
+                    description: Failed before the packet stream could be created.
                     content:
                         application/json:
                             schema:

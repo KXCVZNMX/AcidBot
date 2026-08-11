@@ -8,6 +8,7 @@ import fetchPage from '@/lib/fetchPage';
 import {getSongInfoMap, splitB50, toB50Score} from '@/app/api/_shared/util';
 import {Best50SongsWithDateRating} from '@/app/api/v1/_shared/types';
 import {getAuthenticatedClal, getAuthenticatedUserId} from '@/app/api/_shared/auth';
+import {mapV1FetchPageError} from '@/app/api/v1/_shared/fetchPageError';
 
 type DBData = {
     userId: string;
@@ -53,16 +54,16 @@ export async function GET() {
                     });
                 } catch (fetchError) {
                     console.error(fetchError);
-                    const errorMsg = `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})`;
+                    const failure = mapV1FetchPageError(fetchError);
                     controller.enqueue(
                         encoder.encode(
                             JSON.stringify({
                                 type: 'error',
-                                message: errorMsg,
+                                code: failure.body.code,
+                                message: failure.body.error,
                             }) + '\n'
                         )
                     );
-                    controller.close();
                     return;
                 }
 
@@ -113,12 +114,16 @@ export async function GET() {
                 const { b35: slicedB35, b15: slicedB15 } = splitB50(finalRes);
 
                 if (slicedB15.length === 0 && slicedB35.length === 0) {
-                    return NextResponse.json(
-                        {
-                            error: 'Both of your B15 or B35 was empty, get clal again. (or you just haven\'t played)',
-                        },
-                        { status: 500 }
+                    controller.enqueue(
+                        encoder.encode(
+                            JSON.stringify({
+                                type: 'error',
+                                code: 'NO_SCORES',
+                                message: 'No Best 50 scores were found. Refresh your CLAL token or play more songs.',
+                            }) + '\n'
+                        )
                     );
+                    return;
                 }
 
                 await db.collection('userB50').updateOne(
@@ -145,7 +150,11 @@ export async function GET() {
             } catch (error) {
                 console.error(error);
                 const catchMsg = (error as Error).message;
-                controller.enqueue(encoder.encode(JSON.stringify({ type: 'error', message: catchMsg }) + '\n'));
+                controller.enqueue(
+                    encoder.encode(
+                        JSON.stringify({ type: 'error', code: 'PROCESSING_ERROR', message: catchMsg }) + '\n'
+                    )
+                );
             } finally {
                 controller.close();
             }

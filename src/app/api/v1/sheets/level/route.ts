@@ -6,6 +6,7 @@ import {extractScore} from '@/lib/util';
 import client from '@/lib/db';
 import {getSongInfoMap, toB50Score} from '@/app/api/_shared/util';
 import {getAuthenticatedClal} from '@/app/api/_shared/auth';
+import {mapV1FetchPageError} from '@/app/api/v1/_shared/fetchPageError';
 
 export async function POST(req: NextRequest) {
     try {
@@ -19,21 +20,20 @@ export async function POST(req: NextRequest) {
 
         const { redirect } = await req.json();
 
-        let html;
+        let html: string[];
         try {
             html = await fetchPage(user.clal, redirect);
         } catch (fetchError) {
             console.error(fetchError);
-            return NextResponse.json(
-                {
-                    error: `Page likely didn't return a redirect, get clal again. (${(fetchError as Error).message})`,
-                },
-                { status: 500 }
-            );
+            const failure = mapV1FetchPageError(fetchError);
+            return NextResponse.json(failure.body, { status: failure.status });
         }
 
-        if (html.includes('ERROR')) {
-            throw new Error('This page either returned a 100001 or 200002 or 200004 error');
+        if (html.some((page) => page.includes('ERROR'))) {
+            return NextResponse.json(
+                { error: 'maimai DX returned an error page for this level.', code: 'UPSTREAM_ERROR_PAGE' },
+                { status: 502 }
+            );
         }
 
         const $ = cheerio.load(html[0]);
@@ -42,9 +42,10 @@ export async function POST(req: NextRequest) {
         if (results.length === 0) {
             return NextResponse.json(
                 {
-                    error: 'Either the page didn\'t return a redirect (get a new clal), or you don\'t have any results for this level',
+                    error: 'No scores were found for this level.',
+                    code: 'NO_LEVEL_SCORES',
                 },
-                { status: 500 }
+                { status: 404 }
             );
         }
 
@@ -74,6 +75,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(finalRes);
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+        return NextResponse.json({ error: (error as Error).message, code: 'LEVEL_PROCESSING_ERROR' }, { status: 500 });
     }
 }
