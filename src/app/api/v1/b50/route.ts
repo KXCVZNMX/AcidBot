@@ -38,7 +38,7 @@ export async function GET() {
         async start(controller) {
             try {
                 const res: MaimaiSongScore[] = [];
-                let htmls;
+                let htmls: string[];
 
                 try {
                     htmls = await fetchPage(clal, redirects, (current, total, url) => {
@@ -74,19 +74,6 @@ export async function GET() {
                         }) + '\n'
                     )
                 );
-
-                if (!Array.isArray(htmls)) {
-                    controller.enqueue(
-                        encoder.encode(
-                            JSON.stringify({
-                                type: 'error',
-                                message: htmls || 'Unknown fetching issue',
-                            }) + '\n'
-                        )
-                    );
-                    controller.close();
-                    return;
-                }
 
                 for (const html of htmls) {
                     const $ = cheerio.load(html);

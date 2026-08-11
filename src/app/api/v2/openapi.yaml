@@ -40,8 +40,7 @@ paths:
                 returned as error packets in an HTTP `200` response.
 
                 With `old=true`, reads the stored snapshot and returns one JSON document.
-                The cached response uses `profileBlock` for the profile field, while the final
-                packet in a fresh stream uses `profile`.
+                Both response modes use `profile` for the optional profile field.
             x-side-effects: true
             parameters:
                 - $ref: '#/components/parameters/UserId'
@@ -76,7 +75,19 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ErrorResponse'
                 '401':
-                    description: The user does not have a stored CLAL token.
+                    description: The user does not have a stored CLAL token, or cached profile authentication failed.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '502':
+                    description: The cached profile response was empty, invalid, or could not be fetched.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '503':
+                    description: The upstream service remained unavailable after retries.
                     content:
                         application/json:
                             schema:
@@ -115,8 +126,20 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ErrorResponse'
+                '502':
+                    description: The upstream response was empty, invalid, or could not be fetched.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '503':
+                    description: The upstream service remained unavailable after retries.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
                 '500':
-                    description: The profile could not be fetched or parsed.
+                    description: The profile could not be processed because of a server error.
                     content:
                         application/json:
                             schema:
@@ -244,6 +267,18 @@ paths:
                                 $ref: '#/components/schemas/ErrorResponse'
                 '404':
                     description: The user has no stored CLAL token, or the level page contained no scores.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '502':
+                    description: The upstream response was empty, invalid, or could not be fetched.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '503':
+                    description: The upstream service remained unavailable after retries.
                     content:
                         application/json:
                             schema:
@@ -437,7 +472,7 @@ components:
         CachedB50Response:
             type: object
             additionalProperties: false
-            required: [b35, b15, profileBlock]
+            required: [b35, b15, profile]
             properties:
                 b35:
                     type: array
@@ -449,8 +484,8 @@ components:
                     maxItems: 15
                     items:
                         $ref: '#/components/schemas/B50Score'
-                profileBlock:
-                    $ref: '#/components/schemas/ParsedProfile'
+                profile:
+                    $ref: '#/components/schemas/NullableProfile'
 
         B50ProgressPacket:
             type: object

@@ -6,8 +6,8 @@ import {extractScore} from '@/lib/util';
 import client from '@/lib/db';
 import {getSongInfoMap, parseProfileBlock, toB50Score} from '@/app/api/_shared/util';
 import {z} from 'zod';
-import {DatabaseError, InvalidClalToken, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v2/_shared/types';
-import {getClal} from '@/app/api/v2/_shared/util';
+import {DatabaseError, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v2/_shared/types';
+import {getClal, mapFetchPageError} from '@/app/api/v2/_shared/util';
 
 const UserLevelSchema = z.object({
     id: z.string().min(1),
@@ -55,9 +55,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
             html = await fetchPage(clal, redirect);
         } catch (fetchError) {
             console.error(fetchError);
-            return NextResponse.json(InvalidClalToken, { status: 401 });
-            // TODO: This is assuming invalid clal token right now (which is most of the case). But there are cases of upstream maintenance as well
-            // TODO: I don't know the error code for it right now. Once I find out i need to modify fetchPage to return those codes.
+            const failure = mapFetchPageError(fetchError);
+            return NextResponse.json(failure.body, { status: failure.status });
         }
 
         const $ = cheerio.load(html[0]);

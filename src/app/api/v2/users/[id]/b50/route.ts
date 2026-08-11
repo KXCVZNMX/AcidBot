@@ -14,7 +14,7 @@ import client from '@/lib/db';
 import {getSongInfoMap, parseProfileBlock, splitB50, toB50Score} from '@/app/api/_shared/util';
 import {ObjectId} from 'mongodb';
 import {z} from 'zod';
-import {getClal} from '@/app/api/v2/_shared/util';
+import {getClal, mapFetchPageError} from '@/app/api/v2/_shared/util';
 
 const UserB50Schema = z.object({
     id: z.string().min(1),
@@ -78,7 +78,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         const b35 = doc.b35;
         let profileBlock: ParsedProfile | null = null;
         if (profile) {
-            const profilePage = await fetchPage(clal, redirects);
+            let profilePage: string[];
+            try {
+                profilePage = await fetchPage(clal, redirects);
+            } catch (error) {
+                const failure = mapFetchPageError(error);
+                return NextResponse.json(failure.body, { status: failure.status });
+            }
+
             profileBlock = parseProfileBlock(profilePage[0]);
             if (!profileBlock) {
                 return NextResponse.json(FetchError, { status: 400 });
@@ -94,7 +101,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         async start(controller) {
             try {
                 const res: MaimaiSongScore[] = [];
-                let htmls;
+                let htmls: string[];
 
                 try {
                     htmls = await fetchPage(clal, redirects, (current, total, url) => {
@@ -109,12 +116,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
                     });
                 } catch (fetchError) {
                     console.error(fetchError);
+                    const failure = mapFetchPageError(fetchError);
                     controller.enqueue(
                         encoder.encode(
                             JSON.stringify({
                                 type: 'error',
-                                code: InvalidClalToken.code,
-                                message: InvalidClalToken.error,
+                                code: failure.body.code,
+                                message: failure.body.error,
                             }) + '\n'
                         )
                     );
@@ -130,20 +138,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
                         }) + '\n'
                     )
                 );
-
-                if (!Array.isArray(htmls)) {
-                    controller.enqueue(
-                        encoder.encode(
-                            JSON.stringify({
-                                type: 'error',
-                                code: FetchError.code,
-                                message: FetchError.error,
-                            }) + '\n'
-                        )
-                    );
-                    controller.close();
-                    return;
-                }
 
                 for (const html of htmls.slice(0, -1)) {
                     const $ = cheerio.load(html);
