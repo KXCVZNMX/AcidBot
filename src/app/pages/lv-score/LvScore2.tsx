@@ -13,6 +13,7 @@ import {chooseNameplate, determineRatingPlate, truncateByWidth} from '@/lib/util
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/app/components/ImageGenerationModal';
 import {captureElementToBlob} from '@/lib/captureUtils';
+import {getResponseError} from '@/lib/apiResponse';
 
 const PREVIEW_CARD_SCALE = 44;
 const PREVIEW_CARD_PERCENTAGE = PREVIEW_CARD_SCALE / 100;
@@ -117,9 +118,7 @@ export default function LvScore2() {
             });
 
             if (!levelRes.ok) {
-                const { error } = await levelRes.json();
-                showError(error);
-                return;
+                throw new Error(await getResponseError(levelRes));
             }
 
             const songRes: MSSB50[] = await levelRes.json();
@@ -130,9 +129,7 @@ export default function LvScore2() {
             });
 
             if (!profileRes.ok) {
-                const { error } = await profileRes.json();
-                showError(error);
-                return;
+                throw new Error(await getResponseError(profileRes));
             }
 
             const profileData = await profileRes.json();
@@ -144,10 +141,10 @@ export default function LvScore2() {
 
             if (!historyRes.ok) {
                 setRating(0);
+            } else {
+                const b50: Best50Songs = await historyRes.json();
+                setRating([...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0));
             }
-
-            const b50: Best50Songs = await historyRes.json();
-            setRating([...b50.b35, ...b50.b15].reduce((sum, s) => sum + s.rating, 0));
         } catch (error) {
             showError((error as Error).message);
             console.error(error);

@@ -11,7 +11,8 @@ import B50ImageRenderer from '@/app/components/B50ImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
 import Image from 'next/image';
 import {captureElementToBlob} from '@/lib/captureUtils';
-import {NP} from '@/lib/consts'
+import {NP} from '@/lib/consts';
+import {getResponseError} from '@/lib/apiResponse';
 
 export default function Best50() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
@@ -41,7 +42,7 @@ export default function Best50() {
     const gridShellRef = useRef<HTMLDivElement>(null);
     const gridStageRef = useRef<HTMLDivElement>(null);
 
-    const showError = (errorMessage: string) => {
+    const showError = useCallback((errorMessage: string) => {
         setError(errorMessage);
         setShowErrorModal(true);
 
@@ -49,7 +50,7 @@ export default function Best50() {
             setShowErrorModal(false);
             setError('');
         }, 2000);
-    };
+    }, []);
 
     useEffect(() => {
         (async () => {
@@ -61,20 +62,21 @@ export default function Best50() {
                 });
 
                 if (!res.ok) {
-                    throw new Error(res.statusText);
+                    throw new Error(await getResponseError(res));
                 }
 
                 const b50: Best50Songs = await res.json();
                 setOldSong(b50.b35);
                 setNewSong(b50.b15);
 
-                setGenerating(false);
             } catch (error) {
-                setError((error as Error).message);
+                showError((error as Error).message);
                 console.error(error);
+            } finally {
+                setGenerating(false);
             }
         })();
-    }, []);
+    }, [showError]);
 
     useEffect(() => {
         return () => {
@@ -97,8 +99,7 @@ export default function Best50() {
                 });
 
                 if (!res.ok) {
-                    const { error } = await res.json();
-                    throw new Error(error);
+                    throw new Error(await getResponseError(res));
                 }
 
                 const profileData = await res.json();
@@ -173,9 +174,7 @@ export default function Best50() {
             });
 
             if (!res.ok) {
-                const { error } = await res.json();
-                showError(error);
-                return;
+                throw new Error(await getResponseError(res));
             }
 
             if (!res.body) {
@@ -185,6 +184,7 @@ export default function Best50() {
             const reader = res.body.getReader();
             const decoder = new TextDecoder('utf-8');
             let buffer = '';
+            let receivedDone = false;
 
             while (true) {
                 const { value, done } = await reader.read();
@@ -225,6 +225,7 @@ export default function Best50() {
                     }
                     // Handle final successful data completion payload
                     else if (packet.type === 'done') {
+                        receivedDone = true;
                         setSuccess('Successfully calculated and saved Best 50 details!');
                         setNewSong(packet.b15);
                         setOldSong(packet.b35);
@@ -233,8 +234,12 @@ export default function Best50() {
                     }
                 }
             }
+
+            if (!receivedDone) {
+                throw new Error('The Best 50 stream ended before returning a result. Please try again.');
+            }
         } catch (error) {
-            setError((error as Error).message);
+            showError((error as Error).message);
             console.error(error);
         } finally {
             setGenerating(false);
@@ -261,9 +266,7 @@ export default function Best50() {
             });
 
             if (!res.ok) {
-                const { error } = await res.json();
-                showError(error);
-                return;
+                throw new Error(await getResponseError(res));
             }
 
             setShowSuccess(true);

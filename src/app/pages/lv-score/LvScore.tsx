@@ -9,6 +9,7 @@ import ImageGenerationModal from '@/app/components/ImageGenerationModal';
 import LvScoreImageRenderer from '@/app/components/LvScoreImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
 import {captureElementToBlob} from '@/lib/captureUtils';
+import {getResponseError} from '@/lib/apiResponse';
 
 export default function LvScore() {
     const [level, setLevel] = useState('1');
@@ -61,9 +62,7 @@ export default function LvScore() {
             });
 
             if (!res.ok) {
-                const { error } = await res.json();
-                showError(error);
-                return;
+                throw new Error(await getResponseError(res));
             }
 
             const songRes: MSSB50[] = await res.json();
@@ -114,8 +113,7 @@ export default function LvScore() {
                 });
 
                 if (!profileRes.ok) {
-                    const { error } = await profileRes.json();
-                    throw new Error(error);
+                    throw new Error(await getResponseError(profileRes));
                 }
 
                 setProfile(await profileRes.json());
