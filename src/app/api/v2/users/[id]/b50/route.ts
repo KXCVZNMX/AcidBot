@@ -78,10 +78,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         }
         const b15 = doc.b15;
         const b35 = doc.b35;
-        const profilePage = await fetchPage(clal, redirects);
-        const profileBlock = parseProfileBlock(profilePage[0]);
-        if (!profileBlock) {
-            return NextResponse.json(FetchError, { status: 400 });
+        let profileBlock: ParsedProfile | null = null;
+        if (profile) {
+            const profilePage = await fetchPage(clal, redirects);
+            profileBlock = parseProfileBlock(profilePage[0]);
+            if (!profileBlock) {
+                return NextResponse.json(FetchError, { status: 400 });
+            }
         }
 
         return NextResponse.json({ b15, b35, profileBlock }, { status: 200 });
