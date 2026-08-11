@@ -85,7 +85,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             }
         }
 
-        return NextResponse.json({ b15, b35, profileBlock }, { status: 200 });
+        return NextResponse.json({ b15, b35, profile: profileBlock }, { status: 200 });
     }
 
     const encoder = new TextEncoder();
