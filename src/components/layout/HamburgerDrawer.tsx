@@ -5,7 +5,7 @@ import Image from 'next/image';
 import {useState} from 'react';
 import DefaultAvatar from '../../../public/225-default-avatar.svg';
 import {signOut, useSession} from 'next-auth/react';
-import LoginModal from '@/app/components/LoginModal';
+import LoginModal from '@/components/auth/LoginModal';
 import {useRouter} from 'next/navigation';
 
 function HamburgerIcon({ open }: { open: boolean }) {

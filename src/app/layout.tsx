@@ -2,10 +2,10 @@ import './globals.css';
 import React from 'react';
 import {SpeedInsights} from '@vercel/speed-insights/next';
 import {Analytics} from '@vercel/analytics/next';
-import Navbar from '@/app/components/Navbar';
+import Navbar from '@/components/layout/Navbar';
 import {SessionProvider} from 'next-auth/react';
 import type {Metadata} from 'next';
-import PWARegistration from '@/app/components/PWARegistration';
+import PWARegistration from '@/components/layout/PWARegistration';
 
 const siteUrl = new URL((process.env.SITE_LINK ?? 'https://acid.kvznmx.com').replace(/\/$/, ''));
 

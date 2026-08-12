@@ -1,6 +1,6 @@
 import {Metadata} from 'next';
 import SkillRadar from '@/app/pages/skill-radar/SkillRadar';
-import ToolAccess from '@/app/components/ToolAccess';
+import ToolAccess from '@/components/ui/ToolAccess';
 import {auth} from '@/auth';
 
 export const metadata: Metadata = {

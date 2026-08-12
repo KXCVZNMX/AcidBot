@@ -3,10 +3,10 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {MaimaiLevelMap} from '@/lib/consts';
 import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from '@/lib/types';
-import ErrorModal from '@/app/components/ErrorModal';
-import B50Card from '@/app/components/B50Card';
-import ImageGenerationModal from '@/app/components/ImageGenerationModal';
-import LvScoreImageRenderer from '@/app/components/LvScoreImageRenderer';
+import ErrorModal from '@/components/ui/ErrorModal';
+import B50Card from '@/components/b50/B50Card';
+import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
+import LvScoreImageRenderer from '@/components/b50/LvScoreImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
 import {captureElementToBlob} from '@/lib/captureUtils';
 import {getResponseError} from '@/lib/apiResponse';

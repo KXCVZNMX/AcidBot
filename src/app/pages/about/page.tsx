@@ -3,7 +3,7 @@ import Image from 'next/image';
 import HomePageIcon from '../../../../public/HomeGIF.gif';
 import React from 'react';
 import Link from 'next/link';
-import Card from '@/app/components/Card';
+import Card from '@/components/ui/Card';
 
 export const metadata: Metadata = {
     title: 'About',

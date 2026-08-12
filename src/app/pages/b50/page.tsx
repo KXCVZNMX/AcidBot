@@ -1,6 +1,6 @@
 import {Metadata} from 'next';
 import Best50 from '@/app/pages/b50/Best50';
-import ToolAccess from '@/app/components/ToolAccess';
+import ToolAccess from '@/components/ui/ToolAccess';
 import {auth} from '@/auth';
 
 export const metadata: Metadata = {

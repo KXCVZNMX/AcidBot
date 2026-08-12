@@ -5,9 +5,9 @@ import DefaultUserIcon from '../../../../public/225-default-avatar.svg';
 import {Best50Songs, MSSB50} from '@/lib/types';
 import {useEffect, useState} from 'react';
 import {useSession} from 'next-auth/react';
-import ErrorModal from '@/app/components/ErrorModal';
-import SuccessModal from '@/app/components/SuccessModal';
-import RatingChart from '@/app/components/RatingChart';
+import ErrorModal from '@/components/ui/ErrorModal';
+import SuccessModal from '@/components/ui/SuccessModal';
+import RatingChart from '@/components/charts/RatingChart';
 
 type OldB50 = {
     createdAt: Date;

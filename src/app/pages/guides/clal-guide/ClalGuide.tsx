@@ -3,8 +3,8 @@
 import {useSession} from 'next-auth/react';
 import React from 'react';
 import Link from 'next/link';
-import Step from '@/app/components/Step';
-import CLink from '@/app/components/CLink';
+import Step from '@/components/ui/Step';
+import CLink from '@/components/ui/CLink';
 import BackButton from '../../../../../public/back-button-svgrepo.svg';
 import Image from 'next/image';
 

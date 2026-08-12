@@ -1,5 +1,5 @@
 import {Metadata} from 'next';
-import ToolAccess from '@/app/components/ToolAccess';
+import ToolAccess from '@/components/ui/ToolAccess';
 import {auth} from '@/auth';
 import LvScore2 from '@/app/pages/lv-score/LvScore2';
 

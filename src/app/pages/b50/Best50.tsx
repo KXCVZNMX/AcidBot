@@ -3,11 +3,11 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Best50Songs, MSSB50, ParsedProfile} from '@/lib/types';
 import {chooseNameplate, determineRatingPlate} from '@/lib/util';
-import ErrorModal from '@/app/components/ErrorModal';
-import B50CardGrid, {B50_GRID_BASE_WIDTH} from '@/app/components/B50CardGrid';
-import SuccessModal from '@/app/components/SuccessModal';
-import ImageGenerationModal from '@/app/components/ImageGenerationModal';
-import B50ImageRenderer from '@/app/components/B50ImageRenderer';
+import ErrorModal from '@/components/ui/ErrorModal';
+import B50CardGrid, {B50_GRID_BASE_WIDTH} from '@/components/b50/B50CardGrid';
+import SuccessModal from '@/components/ui/SuccessModal';
+import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
+import B50ImageRenderer from '@/components/b50/B50ImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
 import Image from 'next/image';
 import {captureElementToBlob} from '@/lib/captureUtils';

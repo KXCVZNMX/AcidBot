@@ -1,4 +1,4 @@
-import Card from '@/app/components/Card';
+import Card from '@/components/ui/Card';
 import {Metadata} from 'next';
 
 export const metadata: Metadata = {
