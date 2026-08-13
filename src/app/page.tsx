@@ -36,7 +36,7 @@ export default async function Home() {
                 <Image src={HomePageIcon} alt={'Home page icon'} width={305} height={274} priority={true} />
                 <h1 className={'text-4xl font-bold mt-6'}>AcidBot</h1>
                 <p className={'text-lg mt-4 max-w-xl text-base-content/80'}>
-                    An easy-to-use <strong>maimai DX International Ver.</strong> score tracker. Fetch your scores,
+                    An easy-to-use <strong>maimai DX International Ver.</strong> bot. Fetch your scores,
                     generate shareable rating images, and analyze your playstyle.
                 </p>
             </header>
