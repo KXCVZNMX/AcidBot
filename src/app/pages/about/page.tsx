@@ -47,9 +47,7 @@ export default function Page() {
                 </Card>
 
                 {/*This would be the community card when I create one. either on QQ or Discord*/}
-                <Card title={''}>
-                    <></>
-                </Card>
+                <Card title={''} />
 
                 <div className={'col-span-2'}>
                     <Card title={'KXCVZNMX/AcidBot'} newPage={true} href={'https://github.com/KXCVZNMX/AcidBot'}>

@@ -44,15 +44,11 @@ export default async function Home() {
             <section className={'p-3 w-full max-w-175 grid grid-cols-2 gap-3 mt-8'}>
                 {session ? (
                     <div className={'col-span-2'}>
-                        <Card title={'I wanna play maimai'} href={'/pages/user-profile'}>
-                            <></>
-                        </Card>
+                        <Card title={'I wanna play maimai'} href={'/pages/user-profile'} />
                     </div>
                 ) : (
                     <div className={'col-span-2'}>
-                        <Card title={'Sign in to get started'} href={'/api/auth/signin'}>
-                            <></>
-                        </Card>
+                        <Card title={'Sign in to get started'} href={'/api/auth/signin'} />
                     </div>
                 )}
 
