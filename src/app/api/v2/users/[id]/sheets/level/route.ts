@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from 'next/server';
 import {MaimaiSongScore, MSSB50} from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
-import {extractScore} from '@/lib/util';
+import {extractScore, sortSongsFn} from '@/lib/util';
 import client from '@/lib/db';
 import {getSongInfoMap, parseProfileBlock, toB50Score} from '@/app/api/_shared/util';
 import {z} from 'zod';
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         }
 
         return NextResponse.json({
-            level: finalRes,
+            level: finalRes.sort((a, b) => sortSongsFn(a, b)),
             profile: null,
         });
     } catch (error) {

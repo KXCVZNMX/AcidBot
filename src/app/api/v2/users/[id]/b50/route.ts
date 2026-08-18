@@ -8,7 +8,7 @@ import {
 } from '@/app/api/v2/_shared/types';
 import {MaimaiSongScore, MSSB50, ParsedProfile, SongInfo} from '@/app/api/_shared/types';
 import fetchPage from '@/lib/fetchPage';
-import {extractScore} from '@/lib/util';
+import {extractScore, sortSongsFn} from '@/lib/util';
 import * as cheerio from 'cheerio';
 import client from '@/lib/db';
 import {getSongInfoMap, parseProfileBlock, splitB50, toB50Score} from '@/app/api/_shared/util';
@@ -207,8 +207,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
                 const finalDataPacket =
                     JSON.stringify({
                         type: 'done',
-                        b35: slicedB35,
-                        b15: slicedB15,
+                        b35: slicedB35.sort((a, b) => sortSongsFn(a, b)),
+                        b15: slicedB15.sort((a, b) => sortSongsFn(a, b)),
                         profile: profileBlock,
                     }) + '\n';
 

@@ -2,7 +2,7 @@
 
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Best50Songs, MSSB50, ParsedProfile} from '@/lib/types';
-import {chooseNameplate, determineRatingPlate} from '@/lib/util';
+import {chooseNameplate, determineRatingPlate, sortSongsFn} from '@/lib/util';
 import ErrorModal from '@/components/ui/ErrorModal';
 import B50CardGrid, {B50_GRID_BASE_WIDTH} from '@/components/b50/B50CardGrid';
 import SuccessModal from '@/components/ui/SuccessModal';
@@ -66,8 +66,8 @@ export default function Best50() {
                 }
 
                 const b50: Best50Songs = await res.json();
-                setOldSong(b50.b35);
-                setNewSong(b50.b15);
+                setOldSong(b50.b35.sort((a, b) => sortSongsFn(a, b)));
+                setNewSong(b50.b15.sort((a, b) => sortSongsFn(a, b)));
 
             } catch (error) {
                 showError((error as Error).message);
@@ -227,8 +227,8 @@ export default function Best50() {
                     else if (packet.type === 'done') {
                         receivedDone = true;
                         setSuccess('Successfully calculated and saved Best 50 details!');
-                        setNewSong(packet.b15);
-                        setOldSong(packet.b35);
+                        setNewSong((packet.b15 as MSSB50[]).sort((a, b) => sortSongsFn(a, b)));
+                        setOldSong((packet.b35 as MSSB50[]).sort((a, b) => sortSongsFn(a, b)));
                         setStatusText('Done');
                         setProgress({ current: 0, total: 0, level: 'easy' });
                     }

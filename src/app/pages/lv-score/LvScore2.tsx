@@ -9,7 +9,7 @@ import B50BG from '../../../../public/b50/b50bg.png';
 import B50Card from '@/components/b50/B50Card';
 import {M_PLUS_Rounded_1c} from 'next/font/google';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
-import {chooseNameplate, determineRatingPlate, truncateByWidth} from '@/lib/util';
+import {chooseNameplate, determineRatingPlate, sortSongsFn, truncateByWidth} from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
 import {captureElementToBlob} from '@/lib/captureUtils';
@@ -154,7 +154,7 @@ export default function LvScore2() {
     };
 
     const sortedSongs = useMemo(
-        () => [...songs].sort((a, b) => parseFloat(b.score.replace('%', '')) - parseFloat(a.score.replace('%', ''))),
+        () => [...songs].sort((a, b) => sortSongsFn(a, b)),
         [songs]
     );
     const pageCount = Math.max(1, Math.ceil(sortedSongs.length / SONGS_PER_PAGE));

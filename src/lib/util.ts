@@ -1,4 +1,4 @@
-import { MaimaiSongScore } from '@/lib/types';
+import {MaimaiSongScore, MSSB50} from '@/lib/types';
 import { COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES } from '@/lib/consts';
 import { StaticImageData } from 'next/image';
 import RatingNormal from '../../public/rating_plates/rating_base_normal.png';
@@ -269,3 +269,11 @@ export const determineRatingPlate = (rating: number) => {
         return RatingRainbowEx4;
     }
 };
+
+export const sortSongsFn = (a: MSSB50, b: MSSB50) => {
+    if (a.rating >= b.rating) {
+        return parseFloat(a.score.replace('%', '')) > parseFloat(b.score.replace('%', '')) ?
+            -1 : 1
+    }
+    return 1;
+}
