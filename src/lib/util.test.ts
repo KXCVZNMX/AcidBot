@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as cheerio from 'cheerio';
-import {matchRule, determineRank, truncateByWidth, extractScore, sortSongsFn} from '@/lib/util';
+import {matchRule, determineRank, truncateByWidth, extractScore, sortSongsFn, centerByWidth} from '@/lib/util';
 import { SYNC_RULES, COMBO_RULES } from '@/lib/consts';
 import {MSSB50} from '@/lib/types';
 
@@ -178,3 +178,33 @@ describe('Sort Songs by rating then achievement', () => {
         expect(b3).toStrictEqual([c, a, b]);
     })
 })
+
+describe('centerByWidth', () => {
+    it('centers a string with equal padding', () => {
+        expect(centerByWidth('hello', 9)).toBe('  hello  ');
+    });
+
+    it('puts the extra padding character on the right', () => {
+        expect(centerByWidth('hello', 10)).toBe('  hello   ');
+    });
+
+    it('handles CJK characters with width 2', () => {
+        expect(centerByWidth('你好', 10)).toBe('   你好   ');
+    });
+
+    it('handles mixed-width characters', () => {
+        expect(centerByWidth('A你好', 10)).toBe('  A你好   ');
+    });
+
+    it('returns the string unchanged when it exactly fits', () => {
+        expect(centerByWidth('hello', 5)).toBe('hello');
+    });
+
+    it('truncates when the string is too wide', () => {
+        expect(centerByWidth('hello world', 8)).toBe('hello...');
+    });
+
+    it('supports custom padding', () => {
+        expect(centerByWidth('hello', 9, '-')).toBe('--hello--');
+    });
+});

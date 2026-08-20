@@ -195,6 +195,30 @@ export function truncateByWidth(input: string, maxWidth: number, ellipsis = '...
     return result;
 }
 
+export function centerByWidth(
+    input: string,
+    width: number,
+    padding = ' '
+): string {
+    const inputWidth = getCharWidth(input);
+
+    if (inputWidth > width) {
+        return truncateByWidth(input, width);
+    }
+
+    const paddingWidth = getCharWidth(padding);
+    const remaining = width - inputWidth;
+
+    const leftWidth = Math.floor(remaining / 2);
+    const rightWidth = Math.ceil(remaining / 2);
+
+    return (
+        padding.repeat(Math.floor(leftWidth / paddingWidth)) +
+        input +
+        padding.repeat(Math.floor(rightWidth / paddingWidth))
+    );
+}
+
 function getCharWidth(char: string): number {
     if (char.length > 1) {
         let total = 0;

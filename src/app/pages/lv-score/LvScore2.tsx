@@ -9,7 +9,7 @@ import B50BG from '../../../../public/b50/b50bg.png';
 import B50Card from '@/components/b50/B50Card';
 import {M_PLUS_Rounded_1c} from 'next/font/google';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
-import {chooseNameplate, determineRatingPlate, sortSongsFn, truncateByWidth} from '@/lib/util';
+import {centerByWidth, chooseNameplate, determineRatingPlate, sortSongsFn, truncateByWidth} from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
 import {captureElementToBlob} from '@/lib/captureUtils';
@@ -319,7 +319,7 @@ export default function LvScore2() {
                                                 'absolute top-3.25 left-54 flex w-27.5 h-6.25 items-center justify-center text-center text-[6.5px] text-black font-medium z-20'
                                             }
                                         >
-                                            {truncateByWidth(profile.userDetail!, 28)}
+                                            {centerByWidth(profile.userDetail!, 28)}
                                         </p>
 
                                         <div
