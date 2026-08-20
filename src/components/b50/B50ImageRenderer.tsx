@@ -44,6 +44,7 @@ export default function B50ImageRenderer({
                     width={800}
                     loading={'eager'}
                     className={'absolute top-8.75 left-75 rounded-xl'}
+                    unoptimized
                 />
                 {profile ? (
                     <>
