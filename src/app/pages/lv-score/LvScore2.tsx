@@ -1,19 +1,19 @@
 'use client';
 
 import ErrorModal from '@/components/ui/ErrorModal';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {MaimaiLevelMap, NP} from '@/lib/consts';
-import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from '@/lib/types';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { MaimaiLevelMap, NP } from '@/lib/consts';
+import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
 import Image from 'next/image';
 import B50BG from '../../../../public/b50/b50bg.png';
 import B50Card from '@/components/b50/B50Card';
-import {M_PLUS_Rounded_1c} from 'next/font/google';
+import { M_PLUS_Rounded_1c } from 'next/font/google';
 import Logo from '../../../../public/b50/kv_logo_pc.png';
-import {centerByWidth, chooseNameplate, determineRatingPlate, sortSongsFn, truncateByWidth} from '@/lib/util';
+import { centerByWidth, chooseNameplate, determineRatingPlate, sortSongsFn, truncateByWidth } from '@/lib/util';
 import Trophy from '../../../../public/b50/trophy_normal.png';
 import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
-import {captureElementToBlob} from '@/lib/captureUtils';
-import {getResponseError} from '@/lib/apiResponse';
+import { captureElementToBlob } from '@/lib/captureUtils';
+import { getResponseError } from '@/lib/apiResponse';
 
 const PREVIEW_CARD_SCALE = 44;
 const PREVIEW_CARD_PERCENTAGE = PREVIEW_CARD_SCALE / 100;
@@ -153,10 +153,7 @@ export default function LvScore2() {
         }
     };
 
-    const sortedSongs = useMemo(
-        () => [...songs].sort((a, b) => sortSongsFn(a, b)),
-        [songs]
-    );
+    const sortedSongs = useMemo(() => [...songs].sort((a, b) => sortSongsFn(a, b)), [songs]);
     const pageCount = Math.max(1, Math.ceil(sortedSongs.length / SONGS_PER_PAGE));
     const pageIndex = Math.min(currentPage, pageCount - 1);
     const paginatedSongs = useMemo(() => {

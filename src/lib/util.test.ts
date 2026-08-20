@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as cheerio from 'cheerio';
-import {matchRule, determineRank, truncateByWidth, extractScore, sortSongsFn, centerByWidth} from '@/lib/util';
+import { matchRule, determineRank, truncateByWidth, extractScore, sortSongsFn, centerByWidth } from '@/lib/util';
 import { SYNC_RULES, COMBO_RULES } from '@/lib/consts';
-import {MSSB50} from '@/lib/types';
+import { MSSB50 } from '@/lib/types';
 
 describe('matchRule', () => {
     it('returns the mapped value for the first matching needle', () => {
@@ -137,9 +137,9 @@ describe('Sort Songs by rating then achievement', () => {
             levelConst: 14.9,
             rating: 335,
             dateIntlAdded: '0',
-            achievement: 100.6000,
+            achievement: 100.6,
             jacketURL: '0',
-        }
+        };
 
         const b: MSSB50 = {
             name: 'Test Song',
@@ -153,9 +153,9 @@ describe('Sort Songs by rating then achievement', () => {
             levelConst: 14.8,
             rating: 333,
             dateIntlAdded: '0',
-            achievement: 100.6000,
+            achievement: 100.6,
             jacketURL: '0',
-        }
+        };
 
         const c: MSSB50 = {
             name: 'Test Song',
@@ -169,15 +169,15 @@ describe('Sort Songs by rating then achievement', () => {
             levelConst: 14.9,
             rating: 335,
             dateIntlAdded: '0',
-            achievement: 100.7000,
+            achievement: 100.7,
             jacketURL: '0',
-        }
+        };
 
         const b3 = [a, b, c];
         b3.sort((a, b) => sortSongsFn(a, b));
         expect(b3).toStrictEqual([c, a, b]);
-    })
-})
+    });
+});
 
 describe('centerByWidth', () => {
     it('centers a string with equal padding', () => {

@@ -1,5 +1,5 @@
-import {describe, expect, it} from 'vitest';
-import {getResponseError} from '@/lib/apiResponse';
+import { describe, expect, it } from 'vitest';
+import { getResponseError } from '@/lib/apiResponse';
 
 describe('getResponseError', () => {
     it('reads an API error from JSON', async () => {

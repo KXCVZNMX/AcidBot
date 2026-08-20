@@ -1,9 +1,9 @@
-import {Metadata} from 'next';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import HomePageIcon from '../../public/HomeGIF.gif';
 import React from 'react';
 import Card from '@/components/ui/Card';
-import {auth} from '@/auth';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
     title: 'maimai B50 Tracker',
@@ -36,8 +36,8 @@ export default async function Home() {
                 <Image src={HomePageIcon} alt={'Home page icon'} width={305} height={274} priority={true} />
                 <h1 className={'text-4xl font-bold mt-6'}>AcidBot</h1>
                 <p className={'text-lg mt-4 max-w-xl text-base-content/80'}>
-                    An easy-to-use <strong>maimai DX International Ver.</strong> bot. Fetch your scores,
-                    generate shareable rating images, and analyze your playstyle.
+                    An easy-to-use <strong>maimai DX International Ver.</strong> bot. Fetch your scores, generate
+                    shareable rating images, and analyze your playstyle.
                 </p>
             </header>
 

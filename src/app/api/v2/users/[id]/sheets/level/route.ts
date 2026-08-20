@@ -1,13 +1,13 @@
-import {NextRequest, NextResponse} from 'next/server';
-import {MaimaiSongScore, MSSB50} from '@/app/api/_shared/types';
+import { NextRequest, NextResponse } from 'next/server';
+import { MaimaiSongScore, MSSB50 } from '@/app/api/_shared/types';
 import * as cheerio from 'cheerio';
 import fetchPage from '@/lib/fetchPage';
-import {extractScore, sortSongsFn} from '@/lib/util';
+import { extractScore, sortSongsFn } from '@/lib/util';
 import client from '@/lib/db';
-import {getSongInfoMap, parseProfileBlock, toB50Score} from '@/app/api/_shared/util';
-import {z} from 'zod';
-import {DatabaseError, MalformedRequest, UserNotFoundOrNoPrev} from '@/app/api/v2/_shared/types';
-import {getClal, mapFetchPageError} from '@/app/api/v2/_shared/util';
+import { getSongInfoMap, parseProfileBlock, toB50Score } from '@/app/api/_shared/util';
+import { z } from 'zod';
+import { DatabaseError, MalformedRequest, UserNotFoundOrNoPrev } from '@/app/api/v2/_shared/types';
+import { getClal, mapFetchPageError } from '@/app/api/v2/_shared/util';
 
 const UserLevelSchema = z.object({
     id: z.string().min(1),

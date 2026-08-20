@@ -1,7 +1,7 @@
 import client from '@/lib/db';
-import {ObjectId} from 'mongodb';
-import {FetchError, InvalidClalToken, UpstreamMaintenance, type ErrorResponse} from './types';
-import {FetchPageError} from '@/lib/fetchPage';
+import { ObjectId } from 'mongodb';
+import { FetchError, InvalidClalToken, UpstreamMaintenance, type ErrorResponse } from './types';
+import { FetchPageError } from '@/lib/fetchPage';
 
 export function mapFetchPageError(error: unknown): { body: ErrorResponse; status: number } {
     if (error instanceof FetchPageError) {

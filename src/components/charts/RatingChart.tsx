@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 
 import 'chartjs-adapter-date-fns';
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(TimeScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
 

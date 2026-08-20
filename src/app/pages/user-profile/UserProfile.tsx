@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import DefaultUserIcon from '../../../../public/225-default-avatar.svg';
-import {Best50Songs, MSSB50} from '@/lib/types';
-import {useEffect, useState} from 'react';
-import {useSession} from 'next-auth/react';
+import { Best50Songs, MSSB50 } from '@/lib/types';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import ErrorModal from '@/components/ui/ErrorModal';
 import SuccessModal from '@/components/ui/SuccessModal';
 import RatingChart from '@/components/charts/RatingChart';
@@ -228,7 +228,6 @@ export default function UserProfile() {
                                                         <tr
                                                             key={index}
                                                             className={'hover:bg-base-content/10 transition-colors'}
-
                                                         >
                                                             <th className={'text-center'}>{index + 1}</th>
                                                             <td className={'font-medium text-lg'}>

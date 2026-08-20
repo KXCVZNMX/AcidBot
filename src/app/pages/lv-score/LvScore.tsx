@@ -1,15 +1,15 @@
 'use client';
 
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {MaimaiLevelMap} from '@/lib/consts';
-import {Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile} from '@/lib/types';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { MaimaiLevelMap } from '@/lib/consts';
+import { Best50Songs, MaimaiFetchData, MSSB50, ParsedProfile } from '@/lib/types';
 import ErrorModal from '@/components/ui/ErrorModal';
 import B50Card from '@/components/b50/B50Card';
 import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
 import LvScoreImageRenderer from '@/components/b50/LvScoreImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
-import {captureElementToBlob} from '@/lib/captureUtils';
-import {getResponseError} from '@/lib/apiResponse';
+import { captureElementToBlob } from '@/lib/captureUtils';
+import { getResponseError } from '@/lib/apiResponse';
 
 export default function LvScore() {
     const [level, setLevel] = useState('1');

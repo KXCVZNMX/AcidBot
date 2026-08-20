@@ -1,14 +1,14 @@
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
 import * as cheerio from 'cheerio';
-import {extractScore} from '@/lib/util';
-import {Best50Songs, MaimaiSongScore, MSSB50, SongInfo} from '@/app/api/_shared/types';
+import { extractScore } from '@/lib/util';
+import { Best50Songs, MaimaiSongScore, MSSB50, SongInfo } from '@/app/api/_shared/types';
 import client from '@/lib/db';
-import {ObjectId} from 'mongodb';
+import { ObjectId } from 'mongodb';
 import fetchPage from '@/lib/fetchPage';
-import {getSongInfoMap, splitB50, toB50Score} from '@/app/api/_shared/util';
-import {Best50SongsWithDateRating} from '@/app/api/v1/_shared/types';
-import {getAuthenticatedClal, getAuthenticatedUserId} from '@/app/api/_shared/auth';
-import {mapV1FetchPageError} from '@/app/api/v1/_shared/fetchPageError';
+import { getSongInfoMap, splitB50, toB50Score } from '@/app/api/_shared/util';
+import { Best50SongsWithDateRating } from '@/app/api/v1/_shared/types';
+import { getAuthenticatedClal, getAuthenticatedUserId } from '@/app/api/_shared/auth';
+import { mapV1FetchPageError } from '@/app/api/v1/_shared/fetchPageError';
 
 type DBData = {
     userId: string;

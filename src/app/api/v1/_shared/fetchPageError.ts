@@ -1,11 +1,11 @@
-import {FetchPageError, type FetchPageErrorCode} from '@/lib/fetchPage';
+import { FetchPageError, type FetchPageErrorCode } from '@/lib/fetchPage';
 
 export interface V1FetchPageErrorResponse {
     error: string;
     code: FetchPageErrorCode | 'UNKNOWN_FETCH_ERROR';
 }
 
-export function mapV1FetchPageError(error: unknown): {body: V1FetchPageErrorResponse; status: number} {
+export function mapV1FetchPageError(error: unknown): { body: V1FetchPageErrorResponse; status: number } {
     if (!(error instanceof FetchPageError)) {
         return {
             body: {

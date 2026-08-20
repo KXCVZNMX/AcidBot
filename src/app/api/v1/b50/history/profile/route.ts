@@ -1,7 +1,7 @@
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
 import client from '@/lib/db';
-import {ObjectId} from 'mongodb';
-import {getAuthenticatedUserId} from '@/app/api/_shared/auth';
+import { ObjectId } from 'mongodb';
+import { getAuthenticatedUserId } from '@/app/api/_shared/auth';
 
 type OldB50 = {
     createdAt: Date;

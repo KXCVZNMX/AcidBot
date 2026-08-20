@@ -1,6 +1,6 @@
 'use client';
 
-import {loginGithub, loginGoogle} from '@/components/auth/loginHelper';
+import { loginGithub, loginGoogle } from '@/components/auth/loginHelper';
 import GoogleIcon from '../../../public/google-icon-logo-svgrepo.svg';
 import GithubIcon from '../../../public/GitHub_Invertocat_Black.svg';
 import Image from 'next/image';

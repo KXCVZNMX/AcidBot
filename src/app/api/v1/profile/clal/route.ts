@@ -1,7 +1,7 @@
-import {NextRequest, NextResponse} from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import client from '@/lib/db';
-import {ObjectId} from 'mongodb';
-import {getAuthenticatedUserId} from '@/app/api/_shared/auth';
+import { ObjectId } from 'mongodb';
+import { getAuthenticatedUserId } from '@/app/api/_shared/auth';
 
 export async function GET(req: NextRequest) {
     const url = req.nextUrl;

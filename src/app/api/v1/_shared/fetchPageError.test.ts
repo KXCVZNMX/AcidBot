@@ -1,6 +1,6 @@
-import {describe, expect, it} from 'vitest';
-import {FetchPageError} from '@/lib/fetchPage';
-import {mapV1FetchPageError} from './fetchPageError';
+import { describe, expect, it } from 'vitest';
+import { FetchPageError } from '@/lib/fetchPage';
+import { mapV1FetchPageError } from './fetchPageError';
 
 describe('mapV1FetchPageError', () => {
     it('maps authentication failures to an actionable 401 response', () => {

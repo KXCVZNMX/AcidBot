@@ -1,4 +1,4 @@
-import {describe, expect, it} from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
     getLevelConst,
     getRatingByAchievement,
@@ -9,7 +9,7 @@ import {
     toB50Score,
     toProxiedUrl,
 } from '@/app/api/_shared/util';
-import {MaimaiSongScore, MSSB50, SongInfo} from '@/app/api/_shared/types';
+import { MaimaiSongScore, MSSB50, SongInfo } from '@/app/api/_shared/types';
 
 describe('parseDate', () => {
     it('parses a valid YYYYMMDD string into a local Date', () => {

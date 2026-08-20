@@ -1,18 +1,18 @@
 'use client';
 
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {Best50Songs, MSSB50, ParsedProfile} from '@/lib/types';
-import {chooseNameplate, determineRatingPlate, sortSongsFn} from '@/lib/util';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Best50Songs, MSSB50, ParsedProfile } from '@/lib/types';
+import { chooseNameplate, determineRatingPlate, sortSongsFn } from '@/lib/util';
 import ErrorModal from '@/components/ui/ErrorModal';
-import B50CardGrid, {B50_GRID_BASE_WIDTH} from '@/components/b50/B50CardGrid';
+import B50CardGrid, { B50_GRID_BASE_WIDTH } from '@/components/b50/B50CardGrid';
 import SuccessModal from '@/components/ui/SuccessModal';
 import ImageGenerationModal from '@/components/ui/ImageGenerationModal';
 import B50ImageRenderer from '@/components/b50/B50ImageRenderer';
 import NP_salt_prism from '../../../../public/b50/NP_salt_prism.webp';
 import Image from 'next/image';
-import {captureElementToBlob} from '@/lib/captureUtils';
-import {NP} from '@/lib/consts';
-import {getResponseError} from '@/lib/apiResponse';
+import { captureElementToBlob } from '@/lib/captureUtils';
+import { NP } from '@/lib/consts';
+import { getResponseError } from '@/lib/apiResponse';
 
 export default function Best50() {
     const [oldSong, setOldSong] = useState<MSSB50[]>([]);
@@ -68,7 +68,6 @@ export default function Best50() {
                 const b50: Best50Songs = await res.json();
                 setOldSong(b50.b35.sort((a, b) => sortSongsFn(a, b)));
                 setNewSong(b50.b15.sort((a, b) => sortSongsFn(a, b)));
-
             } catch (error) {
                 showError((error as Error).message);
                 console.error(error);

@@ -1,9 +1,9 @@
-import {MSSB50} from '@/lib/types';
+import { MSSB50 } from '@/lib/types';
 import Image from 'next/image';
 import MusicDX from '../../../public/b50/music_dx.png';
 import MusicSTD from '../../../public/b50/music_standard.png';
 import React from 'react';
-import {truncateByWidth} from '@/lib/util';
+import { truncateByWidth } from '@/lib/util';
 import SSSP from '../../../public/b50/SSSp.png';
 import SSS from '../../../public/b50/SSS.png';
 import SSP from '../../../public/b50/SSp.png';

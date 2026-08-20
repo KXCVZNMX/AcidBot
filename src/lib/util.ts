@@ -1,4 +1,4 @@
-import {MaimaiSongScore, MSSB50} from '@/lib/types';
+import { MaimaiSongScore, MSSB50 } from '@/lib/types';
 import { COMBO_RULES, DIFF_RULES, DX_RULES, SYNC_RULES } from '@/lib/consts';
 import { StaticImageData } from 'next/image';
 import RatingNormal from '../../public/rating_plates/rating_base_normal.png';
@@ -195,11 +195,7 @@ export function truncateByWidth(input: string, maxWidth: number, ellipsis = '...
     return result;
 }
 
-export function centerByWidth(
-    input: string,
-    width: number,
-    padding = ' '
-): string {
+export function centerByWidth(input: string, width: number, padding = ' '): string {
     const inputWidth = getCharWidth(input);
 
     if (inputWidth > width) {
@@ -296,8 +292,7 @@ export const determineRatingPlate = (rating: number) => {
 
 export const sortSongsFn = (a: MSSB50, b: MSSB50) => {
     if (a.rating >= b.rating) {
-        return parseFloat(a.score.replace('%', '')) > parseFloat(b.score.replace('%', '')) ?
-            -1 : 1
+        return parseFloat(a.score.replace('%', '')) > parseFloat(b.score.replace('%', '')) ? -1 : 1;
     }
     return 1;
-}
+};

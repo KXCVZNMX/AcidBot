@@ -1,11 +1,11 @@
-import Image, {StaticImageData} from 'next/image';
-import {M_PLUS_Rounded_1c} from 'next/font/google';
+import Image, { StaticImageData } from 'next/image';
+import { M_PLUS_Rounded_1c } from 'next/font/google';
 import B50Card from './B50Card';
 import B50BG from '../../../public/b50/b50bg.png';
 import Logo from '../../../public/b50/kv_logo_pc.png';
 import Trophy from '../../../public/b50/trophy_normal.png';
-import {MSSB50, ParsedProfile} from '@/lib/types';
-import {centerByWidth, determineRatingPlate, truncateByWidth} from '@/lib/util';
+import { MSSB50, ParsedProfile } from '@/lib/types';
+import { centerByWidth, determineRatingPlate, truncateByWidth } from '@/lib/util';
 import React from 'react';
 
 const mPlus = M_PLUS_Rounded_1c({
@@ -65,7 +65,11 @@ export default function B50ImageRenderer({
                             loading={'eager'}
                             className={'absolute top-13.25 left-110 z-20'}
                         />
-                        <p className={'absolute top-13 left-83.5 w-107.75 text-center text-[14px] text-black font-extrabold z-20'}>
+                        <p
+                            className={
+                                'absolute top-13 left-83.5 w-107.75 text-center text-[14px] text-black font-extrabold z-20'
+                            }
+                        >
                             {centerByWidth(profile.userDetail!, 28)}
                         </p>
                         <div
