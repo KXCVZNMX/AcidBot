@@ -4,6 +4,8 @@
 
 A maimai DX (international ver.) bot.
 
+> Update stopped. 
+
 Any issue please raise in the [issues](https://github.com/KXCVZNMX/Acidbot/issues) page
 
 ## Features
